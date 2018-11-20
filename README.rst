@@ -27,7 +27,7 @@ Getting started
 
 .. code-block:: python
 
-   >>> from hepparticle import PDGID
+   >>> from hepparticle.pdgid import PDGID
    >>>
    >>> pid = PDGID(211)
    >>> pid
@@ -42,7 +42,7 @@ For convenience, all properties of the `PDGID` class are available as standalone
 
 .. code-block:: python
 
-  >>> from hepparticle import is_meson
+  >>> from hepparticle.pdgid import is_meson
   >>>
   >>> is_meson(211)
   True
