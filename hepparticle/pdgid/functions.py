@@ -166,12 +166,12 @@ def is_dyon(pdgid):
     """
     Does this PDG ID correspond to a Dyon, a magnetic monopole?
 
-	// Magnetic monopoles and Dyons are assumed to have one unit of Dirac monopole charge
+	Magnetic monopoles and Dyons are assumed to have one unit of Dirac monopole charge
     and a variable integer number xyz units of electric charge.
-	//
-	// Codes 411xyz0 are then used when the magnetic and electrical charge sign agree and 412xyz0 when they disagree,
-	// with the overall sign of the particle set by the magnetic charge.
-	// For now no spin information is provided.
+
+	Codes 411xyz0 are used when the magnetic and electrical charge sign agree and 412xyz0 when they disagree,
+	with the overall sign of the particle set by the magnetic charge.
+	For now no spin information is provided.
     """
     if extra_bits(pdgid) > 0 : return False
     if digit(pdgid,Location.N) != 4 : return False
@@ -261,22 +261,22 @@ def three_charge(pdgid):
          charge = 3*( (aid/10)%1000 )
          # this is half right
          # the charge sign will be changed below if pid < 0
-         if digit(Location.Nl) == 2:
+         if digit(pdgid,Location.Nl) == 2:
              charge = -charge
     elif sid > 0 and sid <= 100:        # use table
          charge = ch100[sid-1]
          if aid in (1000017, 1000018, 1000034, 1000052, 1000053, 1000054) : charge = 0
          if aid == 5100061 or aid == 5100062 : charge = 6
-    elif digit(Location.Nj) == 0 :       # KL, Ks, or undefined
+    elif digit(pdgid,Location.Nj) == 0 :      # KL, Ks, or undefined
          return 0
     elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9 ): # mesons
          if q2 == 3 or q2 == 5 :
              charge = ch100[q3-1] - ch100[q2-1]
          else:
              charge = ch100[q2-1] - ch100[q3-1]
-    elif q3 == 0:                      // diquarks
+    elif q3 == 0:                       # diquarks
          charge = ch100[q2-1] + ch100[q1-1]
-    elif is_baryon(pdgid) or (is_Rhadron(pdgid) and (digit(Location.Nl) == 9) :  # baryons
+    elif is_baryon(pdgid) or (is_Rhadron(pdgid) and digit(pdgid,Location.Nl) == 9) :  # baryons
          charge = ch100[q3-1] + ch100[q2-1] + ch100[q1-1]
     if charge == 0 : return 0
     elif pdgid < 0 : charge = -charge
@@ -362,8 +362,8 @@ def digit(pdgid,loc):
     """
     Splits the PDG ID into constituent integers as defined in the Location enum.
     """
-	num = pow(10, loc-1)
-	return abspid(pdgid)/int(num) % 10
+    num = pow(10, loc-1)
+    return abspid(pdgid)/int(num) % 10
 
 def extra_bits(pdgid):
     """
