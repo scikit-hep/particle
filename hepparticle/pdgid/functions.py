@@ -12,7 +12,7 @@ References
 HepPDT and HepPID versions 3.04.01: http://lcgapp.cern.ch/project/simu/HepPDT/
 """
 
-from math import pow
+from math import pow as _pow
 # Backport needed if Python 2 is used
 from enum import IntEnum
 
@@ -34,7 +34,7 @@ class Location(IntEnum):
 
 def is_valid(pdgid):
     """Is it a valid PDG ID?"""
-    if fundamental_id(pdgid) > 0: return True
+    if _fundamental_id(pdgid) > 0: return True
     if is_meson(pdgid): return True
     if is_baryon(pdgid): return True
     if is_pentaquark(pdgid): return True
@@ -42,7 +42,7 @@ def is_valid(pdgid):
     if is_Rhadron(pdgid): return True
     if is_dyon(pdgid): return True
     if is_diquark(pdgid): return True
-    if extra_bits(pdgid) > 0 :
+    if _extra_bits(pdgid) > 0 :
         if is_nucleus(pdgid): return True
         if is_QBall(pdgid): return True
         return False
@@ -54,13 +54,13 @@ def abspid(pdgid):
 
 def is_lepton(pdgid):
     """Does this PDG ID correspond to a lepton?"""
-    if extra_bits(pdgid) > 0: return False
-    if fundamental_id(pdgid) >= 11 and fundamental_id(pdgid) <= 18 : return True
+    if _extra_bits(pdgid) > 0: return False
+    if _fundamental_id(pdgid) >= 11 and _fundamental_id(pdgid) <= 18 : return True
     return False
 
 def is_hadron(pdgid):
     """Does this PDG ID correspond to a hadron?"""
-    if extra_bits(pdgid) > 0 : return False
+    if _extra_bits(pdgid) > 0 : return False
     if is_meson(pdgid): return True
     if is_baryon(pdgid): return True
     if is_pentaquark(pdgid): return True
@@ -68,15 +68,15 @@ def is_hadron(pdgid):
 
 def is_meson(pdgid):
     """Does this PDG ID correspond to a meson?"""
-    if extra_bits(pdgid) > 0 : return False
+    if _extra_bits(pdgid) > 0 : return False
     if abspid(pdgid) <= 100 : return False
-    if fundamental_id(pdgid) <= 100 and fundamental_id(pdgid) > 0 : return False
+    if _fundamental_id(pdgid) <= 100 and _fundamental_id(pdgid) > 0 : return False
     if abspid(pdgid) in (130, 210, 310) : return True
     if abspid(pdgid) in (150, 350, 510, 530) : return True
     if pdgid in (110, 990, 9990) : return True
-    if digit(pdgid,Location.Nj) > 0 and digit(pdgid,Location.Nq3) > 0 and digit(pdgid,Location.Nq2) > 0 and digit(pdgid,Location.Nq1) == 0 :
+    if _digit(pdgid,Location.Nj) > 0 and _digit(pdgid,Location.Nq3) > 0 and _digit(pdgid,Location.Nq2) > 0 and _digit(pdgid,Location.Nq1) == 0 :
         # check for illegal antiparticles
-        if digit(pdgid,Location.Nq3) == digit(pdgid,Location.Nq2) and pid() < 0 :
+        if _digit(pdgid,Location.Nq3) == _digit(pdgid,Location.Nq2) and pid() < 0 :
             return False
         else:
             return True
@@ -84,19 +84,19 @@ def is_meson(pdgid):
 
 def is_baryon(pdgid):
     """"Does this PDG ID correspond to a baryon?"""
-    if extra_bits(pdgid) > 0: return False
+    if _extra_bits(pdgid) > 0: return False
     if abspid(pdgid) <= 100 : return False
-    if fundamental_id(pdgid) <= 100 and fundamental_id(pdgid) > 0 : return False
+    if _fundamental_id(pdgid) <= 100 and _fundamental_id(pdgid) > 0 : return False
     if abspid(pdgid) == 2110 or abspid(pdgid) == 2210 : return True
-    if digit(pdgid,Location.Nj) > 0 and digit(pdgid,Location.Nq3) > 0 and digit(pdgid,Location.Nq2) > 0 and digit(pdgid,Location.Nq1) > 0 : return True
+    if _digit(pdgid,Location.Nj) > 0 and _digit(pdgid,Location.Nq3) > 0 and _digit(pdgid,Location.Nq2) > 0 and _digit(pdgid,Location.Nq1) > 0 : return True
     return False
 
 def is_diquark(pdgid):
     """"Does this PDG ID correspond to a diquark?"""
-    if extra_bits(pdgid) > 0 : return False
+    if _extra_bits(pdgid) > 0 : return False
     if abspid(pdgid) <= 100 : return False
-    if fundamental_id(pdgid) <= 100 and fundamental_id(pdgid) > 0 : return False
-    if digit(pdgid,Location.Nj) > 0 and digit(pdgid,Location.Nq3) == 0 and digit(pdgid,Location.Nq2) > 0 and digit(pdgid,Location.Nq1) > 0 : return True
+    if _fundamental_id(pdgid) <= 100 and _fundamental_id(pdgid) > 0 : return False
+    if _digit(pdgid,Location.Nj) > 0 and _digit(pdgid,Location.Nq3) == 0 and _digit(pdgid,Location.Nq2) > 0 and _digit(pdgid,Location.Nq1) > 0 : return True
     return False
 
 def is_nucleus(pdgid):
@@ -111,7 +111,7 @@ def is_nucleus(pdgid):
     """
     # A proton can also be a Hydrogen nucleus
     if abspid(pdgid) == 2212 :  return True
-    if digit(pdgid,Location.N10) == 1 and digit(pdgid,Location.N9) == 0 :
+    if _digit(pdgid,Location.N10) == 1 and _digit(pdgid,Location.N9) == 0 :
         # Charge should always be less than or equal to the baryon number
         if A() >= Z() : return True
     return False
@@ -122,17 +122,17 @@ def is_pentaquark(pdgid):
 
     A pentaquark is of the form 9abcdej, where j is the spin and a, b, c, d, and e are quarksself.
     """
-    if extra_bits(pdgid) > 0 : return False
-    if digit(pdgid,Location.N) != 9: return False
-    if digit(pdgid,Location.Nr) == 9 or digit(pdgid,Location.Nr) == 0 : return False
-    if digit(pdgid,Location.Nj) == 9 or digit(pdgid,Location.Nl) == 0 : return False
-    if digit(pdgid,Location.Nq1) == 0 : return False
-    if digit(pdgid,Location.Nq2) == 0 : return False
-    if digit(pdgid,Location.Nq3) == 0 : return False
-    if digit(pdgid,Location.Nj) == 0 : return False
-    if digit(pdgid,Location.Nq2) > digit(pdgid,Location.Nq1) : return False
-    if digit(pdgid,Location.Nq1) > digit(pdgid,Location.Nl) : return False
-    if digit(pdgid,Location.Nl) > digit(pdgid,Location.Nr) : return False
+    if _extra_bits(pdgid) > 0 : return False
+    if _digit(pdgid,Location.N) != 9: return False
+    if _digit(pdgid,Location.Nr) == 9 or _digit(pdgid,Location.Nr) == 0 : return False
+    if _digit(pdgid,Location.Nj) == 9 or _digit(pdgid,Location.Nl) == 0 : return False
+    if _digit(pdgid,Location.Nq1) == 0 : return False
+    if _digit(pdgid,Location.Nq2) == 0 : return False
+    if _digit(pdgid,Location.Nq3) == 0 : return False
+    if _digit(pdgid,Location.Nj) == 0 : return False
+    if _digit(pdgid,Location.Nq2) > _digit(pdgid,Location.Nq1) : return False
+    if _digit(pdgid,Location.Nq1) > _digit(pdgid,Location.Nl) : return False
+    if _digit(pdgid,Location.Nl) > _digit(pdgid,Location.Nr) : return False
     return True
 
 def is_Rhadron(pdgid):
@@ -140,13 +140,13 @@ def is_Rhadron(pdgid):
 
     An R-hadron is of the form 10abcdj, where j is the spin and a, b, c, and d are quarks or gluons.
     """
-    if extra_bits(pdgid) > 0 : return False
-    if digit(pdgid,Location.N) != 1 : return False
-    if digit(pdgid,Location.Nr) != 0 : return False
+    if _extra_bits(pdgid) > 0 : return False
+    if _digit(pdgid,Location.N) != 1 : return False
+    if _digit(pdgid,Location.Nr) != 0 : return False
     if is_SUSY(pdgid): return False
-    if digit(pdgid,Location.Nq2) == 0 : return False
-    if digit(pdgid,Location.Nq3) == 0 : return False
-    if digit(pdgid,Location.Nj) == 0 : return False
+    if _digit(pdgid,Location.Nq2) == 0 : return False
+    if _digit(pdgid,Location.Nq3) == 0 : return False
+    if _digit(pdgid,Location.Nj) == 0 : return False
     return True
 
 def is_QBall(pdgid):
@@ -155,11 +155,11 @@ def is_QBall(pdgid):
 
     Ad-hoc numbering for such particles is 100xxxx0, where xxxx is the charge in tenths.
     """
-    if extra_bits(pdgid) != 1 :return False
-    if digit(pdgid,Location.N) != 0 : return False
-    if digit(pdgid,Location.Nr) != 0 : return False
+    if _extra_bits(pdgid) != 1 :return False
+    if _digit(pdgid,Location.N) != 0 : return False
+    if _digit(pdgid,Location.Nr) != 0 : return False
     if (abspid(pdgid)/10)%10000 == 0 : return False
-    if digit(pdgid,Location.Nj) != 0 : return False
+    if _digit(pdgid,Location.Nj) != 0 : return False
     return True
 
 def is_dyon(pdgid):
@@ -173,12 +173,12 @@ def is_dyon(pdgid):
 	with the overall sign of the particle set by the magnetic charge.
 	For now no spin information is provided.
     """
-    if extra_bits(pdgid) > 0 : return False
-    if digit(pdgid,Location.N) != 4 : return False
-    if digit(pdgid,Location.Nr) != 1 : return False
-    if digit(pdgid,Location.Nl) != 1 and digit(pdgid,Location.Nl) != 2 : return False
-    if digit(pdgid,Location.Nq3) == 0 : return False
-    if digit(pdgid,Location.Nj) != 0 : return False
+    if _extra_bits(pdgid) > 0 : return False
+    if _digit(pdgid,Location.N) != 4 : return False
+    if _digit(pdgid,Location.Nr) != 1 : return False
+    if _digit(pdgid,Location.Nl) != 1 and _digit(pdgid,Location.Nl) != 2 : return False
+    if _digit(pdgid,Location.Nq3) == 0 : return False
+    if _digit(pdgid,Location.Nj) != 0 : return False
     return True
 
 def is_SUSY(pdgid):
@@ -187,9 +187,9 @@ def is_SUSY(pdgid):
 
     Fundamental SUSY particles have N = 1 or 2.
     """
-    if extra_bits(pdgid) > 0 : return False
-    if digit(pdgid,Location.N) != 1 and digit(pdgid,Location.N) != 2 : return False
-    if digit(pdgid,Location.Nr) != 0 : return False
+    if _extra_bits(pdgid) > 0 : return False
+    if _digit(pdgid,Location.N) != 1 and _digit(pdgid,Location.N) != 2 : return False
+    if _digit(pdgid,Location.Nr) != 0 : return False
     if fundamentalID(pdgid) == 0 : return False
     return True
 
@@ -246,11 +246,11 @@ def three_charge(pdgid):
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
               0, 0, 0, 0, 0, 0, 0, 0, 0, 0
               ]
-    q1 = digit(pdgid,Location.Nq1)
-    q2 = digit(pdgid,Location.Nq2)
-    q3 = digit(pdgid,Location.Nq3)
-    sid = fundamental_id(pdgid)
-    if extra_bits(pdgid) > 0:
+    q1 = _digit(pdgid,Location.Nq1)
+    q2 = _digit(pdgid,Location.Nq2)
+    q3 = _digit(pdgid,Location.Nq3)
+    sid = _fundamental_id(pdgid)
+    if _extra_bits(pdgid) > 0:
         if is_nucleus(pdgid):     # ion
             return 3*Z(pdgid)
         elif is_QBall(pdgid):     # QBall
@@ -261,13 +261,13 @@ def three_charge(pdgid):
          charge = 3*( (aid/10)%1000 )
          # this is half right
          # the charge sign will be changed below if pid < 0
-         if digit(pdgid,Location.Nl) == 2:
+         if _digit(pdgid,Location.Nl) == 2:
              charge = -charge
     elif sid > 0 and sid <= 100:        # use table
          charge = ch100[sid-1]
          if aid in (1000017, 1000018, 1000034, 1000052, 1000053, 1000054) : charge = 0
          if aid == 5100061 or aid == 5100062 : charge = 6
-    elif digit(pdgid,Location.Nj) == 0 :      # KL, Ks, or undefined
+    elif _digit(pdgid,Location.Nj) == 0 :      # KL, Ks, or undefined
          return 0
     elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9 ): # mesons
          if q2 == 3 or q2 == 5 :
@@ -276,7 +276,7 @@ def three_charge(pdgid):
              charge = ch100[q2-1] - ch100[q3-1]
     elif q3 == 0:                       # diquarks
          charge = ch100[q2-1] + ch100[q1-1]
-    elif is_baryon(pdgid) or (is_Rhadron(pdgid) and digit(pdgid,Location.Nl) == 9) :  # baryons
+    elif is_baryon(pdgid) or (is_Rhadron(pdgid) and _digit(pdgid,Location.Nl) == 9) :  # baryons
          charge = ch100[q3-1] + ch100[q2-1] + ch100[q1-1]
     if charge == 0 : return 0
     elif pdgid < 0 : charge = -charge
@@ -284,14 +284,14 @@ def three_charge(pdgid):
 
 def J(pdgid):
     """Returns the total spin as 2J+1."""
-    if fundamental_id(pdgid)>0 and fundamental_id(pdgid)<=100:
-        fund = fundamental_id(pdgid)
+    if _fundamental_id(pdgid)>0 and _fundamental_id(pdgid)<=100:
+        fund = _fundamental_id(pdgid)
         if fund > 0 and fund < 7 : return 2
         if fund == 9 : return 3
         if fund > 10 and fund < 17 : return 2
         if fund > 20 and fund < 25 : return 3
         return 0
-    elif extra_bits(pdgid) > 0 : return 0
+    elif _extra_bits(pdgid) > 0 : return 0
     return abspid(pdgid) % 10
 
 def S(pdgid):
@@ -348,61 +348,61 @@ def A(pdgid):
     """Returns the atomic number A if the PDG ID corresponds to a nucleus. Else it returns 0."""
     # A proton can also be a Hydrogen nucleus
     if abspid(pdgid) == 2212 : return 1
-    if digit(pdgid,Location.N10) != 1 or digit(pdgid,Location.N9) != 0 : return 0
+    if _digit(pdgid,Location.N10) != 1 or _digit(pdgid,Location.N9) != 0 : return 0
     return (abspid(pdgid)/10) % 1000
 
 def Z(pdgid):
     """Returns the Z if the PDG ID corresponds to a nucleus. Else it returns 0."""
     # A proton can also be a Hydrogen nucleus
     if abspid(pdgid) == 2212: return 1
-    if digit(pdgid,Location.N10)!=1 or digit(pdgid,Location.N9)!=0: return 0
+    if _digit(pdgid,Location.N10)!=1 or _digit(pdgid,Location.N9)!=0: return 0
     return (abspid(pdgid)/10000) % 1000
 
-def digit(pdgid,loc):
+def _digit(pdgid,loc):
     """
     Splits the PDG ID into constituent integers as defined in the Location enum.
     """
-    num = pow(10, loc-1)
+    num = _pow(10, loc-1)
     return abspid(pdgid)/int(num) % 10
 
-def extra_bits(pdgid):
+def _extra_bits(pdgid):
     """
     Returns everything beyond the 7th digit, so anything outside the PDG numbering scheme.
     """
     return abspid(pdgid) / 10000000
 
-def fundamental_id(pdgid):
+def _fundamental_id(pdgid):
     """
     Returns the first 2 digits if this is a "fundamental" particle.
     Returns 0 if the particle is not fundamental or not standard.
 
     PDGID=100 is a special case (internal generator ID's are 81-100).
     """
-    if extra_bits(pdgid) > 0 : return 0
-    if digit(pdgid,Location.Nq2) == 0 and digit(pdgid,Location.Nq1) == 0 : return abspid(pdgid) % 10000
+    if _extra_bits(pdgid) > 0 : return 0
+    if _digit(pdgid,Location.Nq2) == 0 and _digit(pdgid,Location.Nq1) == 0 : return abspid(pdgid) % 10000
     elif abspid(pdgid) <= 100 : return abspid(pdgid)
     else: return 0
 
 def _has_quark_q(pdgid, q):
     """Helper function - does this particle contain a quark q?"""
-    if extra_bits(pdgid) > 0 : return False
-    if fundamental_id(pdgid) > 0 : return False
-    return find_q(pdgid,q)
+    if _extra_bits(pdgid) > 0 : return False
+    if _fundamental_id(pdgid) > 0 : return False
+    return _find_q(pdgid,q)
 
-def find_q(pdgid, q):
+def _find_q(pdgid, q):
     if is_dyon(pdgid): return False
     if is_Rhadron(pdgid):
         iz = 7
         for loc in range(6,1,-1):
-            if digit(pdgid,loc) == 0 :
+            if _digit(pdgid,loc) == 0 :
                 iz = loc
             elif loc == iz-1 :
                 #ignore squark or gluino
                 pass
             else:
-                if digit(pdgid,loc) == q : return True
+                if _digit(pdgid,loc) == q : return True
         return False
-    if digit(pdgid,Location.Nq3) == q or digit(pdgid,Location.Nq2) == q or digit(pdgid,Location.Nq1) == q : return True
+    if _digit(pdgid,Location.Nq3) == q or _digit(pdgid,Location.Nq2) == q or _digit(pdgid,Location.Nq1) == q : return True
     if is_pentaquark(pdgid):
-        if digit(pdgid,Location.Nl) == q or digit(pdgid,Location.Nr) == q : return True
+        if _digit(pdgid,Location.Nl) == q or _digit(pdgid,Location.Nr) == q : return True
     return False

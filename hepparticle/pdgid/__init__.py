@@ -32,34 +32,36 @@ from .functions import L
 from .functions import A
 from .functions import Z
 
+from .pdgid import PDGID
 
-__all__ = (is_valid,
-           abspid,
+
+__all__ = ('is_valid',
+           'abspid',
            #
-           is_lepton,
-           is_hadron,
-           is_meson,
-           is_baryon,
-           is_diquark,
-           is_nucleus,
-           is_pentaquark,
-           is_Rhadron,
-           is_QBall,
-           is_dyon,
-           is_SUSY,
+           'is_lepton',
+           'is_hadron',
+           'is_meson',
+           'is_baryon',
+           'is_diquark',
+           'is_nucleus',
+           'is_pentaquark',
+           'is_Rhadron',
+           'is_QBall',
+           'is_dyon',
+           'is_SUSY',
            #
-           has_down,
-           has_up,
-           has_strange,
-           has_charm,
-           has_bottom,
-           has_top,
+           'has_down',
+           'has_up',
+           'has_strange',
+           'has_charm',
+           'has_bottom',
+           'has_top',
            #
-           charge,
-           three_charge,
-           J,
-           S,
-           L,
-           A,
-           Z
+           'charge',
+           'three_charge',
+           'J',
+           'S',
+           'L',
+           'A',
+           'Z'
            )
