@@ -344,17 +344,17 @@ def L(pdgid):
     return 0
 
 def A(pdgid):
-    """Returns the atomic number A if the PDG ID corresponds to a nucleus. Else it returns 0."""
+    """Returns the atomic number A if the PDG ID corresponds to a nucleus. Else it returns None."""
     # A proton can also be a Hydrogen nucleus
     if abspid(pdgid) == 2212 : return 1
-    if _digit(pdgid,Location.N10) != 1 or _digit(pdgid,Location.N9) != 0 : return 0
+    if _digit(pdgid,Location.N10) != 1 or _digit(pdgid,Location.N9) != 0 : return None
     return (abspid(pdgid)/10) % 1000
 
 def Z(pdgid):
-    """Returns the Z if the PDG ID corresponds to a nucleus. Else it returns 0."""
+    """Returns the Z if the PDG ID corresponds to a nucleus. Else it returns None."""
     # A proton can also be a Hydrogen nucleus
     if abspid(pdgid) == 2212: return 1
-    if _digit(pdgid,Location.N10)!=1 or _digit(pdgid,Location.N9)!=0: return 0
+    if _digit(pdgid,Location.N10) != 1 or _digit(pdgid,Location.N9) != 0 : return None
     return (abspid(pdgid)/10000) % 1000
 
 def _digit(pdgid,loc):

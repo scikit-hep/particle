@@ -1,5 +1,7 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 
+from __future__ import division
+
 import pytest
 
 # Backport needed if Python 2 is used
@@ -30,7 +32,6 @@ class PDGIDs(IntEnum):
     Muon = 13
     AntiMuon = -Muon
     Tau = 15
-    AntiTau = -Tau
     # Neutrinos
     Nu_e = 12
     NuBar_tau = -16
@@ -97,20 +98,33 @@ def test_charge_functions():
     assert charge(PDGIDs.Electron) == -1
     assert charge(PDGIDs.AntiMuon) == +1
     assert charge(PDGIDs.JPsi) == 0
+    assert charge(PDGIDs.Upsilon1S) == 0
     assert charge(PDGIDs.PiPlus) == +1
     assert charge(PDGIDs.KMinus) == -1
+    assert charge(PDGIDs.D0) == 0
+    assert charge(PDGIDs.DPlus) == +1
+    assert charge(PDGIDs.DsPlus) == +1
     assert charge(PDGIDs.B0) == 0
     assert charge(PDGIDs.Bs) == 0
     assert charge(PDGIDs.BcPlus) == +1
     assert charge(PDGIDs.Proton) == +1
     assert charge(PDGIDs.LcPlus) == +1
     assert charge(PDGIDs.Lb) == 0
+    assert charge(PDGIDs.DD1) == -2/3
+    assert charge(PDGIDs.SD0) == -2/3
     assert charge(PDGIDs.Invalid1) == None
     assert charge(PDGIDs.Invalid2) == None
     assert three_charge(PDGIDs.Photon) == 0
     assert three_charge(PDGIDs.Electron) == -3
-    assert three_charge(PDGIDs.Proton) == +3
+    assert three_charge(PDGIDs.JPsi) == 0
+    assert three_charge(PDGIDs.Upsilon1S) == 0
     assert three_charge(PDGIDs.KMinus) == -3
+    assert three_charge(PDGIDs.D0) == 0
+    assert three_charge(PDGIDs.Proton) == +3
+    assert three_charge(PDGIDs.LcPlus) == +3
+    assert three_charge(PDGIDs.Lb) == 0
+    assert three_charge(PDGIDs.DD1) == -2
+    assert three_charge(PDGIDs.SD0) == -2
     assert three_charge(PDGIDs.Invalid1) == None
     assert three_charge(PDGIDs.Invalid2) == None
 
@@ -121,12 +135,20 @@ def test_is_valid():
     assert is_valid(PDGIDs.Electron) == True
     assert is_valid(PDGIDs.AntiMuon) == True
     assert is_valid(PDGIDs.JPsi) == True
+    assert is_valid(PDGIDs.Upsilon1S) == True
     assert is_valid(PDGIDs.PiPlus) == True
     assert is_valid(PDGIDs.KMinus) == True
+    assert is_valid(PDGIDs.D0) == True
+    assert is_valid(PDGIDs.DPlus) == True
+    assert is_valid(PDGIDs.DsPlus) == True
     assert is_valid(PDGIDs.B0) == True
     assert is_valid(PDGIDs.Bs) == True
     assert is_valid(PDGIDs.BcPlus) == True
     assert is_valid(PDGIDs.Proton) == True
+    assert is_valid(PDGIDs.LcPlus) == True
+    assert is_valid(PDGIDs.Lb) == True
+    assert is_valid(PDGIDs.DD1) == True
+    assert is_valid(PDGIDs.SD0) == True
     assert is_valid(PDGIDs.Invalid1) == False
     assert is_valid(PDGIDs.Invalid2) == False
 
@@ -136,27 +158,42 @@ def test_has_functions():
     assert has_down(PDGIDs.Electron) == False
     assert has_down(PDGIDs.AntiMuon) == False
     assert has_down(PDGIDs.JPsi) == False
+    assert has_down(PDGIDs.Upsilon1S) == False
     assert has_down(PDGIDs.PiPlus) == True
     assert has_down(PDGIDs.KMinus) == False
+    assert has_down(PDGIDs.D0) == False
+    assert has_down(PDGIDs.DPlus) == True
+    assert has_down(PDGIDs.DsPlus) == False
     assert has_down(PDGIDs.B0) == True
     assert has_down(PDGIDs.Bs) == False
     assert has_down(PDGIDs.BcPlus) == False
     assert has_down(PDGIDs.Proton) == True
+    assert has_down(PDGIDs.LcPlus) == True
+    assert has_down(PDGIDs.Lb) == True
+    assert has_down(PDGIDs.DD1) == True
+    assert has_down(PDGIDs.SD0) == True
     assert has_down(PDGIDs.Invalid1) == False
     assert has_down(PDGIDs.Invalid2) == False
-    assert has_down(PDGIDs.Invalid1) == False
     #
     assert has_up(PDGIDs.Photon) == False
     assert has_up(PDGIDs.Gluon) == False
     assert has_up(PDGIDs.Electron) == False
     assert has_up(PDGIDs.AntiMuon) == False
     assert has_up(PDGIDs.JPsi) == False
+    assert has_up(PDGIDs.Upsilon1S) == False
     assert has_up(PDGIDs.PiPlus) == True
     assert has_up(PDGIDs.KMinus) == True
+    assert has_up(PDGIDs.D0) == True
+    assert has_up(PDGIDs.DPlus) == False
+    assert has_up(PDGIDs.DsPlus) == False
     assert has_up(PDGIDs.B0) == False
     assert has_up(PDGIDs.Bs) == False
     assert has_up(PDGIDs.BcPlus) == False
     assert has_up(PDGIDs.Proton) == True
+    assert has_up(PDGIDs.LcPlus) == True
+    assert has_up(PDGIDs.Lb) == True
+    assert has_up(PDGIDs.DD1) == False
+    assert has_up(PDGIDs.SD0) == False
     assert has_up(PDGIDs.Invalid1) == False
     assert has_up(PDGIDs.Invalid2) == False
     #
@@ -165,12 +202,20 @@ def test_has_functions():
     assert has_strange(PDGIDs.Electron) == False
     assert has_strange(PDGIDs.AntiMuon) == False
     assert has_strange(PDGIDs.JPsi) == False
+    assert has_strange(PDGIDs.Upsilon1S) == False
     assert has_strange(PDGIDs.PiPlus) == False
     assert has_strange(PDGIDs.KMinus) == True
+    assert has_strange(PDGIDs.D0) == False
+    assert has_strange(PDGIDs.DPlus) == False
+    assert has_strange(PDGIDs.DsPlus) == True
     assert has_strange(PDGIDs.B0) == False
     assert has_strange(PDGIDs.Bs) == True
     assert has_strange(PDGIDs.BcPlus) == False
     assert has_strange(PDGIDs.Proton) == False
+    assert has_strange(PDGIDs.LcPlus) == False
+    assert has_strange(PDGIDs.Lb) == False
+    assert has_strange(PDGIDs.DD1) == False
+    assert has_strange(PDGIDs.SD0) == True
     assert has_strange(PDGIDs.Invalid1) == False
     assert has_strange(PDGIDs.Invalid2) == False
     #
@@ -179,12 +224,20 @@ def test_has_functions():
     assert has_charm(PDGIDs.Electron) == False
     assert has_charm(PDGIDs.AntiMuon) == False
     assert has_charm(PDGIDs.JPsi) == True
+    assert has_charm(PDGIDs.Upsilon1S) == False
     assert has_charm(PDGIDs.PiPlus) == False
     assert has_charm(PDGIDs.KMinus) == False
+    assert has_charm(PDGIDs.D0) == True
+    assert has_charm(PDGIDs.DPlus) == True
+    assert has_charm(PDGIDs.DsPlus) == True
     assert has_charm(PDGIDs.B0) == False
     assert has_charm(PDGIDs.Bs) == False
     assert has_charm(PDGIDs.BcPlus) == True
     assert has_charm(PDGIDs.Proton) == False
+    assert has_charm(PDGIDs.LcPlus) == True
+    assert has_charm(PDGIDs.Lb) == False
+    assert has_charm(PDGIDs.DD1) == False
+    assert has_charm(PDGIDs.SD0) == False
     assert has_charm(PDGIDs.Invalid1) == False
     assert has_charm(PDGIDs.Invalid2) == False
     #
@@ -193,12 +246,20 @@ def test_has_functions():
     assert has_bottom(PDGIDs.Electron) == False
     assert has_bottom(PDGIDs.AntiMuon) == False
     assert has_bottom(PDGIDs.JPsi) == False
+    assert has_bottom(PDGIDs.Upsilon1S) == True
     assert has_bottom(PDGIDs.PiPlus) == False
     assert has_bottom(PDGIDs.KMinus) == False
+    assert has_bottom(PDGIDs.D0) == False
+    assert has_bottom(PDGIDs.DPlus) == False
+    assert has_bottom(PDGIDs.DsPlus) == False
     assert has_bottom(PDGIDs.B0) == True
     assert has_bottom(PDGIDs.Bs) == True
     assert has_bottom(PDGIDs.BcPlus) == True
     assert has_bottom(PDGIDs.Proton) == False
+    assert has_bottom(PDGIDs.LcPlus) == False
+    assert has_bottom(PDGIDs.Lb) == True
+    assert has_bottom(PDGIDs.DD1) == False
+    assert has_bottom(PDGIDs.SD0) == False
     assert has_bottom(PDGIDs.Invalid1) == False
     assert has_bottom(PDGIDs.Invalid2) == False
     #
@@ -207,11 +268,19 @@ def test_has_functions():
     assert has_top(PDGIDs.Electron) == False
     assert has_top(PDGIDs.AntiMuon) == False
     assert has_top(PDGIDs.JPsi) == False
+    assert has_top(PDGIDs.Upsilon1S) == False
     assert has_top(PDGIDs.PiPlus) == False
     assert has_top(PDGIDs.KMinus) == False
+    assert has_top(PDGIDs.D0) == False
+    assert has_top(PDGIDs.DPlus) == False
+    assert has_top(PDGIDs.DsPlus) == False
     assert has_top(PDGIDs.B0) == False
     assert has_top(PDGIDs.Bs) == False
     assert has_top(PDGIDs.BcPlus) == False
     assert has_top(PDGIDs.Proton) == False
+    assert has_top(PDGIDs.LcPlus) == False
+    assert has_top(PDGIDs.Lb) == False
+    assert has_top(PDGIDs.DD1) == False
+    assert has_top(PDGIDs.SD0) == False
     assert has_top(PDGIDs.Invalid1) == False
     assert has_top(PDGIDs.Invalid2) == False
