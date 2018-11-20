@@ -76,7 +76,7 @@ def is_meson(pdgid):
     if pdgid in (110, 990, 9990) : return True
     if _digit(pdgid,Location.Nj) > 0 and _digit(pdgid,Location.Nq3) > 0 and _digit(pdgid,Location.Nq2) > 0 and _digit(pdgid,Location.Nq1) == 0 :
         # check for illegal antiparticles
-        if _digit(pdgid,Location.Nq3) == _digit(pdgid,Location.Nq2) and pid() < 0 :
+        if _digit(pdgid,Location.Nq3) == _digit(pdgid,Location.Nq2) and pdgid < 0 :
             return False
         else:
             return True
@@ -219,11 +219,11 @@ def has_top(pdgid):
 
 def charge(pdgid):
     """Returns the charge."""
-    tc = three_charge(pdgid)
-    if is_QBall(pdgid):
-        return float(tc)/30.
+    if not is_valid(pdgid): return None
+    if not is_QBall(pdgid):
+        return three_charge(pdgid)/3.
     else:
-        return float(tc)/3.
+        return three_charge(pdgid)/30.
 
 def three_charge(pdgid):
     """
@@ -231,9 +231,8 @@ def three_charge(pdgid):
 
     None is returned is the PDGID is not valid.
     """
+    if not is_valid(pdgid): return None
     aid = abspid(pdgid)
-    if aid == 0 :      # illegal
-        return None
     charge = None
     ch100 = [-1, 2,-1, 2,-1, 2,-1, 2, 0, 0,
              -3, 0,-3, 0,-3, 0,-3, 0, 0, 0,
@@ -304,7 +303,7 @@ def S(pdgid):
 
     nl = (abspid(pdgid)/10000) % 10
     js = abspid(pdgid) % 10
-    if (abspid()/1000000)%10 == 9 : return 0
+    if (abspid(pdgid)/1000000)%10 == 9 : return 0
     if nl == 0 and js >= 3 : return 1
     elif nl == 0 and js == 1 : return 0
     elif nl == 1 and js >= 3 : return 0
