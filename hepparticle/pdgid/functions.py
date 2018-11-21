@@ -190,7 +190,7 @@ def is_SUSY(pdgid):
     if _extra_bits(pdgid) > 0 : return False
     if _digit(pdgid,Location.N) != 1 and _digit(pdgid,Location.N) != 2 : return False
     if _digit(pdgid,Location.Nr) != 0 : return False
-    if fundamentalID(pdgid) == 0 : return False
+    if _fundamental_id(pdgid) == 0 : return False
     return True
 
 def has_down(pdgid):
