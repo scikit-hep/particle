@@ -63,7 +63,6 @@ class PDGIDsEnum(IntEnum):
     BPlus = 521
     Bs = 531
     BcPlus = 541
-    LcPlus = 4122
     Lb = 5122
     # Exotic particles
     Reggeon = 110

@@ -1,7 +1,7 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 """
 The Particle Data Group (PDG) defines the standard particle identification numbering scheme
-in the form of a signed 7-digit number +/- n Nr Nl Nq1 Nq2 Nq3 Nj.
+in the form of a signed 7-digit number +/- N Nr Nl Nq1 Nq2 Nq3 Nj.
 
 This module provides a pythonic version of the functions defined in HepPDT and HepPID,
 which work with PDG particle identification codes (PDGIDs).
@@ -84,9 +84,9 @@ def is_meson(pdgid):
 
 def is_baryon(pdgid):
     """"Does this PDG ID correspond to a baryon?"""
-    if _extra_bits(pdgid) > 0: return False
     if abspid(pdgid) <= 100 : return False
-    if _fundamental_id(pdgid) <= 100 and _fundamental_id(pdgid) > 0 : return False
+    if _extra_bits(pdgid) > 0: return False
+    if _fundamental_id(pdgid) > 0 and _fundamental_id(pdgid) <= 100 : return False
     if abspid(pdgid) == 2110 or abspid(pdgid) == 2210 : return True
     if _digit(pdgid,Location.Nj) > 0 and _digit(pdgid,Location.Nq3) > 0 and _digit(pdgid,Location.Nq2) > 0 and _digit(pdgid,Location.Nq1) > 0 : return True
     return False
@@ -229,7 +229,7 @@ def three_charge(pdgid):
     """
     Returns 3 times the charge.
 
-    None is returned is the PDGID is not valid.
+    None is returned if the PDGID is not valid.
     """
     if not is_valid(pdgid): return None
     aid = abspid(pdgid)
@@ -359,16 +359,18 @@ def Z(pdgid):
 
 def _digit(pdgid,loc):
     """
-    Splits the PDG ID into constituent integers as defined in the Location enum.
+    Provides a convenient index into the PDGID number, whose format is in base 10.
+
+    Returns the digit at position 'loc' given that the right-most digit is at position 1.
     """
-    num = _pow(10, loc-1)
-    return abspid(pdgid)/int(num) % 10
+    sid = str(abspid(pdgid))
+    return int(sid[-loc]) if loc <= len(sid) else 0
 
 def _extra_bits(pdgid):
     """
     Returns everything beyond the 7th digit, so anything outside the PDG numbering scheme.
     """
-    return abspid(pdgid) / 10000000
+    return abspid(pdgid) // 10000000
 
 def _fundamental_id(pdgid):
     """
