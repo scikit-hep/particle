@@ -7,6 +7,17 @@ import pytest
 from hepparticle.pdgid import charge
 from hepparticle.pdgid import three_charge
 from hepparticle.pdgid import is_valid
+from hepparticle.pdgid import is_lepton
+from hepparticle.pdgid import is_hadron
+from hepparticle.pdgid import is_meson
+from hepparticle.pdgid import is_baryon
+from hepparticle.pdgid import is_diquark
+from hepparticle.pdgid import is_nucleus
+from hepparticle.pdgid import is_pentaquark
+from hepparticle.pdgid import is_Rhadron
+from hepparticle.pdgid import is_Qball
+from hepparticle.pdgid import is_dyon
+from hepparticle.pdgid import is_SUSY
 from hepparticle.pdgid import has_down
 from hepparticle.pdgid import has_up
 from hepparticle.pdgid import has_strange
@@ -52,7 +63,7 @@ def test_charge_functions(PDGIDs):
     assert three_charge(PDGIDs.Invalid2) == None
 
 
-def test_is_valid(PDGIDs):
+def test_is_functions(PDGIDs):
     assert is_valid(PDGIDs.Photon) == True
     assert is_valid(PDGIDs.Gluon) == True
     assert is_valid(PDGIDs.Electron) == True
@@ -74,6 +85,21 @@ def test_is_valid(PDGIDs):
     assert is_valid(PDGIDs.SD0) == True
     assert is_valid(PDGIDs.Invalid1) == False
     assert is_valid(PDGIDs.Invalid2) == False
+    #
+    _leptons = (PDGIDs.Electron, PDGIDs.Positron, PDGIDs.Muon, PDGIDs.AntiMuon, PDGIDs.Tau, PDGIDs.TauPrime, PDGIDs.Nu_e, PDGIDs.NuBar_tau)
+    _non_leptons = [ id for id in PDGIDs if id not in _leptons ]
+    for id in _leptons: assert is_lepton(id) == True
+    for id in _non_leptons: assert is_lepton(id) == False
+    #
+    _diquarks = (PDGIDs.DD1, PDGIDs.SD0)
+    _non_diquarks = [ id for id in PDGIDs if id not in _diquarks ]
+    for id in _diquarks: assert is_diquark(id) == True
+    for id in _non_diquarks: assert is_diquark(id) == False
+    #
+    _Rhadrons = (PDGIDs.R0_GTildeG, PDGIDs.RPlusPlus_GTildeUUU)
+    _non_Rhadrons = [ id for id in PDGIDs if id not in _Rhadrons ]
+    for id in _Rhadrons: assert is_Rhadron(id) == True
+    for id in _non_Rhadrons: assert is_Rhadron(id) == False
 
 def test_has_functions(PDGIDs):
     assert has_down(PDGIDs.Photon) == False
@@ -186,24 +212,7 @@ def test_has_functions(PDGIDs):
     assert has_bottom(PDGIDs.Invalid1) == False
     assert has_bottom(PDGIDs.Invalid2) == False
     #
-    assert has_top(PDGIDs.Photon) == False
-    assert has_top(PDGIDs.Gluon) == False
-    assert has_top(PDGIDs.Electron) == False
-    assert has_top(PDGIDs.AntiMuon) == False
-    assert has_top(PDGIDs.JPsi) == False
-    assert has_top(PDGIDs.Upsilon1S) == False
-    assert has_top(PDGIDs.PiPlus) == False
-    assert has_top(PDGIDs.KMinus) == False
-    assert has_top(PDGIDs.D0) == False
-    assert has_top(PDGIDs.DPlus) == False
-    assert has_top(PDGIDs.DsPlus) == False
-    assert has_top(PDGIDs.B0) == False
-    assert has_top(PDGIDs.Bs) == False
-    assert has_top(PDGIDs.BcPlus) == False
-    assert has_top(PDGIDs.Proton) == False
-    assert has_top(PDGIDs.LcPlus) == False
-    assert has_top(PDGIDs.Lb) == False
-    assert has_top(PDGIDs.DD1) == False
-    assert has_top(PDGIDs.SD0) == False
-    assert has_top(PDGIDs.Invalid1) == False
-    assert has_top(PDGIDs.Invalid2) == False
+    assert has_top(PDGIDs.T0) == True
+    assert has_top(PDGIDs.LtPlus) == True
+    _no_top = [ id for id in PDGIDs if id not in (PDGIDs.T0, PDGIDs.LtPlus) ]  # top quark should also return has_top(6)==False !
+    for id in _no_top: assert has_top(id) == False

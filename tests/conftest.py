@@ -8,18 +8,20 @@ from enum import IntEnum
 
 class PDGIDsEnum(IntEnum):
     """Sample of PDGIDs on which to run tests."""
-    # Bosons
-    Photon = 22
+    # Gauge and Higgs bosons
     Gluon = 21
-    WMinus = -24
+    Photon = 22
     Z0 = 23
+    WMinus = -24
     HiggsBoson = 25
+    ZPrime = 32
     # Leptons
     Electron = 11
     Positron = -Electron
     Muon = 13
     AntiMuon = -Muon
     Tau = 15
+    TauPrime = 17
     # Neutrinos
     Nu_e = 12
     NuBar_tau = -16
@@ -30,6 +32,8 @@ class PDGIDsEnum(IntEnum):
     CQuark = 4
     BQuark = 5
     TQuark = 6
+    BPrimeQuark = 7  # 4th generation
+    TPrimeQuark = 8
     # Quarkonia
     JPsi = 443
     Psi2S = 100443
@@ -38,6 +42,7 @@ class PDGIDsEnum(IntEnum):
     # Light hadrons
     Pi0 = 111
     PiPlus = 211
+    A0Plus980 = 9000211
     KL = 130
     KS = 310
     KMinus = -321
@@ -64,13 +69,22 @@ class PDGIDsEnum(IntEnum):
     Bs = 531
     BcPlus = 541
     Lb = 5122
-    # Exotic particles
+    # Top hadrons
+    T0 = 621
+    LtPlus = 6122
+    # Special particles
+    Graviton = 39
     Reggeon = 110
     Pomeron = 990
     Odderon = 9990
-    Graviton = 39
-    Gravitino = 1000039
+    # Supersymmetric particles
     Gluino = 1000021
+    Gravitino = 1000039
+    STildeL = 1000003
+    CTildeR = 2000004
+    # R-hadrons
+    R0_GTildeG = 1000993
+    RPlusPlus_GTildeUUU = 1092224
     # Di-quarks
     DD1 = 1103
     SD0 = 3101

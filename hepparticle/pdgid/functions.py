@@ -44,7 +44,7 @@ def is_valid(pdgid):
     if is_diquark(pdgid): return True
     if _extra_bits(pdgid) > 0 :
         if is_nucleus(pdgid): return True
-        if is_QBall(pdgid): return True
+        if is_Qball(pdgid): return True
         return False
     return False
 
@@ -149,11 +149,11 @@ def is_Rhadron(pdgid):
     if _digit(pdgid,Location.Nj) == 0 : return False
     return True
 
-def is_QBall(pdgid):
+def is_Qball(pdgid):
     """
-    Does this PDG ID correspond to a QBall or any exotic particle with electric charge beyond the qqq scheme?
+    Does this PDG ID correspond to a Q-ball or any exotic particle with electric charge beyond the qqq scheme?
 
-    Ad-hoc numbering for such particles is 100xxxx0, where xxxx is the charge in tenths.
+    Ad-hoc numbering for such particles is +/- 100XXXY0, where XXX.Y is the charge.
     """
     if _extra_bits(pdgid) != 1 :return False
     if _digit(pdgid,Location.N) != 0 : return False
@@ -220,7 +220,7 @@ def has_top(pdgid):
 def charge(pdgid):
     """Returns the charge."""
     if not is_valid(pdgid): return None
-    if not is_QBall(pdgid):
+    if not is_Qball(pdgid):
         return three_charge(pdgid)/3.
     else:
         return three_charge(pdgid)/30.
@@ -252,7 +252,7 @@ def three_charge(pdgid):
     if _extra_bits(pdgid) > 0:
         if is_nucleus(pdgid):     # ion
             return 3*Z(pdgid)
-        elif is_QBall(pdgid):     # QBall
+        elif is_Qball(pdgid):     # Qball
             charge = 3*((aid/10)%10000)
         else:     # not an ion
             return 0

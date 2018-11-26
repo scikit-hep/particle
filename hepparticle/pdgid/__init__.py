@@ -13,7 +13,7 @@ from .functions import is_diquark
 from .functions import is_nucleus
 from .functions import is_pentaquark
 from .functions import is_Rhadron
-from .functions import is_QBall
+from .functions import is_Qball
 from .functions import is_dyon
 from .functions import is_SUSY
 
@@ -46,7 +46,7 @@ __all__ = ('is_valid',
            'is_nucleus',
            'is_pentaquark',
            'is_Rhadron',
-           'is_QBall',
+           'is_Qball',
            'is_dyon',
            'is_SUSY',
            #
