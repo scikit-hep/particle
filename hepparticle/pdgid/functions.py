@@ -113,7 +113,7 @@ def is_nucleus(pdgid):
     if abspid(pdgid) == 2212 :  return True
     if _digit(pdgid,Location.N10) == 1 and _digit(pdgid,Location.N9) == 0 :
         # Charge should always be less than or equal to the baryon number
-        if A() >= Z() : return True
+        if A(pdgid) >= Z(pdgid) : return True
     return False
 
 def is_pentaquark(pdgid):

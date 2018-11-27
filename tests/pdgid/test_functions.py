@@ -91,15 +91,49 @@ def test_is_functions(PDGIDs):
     for id in _leptons: assert is_lepton(id) == True
     for id in _non_leptons: assert is_lepton(id) == False
     #
+    _mesons = (PDGIDs.JPsi, PDGIDs.Psi2S, PDGIDs.Upsilon1S, PDGIDs.Upsilon4S,
+               PDGIDs.Pi0, PDGIDs.PiPlus, PDGIDs.A0Plus980, PDGIDs.KL, PDGIDs.KS, PDGIDs.KMinus, PDGIDs.phi, PDGIDs.Omega,
+               PDGIDs.D0, PDGIDs.DPlus, PDGIDs.DsPlus,
+               PDGIDs.B0, PDGIDs.BPlus, PDGIDs.Bs, PDGIDs.BcPlus,
+               PDGIDs.T0,
+               PDGIDs.Reggeon, PDGIDs.Pomeron, PDGIDs.Odderon,
+               PDGIDs.R0_GTildeG)
+    _non_mesons = [ id for id in PDGIDs if id not in _mesons ]
+    for id in _mesons: assert is_meson(id) == True
+    for id in _non_mesons: assert is_meson(id) == False
+    #
+    #
+    _baryons = (PDGIDs.Proton, PDGIDs.AntiNeutron, PDGIDs.Lambda, PDGIDs.Sigma0, PDGIDs.SigmaPlus, PDGIDs.SigmaMinus, PDGIDs.Xi0,  PDGIDs.XiPlus,PDGIDs.OmegaMinus,
+                PDGIDs.LcPlus, PDGIDs.AntiOmega_ccc,
+                PDGIDs.Lb,
+                PDGIDs.LtPlus,
+                PDGIDs.RPlusPlus_GTildeUUU)
+    _non_baryons = [ id for id in PDGIDs if id not in _baryons ]
+    for id in _baryons: assert is_baryon(id) == True
+    for id in _non_baryons: assert is_baryon(id) == False
+    #
+    for id in PDGIDs:
+        assert is_hadron(id) == ( is_meson(id) or is_baryon(id) )
+    #
     _diquarks = (PDGIDs.DD1, PDGIDs.SD0)
     _non_diquarks = [ id for id in PDGIDs if id not in _diquarks ]
     for id in _diquarks: assert is_diquark(id) == True
     for id in _non_diquarks: assert is_diquark(id) == False
     #
+    for id in PDGIDs: assert is_pentaquark(id) == False
+    #
+    assert is_nucleus(PDGIDs.Proton) == True
+    assert is_nucleus(PDGIDs.HydrogenNucleus) == True
+    #
     _Rhadrons = (PDGIDs.R0_GTildeG, PDGIDs.RPlusPlus_GTildeUUU)
     _non_Rhadrons = [ id for id in PDGIDs if id not in _Rhadrons ]
     for id in _Rhadrons: assert is_Rhadron(id) == True
     for id in _non_Rhadrons: assert is_Rhadron(id) == False
+    #
+    _susy = (PDGIDs.Gluino, PDGIDs.Gravitino, PDGIDs.STildeL, PDGIDs.CTildeR)
+    _non_susy = [ id for id in PDGIDs if id not in _susy ]
+    for id in _susy: assert is_SUSY(id) == True
+    for id in _non_susy: assert is_SUSY(id) == False
 
 def test_has_functions(PDGIDs):
     assert has_down(PDGIDs.Photon) == False
