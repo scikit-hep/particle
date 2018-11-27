@@ -56,7 +56,7 @@ class PDGIDsEnum(IntEnum):
     SigmaMinus = 3112
     Xi0 = 3322
     XiPlus = -3312
-    Omegaminus = 3334
+    OmegaMinus = 3334
     # Charm hadrons
     D0 = 421
     DPlus = 411
@@ -88,6 +88,8 @@ class PDGIDsEnum(IntEnum):
     # Di-quarks
     DD1 = 1103
     SD0 = 3101
+    # Nuclei
+    HydrogenNucleus = 1000010010
     # Invalid ID
     Invalid1 = 0  # illegal ID
     Invalid2 = 99999999  # general form is a 7-digit number
