@@ -36,7 +36,7 @@ Getting started
    True
    >>> pid = PDGID(99999999)
    >>> pid
-   <PDGID: 99999999(is_valid==False)>
+   <PDGID: 99999999 (is_valid==False)>
 
 For convenience, all properties of the `PDGID` class are available as standalone functions:
 
