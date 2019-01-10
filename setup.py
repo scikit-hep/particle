@@ -13,11 +13,11 @@ from setuputils import read
 
 def get_version():
     g = {}
-    exec(open(os.path.join("hepparticle", "version.py")).read(), g)
+    exec(open(os.path.join("particle", "version.py")).read(), g)
     return g["__version__"]
 
 setup(
-    name = 'hepparticle',
+    name = 'particle',
     author = 'Eduardo Rodrigues',
     author_email = 'eduardo.rodrigues@cern.ch',
     maintainer = 'Eduardo Rodrigues',
@@ -25,7 +25,7 @@ setup(
     version = get_version(),
     description = 'Utilities to deal with PDG data tables and particle IDs',
     long_description = read('README.rst'),
-    url = 'https://github.com/eduardo-rodrigues/hepparticle',
+    url = 'https://github.com/scikit-hep/particle',
     license = 'new BSD',
     packages = find_packages(),
     include_package_data = True,

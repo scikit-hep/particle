@@ -1,7 +1,7 @@
-hepparticle: the pythonic version of HepPID and HepPDT
-======================================================
+particle: the pythonic version of HepPID and HepPDT
+===================================================
 
-hepparticle provides a pythonic interface for the utility functions defined in HepPID and HepPDT, see http://lcgapp.cern.ch/project/simu/HepPDT/.
+particle provides a pythonic interface for the utility functions defined in HepPID and HepPDT, see http://lcgapp.cern.ch/project/simu/HepPDT/.
 These two packages give access to the Particle Data Group (PDG) particle data tables and particle identification codes.
 
 The current version of the package reflects HepPDT and HepPID versions 3.04.01.
@@ -9,11 +9,11 @@ The current version of the package reflects HepPDT and HepPID versions 3.04.01.
 Installation
 ------------
 
-Install ``hepparticle`` like any other Python package:
+Install ``particle`` like any other Python package:
 
 .. code-block:: bash
 
-    pip install hepparticle
+    pip install particle
 
 or similar (use ``--user``, ``virtualenv``, etc. if you wish).
 
@@ -27,7 +27,7 @@ Getting started
 
 .. code-block:: python
 
-   >>> from hepparticle.pdgid import PDGID
+   >>> from particle.pdgid import PDGID
    >>>
    >>> pid = PDGID(211)
    >>> pid
@@ -42,7 +42,7 @@ For convenience, all properties of the `PDGID` class are available as standalone
 
 .. code-block:: python
 
-  >>> from hepparticle.pdgid import is_meson
+  >>> from particle.pdgid import is_meson
   >>>
   >>> is_meson(211)
   True

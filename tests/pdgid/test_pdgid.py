@@ -2,8 +2,8 @@
 
 import pytest
 
-from hepparticle.pdgid import PDGID
-from hepparticle.pdgid import functions as _functions
+from particle.pdgid import PDGID
+from particle.pdgid import functions as _functions
 
 
 def test_class_methods():
@@ -16,7 +16,7 @@ def test_class_methods():
 
 def test_decorated_class_methods(PDGIDs):
     """
-    Trivial check that all hepparticle.pdgid functions decorated in the PDGID class
+    Trivial check that all particle.pdgid functions decorated in the PDGID class
     work as expected for all kinds of PDGIDs.
     """
     meths = [ m for m in PDGID.__dict__ if not m.startswith('_') ]

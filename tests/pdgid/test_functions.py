@@ -4,26 +4,26 @@ from __future__ import division
 
 import pytest
 
-from hepparticle.pdgid import charge
-from hepparticle.pdgid import three_charge
-from hepparticle.pdgid import is_valid
-from hepparticle.pdgid import is_lepton
-from hepparticle.pdgid import is_hadron
-from hepparticle.pdgid import is_meson
-from hepparticle.pdgid import is_baryon
-from hepparticle.pdgid import is_diquark
-from hepparticle.pdgid import is_nucleus
-from hepparticle.pdgid import is_pentaquark
-from hepparticle.pdgid import is_Rhadron
-from hepparticle.pdgid import is_Qball
-from hepparticle.pdgid import is_dyon
-from hepparticle.pdgid import is_SUSY
-from hepparticle.pdgid import has_down
-from hepparticle.pdgid import has_up
-from hepparticle.pdgid import has_strange
-from hepparticle.pdgid import has_charm
-from hepparticle.pdgid import has_bottom
-from hepparticle.pdgid import has_top
+from particle.pdgid import charge
+from particle.pdgid import three_charge
+from particle.pdgid import is_valid
+from particle.pdgid import is_lepton
+from particle.pdgid import is_hadron
+from particle.pdgid import is_meson
+from particle.pdgid import is_baryon
+from particle.pdgid import is_diquark
+from particle.pdgid import is_nucleus
+from particle.pdgid import is_pentaquark
+from particle.pdgid import is_Rhadron
+from particle.pdgid import is_Qball
+from particle.pdgid import is_dyon
+from particle.pdgid import is_SUSY
+from particle.pdgid import has_down
+from particle.pdgid import has_up
+from particle.pdgid import has_strange
+from particle.pdgid import has_charm
+from particle.pdgid import has_bottom
+from particle.pdgid import has_top
 
 
 def test_charge_functions(PDGIDs):
