@@ -12,4 +12,4 @@ except ImportError:
 
 
 def get_pdt_csv(csv='mass_width_2008.csv'):
-    return open_text('hepparticle.data', csv)
+    return open_text('particle.data', csv)

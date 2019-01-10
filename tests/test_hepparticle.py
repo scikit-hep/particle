@@ -1,7 +1,7 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 
-import hepparticle
+import particle
 
 
 def test_package_import():
-    assert hepparticle is not None
+    assert particle is not None
