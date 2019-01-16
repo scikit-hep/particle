@@ -29,30 +29,17 @@ jobs:
       versionSpec: '$(python.version)'
       architecture: 'x64'
 
-  - script: python -m pip install --upgrade pip && pip install
+  - script: |
+      python -m pip install --upgrade pip
+      pip install pytest pytest-cov
     displayName: 'Install dependencies'
 
   - script: |
-      pip install pytest
       pytest tests --doctest-modules --junitxml=junit/test-results.xml
-    displayName: 'pytest'
+    displayName: 'Run pytest'
 
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: '**/test-results.xml'
       testRunTitle: 'Python $(python.version)'
     condition: succeededOrFailed()
-
-- job: 'Publish'
-  dependsOn: 'Test'
-  pool:
-    vmImage: 'Ubuntu-16.04'
-
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.x'
-      architecture: 'x64'
-
-  - script: python setup.py sdist
-    displayName: 'Build sdist'
