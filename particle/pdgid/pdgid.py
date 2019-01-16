@@ -44,6 +44,12 @@ class PDGID(int):
         return val
 
 
+    def __eq__(self, other):
+        return True if isinstance(other, self.__class__) and self.pdgid == other.pdgid else False
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
 # Decorate the PDGID class with all relevant functions defined in the pdgid.functions module
 for _n in _fnames:
     _decorator = property(getattr(_functions, _n), doc=getattr(_functions, _n).__doc__)

@@ -15,7 +15,7 @@ class PDGIDsEnum(IntEnum):
     WMinus = -24
     HiggsBoson = 25
     ZPrime = 32
-    # Leptons
+    # Charged leptons
     Electron = 11
     Positron = -Electron
     Muon = 13
