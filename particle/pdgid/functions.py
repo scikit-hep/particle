@@ -12,6 +12,7 @@ References
 HepPDT and HepPID versions 3.04.01: http://lcgapp.cern.ch/project/simu/HepPDT/
 """
 
+from __future__ import print_function, division, absolute_import
 from math import pow as _pow
 # Backport needed if Python 2 is used
 from enum import IntEnum
@@ -158,7 +159,7 @@ def is_Qball(pdgid):
     if _extra_bits(pdgid) != 1 :return False
     if _digit(pdgid,Location.N) != 0 : return False
     if _digit(pdgid,Location.Nr) != 0 : return False
-    if (abspid(pdgid)/10)%10000 == 0 : return False
+    if (abspid(pdgid)//10)%10000 == 0 : return False
     if _digit(pdgid,Location.Nj) != 0 : return False
     return True
 
@@ -253,11 +254,11 @@ def three_charge(pdgid):
         if is_nucleus(pdgid):     # ion
             return 3*Z(pdgid)
         elif is_Qball(pdgid):     # Qball
-            charge = 3*((aid/10)%10000)
+            charge = 3*((aid//10)%10000)
         else:     # not an ion
             return 0
     elif is_dyon(pdgid):            # Dyon
-         charge = 3*( (aid/10)%1000 )
+         charge = 3*( (aid//10)%1000 )
          # this is half right
          # the charge sign will be changed below if pid < 0
          if _digit(pdgid,Location.Nl) == 2:
@@ -301,9 +302,9 @@ def S(pdgid):
     """
     if not is_meson(pdgid): return None
 
-    nl = (abspid(pdgid)/10000) % 10
+    nl = (abspid(pdgid)//10000) % 10
     js = abspid(pdgid) % 10
-    if (abspid(pdgid)/1000000)%10 == 9 : return 0
+    if (abspid(pdgid)//1000000)%10 == 9 : return 0
     if nl == 0 and js >= 3 : return 1
     elif nl == 0 and js == 1 : return 0
     elif nl == 1 and js >= 3 : return 0
@@ -320,9 +321,9 @@ def L(pdgid):
     """
     if not is_meson(pdgid): return None
 
-    nl = (abspid(pdgid)/10000) % 10
+    nl = (abspid(pdgid)//10000) % 10
     js = abspid(pdgid) % 10
-    if (abspid(pdgid)/1000000)%10 == 9 : return 0
+    if (abspid(pdgid)//1000000)%10 == 9 : return 0
     if nl == 0 and js == 3: return 0
     elif nl == 0 and js == 5: return 1
     elif nl == 0 and js == 7: return 2
@@ -348,14 +349,14 @@ def A(pdgid):
     # A proton can also be a Hydrogen nucleus
     if abspid(pdgid) == 2212 : return 1
     if _digit(pdgid,Location.N10) != 1 or _digit(pdgid,Location.N9) != 0 : return None
-    return (abspid(pdgid)/10) % 1000
+    return (abspid(pdgid)//10) % 1000
 
 def Z(pdgid):
     """Returns the Z if the PDG ID corresponds to a nucleus. Else it returns None."""
     # A proton can also be a Hydrogen nucleus
     if abspid(pdgid) == 2212: return 1
     if _digit(pdgid,Location.N10) != 1 or _digit(pdgid,Location.N9) != 0 : return None
-    return (abspid(pdgid)/10000) % 1000
+    return (abspid(pdgid)//10000) % 1000
 
 def _digit(pdgid,loc):
     """

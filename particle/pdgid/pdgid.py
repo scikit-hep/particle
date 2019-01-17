@@ -26,7 +26,7 @@ class PDGID(object):
         return "<PDGID: {:d}{:s}>".format(self.pdgid,'' if self.is_valid else ' (is_valid==False)')
 
 # Decorate the PDGID class with all relevant functions defined in the pdgid.functions module
-_exclude = ('IntEnum', 'Location' )
+_exclude = ('IntEnum', 'Location', 'print_function', 'division', 'absolute_import')
 _fname = [ fname for fname in dir(_functions) if not fname.startswith('_') and fname not in _exclude]
 for _n in _fname:
     _decorator = property( lambda self, meth=getattr(_functions, _n) : meth(self.pdgid) )
