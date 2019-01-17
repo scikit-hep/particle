@@ -10,7 +10,7 @@ from __future__ import absolute_import
 from . import functions as _functions
 
 
-class PDGID(object):
+class PDGID(int):
     """
     Holds a PDGID.
 
@@ -19,15 +19,15 @@ class PDGID(object):
     >>> PDGID(11).is_lepton
     True
     """
-    def __init__(self, pdgid):
-        self.pdgid = pdgid
-
     def __repr__(self):
-        return "<PDGID: {:d}{:s}>".format(self.pdgid,'' if self.is_valid else ' (is_valid==False)')
+        return "<PDGID: {:d}{:s}>".format(int(self),'' if self.is_valid else ' (is_valid==False)')
+
+    def __str__(self):
+        return repr(self)
 
 # Decorate the PDGID class with all relevant functions defined in the pdgid.functions module
 _exclude = ('IntEnum', 'Location' )
 _fname = [ fname for fname in dir(_functions) if not fname.startswith('_') and fname not in _exclude]
 for _n in _fname:
-    _decorator = property( lambda self, meth=getattr(_functions, _n) : meth(self.pdgid) )
+    _decorator = property( lambda self, meth=getattr(_functions, _n) : meth(self) )
     setattr(PDGID, _n, _decorator)
