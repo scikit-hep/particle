@@ -8,7 +8,6 @@ import os.path
 
 from setuptools import setup
 from setuptools import find_packages
-from setuputils import read
 
 
 def get_version():
@@ -24,7 +23,7 @@ setup(
     maintainer_email = 'eduardo.rodrigues@cern.ch',
     version = get_version(),
     description = 'Utilities to deal with PDG data tables and particle IDs',
-    long_description = read('README.rst'),
+    long_description = open('README.rst').read(),
     url = 'https://github.com/scikit-hep/particle',
     license = 'new BSD',
     packages = find_packages(),

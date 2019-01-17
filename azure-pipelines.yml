@@ -35,6 +35,10 @@ jobs:
     displayName: 'Install dependencies'
 
   - script: |
+      pip install -e .
+    displayName: 'Install package'
+
+  - script: |
       pytest tests --doctest-modules --junitxml=junit/test-results.xml
     displayName: 'Run pytest'
 
