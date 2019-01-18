@@ -19,13 +19,19 @@ class PDGID(int):
     >>> PDGID(11).is_lepton
     True
     """
-    __slots__ = ()
+    __slots__ = () # Keep PDGID a slots based class
 
     def __repr__(self):
         return "<PDGID: {:d}{:s}>".format(int(self),'' if self.is_valid else ' (is_valid==False)')
 
     def __str__(self):
         return repr(self)
+
+    def __neg__(self):
+        return self.__class__(-int(self))
+
+    def __invert__(self):
+        return self.__class__(-int(self))
 
 # Decorate the PDGID class with all relevant functions defined in the pdgid.functions module
 _exclude = ('IntEnum', 'Location', 'print_function', 'division', 'absolute_import')

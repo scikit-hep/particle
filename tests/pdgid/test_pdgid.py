@@ -20,6 +20,11 @@ def test_class_operations(PDGIDs):
     assert id_positron == - id_electron
     assert PDGIDs.Positron == - id_electron
 
+def test_pdgint():
+    assert isinstance(-PDGID(311), PDGID)
+    assert isinstance(~PDGID(311), PDGID)
+
+    assert -PDGID(311) == ~PDGID(311)
 
 def test_decorated_class_methods(PDGIDs):
     """
