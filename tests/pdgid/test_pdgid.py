@@ -13,6 +13,13 @@ def test_class_methods():
     pid = PDGID(-99999999)
     assert pid.__str__() == '<PDGID: -99999999 (is_valid==False)>'
 
+def test_class_operations(PDGIDs):
+    id_electron = PDGID(PDGIDs.Electron)
+    id_positron = PDGID(PDGIDs.Positron)
+    assert PDGIDs.Electron == id_electron
+    assert id_positron == - id_electron
+    assert PDGIDs.Positron == - id_electron
+
 
 def test_decorated_class_methods(PDGIDs):
     """
