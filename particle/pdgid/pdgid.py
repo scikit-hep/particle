@@ -19,6 +19,8 @@ class PDGID(int):
     >>> PDGID(11).is_lepton
     True
     """
+    __slots__ = ()
+
     def __repr__(self):
         return "<PDGID: {:d}{:s}>".format(int(self),'' if self.is_valid else ' (is_valid==False)')
 
