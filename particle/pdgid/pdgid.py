@@ -30,8 +30,7 @@ class PDGID(int):
     def __neg__(self):
         return self.__class__(-int(self))
 
-    def __invert__(self):
-        return self.__class__(-int(self))
+    __invert__ = __neg__
 
 # Decorate the PDGID class with all relevant functions defined in the pdgid.functions module
 _exclude = ('IntEnum', 'Location', 'print_function', 'division', 'absolute_import')
