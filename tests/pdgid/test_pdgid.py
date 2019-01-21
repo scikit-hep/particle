@@ -3,6 +3,7 @@
 import pytest
 
 from particle.pdgid import PDGID
+from particle.pdgid.pdgid import _fname
 from particle.pdgid import functions as _functions
 
 
@@ -20,10 +21,11 @@ def test_class_operations(PDGIDs):
     assert id_positron == - id_electron
     assert PDGIDs.Positron == - id_electron
 
-def test_pdgint():
+def test_class_return_type():
     assert isinstance(-PDGID(311), PDGID)
     assert isinstance(~PDGID(311), PDGID)
 
+def test_class_inversion():
     assert -PDGID(311) == ~PDGID(311)
 
 def test_decorated_class_methods(PDGIDs):
@@ -31,7 +33,6 @@ def test_decorated_class_methods(PDGIDs):
     Trivial check that all particle.pdgid functions decorated in the PDGID class
     work as expected for all kinds of PDGIDs.
     """
-    meths = [ m for m in PDGID.__dict__ if not m.startswith('_') ]
-    for m in meths:
+    for m in _fname:
         for pid in PDGIDs:
             assert getattr(PDGID(pid),m) == getattr(_functions,m)(pid)
