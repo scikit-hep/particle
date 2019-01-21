@@ -9,9 +9,11 @@ from __future__ import absolute_import
 
 from . import functions as _functions
 
-# Collect all the relevant functions in the pdgid.functions module
-_exclude = ('IntEnum', 'Location', 'print_function', 'division', 'absolute_import')
-_fname = [ fname for fname in dir(_functions) if not fname.startswith('_') and fname not in _exclude]
+from inspect import isfunction
+
+# Collect all the user defined, non-hidden functions in the pdgid.functions module
+_fnames = [ fname for fname in dir(_functions) if not fname.startswith('_')
+                                                 and isfunction(getattr(_functions, fname))]
 
 class PDGID(int):
     """
@@ -41,6 +43,6 @@ class PDGID(int):
 
 
 # Decorate the PDGID class with all relevant functions defined in the pdgid.functions module
-for _n in _fname:
-    _decorator = property( lambda self, meth=getattr(_functions, _n) : meth(self) )
+for _n in _fnames:
+    _decorator = property(getattr(_functions, _n), doc=getattr(_functions, _n).__doc__)
     setattr(PDGID, _n, _decorator)

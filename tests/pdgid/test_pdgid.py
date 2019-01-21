@@ -3,7 +3,7 @@
 import pytest
 
 from particle.pdgid import PDGID
-from particle.pdgid.pdgid import _fname
+from particle.pdgid.pdgid import _fnames
 from particle.pdgid import functions as _functions
 
 
@@ -33,6 +33,6 @@ def test_decorated_class_methods(PDGIDs):
     Trivial check that all particle.pdgid functions decorated in the PDGID class
     work as expected for all kinds of PDGIDs.
     """
-    for m in _fname:
+    for m in _fnames:
         for pid in PDGIDs:
             assert getattr(PDGID(pid),m) == getattr(_functions,m)(pid)
