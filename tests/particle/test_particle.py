@@ -1,8 +1,6 @@
-from particle.particle.enums import Charge
-from particle.particle.enums import Par
+from particle.particle.enums import Charge, Par, SpinType
 from particle.particle import Particle
-from particle.particle.enums import SpinType
-
+from particle.pdgid import PDGID
 
 def test_enums_Charge():
     assert Charge.p + Charge.m == Charge.o
@@ -18,6 +16,26 @@ def test_enums_SpinType():
 def test_pdg():
     assert Particle.from_pdgid(211).pdgid == 211
 
+def test_pdg_convert():
+    p = Particle.from_pdgid(211)
+    assert isinstance(p.pdgid, PDGID)
+    assert int(p) == 211
+    assert PDGID(p) == 211
+
+def test_sorting():
+    assert Particle.from_pdgid(211) < Particle.from_pdgid(311)
+    assert Particle.from_pdgid(211) < Particle.from_pdgid(-311)
+
+def test_int_compare():
+    assert Particle.from_pdgid(211) > 0
+    assert Particle.from_pdgid(-211) < 0
+    assert Particle.from_pdgid(211) >= 0
+    assert Particle.from_pdgid(-211) <= 0
+
+    assert 0 < Particle.from_pdgid(211)
+    assert 0 > Particle.from_pdgid(-211)
+    assert 0 <= Particle.from_pdgid(211)
+    assert 0 >= Particle.from_pdgid(-211)
 
 def test_str():
     pi = Particle.from_pdgid(211)
