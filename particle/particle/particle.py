@@ -54,7 +54,7 @@ class Particle(object):
     width_lower = attr.ib(0.0)
 
     def __repr__(self):
-        return "<{self.__class__.__name__}: pdgid={pdgid}, name='{self.name}', mass={mass} MeV>".format(
+        return "<{self.__class__.__name__}: pdgid={pdgid}, fullname='{self!s}', mass={mass} MeV>".format(
             self=self, pdgid=int(self.pdgid),
             mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
     _table = None # Loaded table of entries
