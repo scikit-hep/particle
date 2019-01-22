@@ -72,7 +72,7 @@ can use a search:
     >>> Particle.from_pdgid(211)
     >>> Particle.from_search_list('pi')[0]
 
-You can search for the properties using keyword arguments, which are `name`, `mass`, `width`, `charge`, `A`, `rank`,
+You can search for the properties using keyword arguments, which are `name`, `mass`, `width`, `charge`, `anti`, `rank`,
 `I`, `J`, `G`, `P`, `quarks`, `status`, `latex`, `mass_upper`, `mass_lower`, `width_upper`, and `width_lower` (some of
 those don\'t make sense). You can also use `.from_search()` to require only one match. You can also use the first two
 arguments, called `name_s` and `latex_s` to do a loose search, and `name_re` and `latex_re` to do a regular expression

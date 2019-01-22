@@ -36,8 +36,8 @@ class Particle(object):
     name = attr.ib()
     mass = attr.ib()
     width = attr.ib()
-    A = attr.ib(converter=Inv)  # Info about particle name for anti-particles
-    
+    anti = attr.ib(converter=Inv)  # Info about particle name for anti-particles
+
     rank = attr.ib(0)  # Next line is Isospin
     I = attr.ib(None)  # noqa: E741
     # J = attr.ib(None)  # Total angular momentum
@@ -58,32 +58,32 @@ class Particle(object):
             self=self, val=int(self.val),
             mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
     _table = None # Loaded table of entries
-    
+
     @classmethod
     def table(cls):
         if cls._table is None:
             cls.load_table()
-            
+
         return cls._table
-    
+
     @classmethod
     def load_table(cls, filename=None, append=False):
         if not append or cls._table is None:
             cls._table = []
-            
+
         file_to_open = data.open_text(data, 'particle2018.csv') if filename is None else open(filename)
-        
+
         with file_to_open as f:
             r = csv.DictReader(f)
 
             for v in r:
                 value = int(v['ID'])
                 name = v['Name']
-                
+
                 # Replace the previous value if appending
                 if value in cls._table:
                     cls._table.remove(value)
-                        
+
                 cls._table.append(cls(
                     val=value,
                     mass=float(v['Mass']),
@@ -96,7 +96,7 @@ class Particle(object):
                     G=int(v['G']),
                     P=int(v['P']),
                     C=int(v['C']),
-                    A=int(v['Anti']),
+                    anti=int(v['Anti']),
                     rank=int(v['Rank']),
                     status=int(v['Status']),
                     name=v['Name'],
@@ -120,21 +120,21 @@ class Particle(object):
     def __hash__(self):
         return hash(self.val)
 
-    
+
     # Integer == PDGID
     def __int__(self):
         return int(self.val)
-    
+
     @property
     def J(self):
         'The J quantum number'
         return self.val.J
-    
+
     @property
     def charge(self):
         'The particle charge'
         return Charge(self.val.charge)
-    
+
     @property
     def radius(self):
         'Particle radius, hard coded'
@@ -146,7 +146,7 @@ class Particle(object):
     @property
     def bar(self):
         'Check to see if particle is inverted'
-        return self.val < 0 and self.A == Inv.Full
+        return self.val < 0 and self.anti == Inv.Full
 
     @property
     def spin_type(self):  # -> SpinType:
@@ -163,18 +163,18 @@ class Particle(object):
 
     def invert(self):
         "Get the antiparticle"
-        if self.A == Inv.Full or (self.A == Inv.Barless and self.charge != Par.o):
+        if self.anti == Inv.Full or (self.anti == Inv.Barless and self.charge != Par.o):
             return self.from_pdgid(-self.val)
         else:
             return copy(self)
-        
+
     __neg__ = invert
     __invert__ = invert
 
     # Pretty descriptions
 
     def __str__(self):
-        tilde = '~' if self.A == Inv.Full and self.val < 0 else ''
+        tilde = '~' if self.anti == Inv.Full and self.val < 0 else ''
         # star = '*' if self.J == 1 else ''
         return self.name + tilde + Par_undo[self.charge]
 
@@ -207,7 +207,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
             val += "    SpinType: {self.spin_type!s}\n".format(self=self)
         if self.quarks:
             val += "    Quarks: {self.quarks}\n".format(self=self)
-        val += "    Antiparticle status: {self.A.name}\n".format(self=self)
+        val += "    Antiparticle status: {self.anti.name}\n".format(self=self)
         val += "    Radius: {self.radius} GeV".format(self=self)
         return val
 
@@ -241,7 +241,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         'Get a particle from a PDGID. Uses PDG data table.'
         table = cls.table()
         return table[table.index(value)]
-            
+
 
     @classmethod
     def from_search_list(cls, name_s=None, latex_s=None, name_re=None, latex_re=None, particle=None, **search_terms):
@@ -254,16 +254,16 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
            latex_s: A loose match (extra terms allowed) for Latex
            latex_re: A regular expression for Latex
            particle: True/False, for particle/antiparticle
-           
+
            Any other attribute: exact match for attribute value
 
         This method returns a list; also see from_search, which throws an error if the particle is not found or too many found.
         '''
-        
+
         for term in list(search_terms):
             if search_terms[term] is None:
                 del search_terms[term]
-                
+
         # Special case if nothing was passed
         if (not search_terms
             and particle is None
@@ -271,13 +271,13 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
             and name_re is None
             and latex_s is None
             and latex_re is None):
-            
+
             return []
 
         # If I is passed, make sure it is a string
         if not isinstance(search_terms.get('I', ''), str):
             search_terms['I'] = str(search_terms['I'])
-  
+
         results = set()
 
         # Filter out values
@@ -287,15 +287,15 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
                     continue
                 elif (not particle) and int(item) > 0:
                     continue
-                    
+
             passing = True
             for term in search_terms:
                 if getattr(item, term) != search_terms[term]:
                     passing = False
-            
+
             if not passing:
                 continue
-                    
+
             if name_s is not None:
                 if name_s not in item.name:
                     continue
@@ -311,9 +311,9 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
             if latex_re is not None:
                 if not re.search(latex_re, item.latex):
                     continue
-                    
+
             results.add(item)
-                
+
         return sorted(results)
 
     @classmethod
