@@ -23,6 +23,8 @@ def mkul(upper, lower, numdig=''):
     
 def str_with_unc(value, upper, lower):
     'Utility to nicely display a value with unc'
+    upper = abs(upper)
+    lower = abs(lower)
     
     err = min(upper, lower)
 

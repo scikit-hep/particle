@@ -54,7 +54,7 @@ class Particle(object):
     width_lower = attr.ib(0.0)
 
     def __repr__(self):
-        return "<{self.__class__.__name__}: val={val}>, name='{self.name}', mass={mass}>".format(
+        return "<{self.__class__.__name__}: val={val}>, name='{self.name}', mass={mass} MeV>".format(
             self=self, val=int(self.val),
             mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
     _table = None # Loaded table of entries
@@ -108,8 +108,13 @@ class Particle(object):
     def __le__(self, other):
         # Sort by absolute particle numbers
         # The positive one should come first
-        return abs(int(self) - .25) < abs(int(other) - .25)
-
+        if type(self) == type(other):
+            return abs(int(self) - .25) < abs(int(other) - .25)
+        
+        # Comparison with anything else should produce normal comparisons.
+        else:
+            return int(self) < other
+        
     def __eq__(self, other):
         try:
             return self.val == other.val
@@ -404,7 +409,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
                                         charge=Par_mapping[mat['charge']],
                                         particle=particle,
                                         J=J)
-        print(Par_mapping[mat['charge']], particle, J)
+
         if not vals:
             raise ParticleNotFound("Could not find particle {0} or {1}".format(maxname, fullname))
 
