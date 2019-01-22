@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 
 from particle.particle.utilities import str_with_unc
 
