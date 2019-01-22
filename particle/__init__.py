@@ -5,11 +5,8 @@ from __future__ import absolute_import
 # Convenient access to the version number
 from .version import __version__
 
-try:
-    from importlib.resources import open_text
-except ImportError:
-    from importlib_resources import open_text
+# Direct access to PDGID
+from .pdgid import PDGID
 
-
-def get_pdt_csv(csv='mass_width_2008.csv'):
-    return open_text('particle.data', csv)
+# Direct access to Particle (the CSV file is not read until a particle is accessed)
+from .particle import Particle, SpinType, Par, Charge, Inv, Status
