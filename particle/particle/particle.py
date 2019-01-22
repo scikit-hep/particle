@@ -264,7 +264,10 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     def from_pdgid(cls, value):
         'Get a particle from a PDGID. Uses PDG data table.'
         table = cls.table()
-        return table[table.index(value)]
+        try:
+            return table[table.index(value)]
+        except ValueError:
+            raise ParticleNotFound('Could not find {0}'.format(value))
 
 
     @classmethod
