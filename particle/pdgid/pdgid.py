@@ -37,9 +37,11 @@ class PDGID(int):
 
     __invert__ = __neg__
 
-    def print_all(self):
-        for item in _fname:
-            print("{item:14} {value}".format(item=item, value=getattr(self, item)))
+    def info(self):
+        val = ''
+        for item in _fnames:
+            val += "{item:14} {value}\n".format(item=item, value=getattr(self, item))
+        return val
 
 
 # Decorate the PDGID class with all relevant functions defined in the pdgid.functions module

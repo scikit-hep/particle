@@ -30,7 +30,8 @@ setup(
     include_package_data = True,
     install_requires = [
         'enum34>=1.1; python_version<"3.4"',
-        'importlib_resources>=1.0; python_version<"3.7"'
+        'importlib_resources>=1.0; python_version<"3.7"',
+        'attrs'
     ],
     setup_requires = ['pytest-runner'],
     tests_require = ['pytest'],
