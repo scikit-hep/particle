@@ -20,14 +20,19 @@ pdgid.add_argument('pdgid', nargs='+', help='ID(s)')
 opts = parser.parse_args()
 
 if 'particle' in opts:
-    for value in opts.particle:
-        if hasattr(value, 'decode'):
-            value = value.decode('utf-8')
+    for cand in opts.particle:
+        if hasattr(cand, 'decode'):
+            cand = cand.decode('utf-8')
 
-        if value.isnumeric():
-            particle = Particle.from_pdgid(int(value))
+        try:
+            value = int(cand)
+        except ValueError:
+            value = 0
+
+        if value:
+            particle = Particle.from_pdgid(value)
         else:
-            particle = Particle.from_string(value)
+            particle = Particle.from_string(cand)
 
         print(particle.describe())
         print()
