@@ -35,31 +35,41 @@ Getting started: PDGIDs
 
 .. code-block:: python
 
-   >>> from particle.pdgid import PDGID
-   >>>
-   >>> pid = PDGID(211)
-   >>> pid
-   <PDGID: 211>
-   >>> pid.is_meson
-   True
-   >>> pid = PDGID(99999999)
-   >>> pid
-   <PDGID: 99999999 (is_valid==False)>
+    >>> from particle.pdgid import PDGID
+    >>>
+    >>> pid = PDGID(211)
+    >>> pid
+    <PDGID: 211>
+    >>> pid.is_meson
+    True
+    >>> pid = PDGID(99999999)
+    >>> pid
+    <PDGID: 99999999 (is_valid==False)>
 
 For convenience, all properties of the `PDGID` class are available as standalone functions:
 
 .. code-block:: python
 
-  >>> from particle.pdgid import is_meson
-  >>>
-  >>> is_meson(211)
-  True
+    >>> from particle.pdgid import is_meson
+    >>>
+    >>> is_meson(211)
+    True
 
 You can quickly display info from the command line with:
 
 .. code-block:: bash
 
-    python -m particle pdgid 311
+    $ python -m particle pdgid 323
+    <PDGID: 323>
+    A              None
+    J              1.0
+    L              0
+    S              1
+    Z              None
+    abspid         323
+    charge         1.0
+    has_bottom     False
+    ...
 
 Getting started: Particles
 --------------------------
@@ -70,7 +80,9 @@ can use a search:
 .. code-block:: python
 
     >>> Particle.from_pdgid(211)
+    <Particle: pdgid=211, fullname='pi+', mass=139.57061 +/- 0.00024 MeV>
     >>> Particle.from_search_list('pi')[0]
+    <Particle: pdgid=111, fullname='pi0', mass=134.9770 +/- 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which are `name`, `mass`, `width`, `charge`, `anti`, `rank`,
 `I`, `J`, `G`, `P`, `quarks`, `status`, `latex`, `mass_upper`, `mass_lower`, `width_upper`, and `width_lower` (some of
@@ -88,8 +100,7 @@ You can quickly search for particles from the command line with:
 
 .. code-block:: bash
 
-    python -m particle search 311
+    $ python -m particle search 311
 
 
 You can put one or more PDG ID numbers here, or string names.
-
