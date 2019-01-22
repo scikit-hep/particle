@@ -4,9 +4,10 @@ particle: the pythonic version of HepPID and HepPDT
 .. image:: https://dev.azure.com/scikit-hep/particle/_apis/build/status/scikit-hep.particle?branchName=master
   :alt: Build Status
   :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
-  
 
-particle provides a pythonic interface for the utility functions defined in HepPID and HepPDT, see http://lcgapp.cern.ch/project/simu/HepPDT/.
+
+particle provides a pythonic interface for the utility functions defined in HepPID and HepPDT,
+see http://lcgapp.cern.ch/project/simu/HepPDT/.
 These two packages give access to the Particle Data Group (PDG) particle data tables and particle identification codes.
 
 The current version of the package reflects HepPDT and HepPID versions 3.04.01.
@@ -63,26 +64,24 @@ You can quickly display info from the command line with:
 Getting started: Particles
 --------------------------
 
-You can use a variety of methods to get particles; if you know the PDG
-number you can get a particle directly, or you can use a search:
+You can use a variety of methods to get particles; if you know the PDG number you can get a particle directly, or you
+can use a search:
 
 .. code-block:: python
 
     >>> Particle.from_pdgid(211)
-    >>> Particle.from_search_list(name='pi')[0]
+    >>> Particle.from_search_list('pi')[0]
 
-You can search for the properties, which are `name`, `mass`, `width`,
-`charge`, `A`, `rank`, `I`, `J`, `G`, `P`, `quarks`, `status`, `latex`,
-`mass_upper`, `mass_lower`, `width_upper`, and `width_lower` (some of
-those don\'t make sense). You can also use `from_search` to require only
-one match.
+You can search for the properties using keyword arguments, which are `name`, `mass`, `width`, `charge`, `A`, `rank`,
+`I`, `J`, `G`, `P`, `quarks`, `status`, `latex`, `mass_upper`, `mass_lower`, `width_upper`, and `width_lower` (some of
+those don\'t make sense). You can also use `.from_search()` to require only one match. You can also use the first two
+arguments, called `name_s` and `latex_s` to do a loose search, and `name_re` and `latex_re` to do a regular expression
+search.
 
-Once you have a particle, any of the properties can be accessed, along
-with several methods. Though they are not real properties, you can
-access `bar`, `radius`, and `spin_type`. You can also `invert()` a
-particle. There are lots of printing choices, `describe()`,
-`programmatic_name()`, `html_name()`, html printing outs in notebooks,
-and of course `repr` and `str` support.
+Once you have a particle, any of the properties can be accessed, along with several methods. Though they are not real
+properties, you can access `bar`, `radius`, and `spin_type`. You can also `invert()` a particle. There are lots of
+printing choices, `describe()`, `programmatic_name()`, `html_name()`, html printing outs in notebooks, and of course
+`repr` and `str` support.
 
 You can quickly search for particles from the command line with:
 
@@ -92,3 +91,4 @@ You can quickly search for particles from the command line with:
 
 
 You can put one or more PDG ID numbers here, or string names.
+
