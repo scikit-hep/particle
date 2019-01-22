@@ -12,13 +12,18 @@ def programmatic_name(name):
 
 def mkul(upper, lower, numdig=''):
     'Utility to print out an uncertainty with different or identical upper/lower bounds'
+    
+    # Only bother with unicode if this is Python 3.
+    pm = u'±' if type(u'') is type('') else '+/-'
+        
+    
     if upper == lower:
         if upper == 0:
-            return u''
+            return ''
         else:
-            return u'± {upper:{numdig}f}'.format(upper=upper, numdig=numdig)
+            return '{pm} {upper:{numdig}f}'.format(pm=pm, upper=upper, numdig=numdig)
     else:
-        return u'+ {upper:{numdig}f} - {lower:{numdig}f}'.format(upper=upper, lower=lower, numdig=numdig)
+        return '+ {upper:{numdig}f} - {lower:{numdig}f}'.format(upper=upper, lower=lower, numdig=numdig)
 
     
 def str_with_unc(value, upper, lower):
@@ -29,13 +34,13 @@ def str_with_unc(value, upper, lower):
     err = min(upper, lower)
 
     if 0 < err < 2.5:
-        numdig = u'.' + str(math.ceil(-math.log10(err) + math.log10(2.5)))
+        numdig = '.{0}'.format(int(math.ceil(-math.log10(err) + math.log10(2.5))))
     elif err >= 2.5:
-        numdig = u'.0'
+        numdig = '.0'
     else:
-        numdig = u''
+        numdig = ''
     
     ending = mkul(upper, lower, numdig)
     if ending:
-        ending = u' ' + ending
-    return u'{value:{numdig}f}{ending}'.format(value=value, ending=ending, numdig=numdig)
+        ending = ' ' + ending
+    return '{value:{numdig}f}{ending}'.format(value=value, ending=ending, numdig=numdig)
