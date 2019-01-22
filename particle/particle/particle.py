@@ -22,7 +22,7 @@ from .regex import getname, getdec
 from .enums import (SpinType, Par, Charge, Inv, Status,
                     Par_undo, Par_prog)
 
-from .utilities import programmatic_name, mkul, str_with_unc
+from .utilities import programmatic_name, str_with_unc
 
 class ParticleNotFound(RuntimeError):
     pass
@@ -202,10 +202,11 @@ class Particle(object):
         # star = '*' if self.J == 1 else ''
         return self.name + tilde + Par_undo[self.charge]
 
+    fullname = property(__str__, doc='The nice name, with par and change added')
+
     def _repr_latex_(self):
         name = self.latex
-        if self.bar:
-            name = re.sub(r'^(\\mathrm{|)([\w\\]\w*)', r'\1\\bar{\2}', name)
+        # name += "^{" +  Par_undo[self.charge] + '}'
         return ("$" + name + '$') if self.latex else '?'
 
     def describe(self):
@@ -214,8 +215,8 @@ class Particle(object):
             return "Name: Unknown"
 
         val = """Name: {self.name:<10} ID: {self.pdgid:<12} Fullname: {self!s:<14} Latex: {latex}
-Mass  = {self.mass:<10.9g} {mass} MeV
-Width = {self.width:<10.9g} {width} MeV
+Mass  = {mass} MeV
+Width = {width} MeV
 I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       = {Q}
 J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) = {P}
 """.format(self=self,
@@ -223,16 +224,16 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
            C=Par_undo[self.C],
            Q=Par_undo[self.charge],
            P=Par_undo[self.P],
-           mass=mkul(self.mass_upper, self.mass_lower),
-           width=mkul(self.width_upper, self.width_lower),
+           mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
+           width=str_with_unc(self.width, self.width_upper, self.width_lower),
            latex = self._repr_latex_())
 
         if self.spin_type != SpinType.Unknown:
             val += "    SpinType: {self.spin_type!s}\n".format(self=self)
         if self.quarks:
             val += "    Quarks: {self.quarks}\n".format(self=self)
-        val += "    Antiparticle status: {self.anti.name}\n".format(self=self)
-        val += "    Radius: {self.radius} GeV".format(self=self)
+        val += "    Antiparticle status: {self.anti.name} (antiparticle name: {iself.fullname})".format(self=self, iself=self.invert())
+        # val += "    Radius: {self.radius} GeV".format(self=self)
         return val
 
     @property
@@ -251,8 +252,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         name = re.sub(r'\\mathrm\{(.*?)\}', r'\1', name)
         name = re.sub(r'\\left\[(.*?)\\right\]', r'[\1] ', name)
         name = name.replace(r'\pi', 'π').replace(r'\rho', 'ρ').replace(r'\omega', 'ω')
-        if self.bar:
-            name += '~'
+        name = re.sub(r'\\bar\{(.*?)\}', r'~\1', name)
         return name
 
     @classmethod
