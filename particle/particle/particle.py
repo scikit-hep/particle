@@ -32,7 +32,7 @@ class ParticleNotFound(RuntimeError):
 @attr.s(slots=True, cmp=False, repr=False)
 class Particle(object):
     'The Particle object class. Hold a series of properties for a particle.'
-    val = attr.ib(converter=PDGID)
+    pdgid = attr.ib(converter=PDGID)
     name = attr.ib()
     mass = attr.ib()
     width = attr.ib()
@@ -54,13 +54,16 @@ class Particle(object):
     width_lower = attr.ib(0.0)
 
     def __repr__(self):
-        return "<{self.__class__.__name__}: val={val}>, name='{self.name}', mass={mass} MeV>".format(
-            self=self, val=int(self.val),
+        return "<{self.__class__.__name__}: pdgid={pdgid}, name='{self.name}', mass={mass} MeV>".format(
+            self=self, pdgid=int(self.pdgid),
             mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
     _table = None # Loaded table of entries
 
     @classmethod
     def table(cls):
+        """
+        This access the internal table, loading it from the default location if needed.
+        """
         if cls._table is None:
             cls.load_table()
 
@@ -68,6 +71,9 @@ class Particle(object):
 
     @classmethod
     def load_table(cls, filename=None, append=False):
+        """
+        Load a table. Optionally append to the existing data already loaded if append=True.
+        """
         if not append or cls._table is None:
             cls._table = []
 
@@ -85,7 +91,7 @@ class Particle(object):
                     cls._table.remove(value)
 
                 cls._table.append(cls(
-                    val=value,
+                    pdgid=value,
                     mass=float(v['Mass']),
                     mass_upper=float(v['MassUpper']),
                     mass_lower=float(v['MassLower']),
@@ -110,40 +116,53 @@ class Particle(object):
         # The positive one should come first
         if type(self) == type(other):
             return abs(int(self) - .25) < abs(int(other) - .25)
-        
+
         # Comparison with anything else should produce normal comparisons.
         else:
             return int(self) < other
-        
+
     def __eq__(self, other):
         try:
-            return self.val == other.val
+            return self.pdgid == other.pdgid
         except AttributeError:
-            return self.val == other
+            return self.pdgid == other
 
     # Only one particle can exist per PDGID number
     def __hash__(self):
-        return hash(self.val)
+        return hash(self.pdgid)
 
 
     # Integer == PDGID
     def __int__(self):
-        return int(self.val)
+        return int(self.pdgid)
+
+    # Shared with PDGID
 
     @property
     def J(self):
-        'The J quantum number'
-        return self.val.J
+        'The total spin J quantum number'
+        return self.pdgid.J
+
+    @property
+    def L(self):
+        'The orbital angular momenum L quantum number (None if not meson)'
+        return self.pdgid.L
+
+    @property
+    def S(self):
+        'The S quantum number (None if not meson)'
+        return self.pdgid.S
 
     @property
     def charge(self):
         'The particle charge'
-        return Charge(self.val.charge)
+        return Charge(self.pdgid.charge)
+
 
     @property
     def radius(self):
         'Particle radius, hard coded'
-        if abs(self.val) in [411, 421, 431]:
+        if abs(self.pdgid) in [411, 421, 431]:
             return 5.0
         else:
             return 1.5
@@ -151,7 +170,7 @@ class Particle(object):
     @property
     def bar(self):
         'Check to see if particle is inverted'
-        return self.val < 0 and self.anti == Inv.Full
+        return self.pdgid < 0 and self.anti == Inv.Full
 
     @property
     def spin_type(self):  # -> SpinType:
@@ -169,7 +188,7 @@ class Particle(object):
     def invert(self):
         "Get the antiparticle"
         if self.anti == Inv.Full or (self.anti == Inv.Barless and self.charge != Par.o):
-            return self.from_pdgid(-self.val)
+            return self.from_pdgid(-self.pdgid)
         else:
             return copy(self)
 
@@ -179,7 +198,7 @@ class Particle(object):
     # Pretty descriptions
 
     def __str__(self):
-        tilde = '~' if self.anti == Inv.Full and self.val < 0 else ''
+        tilde = '~' if self.anti == Inv.Full and self.pdgid < 0 else ''
         # star = '*' if self.J == 1 else ''
         return self.name + tilde + Par_undo[self.charge]
 
@@ -191,10 +210,10 @@ class Particle(object):
 
     def describe(self):
         'Make a nice high-density string for a particle\'s properties.'
-        if self.val == 0:
+        if self.pdgid == 0:
             return "Name: Unknown"
 
-        val = """Name: {self.name:<10} ID: {self.val:<12} Fullname: {self!s:<14} Latex: {latex}
+        val = """Name: {self.name:<10} ID: {self.pdgid:<12} Fullname: {self!s:<14} Latex: {latex}
 Mass  = {self.mass:<10.9g} {mass} MeV
 Width = {self.width:<10.9g} {width} MeV
 I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       = {Q}
@@ -324,7 +343,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     @classmethod
     def from_search(cls, **search_terms):
         '''
-        Require that your each returns one and only one result
+        Require that your search returns one and only one result. Raises ParticleNotFound or RuntimeError.
 
         See from_search_list for full listing of parameters
         '''

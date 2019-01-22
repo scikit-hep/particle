@@ -81,7 +81,8 @@ search.
 Once you have a particle, any of the properties can be accessed, along with several methods. Though they are not real
 properties, you can access `bar`, `radius`, and `spin_type`. You can also `invert()` a particle. There are lots of
 printing choices, `describe()`, `programmatic_name()`, `html_name()`, html printing outs in notebooks, and of course
-`repr` and `str` support.
+`repr` and `str` support. You can get the `.pdgid` from a particle, as well. Sorting particles will put most lowest
+abs(PDGID) first.
 
 You can quickly search for particles from the command line with:
 

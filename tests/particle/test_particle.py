@@ -16,7 +16,7 @@ def test_enums_SpinType():
 
 
 def test_pdg():
-    assert Particle.from_pdgid(211).val == 211
+    assert Particle.from_pdgid(211).pdgid == 211
 
 
 def test_str():
@@ -26,7 +26,7 @@ def test_str():
 
 def test_rep():
     pi = Particle.from_pdgid(211)
-    assert 'val=211' in repr(pi)
+    assert 'pdgid=211' in repr(pi)
     assert "name='pi'" in repr(pi)
     assert 'mass=139.57' in repr(pi)
 
@@ -34,16 +34,16 @@ def test_rep():
 def test_prop():
     pi = Particle.from_pdgid(211)
     assert pi.name == 'pi'
-    assert pi.val == 211
+    assert pi.pdgid == 211
     assert pi.charge == Par.p
 
 
 def test_ampgen_style_names():
-    assert Particle.from_string('pi+').val == 211
-    assert Particle.from_string('pi-').val == -211
-    assert Particle.from_string('K~*0').val == -313
-    assert Particle.from_string('K*(892)bar0').val == -313
-    assert Particle.from_string('a(1)(1260)+').val == 20213
+    assert Particle.from_string('pi+').pdgid == 211
+    assert Particle.from_string('pi-').pdgid == -211
+    assert Particle.from_string('K~*0').pdgid == -313
+    assert Particle.from_string('K*(892)bar0').pdgid == -313
+    assert Particle.from_string('a(1)(1260)+').pdgid == 20213
 
     # Direct comparison to integer works too
     assert Particle.from_string('rho(1450)0') == 100113
@@ -55,7 +55,7 @@ def test_ampgen_style_names():
 
 
 def test_decfile_style_names():
-    assert Particle.from_dec('anti-K*0').val == -313
-    assert Particle.from_dec('a_1(1260)+').val == 20213
-    #assert Particle.from_dec("D'_1+").val == 7
-    #assert Particle.from_dec("D_2*+").val == 8
+    assert Particle.from_dec('anti-K*0').pdgid == -313
+    assert Particle.from_dec('a_1(1260)+').pdgid == 20213
+    #assert Particle.from_dec("D'_1+").pdgid == 7
+    #assert Particle.from_dec("D_2*+").pdgid == 8
