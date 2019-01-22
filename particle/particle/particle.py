@@ -22,7 +22,7 @@ from .regex import getname, getdec
 from .enums import (SpinType, Par, Charge, Inv, Status,
                     Par_undo, Par_prog)
 
-from .utilities import programmatic_name, mkul
+from .utilities import programmatic_name, mkul, str_with_unc
 
 class ParticleNotFound(RuntimeError):
     pass
@@ -54,7 +54,9 @@ class Particle(object):
     width_lower = attr.ib(0.0)
 
     def __repr__(self):
-        return "<{self.__class__.__name__}: val={val}>, name='{self.name}', mass={self.mass}>".format(self=self, val=int(self.val))
+        return "<{self.__class__.__name__}: val={val}>, name='{self.name}', mass={mass}>".format(
+            self=self, val=int(self.val),
+            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
     _table = None # Loaded table of entries
     
     @classmethod
@@ -188,8 +190,8 @@ class Particle(object):
             return "Name: Unknown"
 
         val = """Name: {self.name:<10} ID: {self.val:<12} Fullname: {self!s:<14} Latex: {latex}
-Mass  = {self.mass:<10.9g} {mass} GeV
-Width = {self.width:<10.9g} {width} GeV
+Mass  = {self.mass:<10.9g} {mass} MeV
+Width = {self.width:<10.9g} {width} MeV
 I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       = {Q}
 J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) = {P}
 """.format(self=self,

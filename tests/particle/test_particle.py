@@ -28,7 +28,7 @@ def test_rep():
     pi = Particle.from_pdgid(211)
     assert 'val=211' in repr(pi)
     assert "name='pi'" in repr(pi)
-    assert 'mass=0.13957' in repr(pi)
+    assert 'mass=139.57' in repr(pi)
 
 
 def test_prop():
