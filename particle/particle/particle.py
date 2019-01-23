@@ -154,9 +154,9 @@ class Particle(object):
         'The S quantum number (None if not meson)'
         return self.pdgid.S
 
-    # @property
-    # def charge(self):
-    #    return self.three_charge / 3
+    @property
+    def charge(self):
+       return self.three_charge / 3
 
     @property
     def three_charge(self):
