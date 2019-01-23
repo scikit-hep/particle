@@ -10,7 +10,7 @@ def programmatic_name(name):
                 .replace('-', 'm').replace('+', 'p')
                 .replace('~', 'bar'))
 
-    
+
 def str_with_unc(value, upper, lower=None):
     '''
     Utility to print out an uncertainty with different or

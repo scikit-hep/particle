@@ -79,10 +79,11 @@ can use a search:
 
 .. code-block:: python
 
+    >>> from particle import Particle
     >>> Particle.from_pdgid(211)
-    <Particle: pdgid=211, fullname='pi+', mass=139.57061 +/- 0.00024 MeV>
+    <Particle: pdgid=211, fullname='pi+', mass=139.57061 ± 0.00024 MeV>
     >>> Particle.from_search_list('pi')[0]
-    <Particle: pdgid=111, fullname='pi0', mass=134.9770 +/- 0.0005 MeV>
+    <Particle: pdgid=111, fullname='pi0', mass=134.9770 ± 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which are `name`, `mass`, `width`, `charge`, `anti`, `rank`,
 `I`, `J`, `G`, `P`, `quarks`, `status`, `latex`, `mass_upper`, `mass_lower`, `width_upper`, and `width_lower` (some of
@@ -98,9 +99,26 @@ abs(PDGID) first.
 
 You can quickly search for particles from the command line with:
 
+
+.. code-block:: bash
+
+    $ python -m particle search 'K*0'
+    <Particle: pdgid=313, fullname='K*(892)0', mass=895.55 +/- 0.20 MeV>
+    <Particle: pdgid=30313, fullname='K*(1680)0', mass=1718 +/- 18 MeV>
+    <Particle: pdgid=100313, fullname='K*(1410)0', mass=1421 +/- 9 MeV>
+
+If you only select one particle, either by a search or by giving the pdgid number, you can see more information about
+the particle:
+
 .. code-block:: bash
 
     $ python -m particle search 311
+    Name: K          ID: 311          Fullname: K0             Latex: $K^{0}$
+    Mass  = 497.611 ± 0.013 MeV
+    Width = -1.0 MeV
+    I (isospin)       = 1/2    G (parity)        = 0      Q (charge)       = 0
+    J (total angular) = 0.0    C (charge parity) = 0      P (space parity) = ?
+        Quarks: dS
+        Antiparticle status: Full (antiparticle name: K~0)
 
 
-You can put one or more PDG ID numbers here, or string names.
