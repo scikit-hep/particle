@@ -1,4 +1,4 @@
-from particle.particle.enums import Charge, Par, SpinType
+from particle.particle.enums import Charge, Parity, SpinType
 from particle.particle import Particle
 from particle.pdgid import PDGID
 
@@ -53,7 +53,7 @@ def test_prop():
     pi = Particle.from_pdgid(211)
     assert pi.name == 'pi'
     assert pi.pdgid == 211
-    assert pi.charge == Par.p
+    assert pi.three_charge == Charge.p
 
 
 def test_ampgen_style_names():

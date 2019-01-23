@@ -19,8 +19,9 @@ from .. import data
 from ..pdgid import PDGID
 from .regex import getname, getdec
 
-from .enums import (SpinType, Par, Charge, Inv, Status,
-                    Par_undo, Par_prog)
+from .enums import (SpinType, Parity, Charge, Inv, Status,
+                    Parity_undo, Parity_prog,
+                    Charge_undo, Charge_prog, Charge_mapping)
 
 from .utilities import programmatic_name, str_with_unc
 
@@ -41,9 +42,9 @@ class Particle(object):
     rank = attr.ib(0)  # Next line is Isospin
     I = attr.ib(None)  # noqa: E741
     # J = attr.ib(None)  # Total angular momentum
-    G = attr.ib(Par.u, converter=Par)  # Parity: '', +, -, or ?
-    P = attr.ib(Par.u, converter=Par)  # Space parity
-    C = attr.ib(Par.u, converter=Par)  # Charge conjugation parity
+    G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
+    P = attr.ib(Parity.u, converter=Parity)  # Space parity
+    C = attr.ib(Parity.u, converter=Parity)  # Charge conjugation parity
     # (B (just charge), F (add bar) , and '' (No change))
     quarks = attr.ib('', converter=str)
     status = attr.ib(Status.Nonexistant, converter=Status)
@@ -155,8 +156,12 @@ class Particle(object):
 
     @property
     def charge(self):
-        'The particle charge'
-        return Charge(self.pdgid.charge)
+       return self.three_charge / 3
+
+    @property
+    def three_charge(self):
+        'The particle charge (integer * 3)'
+        return Charge(self.pdgid.three_charge)
 
 
     @property
@@ -178,16 +183,16 @@ class Particle(object):
         if self.J in [0, 1, 2]:
             J = int(self.J)
 
-            if self.P == Par.p:
+            if self.P == Parity.p:
                 return (SpinType.Scalar, SpinType.Axial, SpinType.Tensor)[J]
-            elif self.P == Par.m:
+            elif self.P == Parity.m:
                 return (SpinType.PseudoScalar, SpinType.Vector, SpinType.PseudoTensor)[J]
 
         return SpinType.Unknown
 
     def invert(self):
         "Get the antiparticle"
-        if self.anti == Inv.Full or (self.anti == Inv.Barless and self.charge != Par.o):
+        if self.anti == Inv.Full or (self.anti == Inv.Barless and self.three_charge != Parity.o):
             return self.from_pdgid(-self.pdgid)
         else:
             return copy(self)
@@ -200,13 +205,13 @@ class Particle(object):
     def __str__(self):
         tilde = '~' if self.anti == Inv.Full and self.pdgid < 0 else ''
         # star = '*' if self.J == 1 else ''
-        return self.name + tilde + Par_undo[self.charge]
+        return self.name + tilde + Charge_undo[self.three_charge]
 
     fullname = property(__str__, doc='The nice name, with par and change added')
 
     def _repr_latex_(self):
         name = self.latex
-        # name += "^{" +  Par_undo[self.charge] + '}'
+        # name += "^{" +  Parity_undo[self.three_charge] + '}'
         return ("$" + name + '$') if self.latex else '?'
 
     def describe(self):
@@ -220,10 +225,10 @@ Width = {width} MeV
 I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       = {Q}
 J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) = {P}
 """.format(self=self,
-           G=Par_undo[self.G],
-           C=Par_undo[self.C],
-           Q=Par_undo[self.charge],
-           P=Par_undo[self.P],
+           G=Parity_undo[self.G],
+           C=Parity_undo[self.C],
+           Q=Charge_undo[self.three_charge],
+           P=Parity_undo[self.P],
            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
            width=str_with_unc(self.width, self.width_upper, self.width_lower),
            latex = self._repr_latex_())
@@ -240,7 +245,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     def programmatic_name(self):
         'This name could be used for a variable name'
         name = self.name
-        name += '_' + Par_prog[self.charge]
+        name += '_' + Charge_prog[self.three_charge]
         return programmatic_name(name)
 
     @property
@@ -400,32 +405,31 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         #if '_' in mat['name']:
         #    mat['name'], mat['family'] = mat['name'].split('_')
 
-        Par_mapping = {'++': 2, '+': 1, '0': 0, '-': -1, '--': 2}
         particle = False if mat['bar'] is not None else (True if mat['charge'] == '0' else None)
 
         fullname = mat['name']
+        if mat['star']:
+            fullname += '*'
+
         if mat['family']:
             fullname += '({mat[family]})'.format(mat=mat)
         if mat['state']:
             fullname += '({mat[state]})'.format(mat=mat)
 
-        if mat['star'] and not mat['state']:
-            J = 1
-        else:
-            J = float(mat['state']) if mat['state'] is not None else None
+        J = float(mat['state']) if mat['state'] is not None else None
 
         if mat['mass']:
             maxname = fullname + '({mat[mass]})'.format(mat=mat)
         else:
             maxname = fullname
 
-        vals = cls.from_search_list(name=maxname,
-                                    charge=Par_mapping[mat['charge']],
+        vals = cls.from_search_list(maxname,
+                                    three_charge=Charge_mapping[mat['charge']],
                                     particle=particle,
                                     J=J)
         if not vals:
-            vals = cls.from_search_list(name=fullname,
-                                        charge=Par_mapping[mat['charge']],
+            vals = cls.from_search_list(fullname,
+                                        three_charge=Charge_mapping[mat['charge']],
                                         particle=particle,
                                         J=J)
 
