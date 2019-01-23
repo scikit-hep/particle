@@ -53,7 +53,7 @@ def test_prop():
     pi = Particle.from_pdgid(211)
     assert pi.name == 'pi'
     assert pi.pdgid == 211
-    assert pi.charge == Par.p
+    assert pi.charge == Charge.p
 
 
 def test_ampgen_style_names():

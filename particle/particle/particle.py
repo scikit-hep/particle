@@ -20,7 +20,8 @@ from ..pdgid import PDGID
 from .regex import getname, getdec
 
 from .enums import (SpinType, Par, Charge, Inv, Status,
-                    Par_undo, Par_prog)
+                    Par_undo, Par_prog,
+                    Charge_undo, Charge_prog, Charge_mapping)
 
 from .utilities import programmatic_name, str_with_unc
 
@@ -155,8 +156,8 @@ class Particle(object):
 
     @property
     def charge(self):
-        'The particle charge'
-        return Charge(self.pdgid.charge)
+        'The particle charge (integer * 3)'
+        return Charge(self.pdgid.three_charge)
 
 
     @property
@@ -200,7 +201,7 @@ class Particle(object):
     def __str__(self):
         tilde = '~' if self.anti == Inv.Full and self.pdgid < 0 else ''
         # star = '*' if self.J == 1 else ''
-        return self.name + tilde + Par_undo[self.charge]
+        return self.name + tilde + Charge_undo[self.charge]
 
     fullname = property(__str__, doc='The nice name, with par and change added')
 
@@ -222,7 +223,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 """.format(self=self,
            G=Par_undo[self.G],
            C=Par_undo[self.C],
-           Q=Par_undo[self.charge],
+           Q=Charge_undo[self.charge],
            P=Par_undo[self.P],
            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
            width=str_with_unc(self.width, self.width_upper, self.width_lower),
@@ -240,7 +241,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     def programmatic_name(self):
         'This name could be used for a variable name'
         name = self.name
-        name += '_' + Par_prog[self.charge]
+        name += '_' + Charge_prog[self.charge]
         return programmatic_name(name)
 
     @property
@@ -400,32 +401,31 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         #if '_' in mat['name']:
         #    mat['name'], mat['family'] = mat['name'].split('_')
 
-        Par_mapping = {'++': 2, '+': 1, '0': 0, '-': -1, '--': 2}
         particle = False if mat['bar'] is not None else (True if mat['charge'] == '0' else None)
 
         fullname = mat['name']
+        if mat['star']:
+            fullname += '*'
+
         if mat['family']:
             fullname += '({mat[family]})'.format(mat=mat)
         if mat['state']:
             fullname += '({mat[state]})'.format(mat=mat)
 
-        if mat['star'] and not mat['state']:
-            J = 1
-        else:
-            J = float(mat['state']) if mat['state'] is not None else None
+        J = float(mat['state']) if mat['state'] is not None else None
 
         if mat['mass']:
             maxname = fullname + '({mat[mass]})'.format(mat=mat)
         else:
             maxname = fullname
 
-        vals = cls.from_search_list(name=maxname,
-                                    charge=Par_mapping[mat['charge']],
+        vals = cls.from_search_list(maxname,
+                                    charge=Charge_mapping[mat['charge']],
                                     particle=particle,
                                     J=J)
         if not vals:
-            vals = cls.from_search_list(name=fullname,
-                                        charge=Par_mapping[mat['charge']],
+            vals = cls.from_search_list(fullname,
+                                        charge=Charge_mapping[mat['charge']],
                                         particle=particle,
                                         J=J)
 
