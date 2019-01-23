@@ -74,7 +74,7 @@ You can quickly display info from the command line with:
 Getting started: Particles
 --------------------------
 
-You can use a variety of methods to get particles; if you know the PDG number you can get a particle directly, or you
+You can use a variety of methods to get particles. If you know the PDGID number you can get a particle directly, or you
 can use a search:
 
 .. code-block:: python
@@ -107,7 +107,7 @@ You can quickly search for particles from the command line with:
     <Particle: pdgid=30313, fullname='K*(1680)0', mass=1718 +/- 18 MeV>
     <Particle: pdgid=100313, fullname='K*(1410)0', mass=1421 +/- 9 MeV>
 
-If you only select one particle, either by a search or by giving the pdgid number, you can see more information about
+If you only select one particle, either by a search or by giving the PDGID number, you can see more information about
 the particle:
 
 .. code-block:: bash
