@@ -17,6 +17,7 @@ import attr
 
 from .. import data
 from ..pdgid import PDGID
+from ..pdgid import is_valid
 from .regex import getname, getdec
 
 from .enums import (SpinType, Parity, Charge, Inv, Status,
@@ -28,6 +29,8 @@ from .utilities import programmatic_name, str_with_unc
 class ParticleNotFound(RuntimeError):
     pass
 
+class InvalidParticle(RuntimeError):
+    pass
 
 @total_ordering
 @attr.s(slots=True, cmp=False, repr=False)
@@ -63,7 +66,7 @@ class Particle(object):
     @classmethod
     def table(cls):
         """
-        This access the internal table, loading it from the default location if needed.
+        This accesses the internal particle data CSV table, loading it from the default location if needed.
         """
         if cls._table is None:
             cls.load_table()
@@ -73,7 +76,7 @@ class Particle(object):
     @classmethod
     def load_table(cls, filename=None, append=False):
         """
-        Load a table. Optionally append to the existing data already loaded if append=True.
+        Load a particle data CSV table. Optionally append to the existing data already loaded if append=True.
         """
         if not append or cls._table is None:
             cls._table = []
@@ -141,17 +144,17 @@ class Particle(object):
 
     @property
     def J(self):
-        'The total spin J quantum number'
+        'The total spin J quantum number.'
         return self.pdgid.J
 
     @property
     def L(self):
-        'The orbital angular momenum L quantum number (None if not meson)'
+        'The orbital angular momentum L quantum number (None if not a meson).'
         return self.pdgid.L
 
     @property
     def S(self):
-        'The S quantum number (None if not meson)'
+        'The spin S quantum number (None if not a meson).'
         return self.pdgid.S
 
     @property
@@ -160,13 +163,13 @@ class Particle(object):
 
     @property
     def three_charge(self):
-        'The particle charge (integer * 3)'
+        'The particle charge (integer * 3).'
         return Charge(self.pdgid.three_charge)
 
 
     @property
     def radius(self):
-        'Particle radius, hard coded'
+        'Particle radius, hard coded from the PDG data.'
         if abs(self.pdgid) in [411, 421, 431]:
             return 5.0
         else:
@@ -174,12 +177,12 @@ class Particle(object):
 
     @property
     def bar(self):
-        'Check to see if particle is inverted'
+        'Check to see if particle is inverted.'
         return self.pdgid < 0 and self.anti == Inv.Full
 
     @property
     def spin_type(self):  # -> SpinType:
-        'Access the SpinType enum'
+        'Access the SpinType enum.'
         if self.J in [0, 1, 2]:
             J = int(self.J)
 
@@ -191,7 +194,7 @@ class Particle(object):
         return SpinType.Unknown
 
     def invert(self):
-        "Get the antiparticle"
+        "Get the antiparticle."
         if self.anti == Inv.Full or (self.anti == Inv.Barless and self.three_charge != Parity.o):
             return self.from_pdgid(-self.pdgid)
         else:
@@ -243,14 +246,14 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
     @property
     def programmatic_name(self):
-        'This name could be used for a variable name'
+        'This name could be used for a variable name.'
         name = self.name
         name += '_' + Charge_prog[self.three_charge]
         return programmatic_name(name)
 
     @property
     def html_name(self):
-        'This is the name using HTML instead of LaTeX'
+        'This is the name using HTML instead of LaTeX.'
         name = self.latex
         name = re.sub(r'\^\{(.*?)\}', r'<SUP>\1</SUP>', name)
         name = re.sub(r'\_\{(.*?)\}', r'<SUB>\1</SUB>', name)
@@ -262,23 +265,29 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
     @classmethod
     def empty(cls):
-        'Get a new empty particle'
+        'Make a new empty particle.'
         return cls(0, 'Unknown', 0., 0., 0, Inv.Same)
 
     @classmethod
     def from_pdgid(cls, value):
-        'Get a particle from a PDGID. Uses PDG data table.'
+        """
+        Get a particle from a PDGID. Uses PDG data table.
+
+        An exception is thrown if the input PDGID is invalid or if no matching PDGID is found.
+        """
+        if not is_valid(value):
+            raise InvalidParticle("Input PDGID {0} is invalid!".format(value))
         table = cls.table()
         try:
             return table[table.index(value)]
         except ValueError:
-            raise ParticleNotFound('Could not find {0}'.format(value))
+            raise ParticleNotFound('Could not find PDGID {0}'.format(value))
 
 
     @classmethod
     def from_search_list(cls, name_s=None, latex_s=None, name_re=None, latex_re=None, particle=None, **search_terms):
         '''
-        Search for a particle, returning a list of candidates
+        Search for a particle, returning a list of candidates.
 
         Terms are:
            name_s: A loose match (extra terms allowed) for Name
@@ -289,7 +298,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
            Any other attribute: exact match for attribute value
 
-        This method returns a list; also see from_search, which throws an error if the particle is not found or too many found.
+        See also from_search, which throws an exception if the particle is not found or too many are found.
         '''
 
         for term in list(search_terms):
@@ -351,9 +360,10 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     @classmethod
     def from_search(cls, **search_terms):
         '''
-        Require that your search returns one and only one result. Raises ParticleNotFound or RuntimeError.
+        Require that your search returns one and only one result.
+        The method otherwise raises a ParticleNotFound or RuntimeError exception.
 
-        See from_search_list for full listing of parameters
+        See from_search_list for full listing of parameters.
         '''
 
         results = cls.from_search_list(**search_terms)
@@ -375,7 +385,6 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         mat = mat.groupdict()
 
         return cls._from_group_dict(mat)
-
 
     @classmethod
     def from_string(cls, name):
@@ -446,4 +455,3 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
             vals = sorted(vals)
 
         return vals[0]
-
