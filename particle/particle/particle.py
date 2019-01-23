@@ -233,7 +233,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
            Q=Charge_undo[self.three_charge],
            P=Parity_undo[self.P],
            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
-           width=str_with_unc(self.width, self.width_upper, self.width_lower),
+           width=str_with_unc(self.width, self.width_upper, self.width_lower) if self.width >= 0 else self.width,
            latex = self._repr_latex_())
 
         if self.spin_type != SpinType.Unknown:
@@ -377,18 +377,24 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
     @classmethod
     def from_dec(cls, name):
-        'Get a particle from a DecFile style name'
+        'Get a particle from a DecFile style name - returns best match'
 
         mat = getdec.match(name)
         if mat is None:
             return cls.from_search(name=name)
         mat = mat.groupdict()
 
-        return cls._from_group_dict(mat)
+        return cls._from_group_dict_list(mat)[0]
 
     @classmethod
     def from_string(cls, name):
-        'Get a particle from an AmpGen (PDG) style name'
+        'Get a particle from a PDG style name - returns best match'
+        return cls.from_string_list(name)[0]
+
+
+    @classmethod
+    def from_string_list(cls, name):
+        'Get a list of particle from a PDG style name'
 
         # Patch in common names
         if name == 'Upsilon':
@@ -403,16 +409,19 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
         mat = getname.match(name)
         if mat is None:
-            return cls.from_search(name=name, particle=False if bar else None)
+            return cls.from_search_list(name=name, particle=False if bar else None)
         mat = mat.groupdict()
 
         if bar:
             mat['bar'] = 'bar'
 
-        return cls._from_group_dict(mat)
+        try:
+            return cls._from_group_dict_list(mat)
+        except ParticleNotFound:
+            return []
 
     @classmethod
-    def _from_group_dict(cls, mat):
+    def _from_group_dict_list(cls, mat):
 
         #if '_' in mat['name']:
         #    mat['name'], mat['family'] = mat['name'].split('_')
@@ -454,4 +463,5 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         if len(vals) > 1:
             vals = sorted(vals)
 
-        return vals[0]
+        return vals
+

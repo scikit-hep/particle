@@ -30,11 +30,18 @@ if 'particle' in opts:
             value = 0
 
         if value:
-            particle = Particle.from_pdgid(value)
+            particles = [Particle.from_pdgid(value)]
         else:
-            particle = Particle.from_string(cand)
+            particles = Particle.from_string_list(cand)
 
-        print(particle.describe())
+        if len(particles) == 0:
+            print("Particle", cand, "not found.")
+        elif len(particles) == 1:
+            print(particles[0].describe())
+        else:
+            for particle in particles:
+                print(repr(particle))
+
         print()
 
 if 'pdgid' in opts:
