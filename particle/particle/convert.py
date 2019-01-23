@@ -35,8 +35,8 @@ When you are done, you can save one or more of the tables:
 
 import pandas as pd
 
-from .enums import (SpinType, Par, Charge, Inv, Status,
-                    Par_mapping, Inv_mapping, Status_mapping,
+from .enums import (SpinType, Parity, Charge, Inv, Status,
+                    Parity_mapping, Inv_mapping, Status_mapping,
                     Charge_mapping)
 
 def get_from_latex(filename):
@@ -56,9 +56,9 @@ def get_from_pdg_extended(filename, latexes=None, skiprows=None):
     # Convert each column from text to appropriate data type
     PDG_converters = dict(
         Charge=unmap(Charge_mapping),
-        G=unmap(Par_mapping),
-        P=unmap(Par_mapping),
-        C=unmap(Par_mapping),
+        G=unmap(Parity_mapping),
+        P=unmap(Parity_mapping),
+        C=unmap(Parity_mapping),
         Anti=unmap(Inv_mapping),
         Rank=lambda x: int(x.strip()) if x.strip() else 0,
         ID=lambda x: int(x.strip()) if x.strip() else -1,
