@@ -13,7 +13,7 @@ class SpinType(IntEnum):
     Unknown = 0  # (0, 0)
 
 
-class Par(IntEnum):
+class Parity(IntEnum):
     'Represents parity'
     p = 1
     o = 0
@@ -52,15 +52,15 @@ class Status(IntEnum):
 
 
 # Mappings that allow the above classes to be produced from text mappings
-Par_mapping = {'+': Par.p, '0': Par.o, '-': Par.u, '?': Par.u, '': Par.o}
+Parity_mapping = {'+': Parity.p, '0': Parity.o, '-': Parity.u, '?': Parity.u, '': Parity.o}
 Charge_mapping = {'+': Charge.p, '0': Charge.o, '+2/3': Charge.p23,
                '++': Charge.pp, '-': Charge.m, '-1/3': Charge.m13, '?': Charge.u, '': Charge.o}
 Inv_mapping = {'': Inv.Same, 'F': Inv.Full, 'B': Inv.Barless}
 Status_mapping = {'R': Status.Common, 'D': Status.Rare, 'S': Status.Unsure, 'F': Status.Further}
 
 # Mappings that allow the above classes to be turned into text mappings
-Par_undo = {Par.p: '+', Par.o: '0', Par.m: '-', Par.u: '?'}
-Par_prog = {Par.p: 'p', Par.o: '0', Par.m: 'm', Par.u: 'u'}
+Parity_undo = {Parity.p: '+', Parity.o: '0', Parity.m: '-', Parity.u: '?'}
+Parity_prog = {Parity.p: 'p', Parity.o: '0', Parity.m: 'm', Parity.u: 'u'}
 
 Charge_undo = {Charge.pp: '++', Charge.p: '+', Charge.p23: '+2/3', Charge.p13: '+1/3',
                Charge.o: '0',  Charge.m13: '-1/3', Charge.m23: '+2/3',
