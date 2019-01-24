@@ -43,6 +43,7 @@ htmlcov
 .idea
 *.iml
 *.komodoproject
+.editorconfig
 
 # Complexity
 output/*.html

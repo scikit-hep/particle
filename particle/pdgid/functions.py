@@ -43,6 +43,7 @@ def is_valid(pdgid):
     if is_Rhadron(pdgid): return True
     if is_dyon(pdgid): return True
     if is_diquark(pdgid): return True
+    if is_pentaquark(pdgid): return True
     if _extra_bits(pdgid) > 0 :
         if is_nucleus(pdgid): return True
         if is_Qball(pdgid): return True
@@ -90,6 +91,7 @@ def is_baryon(pdgid):
     if _fundamental_id(pdgid) > 0 and _fundamental_id(pdgid) <= 100 : return False
     if abspid(pdgid) == 2110 or abspid(pdgid) == 2210 : return True
     if _digit(pdgid,Location.Nj) > 0 and _digit(pdgid,Location.Nq3) > 0 and _digit(pdgid,Location.Nq2) > 0 and _digit(pdgid,Location.Nq1) > 0 : return True
+    if is_Rhadron(pdgid) or is_pentaquark(pdgid) : return False
     return False
 
 def is_diquark(pdgid):
@@ -119,9 +121,11 @@ def is_nucleus(pdgid):
 
 def is_pentaquark(pdgid):
     """
-    Does the PDG correspond to a pentaquark?
+    Does the PDG ID correspond to a pentaquark?
 
-    A pentaquark is of the form 9abcdej, where j is the spin and a, b, c, d, and e are quarksself.
+    Pentaquark IDs are of the form +/- 9 Nr Nl Nq1 Nq2 Nq3 Nj, where Nj = 2J + 1 gives the spin
+    and Nr Nl Nq1 Nq2 Nq3 denote the quark numbers in order Nr >= Nl >= Nq1 >= Nq2
+    and Nq3 gives the antiquark number.
     """
     if _extra_bits(pdgid) > 0 : return False
     if _digit(pdgid,Location.N) != 9: return False

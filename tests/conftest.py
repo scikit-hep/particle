@@ -90,6 +90,10 @@ class PDGIDsEnum(IntEnum):
     SD0 = 3101
     # Nuclei
     HydrogenNucleus = 1000010010
+    Carbon12 = -1000060120
+    # Pentaquarks
+    UCbarCUDPentaquark = 9422144  # example of spin 3/2 u-cbar-c-u-d pentaquark decaying to J/psi proton
+    AntiUCbarCUDPentaquark = -9422144
     # Invalid ID
     Invalid1 = 0  # illegal ID
     Invalid2 = 99999999  # general form is a 7-digit number
