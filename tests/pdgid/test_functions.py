@@ -4,8 +4,6 @@ from __future__ import division
 
 import pytest
 
-from particle.pdgid import charge
-from particle.pdgid import three_charge
 from particle.pdgid import is_valid
 from particle.pdgid import is_lepton
 from particle.pdgid import is_hadron
@@ -24,7 +22,10 @@ from particle.pdgid import has_strange
 from particle.pdgid import has_charm
 from particle.pdgid import has_bottom
 from particle.pdgid import has_top
-
+from particle.pdgid import has_fundamental_anti
+from particle.pdgid import charge
+from particle.pdgid import three_charge
+from particle.pdgid import j_spin
 
 def test_charge(PDGIDs):
     assert charge(PDGIDs.Photon) == 0
@@ -104,14 +105,14 @@ def test_is_meson(PDGIDs):
                PDGIDs.B0, PDGIDs.BPlus, PDGIDs.Bs, PDGIDs.BcPlus,
                PDGIDs.T0,
                PDGIDs.Reggeon, PDGIDs.Pomeron, PDGIDs.Odderon,
-               PDGIDs.R0_GTildeG)
+               PDGIDs.RPlus_TTildeDbar, PDGIDs.R0_GTildeG)
     _non_mesons = [ id for id in PDGIDs if id not in _mesons ]
     for id in _mesons: assert is_meson(id) == True
     for id in _non_mesons: assert is_meson(id) == False
 
 
 def test_is_baryon(PDGIDs):
-    _baryons = (PDGIDs.Proton, PDGIDs.AntiNeutron, PDGIDs.Lambda, PDGIDs.Sigma0, PDGIDs.SigmaPlus, PDGIDs.SigmaMinus, PDGIDs.Xi0,  PDGIDs.XiPlus,PDGIDs.OmegaMinus,
+    _baryons = (PDGIDs.Proton, PDGIDs.AntiNeutron, PDGIDs.Lambda, PDGIDs.Sigma0, PDGIDs.SigmaPlus, PDGIDs.SigmaMinus, PDGIDs.Xi0,  PDGIDs.AntiXiMinus,PDGIDs.OmegaMinus,
                 PDGIDs.LcPlus, PDGIDs.AntiOmega_ccc,
                 PDGIDs.Lb,
                 PDGIDs.LtPlus,
@@ -149,7 +150,7 @@ def test_is_nucleus(PDGIDs):
 
 
 def test_is_Rhadron(PDGIDs):
-    _Rhadrons = (PDGIDs.R0_GTildeG, PDGIDs.RPlusPlus_GTildeUUU)
+    _Rhadrons = (PDGIDs.RPlus_TTildeDbar, PDGIDs.R0_GTildeG, PDGIDs.RPlusPlus_GTildeUUU)
     _non_Rhadrons = [ id for id in PDGIDs if id not in _Rhadrons ]
     for id in _Rhadrons: assert is_Rhadron(id) == True
     for id in _non_Rhadrons: assert is_Rhadron(id) == False
@@ -258,3 +259,44 @@ def test_has_top(PDGIDs):
     assert has_top(PDGIDs.LtPlus) == True
     _no_top = [ id for id in PDGIDs if id not in (PDGIDs.T0, PDGIDs.LtPlus) ]  # top quark should also return has_top(6)==False !
     for id in _no_top: assert has_top(id) == False
+
+
+def test_has_fundamental_anti(PDGIDs):
+    # Particles that are "fundamental" and not their own antiparticle
+    _yep = (PDGIDs.WMinus,
+            PDGIDs.Electron, PDGIDs.Positron, PDGIDs.Muon, PDGIDs.AntiMuon, PDGIDs.Tau, PDGIDs.TauPrime,
+            PDGIDs.Nu_e, PDGIDs.NuBar_tau,
+            PDGIDs.DQuark, PDGIDs.UQuark, PDGIDs.SQuark, PDGIDs.CQuark, PDGIDs.BQuark, PDGIDs.TQuark, PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark,
+            PDGIDs.STildeL, PDGIDs.CTildeR)
+    _nope = [ id for id in PDGIDs if id not in _yep ]
+    for id in _yep: assert has_fundamental_anti(id) == True
+    for id in _nope: assert has_fundamental_anti(id) == False
+
+
+def test_j_spin(PDGIDs):
+    # TODO:  test special particles, supersymmetric particles, R-hadrons, di-quarks, nuclei and pentaquarks
+    _J_eq_0 = (PDGIDs.Pi0, PDGIDs.PiPlus, PDGIDs.A0Plus980, PDGIDs.KL, PDGIDs.KS, PDGIDs.KMinus,
+               PDGIDs.D0, PDGIDs.DPlus, PDGIDs.DsPlus,
+               PDGIDs.B0, PDGIDs.BPlus, PDGIDs.Bs, PDGIDs.BcPlus,
+               PDGIDs.T0)
+    _J_eq_1 = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0,
+               PDGIDs.JPsi, PDGIDs.Psi2S, PDGIDs.Upsilon1S, PDGIDs.Upsilon4S)
+    _J_eq_1over2 = (PDGIDs.Electron, PDGIDs.Positron, PDGIDs.Muon, PDGIDs.AntiMuon, PDGIDs.Tau,
+                    PDGIDs.Nu_e, PDGIDs.NuBar_tau,
+                    PDGIDs.DQuark, PDGIDs.UQuark, PDGIDs.SQuark, PDGIDs.CQuark, PDGIDs.BQuark, PDGIDs.TQuark,
+                    PDGIDs.Proton, PDGIDs.AntiNeutron, PDGIDs.Lambda, PDGIDs.Sigma0, PDGIDs.SigmaPlus, PDGIDs.SigmaMinus, PDGIDs.Xi0, PDGIDs.AntiXiMinus,
+                    PDGIDs.LcPlus,
+                    PDGIDs.Lb,
+                    PDGIDs.LtPlus,
+                    PDGIDs.STildeL, PDGIDs.CTildeR)
+    _J_eq_3over2 = (PDGIDs.OmegaMinus, PDGIDs.AntiOmega_ccc)
+    _invalid_pdgids = (PDGIDs.Invalid1, PDGIDs.Invalid2)
+    # cases not dealt with in the code, where None is returned
+    _J_eq_None= (PDGIDs.TauPrime,
+                 PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark,)
+    for id in _J_eq_0: assert j_spin(id) == 1
+    for id in _J_eq_1: assert j_spin(id) == 3
+    for id in _J_eq_1over2: assert j_spin(id) == 2
+    for id in _J_eq_3over2: assert j_spin(id) == 4
+    for id in _invalid_pdgids: assert j_spin(id) == None
+    for id in _J_eq_None: assert j_spin(id) == None
