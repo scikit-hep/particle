@@ -322,7 +322,7 @@ def test_A(PDGIDs):
                 PDGIDs.Carbon12: 12
                 }
     _non_nuclei = [ id for id in PDGIDs if id not in _nuclei.keys() ]
-    for id, a in _nuclei.iteritems(): assert A(id) == a
+    for id, a in _nuclei.items(): assert A(id) == a
     for id in _non_nuclei: assert A(id) == None
 
 
@@ -332,5 +332,5 @@ def test_Z(PDGIDs):
                 PDGIDs.Carbon12: 6
                 }
     _non_nuclei = [ id for id in PDGIDs if id not in _nuclei.keys() ]
-    for id, z in _nuclei.iteritems(): assert Z(id) == z
+    for id, z in _nuclei.items(): assert Z(id) == z
     for id in _non_nuclei: assert Z(id) == None
