@@ -26,6 +26,11 @@ from particle.pdgid import has_fundamental_anti
 from particle.pdgid import charge
 from particle.pdgid import three_charge
 from particle.pdgid import j_spin
+from particle.pdgid import s_spin
+from particle.pdgid import l_spin
+from particle.pdgid import A
+from particle.pdgid import Z
+
 
 def test_charge(PDGIDs):
     assert charge(PDGIDs.Photon) == 0
@@ -144,9 +149,10 @@ def test_is_pentaquark(PDGIDs):
 
 
 def test_is_nucleus(PDGIDs):
-    assert is_nucleus(PDGIDs.Proton) == True
-    assert is_nucleus(PDGIDs.HydrogenNucleus) == True
-    assert is_nucleus(PDGIDs.Carbon12) == True
+    _nuclei = (PDGIDs.Proton, PDGIDs.HydrogenNucleus, PDGIDs.Carbon12)
+    _non_nuclei = [ id for id in PDGIDs if id not in _nuclei ]
+    for id in _nuclei: assert is_nucleus(id) == True
+    for id in _non_nuclei: assert is_nucleus(id) == False
 
 
 def test_is_Rhadron(PDGIDs):
@@ -293,10 +299,38 @@ def test_j_spin(PDGIDs):
     _invalid_pdgids = (PDGIDs.Invalid1, PDGIDs.Invalid2)
     # cases not dealt with in the code, where None is returned
     _J_eq_None= (PDGIDs.TauPrime,
-                 PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark,)
+                 PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark)
     for id in _J_eq_0: assert j_spin(id) == 1
     for id in _J_eq_1: assert j_spin(id) == 3
     for id in _J_eq_1over2: assert j_spin(id) == 2
     for id in _J_eq_3over2: assert j_spin(id) == 4
     for id in _invalid_pdgids: assert j_spin(id) == None
     for id in _J_eq_None: assert j_spin(id) == None
+
+
+def test_s_spin(PDGIDs):
+    pass
+
+
+def test_l_spin(PDGIDs):
+    pass
+
+
+def test_A(PDGIDs):
+    _nuclei = { PDGIDs.Proton: 1,
+                PDGIDs.HydrogenNucleus: 1,
+                PDGIDs.Carbon12: 12
+                }
+    _non_nuclei = [ id for id in PDGIDs if id not in _nuclei.keys() ]
+    for id, a in _nuclei.iteritems(): assert A(id) == a
+    for id in _non_nuclei: assert A(id) == None
+
+
+def test_Z(PDGIDs):
+    _nuclei = { PDGIDs.Proton: 1,
+                PDGIDs.HydrogenNucleus: 1,
+                PDGIDs.Carbon12: 6
+                }
+    _non_nuclei = [ id for id in PDGIDs if id not in _nuclei.keys() ]
+    for id, z in _nuclei.iteritems(): assert Z(id) == z
+    for id in _non_nuclei: assert Z(id) == None
