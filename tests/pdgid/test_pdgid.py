@@ -7,7 +7,7 @@ from particle.pdgid.pdgid import _fnames
 from particle.pdgid import functions as _functions
 
 
-def test_class_methods():
+def test_class_string_representations():
     pid = PDGID(11)
     assert pid == 11
     assert pid.__str__() == '<PDGID: 11>'
