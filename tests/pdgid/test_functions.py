@@ -118,7 +118,7 @@ def test_is_meson(PDGIDs):
 
 def test_is_baryon(PDGIDs):
     _baryons = (PDGIDs.Proton, PDGIDs.AntiNeutron, PDGIDs.Lambda, PDGIDs.Sigma0, PDGIDs.SigmaPlus, PDGIDs.SigmaMinus, PDGIDs.Xi0,  PDGIDs.AntiXiMinus,PDGIDs.OmegaMinus,
-                PDGIDs.LcPlus, PDGIDs.AntiOmega_ccc,
+                PDGIDs.LcPlus,
                 PDGIDs.Lb,
                 PDGIDs.LtPlus,
                 PDGIDs.RPlusPlus_GTildeUUU,
@@ -244,7 +244,7 @@ def test_has_charm(PDGIDs):
     _with_charm_content = (PDGIDs.JPsi, PDGIDs.Psi2S,
                            PDGIDs.D0, PDGIDs.DPlus, PDGIDs.DsPlus,
                            PDGIDs.BcPlus,
-                           PDGIDs.LcPlus, PDGIDs.AntiOmega_ccc,
+                           PDGIDs.LcPlus,
                            PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
     _without_charm_content = [ id for id in PDGIDs if id not in _with_charm_content ]
     for id in _with_charm_content: assert has_charm(id) == True
@@ -295,7 +295,7 @@ def test_j_spin(PDGIDs):
                     PDGIDs.Lb,
                     PDGIDs.LtPlus,
                     PDGIDs.STildeL, PDGIDs.CTildeR)
-    _J_eq_3over2 = (PDGIDs.OmegaMinus, PDGIDs.AntiOmega_ccc)
+    _J_eq_3over2 = (PDGIDs.OmegaMinus,)
     _invalid_pdgids = (PDGIDs.Invalid1, PDGIDs.Invalid2)
     # cases not dealt with in the code, where None is returned
     _J_eq_None= (PDGIDs.TauPrime,

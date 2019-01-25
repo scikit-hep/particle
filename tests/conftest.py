@@ -62,7 +62,6 @@ class PDGIDsEnum(IntEnum):
     DPlus = 411
     DsPlus = 431
     LcPlus = 4122
-    AntiOmega_ccc = -4444
     # Beauty hadrons
     B0 = 511
     BPlus = 521
