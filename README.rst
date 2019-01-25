@@ -55,7 +55,21 @@ For convenience, all properties of the `PDGID` class are available as standalone
     >>> is_meson(211)
     True
 
-You can quickly display info from the command line with:
+PDGID literals provide (`PDGID` class) aliases for the most common particles, with easily recognisable names.
+For example:
+
+        >>> from particle.pdgid import literals as lid
+        >>>
+        >>> lid.pi_plus
+        <PDGID: 211>
+        >>>
+        >>> from particle.pdgid.literals import Lb0
+        >>>> Lb0
+        <PDGID: 5122>
+        >>> Lb0.has_bottom
+        True
+
+You can quickly display PDGID info from the command line with:
 
 .. code-block:: bash
 
@@ -97,8 +111,21 @@ printing choices, `describe()`, `programmatic_name()`, `html_name()`, html print
 `repr` and `str` support. You can get the `.pdgid` from a particle, as well. Sorting particles will put most lowest
 abs(PDGID) first.
 
-You can quickly search for particles from the command line with:
 
+Particle literals provide (`Particle` class) aliases for the most common particles, with easily recognisable names.
+For example:
+
+    >>> from particle.particle import literals as lp
+    >>> lp.pi_plus
+    <Particle: pdgid=211, fullname='pi+', mass=139.57061 ± 0.00024 MeV>
+    >>>
+    >>> from particle.particle.literals import Lb0
+    >>>> Lb0
+    <Particle: pdgid=5122, fullname='Lambda(b)0', mass=5619.60 ± 0.17 MeV>
+    >>> Lb0.J
+    0.5
+
+You can quickly search for particles from the command line with:
 
 .. code-block:: bash
 
@@ -120,5 +147,3 @@ the particle:
     J (total angular) = 0.0    C (charge parity) = 0      P (space parity) = ?
         Quarks: dS
         Antiparticle status: Full (antiparticle name: K~0)
-
-

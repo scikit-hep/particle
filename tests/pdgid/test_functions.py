@@ -104,7 +104,7 @@ def test_is_functions(PDGIDs):
     #
     #
     _baryons = (PDGIDs.Proton, PDGIDs.AntiNeutron, PDGIDs.Lambda, PDGIDs.Sigma0, PDGIDs.SigmaPlus, PDGIDs.SigmaMinus, PDGIDs.Xi0,  PDGIDs.XiPlus,PDGIDs.OmegaMinus,
-                PDGIDs.LcPlus, PDGIDs.AntiOmega_ccc,
+                PDGIDs.LcPlus,
                 PDGIDs.Lb,
                 PDGIDs.LtPlus,
                 PDGIDs.RPlusPlus_GTildeUUU)
