@@ -43,6 +43,7 @@ def is_valid(pdgid):
     if is_Rhadron(pdgid): return True
     if is_dyon(pdgid): return True
     if is_diquark(pdgid): return True
+    if is_pentaquark(pdgid): return True
     if _extra_bits(pdgid) > 0 :
         if is_nucleus(pdgid): return True
         if is_Qball(pdgid): return True
@@ -90,6 +91,7 @@ def is_baryon(pdgid):
     if _fundamental_id(pdgid) > 0 and _fundamental_id(pdgid) <= 100 : return False
     if abspid(pdgid) == 2110 or abspid(pdgid) == 2210 : return True
     if _digit(pdgid,Location.Nj) > 0 and _digit(pdgid,Location.Nq3) > 0 and _digit(pdgid,Location.Nq2) > 0 and _digit(pdgid,Location.Nq1) > 0 : return True
+    if is_Rhadron(pdgid) or is_pentaquark(pdgid) : return False
     return False
 
 def is_diquark(pdgid):
@@ -119,9 +121,11 @@ def is_nucleus(pdgid):
 
 def is_pentaquark(pdgid):
     """
-    Does the PDG correspond to a pentaquark?
+    Does the PDG ID correspond to a pentaquark?
 
-    A pentaquark is of the form 9abcdej, where j is the spin and a, b, c, d, and e are quarksself.
+    Pentaquark IDs are of the form +/- 9 Nr Nl Nq1 Nq2 Nq3 Nj, where Nj = 2J + 1 gives the spin
+    and Nr Nl Nq1 Nq2 Nq3 denote the quark numbers in order Nr >= Nl >= Nq1 >= Nq2
+    and Nq3 gives the antiquark number.
     """
     if _extra_bits(pdgid) > 0 : return False
     if _digit(pdgid,Location.N) != 9: return False
@@ -139,15 +143,16 @@ def is_pentaquark(pdgid):
 def is_Rhadron(pdgid):
     """Does this PDG ID correspond to an R-hadron?
 
-    An R-hadron is of the form 10abcdj, where j is the spin and a, b, c, and d are quarks or gluons.
+    An R-hadron is of the form 10abcdj, 100abcj, or 1000abj,
+    where j = 2J + 1 gives the spin; b, c, and d are quarks or gluons;
+    and a (the digit following the zero's) is a SUSY particle.
     """
     if _extra_bits(pdgid) > 0 : return False
     if _digit(pdgid,Location.N) != 1 : return False
     if _digit(pdgid,Location.Nr) != 0 : return False
     if is_SUSY(pdgid): return False
-    if _digit(pdgid,Location.Nq2) == 0 : return False
-    if _digit(pdgid,Location.Nq3) == 0 : return False
-    if _digit(pdgid,Location.Nj) == 0 : return False
+    # All R-hadrons have at least 3 core digits
+    if _digit(pdgid,Location.Nq2) == 0 or _digit(pdgid,Location.Nq3) == 0 or _digit(pdgid,Location.Nj) == 0 : return False
     return True
 
 def is_Qball(pdgid):
@@ -218,6 +223,16 @@ def has_top(pdgid):
     """Does this particle contain a top quark?"""
     return _has_quark_q(pdgid,6)
 
+def has_fundamental_anti(pdgid):
+    """If this is a fundamental particle, does it have a valid antiparticle?"""
+    # These are defined by the generator and therefore are always valid
+    fid = _fundamental_id(pdgid)
+    if fid in range(80, 101): return True
+    # Check PDGIDs from 1 to 79
+    _cp_conjugates = (21, 22, 23, 25, 32, 33, 35, 36, 39, 41)
+    if fid in range(1,80) and fid not in _cp_conjugates and is_valid(abs(pdgid)) : return True
+    return False
+
 def charge(pdgid):
     """Returns the charge."""
     if not is_valid(pdgid): return None
@@ -284,30 +299,30 @@ def three_charge(pdgid):
 
 def j_spin(pdgid):
     """Returns the total spin as 2J+1."""
-    if _fundamental_id(pdgid)>0 and _fundamental_id(pdgid)<=100:
+    if not is_valid(pdgid): return None
+    if _fundamental_id(pdgid)>0:
         fund = _fundamental_id(pdgid)
-        if fund > 0 and fund < 7 : return 2
+        if fund > 0 and fund < 7 : return 2  # 4th generation quarks not dealt with !
         if fund == 9 : return 3
-        if fund > 10 and fund < 17 : return 2
+        if fund > 10 and fund < 17 : return 2  # 4th generation leptons not dealt with !
         if fund > 20 and fund < 25 : return 3
-        return 0
+        return None
     elif _extra_bits(pdgid) > 0 : return 0
+    if pdgid in (130, 310): return 1   # Special cases of the KS and KL !
     return abspid(pdgid) % 10
 
 def J(pdgid):
-    """Returns total spin J.
-
-    This works due to the Python 3 style division."""
-
+    """Returns the total spin J."""
     value = j_spin(pdgid)
-    return (value - 1) / 2 if value is not None else value
+    return (value - 1) / 2 if value is not None else value  # This works due to the Python 3 style division
 
-def S(pdgid):
+def s_spin(pdgid):
     """
-    Returns the spin S.
+    Returns the spin S as 2S+1.
 
     Note that this is valid for mesons only. None is returned otherwise.
     """
+    if not is_valid(pdgid): return None
     if not is_meson(pdgid): return None
 
     nl = (abspid(pdgid)//10000) % 10
@@ -321,12 +336,18 @@ def S(pdgid):
     elif nl == 3 and js >= 3 : return 1
     return 0
 
-def L(pdgid):
+def S(pdgid):
+    """Returns the spin S."""
+    value = s_spin(pdgid)
+    return (value - 1) / 2 if value is not None else value  # This works due to the Python 3 style division
+
+def l_spin(pdgid):
     """
-    Returns the orbital angular momentum L.
+    Returns the orbital angular momentum L as 2L+1.
 
     Note that this is valid for mesons only. None is returned otherwise.
     """
+    if not is_valid(pdgid): return None
     if not is_meson(pdgid): return None
 
     nl = (abspid(pdgid)//10000) % 10
@@ -352,6 +373,11 @@ def L(pdgid):
     elif nl == 3 and js == 7: return 4
     elif nl == 3 and js == 9: return 5
     return 0
+
+def L(pdgid):
+    """Returns the orbital angular momentum L."""
+    value = l_spin(pdgid)
+    return (value - 1) / 2 if value is not None else value  # This works due to the Python 3 style division
 
 def A(pdgid):
     """Returns the atomic number A if the PDG ID corresponds to a nucleus. Else it returns None."""

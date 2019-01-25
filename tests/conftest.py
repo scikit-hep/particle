@@ -55,7 +55,7 @@ class PDGIDsEnum(IntEnum):
     SigmaPlus = 3222
     SigmaMinus = 3112
     Xi0 = 3322
-    XiPlus = -3312
+    AntiXiMinus = -3312
     OmegaMinus = 3334
     # Charm hadrons
     D0 = 421
@@ -83,6 +83,7 @@ class PDGIDsEnum(IntEnum):
     STildeL = 1000003
     CTildeR = 2000004
     # R-hadrons
+    RPlus_TTildeDbar = 1000612
     R0_GTildeG = 1000993
     RPlusPlus_GTildeUUU = 1092224
     # Di-quarks
@@ -90,6 +91,10 @@ class PDGIDsEnum(IntEnum):
     SD0 = 3101
     # Nuclei
     HydrogenNucleus = 1000010010
+    Carbon12 = 1000060120
+    # Pentaquarks
+    UCbarCUDPentaquark = 9422144  # example of spin 3/2 u-cbar-c-u-d pentaquark decaying to J/psi proton
+    AntiUCbarCUDPentaquark = -9422144
     # Invalid ID
     Invalid1 = 0  # illegal ID
     Invalid2 = 99999999  # general form is a 7-digit number
