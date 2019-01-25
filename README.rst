@@ -58,16 +58,18 @@ For convenience, all properties of the `PDGID` class are available as standalone
 PDGID literals provide (`PDGID` class) aliases for the most common particles, with easily recognisable names.
 For example:
 
-        >>> from particle.pdgid import literals as lid
-        >>>
-        >>> lid.pi_plus
-        <PDGID: 211>
-        >>>
-        >>> from particle.pdgid.literals import Lb0
-        >>>> Lb0
-        <PDGID: 5122>
-        >>> Lb0.has_bottom
-        True
+.. code-block:: python
+
+    >>> from particle.pdgid import literals as lid
+    >>>
+    >>> lid.pi_plus
+    <PDGID: 211>
+    >>>
+    >>> from particle.pdgid.literals import Lb0
+    >>>> Lb0
+    <PDGID: 5122>
+    >>> Lb0.has_bottom
+    True
 
 You can quickly display PDGID info from the command line with:
 
@@ -114,6 +116,8 @@ abs(PDGID) first.
 
 Particle literals provide (`Particle` class) aliases for the most common particles, with easily recognisable names.
 For example:
+
+.. code-block:: python
 
     >>> from particle.particle import literals as lp
     >>> lp.pi_plus
