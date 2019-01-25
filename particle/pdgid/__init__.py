@@ -23,11 +23,15 @@ from .functions import has_strange
 from .functions import has_charm
 from .functions import has_bottom
 from .functions import has_top
+from .functions import has_fundamental_anti
 
 from .functions import charge
 from .functions import three_charge
+from .functions import j_spin
 from .functions import J
+from .functions import s_spin
 from .functions import S
+from .functions import l_spin
 from .functions import L
 from .functions import A
 from .functions import Z
@@ -56,11 +60,15 @@ __all__ = ('is_valid',
            'has_charm',
            'has_bottom',
            'has_top',
+           'has_fundamental_anti',
            #
            'charge',
            'three_charge',
+           'j_spin',
            'J',
+           's_spin',
            'S',
+           'l_spin',
            'L',
            'A',
            'Z'
