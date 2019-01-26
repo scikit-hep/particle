@@ -360,11 +360,7 @@ def  test_JSL_meson_numbers(PDGIDs):
 
 def test_J_non_mesons(PDGIDs):
     # TODO:  test special particles, supersymmetric particles, R-hadrons, di-quarks, nuclei and pentaquarks
-    _J_eq_0 = (PDGIDs.Pi0, PDGIDs.PiPlus, PDGIDs.eta, PDGIDs.eta_prime,
-               PDGIDs.a_0_1450_plus, PDGIDs.KL, PDGIDs.KS, PDGIDs.KMinus,
-               PDGIDs.D0, PDGIDs.DPlus, PDGIDs.DsPlus,
-               PDGIDs.B0, PDGIDs.BPlus, PDGIDs.Bs, PDGIDs.BcPlus,
-               PDGIDs.T0)
+    _J_eq_0 = ()
     _J_eq_1 = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0,
                PDGIDs.jpsi, PDGIDs.psi_2S, PDGIDs.Upsilon_1S, PDGIDs.Upsilon_4S,
                PDGIDs.K1_1270_0)
