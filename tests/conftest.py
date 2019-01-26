@@ -35,19 +35,27 @@ class PDGIDsEnum(IntEnum):
     BPrimeQuark = 7  # 4th generation
     TPrimeQuark = 8
     # Quarkonia
-    JPsi = 443
-    Psi2S = 100443
-    Upsilon1S = 553
-    Upsilon4S = 300553
+    jpsi = 443
+    psi_2S = 100443
+    Upsilon_1S = 553
+    Upsilon_4S = 300553
     # Light hadrons
     Pi0 = 111
     PiPlus = 211
-    A0Plus980 = 9000211
+    eta=221
+    eta_prime=331
+    a_0_1450_plus = 10211
     KL = 130
     KS = 310
     KMinus = -321
+    rho_770_minus = -213
     phi = 333
     Omega = 223
+    K1_1270_0 = 10313
+    K1_1400_0 = 20313
+    rho_1700_0 = 30113
+    a2_1320_minus = -215
+    omega_3_1670 = 227
     Proton = 2212
     AntiNeutron = -2112
     Lambda = 3122
