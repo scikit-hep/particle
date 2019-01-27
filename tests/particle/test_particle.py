@@ -1,8 +1,12 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 
+import pytest
+
 from particle.particle.enums import Charge, Parity, SpinType
 from particle.particle import Particle
+from particle.particle.particle import ParticleNotFound, InvalidParticle
 from particle.pdgid import PDGID
+
 
 def test_enums_Charge():
     assert Charge.p + Charge.m == Charge.o
@@ -15,8 +19,24 @@ def test_enums_SpinType():
     assert SpinType.PseudoTensor == - SpinType.Tensor
 
 
+def test_from_search():
+    # 1 match found
+    assert repr(Particle.from_search(name_s='gamma')) ==  "<Particle: pdgid=22, fullname='gamma0', mass=0.0 MeV>"
+
+    # No match found
+    with pytest.raises(ParticleNotFound):
+        p = Particle.from_search(name_s='NonExistent')
+
+    # Multiple matches found
+    with pytest.raises(RuntimeError):
+        p = Particle.from_search(name_s='Upsilon')
+
+
 def test_pdg():
     assert Particle.from_pdgid(211).pdgid == 211
+    with pytest.raises(InvalidParticle):
+        p = Particle.from_pdgid(0)
+
 
 def test_pdg_convert():
     p = Particle.from_pdgid(211)
@@ -24,9 +44,11 @@ def test_pdg_convert():
     assert int(p) == 211
     assert PDGID(p) == 211
 
+
 def test_sorting():
     assert Particle.from_pdgid(211) < Particle.from_pdgid(311)
     assert Particle.from_pdgid(211) < Particle.from_pdgid(-311)
+
 
 def test_int_compare():
     assert Particle.from_pdgid(211) > 0
@@ -38,6 +60,7 @@ def test_int_compare():
     assert 0 > Particle.from_pdgid(-211)
     assert 0 <= Particle.from_pdgid(211)
     assert 0 >= Particle.from_pdgid(-211)
+
 
 def test_str():
     pi = Particle.from_pdgid(211)
