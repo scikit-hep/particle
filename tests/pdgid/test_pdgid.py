@@ -32,6 +32,12 @@ def test_class_inversion():
     assert -PDGID(311) == ~PDGID(311)
 
 
+def test_nonphysical_pdgids():
+    # The negative PDGID of a self-conjugate meson makes no sense
+    assert PDGID(-111).is_meson == False  # the "anti-pi0" with opposite PDGID of a pi0 does not exist
+    assert PDGID(-443).is_meson == False  # the "anti-J/psi" with opposite PDGID of a J/psi does not exist
+
+
 def test_info():
     __info = """A              None
 J              1.0
