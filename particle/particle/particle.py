@@ -464,4 +464,3 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
             vals = sorted(vals)
 
         return vals
-
