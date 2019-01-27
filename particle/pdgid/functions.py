@@ -344,9 +344,13 @@ def J(pdgid):
 
 
 def S(pdgid):
-    """Returns the spin S."""
-    if not is_valid(pdgid): return None
+    """
+    Returns the spin S.
+
+    Note that this is valid for mesons only. None is returned otherwise.
+    """
     if not is_meson(pdgid): return None
+    if not is_valid(pdgid): return None
 
     nl = (abspid(pdgid)//10000) % 10
     js = abspid(pdgid) % 10
@@ -371,9 +375,13 @@ def s_spin(pdgid):
 
 
 def L(pdgid):
-    """Returns the orbital angular momentum L."""
-    if not is_valid(pdgid): return None
+    """
+    Returns the orbital angular momentum L.
+
+    Note that this is valid for mesons only. None is returned otherwise.
+    """
     if not is_meson(pdgid): return None
+    if not is_valid(pdgid): return None
 
     nl = (abspid(pdgid)//10000) % 10
     js = abspid(pdgid) % 10
@@ -408,6 +416,32 @@ def l_spin(pdgid):
     """
     value = L(pdgid)
     return (2*value+1) if value is not None else value
+
+
+def P(pdgid):
+    """
+    Returns the parity quantum number P = (-1)^(L+1).
+
+    Note that this is valid for mesons only. None is returned otherwise.
+    """
+    if not is_meson(pdgid): return None
+    if not is_valid(pdgid): return None
+
+    # At this stage it is guaranteed that L != None
+    return (-1)**(L(pdgid)+1)
+
+
+def C(pdgid):
+    """
+    Returns the charge conjugation quantum number C = (-1)^(L+S)
+
+    Note that this is valid for neutral mesons only. None is returned otherwise.
+    """
+    if not is_meson(pdgid) or not three_charge(pdgid) == 0: return None
+    if not is_valid(pdgid): return None
+
+    # At this stage it is guaranteed that L and S != None
+    return (-1)**(L(pdgid)+S(pdgid))
 
 
 def A(pdgid):
