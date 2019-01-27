@@ -47,7 +47,7 @@ class Particle(object):
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity
-    C = attr.ib(Charge.u, converter=Charge)  # Charge conjugation parity
+    C = attr.ib(Parity.u, converter=Parity)  # Charge conjugation parity
     # (B (just charge), F (add bar) , and '' (No change))
     quarks = attr.ib('', converter=str)
     status = attr.ib(Status.Nonexistant, converter=Status)
@@ -195,7 +195,7 @@ class Particle(object):
 
     def invert(self):
         "Get the antiparticle."
-        if self.anti == Inv.Full or (self.anti == Inv.Barless and self.three_charge != Charge.o):
+        if self.anti == Inv.Full or (self.anti == Inv.Barless and self.three_charge != Parity.o):
             return self.from_pdgid(-self.pdgid)
         else:
             return copy(self)
@@ -229,7 +229,7 @@ I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       =
 J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) = {P}
 """.format(self=self,
            G=Parity_undo[self.G],
-           C=Charge_undo[self.C],
+           C=Parity_undo[self.C],
            Q=Charge_undo[self.three_charge],
            P=Parity_undo[self.P],
            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
