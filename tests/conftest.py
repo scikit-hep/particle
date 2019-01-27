@@ -93,6 +93,12 @@ class PDGIDsEnum(IntEnum):
     RPlus_TTildeDbar = 1000612
     R0_GTildeG = 1000993
     RPlusPlus_GTildeUUU = 1092224
+    # Q-balls
+    QBall1 = 10000150
+    QBall2 = -10000200
+    # Dyons
+    DyonSameMagElecChargeSign = 4110010
+    DyonOppositeMagElecChargeSign = 4120010
     # Di-quarks
     DD1 = 1103
     SD0 = 3101
