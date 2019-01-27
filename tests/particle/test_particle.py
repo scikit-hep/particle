@@ -1,3 +1,5 @@
+# Licensed under a 3-clause BSD style license, see LICENSE.
+
 from particle.particle.enums import Charge, Parity, SpinType
 from particle.particle import Particle
 from particle.pdgid import PDGID

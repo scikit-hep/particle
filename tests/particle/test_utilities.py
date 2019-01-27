@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+# Licensed under a 3-clause BSD style license, see LICENSE.
 
 import pytest
 import sys
 
 from particle.particle.utilities import str_with_unc
+
 
 # Eventually
 possibilites = (
@@ -23,7 +25,7 @@ possibilites = (
 
 @pytest.mark.parametrize("value,err_u,err_l,test_str", possibilites)
 def test_unc_printout(value, err_u, err_l, test_str):
-    
+
     if sys.version_info < (3,0):
         test_str = test_str.replace(u'±', u'+/-')
 
