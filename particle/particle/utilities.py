@@ -50,7 +50,6 @@ def str_with_unc(value, upper, lower=None):
     else:
         fsv = '.{0}e'.format(abs(error_digits - value_digits))
         fse = '.0e' if error_digits == pure_error_digits else '.1e'
-        print(fsv, fse)
 
 
     # Now, print values based on upper=lower being true or not (even if they print the same)
