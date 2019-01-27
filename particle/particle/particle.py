@@ -195,7 +195,7 @@ class Particle(object):
 
     def invert(self):
         "Get the antiparticle."
-        if self.anti == Inv.Full or (self.anti == Inv.Barless and self.three_charge != Parity.o):
+        if self.anti == Inv.Full or (self.anti == Inv.Barless and self.three_charge != Charge.o):
             return self.from_pdgid(-self.pdgid)
         else:
             return copy(self)
