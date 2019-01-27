@@ -9,19 +9,30 @@ trigger:
 jobs:
 
 - job: 'Test'
+
   pool:
-    vmImage: 'Ubuntu-16.04'
+    vmImage: $(imageName)
+
   strategy:
     matrix:
-      Python27:
+      Python27-Linux:
+        imageName: 'ubuntu-16.04'
         python.version: '2.7'
-      Python35:
+      Python27-Win:
+        imageName: 'vs2017-win2016'
+        python.version: '2.7'
+      Python35-Linux:
+        imageName: 'ubuntu-16.04'
         python.version: '3.5'
-      Python36:
+      Python36-Linux:
+        imageName: 'ubuntu-16.04'
         python.version: '3.6'
-      Python37:
+      Python37-Linux:
+        imageName: 'ubuntu-16.04'
         python.version: '3.7'
-    maxParallel: 4
+      Python37-Win:
+        imageName: 'vs2017-win2016'
+        python.version: '3.7'
 
   steps:
   - task: UsePythonVersion@0
@@ -39,11 +50,17 @@ jobs:
     displayName: 'Install package'
 
   - script: |
-      pytest tests --doctest-modules --junitxml=junit/test-results.xml
-    displayName: 'Run pytest'
+      pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=particle --cov-report=xml --cov-report=html
+    displayName: 'Test with pytest and collect coverage metrics'
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFiles: '**/test-results.xml'
-      testRunTitle: 'Python $(python.version)'
+      testResultsFiles: '**/test-*.xml'
+      testRunTitle: 'Publish test results for Python $(python.version)'
     condition: succeededOrFailed()
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
