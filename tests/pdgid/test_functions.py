@@ -170,6 +170,20 @@ def test_is_Rhadron(PDGIDs):
     for id in _non_Rhadrons: assert is_Rhadron(id) == False
 
 
+def test_is_Qball(PDGIDs):
+    _Qballs = (PDGIDs.QBall1, PDGIDs.QBall2)
+    _non_Qballs = [id for id in PDGIDs if id not in _Qballs]
+    for id in _Qballs: assert is_Qball(id) == True
+    for id in _non_Qballs: assert is_Qball(id) == False
+
+
+def test_is_dyon(PDGIDs):
+    _dyons = (PDGIDs.DyonSameMagElecChargeSign, PDGIDs.DyonOppositeMagElecChargeSign)
+    _non_dyons = [id for id in PDGIDs if id not in _dyons]
+    for id in _dyons: assert is_dyon(id) == True
+    for id in _non_dyons: assert is_dyon(id) == False
+
+
 def test_is_SUSY(PDGIDs):
     _susy = (PDGIDs.Gluino, PDGIDs.Gravitino, PDGIDs.STildeL, PDGIDs.CTildeR)
     _non_susy = [id for id in PDGIDs if id not in _susy]
@@ -282,7 +296,8 @@ def test_has_fundamental_anti(PDGIDs):
             PDGIDs.Electron, PDGIDs.Positron, PDGIDs.Muon, PDGIDs.AntiMuon, PDGIDs.Tau, PDGIDs.TauPrime,
             PDGIDs.Nu_e, PDGIDs.NuBar_tau,
             PDGIDs.DQuark, PDGIDs.UQuark, PDGIDs.SQuark, PDGIDs.CQuark, PDGIDs.BQuark, PDGIDs.TQuark, PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark,
-            PDGIDs.STildeL, PDGIDs.CTildeR)
+            PDGIDs.STildeL, PDGIDs.CTildeR,
+            PDGIDs.DyonSameMagElecChargeSign, PDGIDs.DyonOppositeMagElecChargeSign)
     _nope = [id for id in PDGIDs if id not in _yep]
     for id in _yep: assert has_fundamental_anti(id) == True
     for id in _nope: assert has_fundamental_anti(id) == False
