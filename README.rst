@@ -46,7 +46,7 @@ Getting started: PDGIDs
     >>> pid
     <PDGID: 99999999 (is_valid==False)>
 
-For convenience, all properties of the `PDGID` class are available as standalone functions:
+For convenience, all properties of the ```PDGID`` class are available as standalone functions:
 
 .. code-block:: python
 
@@ -55,7 +55,7 @@ For convenience, all properties of the `PDGID` class are available as standalone
     >>> is_meson(211)
     True
 
-PDGID literals provide (`PDGID` class) aliases for the most common particles, with easily recognisable names.
+PDGID literals provide (``PDGID`` class) aliases for the most common particles, with easily recognisable names.
 For example:
 
 .. code-block:: python
@@ -98,24 +98,33 @@ can use a search:
     >>> from particle import Particle
     >>> Particle.from_pdgid(211)
     <Particle: pdgid=211, fullname='pi+', mass=139.57061 ± 0.00024 MeV>
+    >>>
     >>> Particle.from_search_list('pi')[0]
     <Particle: pdgid=111, fullname='pi0', mass=134.9770 ± 0.0005 MeV>
 
-You can search for the properties using keyword arguments, which are `name`, `mass`, `width`, `charge`, `anti`, `rank`,
-`I`, `J`, `G`, `P`, `quarks`, `status`, `latex`, `mass_upper`, `mass_lower`, `width_upper`, and `width_lower` (some of
-those don\'t make sense). You can also use `.from_search()` to require only one match. You can also use the first two
-arguments, called `name_s` and `latex_s` to do a loose search, and `name_re` and `latex_re` to do a regular expression
-search.
+You can search for the properties using keyword arguments, which are
+``name``, ``mass``, ``width``, ``charge``, ``anti``, ``rank``,
+``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``, ``latex``,
+``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``
+(some of those don\'t make sense).
+The alternative ``.from_search()`` requires only one match returned by the search.
+You can also use the first two arguments, called ``name_s`` and ``latex_s``
+to do a loose search, and ``name_re`` and ``latex_re`` to do a regular expression search.
 
-Once you have a particle, any of the properties can be accessed, along with several methods. Though they are not real
-properties, you can access `bar`, `radius`, and `spin_type`. You can also `invert()` a particle. There are lots of
-printing choices, `describe()`, `programmatic_name()`, `html_name()`, html printing outs in notebooks, and of course
-`repr` and `str` support. You can get the `.pdgid` from a particle, as well. Sorting particles will put most lowest
-abs(PDGID) first.
+Once you have a particle, any of the properties can be accessed, along with several methods.
+Though they are not real properties, you can access ``bar``, ``radius``, and ``spin_type``.
+You can also ``.invert()`` a particle.
+
+There are lots of printing choices for particles:
+``describe()``, ``programmatic_name``, ``html_name``, HTML printing outs in notebooks,
+and of course ``repr`` and ``str`` support.
+
+You can get the ``.pdgid`` from a particle, as well.
+Sorting particles will put lowest abs(PDGID) first.
 
 
-Particle literals provide (`Particle` class) aliases for the most common particles, with easily recognisable names.
-For example:
+Particle literals provide (``Particle`` class) aliases for the most common particles,
+with easily recognisable names. For example:
 
 .. code-block:: python
 
