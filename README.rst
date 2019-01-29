@@ -1,26 +1,40 @@
 .. image:: docs/ParticleLogo300.png
     :alt: particle logo
 
-Particle: the pythonic version of HepPID and HepPDT
-===================================================
+Particle: PDG particle data and identification codes
+====================================================
+
+.. image:: https://badge.fury.io/py/particle.svg
+  :alt: PyPI
+  :target: https://badge.fury.io/py/particle
 
 .. image:: https://dev.azure.com/scikit-hep/particle/_apis/build/status/scikit-hep.particle?branchName=master
   :alt: Build Status
   :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
-  
+
 .. image:: https://img.shields.io/azure-devops/tests/scikit-hep/particle/1.svg
    :alt: Tests
    :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
-   
+
 .. image:: https://img.shields.io/azure-devops/coverage/scikit-hep/particle/1.svg
    :alt: Coverage
    :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
 
-Particle provides a pythonic interface for the utility functions defined in HepPID and HepPDT,
-see http://lcgapp.cern.ch/project/simu/HepPDT/.
-These two packages give access to the Particle Data Group (PDG) particle data tables and particle identification codes.
 
-The current version of the package reflects HepPDT and HepPID versions 3.04.01.
+Particle provides a pythonic interface to the Particle Data Group (PDG)
+particle data tables and particle identification codes.
+
+The PDG defines the standard particle identification (ID) numbering scheme.
+The package provides the ``PDGID`` class implementing queries on those PDG IDs.
+The queries are also accessible through free standing functions mimicking the
+HepPID C++ interface.
+
+The ``Particle`` class wraps the information in the PDG particle data tables and
+provides an object-oriented interface and powerful search and look-up utilities.
+
+The current version of the package reflects a pythonic version of the
+utility functions defined in HepPID and HepPDT versions 3.04.01,
+see http://lcgapp.cern.ch/project/simu/HepPDT/.
 
 Installation
 ------------
