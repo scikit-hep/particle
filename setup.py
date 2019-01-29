@@ -40,7 +40,7 @@ setup(
     ],
     classifiers = [
         # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'Topic :: Scientific/Engineering :: Physics'
+        'Topic :: Scientific/Engineering',
         'Intended Audience :: Science/Research',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
