@@ -4,7 +4,14 @@ particle: the pythonic version of HepPID and HepPDT
 .. image:: https://dev.azure.com/scikit-hep/particle/_apis/build/status/scikit-hep.particle?branchName=master
   :alt: Build Status
   :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
-
+  
+.. image:: https://img.shields.io/azure-devops/tests/scikit-hep/particle/1.svg
+   :alt: Tests
+   :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
+   
+.. image:: https://img.shields.io/azure-devops/coverage/scikit-hep/particle/1.svg
+   :alt: Coverage
+   :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
 
 particle provides a pythonic interface for the utility functions defined in HepPID and HepPDT,
 see http://lcgapp.cern.ch/project/simu/HepPDT/.
