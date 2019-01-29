@@ -1,4 +1,7 @@
-particle: the pythonic version of HepPID and HepPDT
+.. image:: docs/ParticleLogo300.png
+    :alt: particle logo
+
+Particle: the pythonic version of HepPID and HepPDT
 ===================================================
 
 .. image:: https://dev.azure.com/scikit-hep/particle/_apis/build/status/scikit-hep.particle?branchName=master
@@ -13,7 +16,7 @@ particle: the pythonic version of HepPID and HepPDT
    :alt: Coverage
    :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
 
-particle provides a pythonic interface for the utility functions defined in HepPID and HepPDT,
+Particle provides a pythonic interface for the utility functions defined in HepPID and HepPDT,
 see http://lcgapp.cern.ch/project/simu/HepPDT/.
 These two packages give access to the Particle Data Group (PDG) particle data tables and particle identification codes.
 
@@ -53,7 +56,7 @@ Getting started: PDGIDs
     >>> pid
     <PDGID: 99999999 (is_valid==False)>
 
-For convenience, all properties of the ```PDGID`` class are available as standalone functions:
+For convenience, all properties of the ``PDGID`` class are available as standalone functions:
 
 .. code-block:: python
 
@@ -150,9 +153,9 @@ You can quickly search for particles from the command line with:
 .. code-block:: bash
 
     $ python -m particle search 'K*0'
-    <Particle: pdgid=313, fullname='K*(892)0', mass=895.55 +/- 0.20 MeV>
-    <Particle: pdgid=30313, fullname='K*(1680)0', mass=1718 +/- 18 MeV>
-    <Particle: pdgid=100313, fullname='K*(1410)0', mass=1421 +/- 9 MeV>
+    <Particle: pdgid=313, fullname='K*(892)0', mass=895.55 ± 0.20 MeV>
+    <Particle: pdgid=30313, fullname='K*(1680)0', mass=1718 ± 18 MeV>
+    <Particle: pdgid=100313, fullname='K*(1410)0', mass=1421 ± 9 MeV>
 
 If you only select one particle, either by a search or by giving the PDGID number, you can see more information about
 the particle:
