@@ -3,11 +3,14 @@
 The Particle Data Group (PDG) defines the standard particle identification numbering scheme
 in the form of a signed 7-digit number +/- N Nr Nl Nq1 Nq2 Nq3 Nj.
 
+PDG IDs with more than 7 digits exist for non-standard particles such as Q-balls.
+
 This module provides the following:
 
 - A pythonic version of the functions defined in HepPID and HepPDT,
   which work with PDG particle identification codes (PDG IDs).
 - A handy `PDGID` class.
+- A few other functions extending the functionality of the HepXXX code.
 
 
 Matrix of spin states for mesons

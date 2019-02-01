@@ -3,8 +3,14 @@
 The Particle Data Group (PDG) defines the standard particle identification numbering scheme
 in the form of a signed 7-digit number +/- N Nr Nl Nq1 Nq2 Nq3 Nj.
 
-This module provides a pythonic version of the functions defined in HepPDT and HepPID,
-which work with PDG particle identification codes (PDGIDs).
+PDG IDs with more than 7 digits exist for non-standard particles such as Q-balls.
+These follow outside the standard PDG numbering scheme.
+
+This module provides the following:
+
+- A pythonic version of the functions defined in HepPID and HepPDT,
+  which work with PDG particle identification codes (PDG IDs).
+- A few other functions extending the functionality of the HepXXX code.
 
 References
 ----------
@@ -480,7 +486,7 @@ def _extra_bits(pdgid):
 def _fundamental_id(pdgid):
     """
     Returns the first 2 digits if this is a "fundamental" particle.
-    Returns 0 if the particle is not fundamental or not standard.
+    Returns 0 if the particle is not fundamental or not standard (PDG ID with more than 7 digits).
 
     PDGID=100 is a special case (internal generator ID's are 81-100).
     """
@@ -494,10 +500,6 @@ def _has_quark_q(pdgid, q):
     """Helper function - does this particle contain a quark q?"""
     if _extra_bits(pdgid) > 0 : return False
     if _fundamental_id(pdgid) > 0 : return False
-    return _find_q(pdgid, q)
-
-
-def _find_q(pdgid, q):
     if is_dyon(pdgid): return False
     if is_Rhadron(pdgid):
         iz = 7
