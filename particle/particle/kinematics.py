@@ -17,11 +17,31 @@ def width_to_lifetime(Gamma):
     Parameters
     ----------
     Gamma : float > 0
-        Particle decay width, typically in MeV (any HEP energy unit is OK).
+        Particle decay width, in the HEP standard energy unit MeV.
 
     Returns
     -------
     Particle lifetime, in the HEP standard time unit ns.
+
+    Examples
+    --------
+    Manipulation with no explicit usage of units:
+
+    >>> width_to_lifetime(4.33e-10)   # result returned in ns
+    0.001520119980246514
+
+    Manipulations with explicit units defined in the HEP system of units:
+
+    >>> from hepunits.units import MeV, eV, ps   # handy module with units in the HEP system of units
+    >>>
+    >>> width_to_lifetime(4.33e-10*MeV)
+    0.001520119980246514          # result returned in ns
+    >>>
+    >>> width_to_lifetime(4.33e-4*eV)
+    0.001520119980246514          # result again returned in ns
+    >>>
+    >>> width_to_lifetime(4.33e-10*MeV)/ps   # result converted to ps
+    1.520119980246514
     """
 
     if Gamma <= 0.:
@@ -38,11 +58,31 @@ def lifetime_to_width(tau):
     Parameters
     -----------
     tau : float > 0
-        Particle lifetime, typically in picoseconds (any HEP time unit is OK).
+        Particle lifetime, in the HEP standard time unit ns.
 
     Returns
     -------
     Particle decay width, in the HEP standard energy unit MeV.
+
+    Examples
+    --------
+    Manipulation with no explicit usage of units:
+
+    >>> lifetime_to_width(0.001520119980246514)   # result returned in MeV
+    4.33e-10
+
+    Manipulations with explicit units defined in the HEP system of units:
+
+    >>> from hepunits.units import MeV, eV, ps   # handy module with units in the HEP system of units
+    >>>
+    >>> lifetime_to_width(0.001520119980246514*ns)
+    4.33e-10          # result returned in MeV
+    >>>
+    >>> lifetime_to_width(1.520119980246514*ps)
+    4.33e-10          # result again returned in MeV
+    >>>
+    >>> lifetime_to_width(1.520119980246514*ps)/eV   # result converted to eV
+    0.000433
     """
 
     if tau <= 0:
