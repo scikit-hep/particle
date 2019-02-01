@@ -3,3 +3,4 @@ importlib_resources>=1.0; python_version<"3.7"
 attrs
 pandas
 pytest
+hepunits
