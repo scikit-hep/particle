@@ -45,7 +45,7 @@ def width_to_lifetime(Gamma):
     """
 
     if Gamma <= 0.:
-        raise ValueError( 'Input provided, %s <= 0!'.format(Gamma) )
+        raise ValueError( 'Input provided, {0} <= 0!'.format(Gamma) )
 
     # Just need to first make sure that the width is in the standard unit MeV
     return hbar / float(Gamma / MeV)
@@ -86,7 +86,7 @@ def lifetime_to_width(tau):
     """
 
     if tau <= 0:
-        raise ValueError( 'Input provided, %s <= 0!'.format(tau) )
+        raise ValueError( 'Input provided, {0} <= 0!'.format(tau) )
 
     # Just need to first make sure that the lifetime is in the standard unit ns
     return hbar / float(tau / ns)

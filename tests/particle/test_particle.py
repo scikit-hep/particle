@@ -1,6 +1,7 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 
 import pytest
+from pytest import approx
 
 from particle.particle.enums import Charge, Parity, SpinType
 from particle.particle import Particle
@@ -79,6 +80,7 @@ def test_prop():
     assert pi.name == 'pi'
     assert pi.pdgid == 211
     assert pi.three_charge == Charge.p
+    assert pi.lifetime == approx(26.0327460625985)
 
 
 def test_ampgen_style_names():
@@ -94,7 +96,6 @@ def test_ampgen_style_names():
 
     assert Particle.from_string('K(1)(1270)bar-') == -10323
     assert Particle.from_string('K(1460)bar-') == -100321
-
 
 
 def test_decfile_style_names():

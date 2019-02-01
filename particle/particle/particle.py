@@ -25,12 +25,16 @@ from .enums import (SpinType, Parity, Charge, Inv, Status,
                     Charge_undo, Charge_prog, Charge_mapping)
 
 from .utilities import programmatic_name, str_with_unc
+from .kinematics import width_to_lifetime
+
 
 class ParticleNotFound(RuntimeError):
     pass
 
+
 class InvalidParticle(RuntimeError):
     pass
+
 
 @total_ordering
 @attr.s(slots=True, cmp=False, repr=False)
@@ -166,6 +170,10 @@ class Particle(object):
         'The particle charge (integer * 3).'
         return Charge(self.pdgid.three_charge)
 
+    @property
+    def lifetime(self):
+        'The particle lifetime, in nanoseconds.'
+        return width_to_lifetime(self.width)
 
     @property
     def radius(self):
