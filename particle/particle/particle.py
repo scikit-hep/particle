@@ -237,9 +237,26 @@ class Particle(object):
         if self.pdgid == 0:
             return "Name: Unknown"
 
+        def _width_or_lifetime():
+            if self.width <= 0:
+                return 'Width = {width} MeV'.format(width=str(self.width))
+            elif self.width > 1.e-18:
+                if self.width_lower == self.width_upper:
+                    e = width_to_lifetime(self.width-self.width_lower)-self.lifetime
+                    s = 'Lifetime = {lifetime} ns'.format(lifetime=str_with_unc(self.lifetime,e,e))
+                else:
+                    s = 'Lifetime = {lifetime} ns'.\
+                        format(lifetime=str_with_unc(self.lifetime,\
+                                                     width_to_lifetime(self.width-self.width_lower)-self.lifetime,
+                                                     self.lifetime-width_to_lifetime(self.width+self.width_upper)
+                                                     ))
+                return s
+            else:
+                return 'Width = {width} MeV'.format(width=str_with_unc(self.width, self.width_upper, self.width_lower))
+
         val = """Name: {self.name:<10} ID: {self.pdgid:<12} Fullname: {self!s:<14} Latex: {latex}
 Mass  = {mass} MeV
-Width = {width} MeV
+{width_or_lifetime}
 I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       = {Q}
 J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) = {P}
 """.format(self=self,
@@ -248,7 +265,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
            Q=Charge_undo[self.three_charge],
            P=Parity_undo[self.P],
            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
-           width=str_with_unc(self.width, self.width_upper, self.width_lower) if self.width >= 0 else self.width,
+           width_or_lifetime=_width_or_lifetime(),
            latex = self._repr_latex_())
 
         if self.spin_type != SpinType.Unknown:
