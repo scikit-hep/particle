@@ -21,7 +21,9 @@ def width_to_lifetime(Gamma):
 
     Returns
     -------
-    Particle lifetime, in the HEP standard time unit ns.
+    Gamma > 0: particle lifetime, in the HEP standard time unit ns.
+    Gamma = 0: Infinity (float("inf")).
+    Gamma < 0: an exception ValueError is raised.
 
     Examples
     --------
@@ -44,8 +46,10 @@ def width_to_lifetime(Gamma):
     1.520119980246514
     """
 
-    if Gamma <= 0.:
-        raise ValueError( 'Input provided, %s <= 0!'.format(Gamma) )
+    if Gamma < 0.:
+        raise ValueError( 'Input provided, {0} <= 0!'.format(Gamma) )
+    elif Gamma == 0:
+        return float('inf')
 
     # Just need to first make sure that the width is in the standard unit MeV
     return hbar / float(Gamma / MeV)
@@ -63,6 +67,9 @@ def lifetime_to_width(tau):
     Returns
     -------
     Particle decay width, in the HEP standard energy unit MeV.
+    tau > 0: particle lifetime, in the HEP standard time unit ns.
+    tau = 0: Infinity (float("inf")).
+    tau < 0: an exception ValueError is raised.
 
     Examples
     --------
@@ -85,8 +92,10 @@ def lifetime_to_width(tau):
     0.000433
     """
 
-    if tau <= 0:
-        raise ValueError( 'Input provided, %s <= 0!'.format(tau) )
+    if tau < 0:
+        raise ValueError( 'Input provided, {0} <= 0!'.format(tau) )
+    elif tau == 0:
+        return float('inf')
 
     # Just need to first make sure that the lifetime is in the standard unit ns
     return hbar / float(tau / ns)

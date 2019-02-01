@@ -15,6 +15,8 @@ from functools import reduce, total_ordering
 # External dependencies
 import attr
 
+from hepunits.constants import c_light
+
 from .. import data
 from ..pdgid import PDGID
 from ..pdgid import is_valid
@@ -25,12 +27,16 @@ from .enums import (SpinType, Parity, Charge, Inv, Status,
                     Charge_undo, Charge_prog, Charge_mapping)
 
 from .utilities import programmatic_name, str_with_unc
+from .kinematics import width_to_lifetime
+
 
 class ParticleNotFound(RuntimeError):
     pass
 
+
 class InvalidParticle(RuntimeError):
     pass
+
 
 @total_ordering
 @attr.s(slots=True, cmp=False, repr=False)
@@ -166,6 +172,15 @@ class Particle(object):
         'The particle charge (integer * 3).'
         return Charge(self.pdgid.three_charge)
 
+    @property
+    def lifetime(self):
+        'The particle lifetime, in nanoseconds.'
+        return width_to_lifetime(self.width)
+
+    @property
+    def ctau(self):
+        'The particle c*tau, in millimeters.'
+        return c_light*self.lifetime
 
     @property
     def radius(self):
@@ -217,6 +232,23 @@ class Particle(object):
         # name += "^{" +  Parity_undo[self.three_charge] + '}'
         return ("$" + name + '$') if self.latex else '?'
 
+    def _width_or_lifetime(self):
+        if self.width <= 0:
+            return 'Width = {width} MeV'.format(width=str(self.width))
+        elif self.width > 1.e-18:
+            if self.width_lower == self.width_upper:
+                e = width_to_lifetime(self.width-self.width_lower)-self.lifetime
+                s = 'Lifetime = {lifetime} ns'.format(lifetime=str_with_unc(self.lifetime,e,e))
+            else:
+                s = 'Lifetime = {lifetime} ns'.\
+                    format(lifetime=str_with_unc(self.lifetime,\
+                                                 width_to_lifetime(self.width-self.width_lower)-self.lifetime,
+                                                 self.lifetime-width_to_lifetime(self.width+self.width_upper)
+                                                 ))
+            return s
+        else:
+            return 'Width = {width} MeV'.format(width=str_with_unc(self.width, self.width_upper, self.width_lower))
+
     def describe(self):
         'Make a nice high-density string for a particle\'s properties.'
         if self.pdgid == 0:
@@ -224,7 +256,7 @@ class Particle(object):
 
         val = """Name: {self.name:<10} ID: {self.pdgid:<12} Fullname: {self!s:<14} Latex: {latex}
 Mass  = {mass} MeV
-Width = {width} MeV
+{width_or_lifetime}
 I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       = {Q}
 J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) = {P}
 """.format(self=self,
@@ -233,7 +265,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
            Q=Charge_undo[self.three_charge],
            P=Parity_undo[self.P],
            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
-           width=str_with_unc(self.width, self.width_upper, self.width_lower) if self.width >= 0 else self.width,
+           width_or_lifetime=self._width_or_lifetime(),
            latex = self._repr_latex_())
 
         if self.spin_type != SpinType.Unknown:

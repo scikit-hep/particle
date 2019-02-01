@@ -1,6 +1,11 @@
-# Licensed under a 3-clause BSD style license, see LICENSE.
+# -*- encoding: utf-8 -*-
+
+from __future__ import absolute_import, division, print_function
+
+import sys
 
 import pytest
+from pytest import approx
 
 from particle.particle.enums import Charge, Parity, SpinType
 from particle.particle import Particle
@@ -74,11 +79,38 @@ def test_rep():
     assert "mass=139.57" in repr(pi)
 
 
-def test_prop():
+def test_basic_props():
     pi = Particle.from_pdgid(211)
     assert pi.name == 'pi'
     assert pi.pdgid == 211
     assert pi.three_charge == Charge.p
+
+
+def test_lifetime_props():
+    pi = Particle.from_pdgid(211)
+    assert pi.lifetime == approx(26.0327460625985)   # in nanoseconds
+    assert pi.ctau == approx(7804.4209306)   # in millimeters
+
+
+def test_describe():
+    __description = u'Lifetime = 26.033 ± 0.005 ns'
+    if sys.version_info < (3,0):
+        __description = __description.replace(u'±', u'+/-')
+    pi = Particle.from_pdgid(211)
+    assert __description in pi.describe()
+
+    __description = """Name: gamma      ID: 22           Fullname: gamma0         Latex: $\gamma$
+Mass  = 0.0 MeV
+Width = 0.0 MeV
+I (isospin)       = <2     G (parity)        = 0      Q (charge)       = 0
+J (total angular) = 1.0    C (charge parity) = ?      P (space parity) = ?
+    Antiparticle status: Same (antiparticle name: gamma0)"""
+    photon = Particle.from_pdgid(22)
+    assert photon.describe() == __description
+
+    __description = 'Lifetime = 3.48e-13 + 3.7e-14 - 1.6e-14 ns'
+    Sigma_c_pp = Particle.from_pdgid(4222)
+    assert __description in Sigma_c_pp.describe()
 
 
 def test_ampgen_style_names():
@@ -94,7 +126,6 @@ def test_ampgen_style_names():
 
     assert Particle.from_string('K(1)(1270)bar-') == -10323
     assert Particle.from_string('K(1460)bar-') == -100321
-
 
 
 def test_decfile_style_names():
