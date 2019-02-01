@@ -75,13 +75,17 @@ def test_rep():
     assert "mass=139.57" in repr(pi)
 
 
-def test_prop():
+def test_basic_props():
     pi = Particle.from_pdgid(211)
     assert pi.name == 'pi'
     assert pi.pdgid == 211
     assert pi.three_charge == Charge.p
-    assert pi.lifetime == approx(26.0327460625985)
 
+
+def test_lifetime_props():
+    pi = Particle.from_pdgid(211)
+    assert pi.lifetime == approx(26.0327460625985)   # in nanoseconds
+    assert pi.ctau == approx(7804.4209306)   # in millimeters
 
 def test_ampgen_style_names():
     assert Particle.from_string('pi+').pdgid == 211

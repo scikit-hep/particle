@@ -15,6 +15,8 @@ from functools import reduce, total_ordering
 # External dependencies
 import attr
 
+from hepunits.constants import c_light
+
 from .. import data
 from ..pdgid import PDGID
 from ..pdgid import is_valid
@@ -174,6 +176,11 @@ class Particle(object):
     def lifetime(self):
         'The particle lifetime, in nanoseconds.'
         return width_to_lifetime(self.width)
+
+    @property
+    def ctau(self):
+        'The particle c*tau, in millimeters.'
+        return c_light*self.lifetime
 
     @property
     def radius(self):
