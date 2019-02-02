@@ -113,6 +113,14 @@ common_particles = dict(
     Xi_minus=3312,
     Xi0=3322,
     Omega_minus=3334,
+    Delta_1232_minus=1114,
+    Delta_1232_plus_bar=-1114,
+    Delta_1232_0=2114,
+    Delta_1232_0_bar=-2114,
+    Delta_1232_plus=2214,
+    Delta_1232_minus_bar=-2214,
+    Delta_1232_pp=2224,
+    Delta_1232_mm_bar=-2224,
     Lambda_1520=3124,
     Lambda_1520_bar=-3124,
 
@@ -121,9 +129,12 @@ common_particles = dict(
     Lc_minus_bar=-4122,
 
     # Beauty baryons
-    Lb0=5122,
-    Lb0_bar=-5122,
+    Lambdab0=5122,
+    Lambdab0_bar=-5122,
     Xib0=5232,
+    Xib0_bar=-5232,
     Xib_minus=5132,
+    Xib_plus_bar=-5132,
     Omegab_minus=5332,
+    Omegab_plus_bar=-5332,
 )
