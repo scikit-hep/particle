@@ -93,10 +93,10 @@ For example:
     >>> lid.pi_plus
     <PDGID: 211>
     >>>
-    >>> from particle.pdgid.literals import Lb0
-    >>>> Lb0
+    >>> from particle.pdgid.literals import Lambdab0
+    >>>> Lambdab0
     <PDGID: 5122>
-    >>> Lb0.has_bottom
+    >>> Lambdab0.has_bottom
     True
 
 You can quickly display PDGID info from the command line with:
@@ -160,10 +160,10 @@ with easily recognisable names. For example:
     >>> lp.pi_plus
     <Particle: pdgid=211, fullname='pi+', mass=139.57061 ± 0.00024 MeV>
     >>>
-    >>> from particle.particle.literals import Lb0
-    >>>> Lb0
+    >>> from particle.particle.literals import Lambdab0
+    >>>> Lambdab0
     <Particle: pdgid=5122, fullname='Lambda(b)0', mass=5619.60 ± 0.17 MeV>
-    >>> Lb0.J
+    >>> Lambdab0.J
     0.5
 
 You can quickly search for particles from the command line with:

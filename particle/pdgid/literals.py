@@ -12,10 +12,10 @@ Typical use cases::
     <PDGID: 211>
     >>> lid.pi_plus.is_meson
     True
-    >>> from particle.pdgid.literals import Lb0
-    >>>> Lb0
+    >>> from particle.pdgid.literals import Lambdab0
+    >>>> Lambdab0
     <PDGID: 5122>
-    >>> Lb0.has_bottom
+    >>> Lambdab0.has_bottom
     True
 
 List of available/defined particle PDGID literals:

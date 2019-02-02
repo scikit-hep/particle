@@ -13,10 +13,10 @@ Typical use cases::
     <Particle: pdgid=211, fullname='pi+', mass=139.57061 ± 0.00024 MeV>
     >>> lp.pi_plus.is_meson
     1.0
-    >>> from particle.particle.literals import Lb0
-    >>>> Lb0
+    >>> from particle.particle.literals import Lambdab0
+    >>>> Lambdab0
     <Particle: pdgid=5122, fullname='Lambda(b)0', mass=5619.60 ± 0.17 MeV>
-    >>> Lb0.J
+    >>> Lambdab0.J
     0.5
 
 List of available/defined particle literals:
