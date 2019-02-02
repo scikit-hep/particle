@@ -235,7 +235,7 @@ class Particle(object):
     def _width_or_lifetime(self):
         if self.width <= 0:
             return 'Width = {width} MeV'.format(width=str(self.width))
-        elif self.width > 1.e-18:
+        elif self.width < 1.:  # corresponds to a lifetime of approximately 6.6e-22 seconds
             if self.width_lower == self.width_upper:
                 e = width_to_lifetime(self.width-self.width_lower)-self.lifetime
                 s = 'Lifetime = {lifetime} ns'.format(lifetime=str_with_unc(self.lifetime,e,e))
