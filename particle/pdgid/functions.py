@@ -301,8 +301,8 @@ def three_charge(pdgid):
             return 3*Z(pdgid)
         elif is_Qball(pdgid):     # Qball
             charge = 3*((aid//10)%10000)
-        else:     # not an ion
-            return 0
+        else:            # this should never be reached in the present numbering scheme
+            return None  # since extra bits exist only for Q-balls and nuclei
     elif is_dyon(pdgid):            # Dyon
         charge = 3*( (aid//10)%1000 )
         # this is half right
