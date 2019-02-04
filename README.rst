@@ -127,7 +127,7 @@ can use a search:
     >>> Particle.from_pdgid(211)
     <Particle: pdgid=211, fullname='pi+', mass=139.57061 ± 0.00024 MeV>
     >>>
-    >>> Particle.from_search_list('pi')[0]
+    >>> Particle.from_search_list(lambda p: 'pi' in p.name)[0]
     <Particle: pdgid=111, fullname='pi0', mass=134.9770 ± 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which are
@@ -136,8 +136,10 @@ You can search for the properties using keyword arguments, which are
 ``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``
 (some of those don\'t make sense).
 The alternative ``.from_search()`` requires only one match returned by the search.
-You can also use the first two arguments, called ``name_s`` and ``latex_s``
-to do a loose search, and ``name_re`` and ``latex_re`` to do a regular expression search.
+You can pass a callable or an exact match. You can also build
+the search yourself with the first positional argument, which accepts a callable that is
+given the particle object itself, as in the example above. `particle` can be set to `True`/`False`,
+as well, to limit the search to particles or antiparticles.
 
 Once you have a particle, any of the properties can be accessed, along with several methods.
 Though they are not real properties, you can access ``bar``, ``radius``, and ``spin_type``.
