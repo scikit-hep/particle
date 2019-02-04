@@ -324,12 +324,24 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         The first and only positional argument is given each particle
         candidate, and returns true/false. Example:
 
-            >>> Particle.from_search_list(lambda p: 'p' in p.name)
+            >>> Particle.from_search_list(lambda p: 'p' in p.fullname)
+            # Returns list of all particles with p somewhere in fullname
 
-        You can also pass particle=True/False to force a particle or antiparticle.
+        You can also pass particle=True/False to force a particle or antiparticle. If
+        this is not callable, it will do a "fuzzy" search on the fullname. So this is identical:
+
+            >>> Particle.from_search_list('p')
+            # Returns list of all particles with p somewhere in name
 
         You can also pass keyword arguments, which are either called with the
         matching property if they are callable, or are compared if they are not.
+        This would do an exact search on the name, instead of a fuzzy search:
+
+           >>> Particle.from_search_list(name='p')
+           # Returns proton and antiproton only
+
+           >>> Particle.from_search_list(name='p', particle=True)
+           # Returns proton only
 
         See also from_search, which throws an exception if the particle is not found or too many are found.
         '''
@@ -356,8 +368,13 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
                     continue
 
             # If a filter function is passed, evaluate and skip if False
-            if filter_fn is not None and not filter_fn(item):
-                continue
+            if filter_fn is not None:
+                if callable(filter_fn):
+                    if not filter_fn(item):
+                        continue
+                else:
+                    if not(filter_fn in item.fullname):
+                        continue
 
             # At this point, if you break, you will not add a match
             for term, value in search_terms.items():
