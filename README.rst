@@ -25,7 +25,7 @@ Particle: PDG particle data and identification codes
    :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
 
 
-Particle provides a pythonic interface to the Particle Data Group (PDG)
+Particle provides a pythonic interface to the `Particle Data Group <http://pdg.lbl.gov/>`_ (PDG)
 particle data tables and particle identification codes.
 
 The PDG defines the standard particle identification (ID) numbering scheme.
@@ -54,7 +54,7 @@ or similar (use ``--user``, ``virtualenv``, etc. if you wish).
 Strict dependencies
 -------------------
 
-- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`__ (2.7+, 3.4+)
+- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (2.7+, 3.5+)
 - `importlib_resources backport <http://importlib-resources.readthedocs.io/en/latest/>`_ if using Python < 3.7
 - `attrs <http://www.attrs.org/en/stable/>`_ provides classes without boilerplate (similar to DataClasses in Python 3.7)
 
