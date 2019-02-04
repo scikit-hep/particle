@@ -461,13 +461,14 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         particle = False if mat['bar'] is not None else (True if mat['charge'] == '0' else None)
 
         fullname = mat['name']
-        if mat['star']:
-            fullname += '*'
 
         if mat['family']:
             fullname += '({mat[family]})'.format(mat=mat)
         if mat['state']:
             fullname += '({mat[state]})'.format(mat=mat)
+
+        if mat['star']:
+            fullname += '*'
 
         J = float(mat['state']) if mat['state'] is not None else None
 

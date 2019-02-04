@@ -31,8 +31,8 @@ setup(
     install_requires = [
         'enum34>=1.1; python_version<"3.4"',
         'importlib_resources>=1.0; python_version<"3.7"',
-        'attrs',
-        'hepunits'
+        'attrs>=17.4.0',
+        'hepunits>=0.1.0'
     ],
     setup_requires = ['pytest-runner'],
     tests_require = ['pytest'],
