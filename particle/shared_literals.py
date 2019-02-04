@@ -96,8 +96,8 @@ common_particles = dict(
     B0_bar=-511,
     B_plus=521,
     B_minus=-521,
-    Bs=531,
-    Bs_bar=-531,
+    Bs0=531,
+    Bs0_bar=-531,
 
     # Beauty, charmed mesons
     Bc_plus=541,
