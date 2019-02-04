@@ -415,7 +415,12 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     @classmethod
     def from_string(cls, name):
         'Get a particle from a PDG style name - returns best match'
-        return cls.from_string_list(name)[0]
+        matches =  cls.from_string_list(name)
+        if matches:
+            return matches[0]
+        else:
+            raise ParticleNotFound('{0} not found in particle table'.format(name))
+
 
 
     @classmethod
