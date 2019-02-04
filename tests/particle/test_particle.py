@@ -108,7 +108,7 @@ J (total angular) = 1.0    C (charge parity) = ?      P (space parity) = ?
     photon = Particle.from_pdgid(22)
     assert photon.describe() == __description
 
-    __description = 'Lifetime = 3.48e-13 + 3.7e-14 - 1.6e-14 ns'
+    __description = 'Width = 1.89 + 0.09 - 0.18 MeV'
     Sigma_c_pp = Particle.from_pdgid(4222)
     assert __description in Sigma_c_pp.describe()
 
