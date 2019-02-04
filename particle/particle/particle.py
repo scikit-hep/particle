@@ -225,7 +225,7 @@ class Particle(object):
         # star = '*' if self.J == 1 else ''
         return self.name + tilde + Charge_undo[self.three_charge]
 
-    fullname = property(__str__, doc='The nice name, with par and change added')
+    fullname = property(__str__, doc='The nice name, with charge added, and a tilde for an antiparticle, if relevant.')
 
     def _repr_latex_(self):
         name = self.latex
