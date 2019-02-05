@@ -118,8 +118,8 @@ You can quickly display PDGID info from the command line with:
 Getting started: Particles
 --------------------------
 
-You can use a variety of methods to get particles. If you know the PDGID number you can get a particle directly, or you
-can use a search:
+You can use a variety of methods to get particles. If you know the PDGID number
+you can get a particle directly, or you can use a search:
 
 .. code-block:: python
 
@@ -130,14 +130,18 @@ can use a search:
     >>> Particle.from_search_list('pi')[0]
     <Particle: pdgid=111, fullname='pi0', mass=134.9770 ± 0.0005 MeV>
 
-You can search for the properties using keyword arguments, which are
-``name``, ``mass``, ``width``, ``charge``, ``anti``, ``rank``,
+You can search for the properties using keyword arguments, which include
+``name``, ``fullname``, ``mass``, ``width``, ``charge``, ``anti``, ``rank``,
 ``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``, ``latex``,
-``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``
-(some of those don\'t make sense).
-The alternative ``.from_search()`` requires only one match returned by the search.
-You can also use the first two arguments, called ``name_s`` and ``latex_s``
-to do a loose search, and ``name_re`` and ``latex_re`` to do a regular expression search.
+``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``.
+You can pass a callable or an exact match for any property.  `particle` can be
+set to `True`/`False`, as well, to limit the search to particles or
+antiparticles.  You can also build the search yourself with the first positional
+argument, which accepts a callable that is given the particle object itself. If
+the first positional argument is a string, that will match against the
+particle's ``fullname``.  The alternative ``.from_search()`` *requires only one*
+match returned by the search, and will throw an error if more or less than one
+match is found.
 
 Once you have a particle, any of the properties can be accessed, along with several methods.
 Though they are not real properties, you can access ``bar``, ``radius``, and ``spin_type``.

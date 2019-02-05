@@ -317,80 +317,91 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
 
     @classmethod
-    def from_search_list(cls, name_s=None, latex_s=None, name_re=None, latex_re=None, particle=None, **search_terms):
+    def from_search_list(cls, filter_fn=None, particle=None, **search_terms):
         '''
         Search for a particle, returning a list of candidates.
 
-        Terms are:
-           name_s: A loose match (extra terms allowed) for Name
-           name_re: A regular expression for Name
-           latex_s: A loose match (extra terms allowed) for Latex
-           latex_re: A regular expression for Latex
-           particle: True/False, for particle/antiparticle
+        The first and only positional argument is given each particle
+        candidate, and returns true/false. Example:
 
-           Any other attribute: exact match for attribute value
+            >>> Particle.from_search_list(lambda p: 'p' in p.fullname)
+            # Returns list of all particles with p somewhere in fullname
+
+        You can also pass particle=True/False to force a particle or antiparticle. If
+        this is not callable, it will do a "fuzzy" search on the fullname. So this is identical:
+
+            >>> Particle.from_search_list('p')
+            # Returns list of all particles with p somewhere in name
+
+        You can also pass keyword arguments, which are either called with the
+        matching property if they are callable, or are compared if they are not.
+        This would do an exact search on the name, instead of a fuzzy search:
+
+           >>> Particle.from_search_list(name='p')
+           # Returns proton and antiproton only
+
+           >>> Particle.from_search_list(name='p', particle=True)
+           # Returns proton only
 
         See also from_search, which throws an exception if the particle is not found or too many are found.
         '''
 
+        # Note that particle can be called by position to keep compatibility with Python 2, but that behavior should
+        # not be used and will be removed when support for Python 2.7 is dropped.
+
+        # Remove any None values (makes programmatic access easier)
         for term in list(search_terms):
             if search_terms[term] is None:
                 del search_terms[term]
-
-        # Special case if nothing was passed
-        if (not search_terms
-            and particle is None
-            and name_s is None
-            and name_re is None
-            and latex_s is None
-            and latex_re is None):
-
-            return []
-
-        # If I is passed, make sure it is a string
-        if not isinstance(search_terms.get('I', ''), str):
-            search_terms['I'] = str(search_terms['I'])
 
         results = set()
 
         # Filter out values
         for item in cls.table():
+            # At this point, continue if a match fails
+
+            # particle=True is particle, False is antiparticle, and None is both
             if particle is not None:
                 if particle and int(item) < 0:
                     continue
                 elif (not particle) and int(item) > 0:
                     continue
 
-            passing = True
-            for term in search_terms:
-                if getattr(item, term) != search_terms[term]:
-                    passing = False
+            # If a filter function is passed, evaluate and skip if False
+            if filter_fn is not None:
+                if callable(filter_fn):
+                    if not filter_fn(item):
+                        continue
+                else:
+                    if not(filter_fn in item.fullname):
+                        continue
 
-            if not passing:
-                continue
+            # At this point, if you break, you will not add a match
+            for term, value in search_terms.items():
+                # If pvalue cannot be accessed, skip this particle
+                # (invalid lifetime, for example)
+                try:
+                    pvalue = getattr(item, term)
+                except ValueError:
+                    break
 
-            if name_s is not None:
-                if name_s not in item.name:
-                    continue
+                # Callables are supported
+                if callable(value):
+                    if not value(pvalue):
+                        break
+                # And, finally, just compare if nothing else matched
+                elif pvalue != value:
+                    break
 
-            if name_re is not None:
-                if not re.search(name_re, item.name):
-                    continue
+            # If the loop was not broken
+            else:
+                results.add(item)
 
-            if latex_s is not None:
-                if not latex_s in item.latex:
-                    continue
-
-            if latex_re is not None:
-                if not re.search(latex_re, item.latex):
-                    continue
-
-            results.add(item)
-
+        # Matches are sorted so the top one is "best"
         return sorted(results)
 
     @classmethod
-    def from_search(cls, **search_terms):
+    def from_search(cls, *args, **search_terms):
         '''
         Require that your search returns one and only one result.
         The method otherwise raises a ParticleNotFound or RuntimeError exception.
@@ -398,7 +409,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         See from_search_list for full listing of parameters.
         '''
 
-        results = cls.from_search_list(**search_terms)
+        results = cls.from_search_list(*args, **search_terms)
 
         if len(results) == 1:
             return results[0]
@@ -421,7 +432,12 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     @classmethod
     def from_string(cls, name):
         'Get a particle from a PDG style name - returns best match'
-        return cls.from_string_list(name)[0]
+        matches =  cls.from_string_list(name)
+        if matches:
+            return matches[0]
+        else:
+            raise ParticleNotFound('{0} not found in particle table'.format(name))
+
 
 
     @classmethod
@@ -477,12 +493,12 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         else:
             maxname = fullname
 
-        vals = cls.from_search_list(maxname,
+        vals = cls.from_search_list(name = lambda x: maxname in x,
                                     three_charge=Charge_mapping[mat['charge']],
                                     particle=particle,
                                     J=J)
         if not vals:
-            vals = cls.from_search_list(fullname,
+            vals = cls.from_search_list(name = lambda x: fullname in x,
                                         three_charge=Charge_mapping[mat['charge']],
                                         particle=particle,
                                         J=J)
