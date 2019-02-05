@@ -28,6 +28,7 @@ setup(
     license = 'new BSD',
     packages = find_packages(),
     include_package_data = True,
+    package_data={'particle/data': ['*.*']},
     install_requires = [
         'enum34>=1.1; python_version<"3.4"',
         'importlib_resources>=1.0; python_version<"3.7"',
