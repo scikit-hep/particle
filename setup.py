@@ -27,8 +27,7 @@ setup(
     url = 'https://github.com/scikit-hep/particle',
     license = 'new BSD',
     packages = find_packages(),
-    include_package_data = True,
-    package_data={'particle/data': ['*.*']},
+    package_data={'': ['data/*.*']},
     install_requires = [
         'enum34>=1.1; python_version<"3.4"',
         'importlib_resources>=1.0; python_version<"3.7"',

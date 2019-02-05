@@ -1,6 +1,12 @@
 ### Version 0.3.0
 #### Under development
 
+### Version 0.2.2
+#### Feb 5th, 2019
+
+* Bug fix in setup.py.
+* CHANGELOG file added.
+
 ### Version 0.2.1
 #### Feb 4th, 2019
 
@@ -21,4 +27,3 @@ particle data tables and particle identification codes.
 #### Dec 19, 2018
 
 First release, Python version of HepPID.
-
