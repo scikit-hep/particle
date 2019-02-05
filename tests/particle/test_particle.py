@@ -38,7 +38,7 @@ def test_from_search():
     with pytest.raises(RuntimeError):
         Particle.from_search(name=lambda x: 'Upsilon' in x)
 
-def test_lambda_style_earch():
+def test_lambda_style_search():
     particles = Particle.from_search_list(lambda p: p.name == 'p')
     assert len(particles) == 2
     assert 2212 in particles
@@ -46,6 +46,11 @@ def test_lambda_style_earch():
 
     assert Particle.from_search(lambda p: p.name == 'p' and p > 0) == 2212
     assert Particle.from_search(lambda p: p.name == 'p' and p < 0) == -2212
+
+def test_fuzzy_name_search():
+    particles = Particle.from_search_list('p~-')
+    assert len(particles) == 1
+    assert -2212 in particles
 
 def test_keyword_style_search():
     particles = Particle.from_search_list(name = 'p')
