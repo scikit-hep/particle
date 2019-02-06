@@ -4,7 +4,22 @@
 import pytest
 import sys
 
+from particle import Particle
+from particle.particle.utilities import programmatic_name
 from particle.particle.utilities import str_with_unc
+from particle.shared_literals import common_particles
+
+
+def test_programmatic_name():
+    """
+    Test makes sure that all literals defined in particle.shared_literals
+    match what is returned by Particle.programmatic_name.
+    """
+    for literal_name, pid in common_particles.items():
+        try:  # some particles in the literals may not be in the table (e.g the neutrinos as of 2018)
+            assert Particle.from_pdgid(pid).programmatic_name == literal_name
+        except:
+            pass
 
 
 # Eventually

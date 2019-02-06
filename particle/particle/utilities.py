@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 
+import re
 import math
 
+
 def programmatic_name(name):
-    'Return a name safe to use as a variable name'
+    'Return a name safe to use as a variable name.'
+    name = re.sub('0$','_0',name)
+    name = name if '~' not in name else ''.join(name.split('~'))+'_bar'
     return (name.replace(')(', '_').replace('(', '_').replace(')','')
                 .replace('*', 'st').replace('\'','p')
                 .replace('::', '_')
-                .replace('-', 'm').replace('+', 'p')
+                .replace('--', '_mm').replace('++', '_pp')
+                .replace('-', '_minus').replace('+', '_plus')
                 .replace('~', 'bar'))
 
 

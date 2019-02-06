@@ -28,7 +28,7 @@ def test_enums_SpinType():
 def test_from_search():
     # 1 match found
     prepr = repr(Particle.from_search(name='gamma'))
-    assert prepr == "<Particle: pdgid=22, fullname='gamma0', mass=0.0 MeV>"
+    assert prepr == "<Particle: pdgid=22, fullname='gamma', mass=0.0 MeV>"
 
     # No match found
     with pytest.raises(ParticleNotFound):
@@ -141,12 +141,12 @@ def test_describe():
     pi = Particle.from_pdgid(211)
     assert __description in pi.describe()
 
-    __description = r"""Name: gamma      ID: 22           Fullname: gamma0         Latex: $\gamma$
+    __description = r"""Name: gamma      ID: 22           Fullname: gamma          Latex: $\gamma$
 Mass  = 0.0 MeV
 Width = 0.0 MeV
 I (isospin)       = <2     G (parity)        = 0      Q (charge)       = 0
 J (total angular) = 1.0    C (charge parity) = ?      P (space parity) = ?
-    Antiparticle status: Same (antiparticle name: gamma0)"""
+    Antiparticle status: Same (antiparticle name: gamma)"""
     photon = Particle.from_pdgid(22)
     assert photon.describe() == __description
 

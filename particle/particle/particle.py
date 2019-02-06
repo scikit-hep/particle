@@ -41,7 +41,13 @@ class InvalidParticle(RuntimeError):
 @total_ordering
 @attr.s(slots=True, cmp=False, repr=False)
 class Particle(object):
-    'The Particle object class. Hold a series of properties for a particle.'
+    """
+    The Particle object class. Hold a series of properties for a particle.
+
+    Class properties:
+
+
+    """
     pdgid = attr.ib(converter=PDGID)
     name = attr.ib()
     mass = attr.ib()
@@ -56,7 +62,7 @@ class Particle(object):
     C = attr.ib(Parity.u, converter=Parity)  # Charge conjugation parity
     # (B (just charge), F (add bar) , and '' (No change))
     quarks = attr.ib('', converter=str)
-    status = attr.ib(Status.Nonexistant, converter=Status)
+    status = attr.ib(Status.Nonexistent, converter=Status)
     latex = attr.ib('')
     mass_upper = attr.ib(0.0)
     mass_lower = attr.ib(0.0)
@@ -141,7 +147,6 @@ class Particle(object):
     def __hash__(self):
         return hash(self.pdgid)
 
-
     # Integer == PDGID
     def __int__(self):
         return int(self.pdgid)
@@ -218,12 +223,18 @@ class Particle(object):
     __neg__ = invert
     __invert__ = invert
 
+    def _charge_in_name(self):
+        if self.anti == Inv.Barless: return True
+        if self.pdgid in (111, 130, 310): return True
+        if self.three_charge == 0 and self.anti == Inv.Same: return False  # all quarkonia and the photon
+        return True
+
     # Pretty descriptions
 
     def __str__(self):
-        tilde = '~' if self.anti == Inv.Full and self.pdgid < 0 else ''
-        # star = '*' if self.J == 1 else ''
-        return self.name + tilde + Charge_undo[self.three_charge]
+        _tilde = '~' if self.anti == Inv.Full and self.pdgid < 0 else ''
+        _charge = Charge_undo[self.three_charge] if self._charge_in_name() else ''
+        return self.name + _tilde + _charge
 
     fullname = property(__str__, doc='The nice name, with charge added, and a tilde for an antiparticle, if relevant.')
 
@@ -279,9 +290,10 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     @property
     def programmatic_name(self):
         'This name could be used for a variable name.'
-        name = self.name
-        name += '_' + Charge_prog[self.three_charge]
-        return programmatic_name(name)
+        #name = self.name
+        #name += '_' + Charge_prog[self.three_charge]
+        #return programmatic_name(name)
+        return programmatic_name(self.fullname)
 
     @property
     def html_name(self):
