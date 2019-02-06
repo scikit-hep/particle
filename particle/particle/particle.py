@@ -227,6 +227,8 @@ class Particle(object):
         if self.anti == Inv.Barless: return True
         if self.pdgid in (111, 130, 310): return True
         if self.three_charge == 0 and self.anti == Inv.Same: return False  # all quarkonia and the photon
+        if self.pdgid.is_baryon and self.pdgid.has_strange \
+           and not (self.pdgid.has_charm or self.pdgid.has_bottom): return False   # Lambda baryons
         if abs(self.pdgid) < 9: return False
         return True
 

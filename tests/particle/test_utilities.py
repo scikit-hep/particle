@@ -8,6 +8,7 @@ from particle import Particle
 from particle.particle.utilities import programmatic_name
 from particle.particle.utilities import str_with_unc
 from particle.shared_literals import common_particles
+from particle.particle.particle import ParticleNotFound
 
 
 def test_programmatic_name():
@@ -17,8 +18,9 @@ def test_programmatic_name():
     """
     for literal_name, pid in common_particles.items():
         try:  # some particles in the literals may not be in the table (e.g the neutrinos as of 2018)
+            p = Particle.from_pdgid(pid)
             assert Particle.from_pdgid(pid).programmatic_name == literal_name
-        except:
+        except ParticleNotFound:
             pass
 
 
