@@ -227,6 +227,7 @@ class Particle(object):
         if self.anti == Inv.Barless: return True
         if self.pdgid in (111, 130, 310): return True
         if self.three_charge == 0 and self.anti == Inv.Same: return False  # all quarkonia and the photon
+        if abs(self.pdgid) < 9: return False
         return True
 
     # Pretty descriptions
@@ -290,9 +291,6 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     @property
     def programmatic_name(self):
         'This name could be used for a variable name.'
-        #name = self.name
-        #name += '_' + Charge_prog[self.three_charge]
-        #return programmatic_name(name)
         return programmatic_name(self.fullname)
 
     @property
