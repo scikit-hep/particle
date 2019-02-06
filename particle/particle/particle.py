@@ -20,6 +20,8 @@ from hepunits.constants import c_light
 from .. import data
 from ..pdgid import PDGID
 from ..pdgid import is_valid
+from ..pdgid.functions import _digit
+from ..pdgid.functions import Location
 from .regex import getname, getdec
 
 from .enums import (SpinType, Parity, Charge, Inv, Status,
@@ -225,10 +227,10 @@ class Particle(object):
 
     def _charge_in_name(self):
         if self.anti == Inv.Barless: return True
-        if self.pdgid in (111, 130, 310): return True
+        if self.pdgid in (23, 111, 130, 310): return True
         if self.three_charge == 0 and self.anti == Inv.Same: return False  # all quarkonia and the photon
-        if self.pdgid.is_baryon and self.pdgid.has_strange \
-           and not (self.pdgid.has_charm or self.pdgid.has_bottom): return False   # Lambda baryons
+        if self.pdgid.is_baryon and _digit(self.pdgid, Location.Nq2) == 1 \
+           and self.pdgid.has_strange and not (self.pdgid.has_charm or self.pdgid.has_bottom): return False  # Lambda baryons
         if abs(self.pdgid) < 9: return False
         return True
 

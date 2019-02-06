@@ -11,6 +11,7 @@ def programmatic_name(name):
     return (name.replace(')(', '_').replace('(', '_').replace(')','')
                 .replace('*', 'st').replace('\'','p')
                 .replace('::', '_')
+                .replace('/', '')
                 .replace('--', '_mm').replace('++', '_pp')
                 .replace('-', '_minus').replace('+', '_plus')
                 .replace('~', 'bar'))

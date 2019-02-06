@@ -14,7 +14,7 @@ common_particles = dict(
     # Gauge bosons
     photon=22,
     gamma=22,
-    Z0=23,
+    Z_0=23,
     W_plus=24,
     W_minus=-24,
 
@@ -51,7 +51,7 @@ common_particles = dict(
     chi_b2_1P=555,
 
     # Light mesons
-    pi0=111,
+    pi_0=111,
     pi_plus=211,
     pi_minus=-211,
     a_0_980_0=9000111,
@@ -62,7 +62,7 @@ common_particles = dict(
     a_1_1260_0=20113,
     a_1_1260_plus=20213,
     eta=221,
-    eta_prime=331,
+    etap_958=331,
     f_0_500=9000221,
     f_0_980=9010221,
     omega_782=223,
@@ -71,13 +71,14 @@ common_particles = dict(
     K_S_0=310,
     K_plus=321,
     K_minus=-321,
-    Kst_0_1430_0=10311,
-    Kst_0_1430_plus=10321,
-    Kst_0_1430_minus=-10321,
     Kst_892_0=313,
     Kst_892_0_bar=-313,
     Kst_892_plus=323,
-    Kst_892_minus=-323,
+    Kst_892_minus_bar=-323,
+    #Kst_0_1430_0=10311,
+    #Kst_0_1430_0_bar=-10311,
+    #Kst_0_1430_plus=10321,
+    #Kst_0_1430_minus_bar=-10321,
 
     # Charm mesons
     D_0=421,
@@ -92,8 +93,8 @@ common_particles = dict(
     D_s_minus=-431,
     D_sst_plus=433,
     D_sst_minus=-433,
-    Dst_s0_2317_plus=10431,
-    Dst_s0_2317_minus=-10431,
+    #Dst_s0_2317_plus=10431,
+    #Dst_s0_2317_minus=-10431,
     D_s1_2460_plus=20433,
     D_s1_2460_minus=-20433,
     D_s1_2536_plus=10433,
