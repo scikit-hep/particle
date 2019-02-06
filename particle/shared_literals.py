@@ -33,7 +33,7 @@ common_particles = dict(
     nu_tau_bar=-16,
 
     # Quarkonia
-    jpsi=443,
+    Jpsi_1S=443,
     psi_2S=100443,
     eta_c_1S=441,
     eta_c_2S=100441,
@@ -67,8 +67,8 @@ common_particles = dict(
     f_0_980=9010221,
     omega_782=223,
     phi_1020=333,
-    K_L=130,
-    K_S=310,
+    K_L_0=130,
+    K_S_0=310,
     K_plus=321,
     K_minus=-321,
     Kst_0_1430_0=10311,
@@ -80,28 +80,36 @@ common_particles = dict(
     Kst_892_minus=-323,
 
     # Charm mesons
-    D0=421,
-    D0_bar=-421,
+    D_0=421,
+    D_0_bar=-421,
     D_plus=411,
     D_minus=-411,
     Dst_2007_0=423,
     Dst_2007_0_bar=-423,
     Dst_2010_plus=413,
     Dst_2010_minus=-413,
-    Ds_plus=431,
-    Ds_minus=-431,
+    D_s_plus=431,
+    D_s_minus=-431,
+    Dsst_plus=433,
+    Dsst_minus=-433,
+    Dst_s0_2317_plus=10431,
+    Dst_s0_2317_minus=-10431,
+    D_s1_2460_plus=20433,
+    D_s1_2460_minus=-20433,
+    D_s1_2536_plus=10433,
+    D_s1_2536_minus=-10433,
 
     # Beauty mesons
-    B0=511,
-    B0_bar=-511,
+    B_0=511,
+    B_0_bar=-511,
     B_plus=521,
     B_minus=-521,
-    Bs0=531,
-    Bs0_bar=-531,
+    B_s_0=531,
+    B_s_0_bar=-531,
 
     # Beauty, charmed mesons
-    Bc_plus=541,
-    Bc_minus=-541,
+    B_c_plus=541,
+    B_c_minus=-541,
 
     # Light baryons
     proton=2212,
@@ -111,7 +119,7 @@ common_particles = dict(
     Lambda=3122,
     Lambda_bar=-3122,
     Xi_minus=3312,
-    Xi0=3322,
+    Xi_0=3322,
     Omega_minus=3334,
     Delta_1232_minus=1114,
     Delta_1232_plus_bar=-1114,
@@ -125,16 +133,16 @@ common_particles = dict(
     Lambda_1520_bar=-3124,
 
     # Charm baryons
-    Lc_plus=4122,
-    Lc_minus_bar=-4122,
+    Lambda_c_plus=4122,
+    Lambda_c_minus_bar=-4122,
 
     # Beauty baryons
-    Lambdab0=5122,
-    Lambdab0_bar=-5122,
-    Xib0=5232,
-    Xib0_bar=-5232,
-    Xib_minus=5132,
-    Xib_plus_bar=-5132,
-    Omegab_minus=5332,
-    Omegab_plus_bar=-5332,
+    Lambda_b_0=5122,
+    Lambda_b_0_bar=-5122,
+    Xi_b_0=5232,
+    Xi_b_0_bar=-5232,
+    Xi_b_minus=5132,
+    Xi_b_plus_bar=-5132,
+    Omega_b_minus=5332,
+    Omega_b_plus_bar=-5332,
 )
