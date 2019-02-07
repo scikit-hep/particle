@@ -1,9 +1,15 @@
+# Licensed under a 3-clause BSD style license, see LICENSE.
+"""
+Collection of enums to help characterising particle properties
+Examples are charge, spin and parity.
+"""
+
 # Backport needed if Python 2 is used
 from enum import IntEnum
 
 
 class SpinType(IntEnum):
-    'The spin type of a particle'
+    """Enum representing the spin type of a particle."""
     Scalar = 1  # (0, 1)
     PseudoScalar = -1  # (0,-1)
     Vector = 2  # (1,-1)
@@ -14,7 +20,7 @@ class SpinType(IntEnum):
 
 
 class Parity(IntEnum):
-    'Represents parity'
+    """Enum representing a particle parity."""
     p = 1
     o = 0
     m = -1
@@ -22,7 +28,7 @@ class Parity(IntEnum):
 
 
 class Charge(IntEnum):
-    'Represents charge * 3'
+    """Enum representing the particle charge * 3."""
     pp = 6
     p = 3
     p23 = 2  # 2/3
@@ -36,19 +42,27 @@ class Charge(IntEnum):
 
 
 class Inv(IntEnum):
-    'Definition of what happens when particle is inverted'
+    """Enum defining what happens when a particle is inverted.
+
+    Possible Values
+    ---------------
+        Same   : particle = antiparticle, e.g. pi0.
+        Full   : antiparticle is denoted with a bar (atop the change of charge, if !=0),
+                 e.g. proton, Lambda.
+        Barless: antiparticle is obtained with a change of charge, e.g. pi+ vs pi-.
+    """
     Same = 0
     Full = 1
     Barless = 2
 
 
 class Status(IntEnum):
-    'The status of the particle'
+    'The status of the particle.'
     Common = 0
     Rare = 1
     Unsure = 2
     Further = 3
-    Nonexistant = 4
+    Nonexistent = 4
 
 
 # Mappings that allow the above classes to be produced from text mappings

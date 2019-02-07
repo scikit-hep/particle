@@ -20,6 +20,8 @@ from hepunits.constants import c_light
 from .. import data
 from ..pdgid import PDGID
 from ..pdgid import is_valid
+from ..pdgid.functions import _digit
+from ..pdgid.functions import Location
 from .regex import getname, getdec
 
 from .enums import (SpinType, Parity, Charge, Inv, Status,
@@ -41,7 +43,13 @@ class InvalidParticle(RuntimeError):
 @total_ordering
 @attr.s(slots=True, cmp=False, repr=False)
 class Particle(object):
-    'The Particle object class. Hold a series of properties for a particle.'
+    """
+    The Particle object class. Hold a series of properties for a particle.
+
+    Class properties:
+
+
+    """
     pdgid = attr.ib(converter=PDGID)
     name = attr.ib()
     mass = attr.ib()
@@ -56,7 +64,7 @@ class Particle(object):
     C = attr.ib(Parity.u, converter=Parity)  # Charge conjugation parity
     # (B (just charge), F (add bar) , and '' (No change))
     quarks = attr.ib('', converter=str)
-    status = attr.ib(Status.Nonexistant, converter=Status)
+    status = attr.ib(Status.Nonexistent, converter=Status)
     latex = attr.ib('')
     mass_upper = attr.ib(0.0)
     mass_lower = attr.ib(0.0)
@@ -141,7 +149,6 @@ class Particle(object):
     def __hash__(self):
         return hash(self.pdgid)
 
-
     # Integer == PDGID
     def __int__(self):
         return int(self.pdgid)
@@ -218,12 +225,30 @@ class Particle(object):
     __neg__ = invert
     __invert__ = invert
 
+    def _charge_in_name(self):
+        """Assess whether the particle charge is part of the particle name.
+
+        Internally used when creating the fullname.
+        """
+        if self.anti == Inv.Barless: return True   # antiparticle flips sign of particle
+        if self.pdgid in (23, 111, 130, 310, 311, -311): return True  # the Z0, pi0, KL0, KS0, K0 and K0bar
+        if abs(self.pdgid) in (2212, 2112): return False   # proton and neutron
+        if self.three_charge == 0 and self.anti == Inv.Same: return False   # all quarkonia and the photon
+        if (self.pdgid.is_baryon
+            and _digit(self.pdgid, Location.Nq2) == 1
+            and self.pdgid.has_strange
+            and not (self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top)
+           ):
+           return False   # Lambda baryons
+        if abs(self.pdgid) < 9: return False   # all quarks
+        return True
+
     # Pretty descriptions
 
     def __str__(self):
-        tilde = '~' if self.anti == Inv.Full and self.pdgid < 0 else ''
-        # star = '*' if self.J == 1 else ''
-        return self.name + tilde + Charge_undo[self.three_charge]
+        _tilde = '~' if self.anti == Inv.Full and self.pdgid < 0 else ''
+        _charge = Charge_undo[self.three_charge] if self._charge_in_name() else ''
+        return self.name + _tilde + _charge
 
     fullname = property(__str__, doc='The nice name, with charge added, and a tilde for an antiparticle, if relevant.')
 
@@ -233,6 +258,10 @@ class Particle(object):
         return ("$" + name + '$') if self.latex else '?'
 
     def _width_or_lifetime(self):
+        """Display either the particle width or the lifetime.
+
+        Internally used by the describe() method.
+        """
         if self.width <= 0:
             return 'Width = {width} MeV'.format(width=str(self.width))
         elif self.width < 1.:  # corresponds to a lifetime of approximately 6.6e-22 seconds
@@ -279,9 +308,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     @property
     def programmatic_name(self):
         'This name could be used for a variable name.'
-        name = self.name
-        name += '_' + Charge_prog[self.three_charge]
-        return programmatic_name(name)
+        return programmatic_name(self.fullname)
 
     @property
     def html_name(self):

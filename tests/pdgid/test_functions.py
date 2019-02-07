@@ -329,7 +329,7 @@ def mesons_JSL_states_list(PDGIDs, jsl):
         return _states[jsl]
 
 
-def  test_JSL_meson_numbers(PDGIDs):
+def test_JSL_meson_numbers(PDGIDs):
     _JSL_eq_000 = mesons_JSL_states_list(PDGIDs, '000')
     _JSL_eq_011 = mesons_JSL_states_list(PDGIDs, '011')
     _JSL_eq_101 = mesons_JSL_states_list(PDGIDs, '101')
