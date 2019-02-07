@@ -226,13 +226,21 @@ class Particle(object):
     __invert__ = invert
 
     def _charge_in_name(self):
-        if self.anti == Inv.Barless: return True
-        if self.pdgid in (23, 111, 130, 310): return True
-        if abs(self.pdgid) in (2212, 2112): return False
-        if self.three_charge == 0 and self.anti == Inv.Same: return False  # all quarkonia and the photon
-        if self.pdgid.is_baryon and _digit(self.pdgid, Location.Nq2) == 1 \
-           and self.pdgid.has_strange and not (self.pdgid.has_charm or self.pdgid.has_bottom): return False  # Lambda baryons
-        if abs(self.pdgid) < 9: return False
+        """Assess whether the particle charge is part of the particle name.
+
+        Internally used when creating the fullname.
+        """
+        if self.anti == Inv.Barless: return True   # antiparticle flips sign of particle
+        if self.pdgid in (23, 111, 130, 310, 311, -311): return True  # the Z0, pi0, KL0, KS0, K0 and K0bar
+        if abs(self.pdgid) in (2212, 2112): return False   # proton and neutron
+        if self.three_charge == 0 and self.anti == Inv.Same: return False   # all quarkonia and the photon
+        if (self.pdgid.is_baryon
+            and _digit(self.pdgid, Location.Nq2) == 1
+            and self.pdgid.has_strange
+            and not (self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top)
+           ):
+           return False   # Lambda baryons
+        if abs(self.pdgid) < 9: return False   # all quarks
         return True
 
     # Pretty descriptions
@@ -250,6 +258,10 @@ class Particle(object):
         return ("$" + name + '$') if self.latex else '?'
 
     def _width_or_lifetime(self):
+        """Display either the particle width or the lifetime.
+
+        Internally used by the describe() method.
+        """
         if self.width <= 0:
             return 'Width = {width} MeV'.format(width=str(self.width))
         elif self.width < 1.:  # corresponds to a lifetime of approximately 6.6e-22 seconds

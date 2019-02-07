@@ -13,8 +13,7 @@ def programmatic_name(name):
                 .replace('::', '_')
                 .replace('/', '')
                 .replace('--', '_mm').replace('++', '_pp')
-                .replace('-', '_minus').replace('+', '_plus')
-                .replace('~', 'bar'))
+                .replace('-', '_minus').replace('+', '_plus'))
 
 
 def str_with_unc(value, upper, lower=None):
