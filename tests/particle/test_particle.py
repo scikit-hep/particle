@@ -48,7 +48,7 @@ def test_lambda_style_search():
     assert Particle.from_search(lambda p: p.name == 'p' and p < 0) == -2212
 
 def test_fuzzy_name_search():
-    particles = Particle.from_search_list('p~-')
+    particles = Particle.from_search_list('p~')
     assert len(particles) == 1
     assert -2212 in particles
 
