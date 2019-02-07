@@ -1,6 +1,13 @@
 ### Version 0.3.0
 #### Under development
 
+* Particle search engine enhanced.
+* Various improvements in the handling of particle names and literals.
+* List of literals extended.
+* More documentation in Particle class.
+* More tests.
+* Bug fix in CSV data files.
+
 ### Version 0.2.2
 #### Feb 5th, 2019
 
