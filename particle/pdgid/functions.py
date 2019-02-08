@@ -101,7 +101,7 @@ def is_meson(pdgid):
 
 
 def is_baryon(pdgid):
-    """"Does this PDG ID correspond to a baryon?"""
+    """Does this PDG ID correspond to a baryon?"""
     if abspid(pdgid) <= 100 : return False
     if _extra_bits(pdgid) > 0: return False
     if _fundamental_id(pdgid) > 0 and _fundamental_id(pdgid) <= 100 : return False
@@ -112,7 +112,7 @@ def is_baryon(pdgid):
 
 
 def is_diquark(pdgid):
-    """"Does this PDG ID correspond to a diquark?"""
+    """Does this PDG ID correspond to a diquark?"""
     if _extra_bits(pdgid) > 0 : return False
     if abspid(pdgid) <= 100 : return False
     if _fundamental_id(pdgid) <= 100 and _fundamental_id(pdgid) > 0 : return False
@@ -200,7 +200,7 @@ def is_dyon(pdgid):
 
     Codes 411xyz0 are used when the magnetic and electrical charge sign agree and 412xyz0 when they disagree,
     with the overall sign of the particle set by the magnetic charge.
-    For now no spin information is provided.
+    For now, no spin information is provided.
     """
     if _extra_bits(pdgid) > 0 : return False
     if _digit(pdgid, Location.N) != 4 : return False
@@ -443,7 +443,7 @@ def P(pdgid):
 
 def C(pdgid):
     """
-    Returns the charge conjugation quantum number C = (-1)^(L+S)
+    Returns the charge conjugation quantum number C = (-1)^(L+S).
 
     Note that this is valid for neutral mesons only. None is returned otherwise.
     """
