@@ -87,7 +87,11 @@ def is_meson(pdgid):
     if abspid(pdgid) in (130, 210, 310) : return True
     if abspid(pdgid) in (150, 350, 510, 530) : return True
     if pdgid in (110, 990, 9990) : return True
-    if _digit(pdgid, Location.Nj) > 0 and _digit(pdgid, Location.Nq3) > 0 and _digit(pdgid, Location.Nq2) > 0 and _digit(pdgid, Location.Nq1) == 0 :
+    if (_digit(pdgid, Location.Nj) > 0
+        and _digit(pdgid, Location.Nq3) > 0
+        and _digit(pdgid, Location.Nq2) > 0
+        and _digit(pdgid, Location.Nq1) == 0
+        ):
         # check for illegal antiparticles
         if _digit(pdgid, Location.Nq3) == _digit(pdgid, Location.Nq2) and pdgid < 0 :
             return False
@@ -190,13 +194,13 @@ def is_dyon(pdgid):
     """
     Does this PDG ID correspond to a Dyon, a magnetic monopole?
 
-	Magnetic monopoles and Dyons are assumed to have one unit of Dirac monopole charge
+    Magnetic monopoles and Dyons are assumed to have one unit of Dirac monopole charge
     and a variable integer number xyz units of electric charge,
     where xyz stands for Nq1 Nq2 Nq3.
 
-	Codes 411xyz0 are used when the magnetic and electrical charge sign agree and 412xyz0 when they disagree,
-	with the overall sign of the particle set by the magnetic charge.
-	For now no spin information is provided.
+    Codes 411xyz0 are used when the magnetic and electrical charge sign agree and 412xyz0 when they disagree,
+    with the overall sign of the particle set by the magnetic charge.
+    For now no spin information is provided.
     """
     if _extra_bits(pdgid) > 0 : return False
     if _digit(pdgid, Location.N) != 4 : return False
@@ -313,7 +317,7 @@ def three_charge(pdgid):
         charge = ch100[sid-1]
         if aid in (1000017, 1000018, 1000034, 1000052, 1000053, 1000054) : charge = 0
         if aid == 5100061 or aid == 5100062 : charge = 6
-    elif _digit(pdgid, Location.Nj) == 0 :      # KL, Ks, or undefined
+    elif _digit(pdgid, Location.Nj) == 0 :      # KL, KS, or undefined
         return 0
     elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9 ): # mesons
         if q2 == 3 or q2 == 5 :
