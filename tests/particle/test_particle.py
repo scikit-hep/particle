@@ -144,8 +144,9 @@ def test_describe():
     __description = r"""Name: gamma      ID: 22           Fullname: gamma          Latex: $\gamma$
 Mass  = 0.0 MeV
 Width = 0.0 MeV
-I (isospin)       = <2     G (parity)        = 0      Q (charge)       = 0
-J (total angular) = 1.0    C (charge parity) = ?      P (space parity) = ?
+I (isospin)       = <2     G (parity)        = ?      Q (charge)       = 0
+J (total angular) = 1.0    C (charge parity) = -      P (space parity) = -
+    SpinType: SpinType.Vector
     Antiparticle status: Same (antiparticle name: gamma)"""
     photon = Particle.from_pdgid(22)
     assert photon.describe() == __description
