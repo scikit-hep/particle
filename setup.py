@@ -35,7 +35,7 @@ setup(
         'hepunits>=0.1.0'
     ],
     setup_requires = ['pytest-runner'],
-    tests_require = ['pytest'],
+    tests_require = ['pytest', 'pandas'],
     keywords = [
         'HEP', 'PDG', 'PDGID', 'particle',
     ],
