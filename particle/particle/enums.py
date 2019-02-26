@@ -66,14 +66,14 @@ class Status(IntEnum):
 
 
 # Mappings that allow the above classes to be produced from text mappings
-Parity_mapping = {'+': Parity.p, '0': Parity.o, '-': Parity.u, '?': Parity.u, '': Parity.o}
+Parity_mapping = {'+': Parity.p, '0': Parity.o, '-': Parity.m, '?': Parity.u, '': Parity.u}
 Charge_mapping = {
     '++': Charge.pp, '+': Charge.p,
     '+2/3': Charge.p23, '+1/3': Charge.p13,
     '0': Charge.o,
     '-1/3': Charge.m13, '-2/3': Charge.m23,
     '-': Charge.m, '--': Charge.mm,
-    '?': Charge.u, '': Charge.o}
+    '?': Charge.u, '': Charge.u}
 
 Inv_mapping = {'': Inv.Same, 'F': Inv.Full, 'B': Inv.Barless}
 Status_mapping = {'R': Status.Common, 'D': Status.Rare, 'S': Status.Unsure, 'F': Status.Further}
