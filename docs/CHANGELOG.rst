@@ -6,12 +6,13 @@ Version 0.3.0
 
 Under development
 
-* Particle search engine enhanced.
+* Particle search engine replaced with more intuitive and powerful version.
 * Various improvements in the handling of particle names and literals.
 * List of literals extended.
 * More documentation in Particle class.
-* More tests.
-* Bug fix in CSV data files.
+* More tests; table generation is now tested as well.
+* Bug fixes in CSV data files and LaTeX naming updates.
+* Added missing particles for 2018 datafiles.
 
 Version 0.2.2
 ^^^^^^^^^^^^^
