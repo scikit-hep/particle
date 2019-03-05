@@ -38,7 +38,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4142136"
-     inkscape:cx="132.09613"
+     inkscape:cx="4.8169128"
      inkscape:cy="8.1523922"
      inkscape:document-units="mm"
      inkscape:current-layer="text4506"
@@ -118,15 +118,15 @@
          ry="1.4848036"
          rx="5.8111362"
          cy="88.503937"
-         cx="76.10302"
+         cx="75.044685"
          id="use4555"
-         style="opacity:1;fill:none;fill-opacity:0;stroke:#171717;stroke-width:1.00000012;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.99667776" />
+         style="opacity:1;fill:none;fill-opacity:0;stroke:#171717;stroke-width:1.00000012;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.99667777" />
       <use
          x="0"
          y="0"
          xlink:href="#use4555"
          id="use4569"
-         transform="rotate(-60,76.10302,88.503937)"
+         transform="rotate(-60,75.044688,88.503937)"
          width="100%"
          height="100%"
          style="fill:none;fill-opacity:0;stroke:#7d7d7d;stroke-opacity:0.69767438" />
@@ -135,7 +135,7 @@
          y="0"
          xlink:href="#use4555"
          id="use4571"
-         transform="rotate(60,76.10302,88.503937)"
+         transform="rotate(60,75.044688,88.503937)"
          width="100%"
          height="100%" />
       <path
