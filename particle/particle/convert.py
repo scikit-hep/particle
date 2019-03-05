@@ -1,5 +1,6 @@
 '''
-This is a conversion file, used by ConvertParticleDB.ipynb.
+This is a conversion file, either run directly as python -m particle.particle.convert
+or used by ConvertParticleDB.ipynb or the tests.
 
 This file requires pandas. But most users will not need this file, as it only
 converts PDG files into the CSV file the other tools use.
@@ -33,11 +34,16 @@ When you are done, you can save one or more of the tables:
 
 '''
 
+import os
+FILE_DIR = os.path.dirname(os.path.realpath(__file__))
+
 import pandas as pd
 
 from .enums import (SpinType, Parity, Charge, Inv, Status,
                     Parity_mapping, Inv_mapping, Status_mapping,
                     Charge_mapping)
+
+from .. import data
 
 def get_from_latex(filename):
     """
@@ -118,9 +124,7 @@ def get_from_pdg_extended(filename, latexes=None, skiprows=None):
     del full['Charge'], full['J']
 
     # Nice sorting
-    full['TmpVals'] = abs(full.index - .25)
-    full.sort_values('TmpVals', inplace=True)
-    del full['TmpVals']
+    sort_particles(full)
 
     # This should be absolue value
     for name in ('MassLower', 'WidthLower'):
@@ -128,6 +132,12 @@ def get_from_pdg_extended(filename, latexes=None, skiprows=None):
 
     # Return the table, making sure NaNs are just empty strings, and sort
     return full.fillna('')
+
+def sort_particles(table):
+    # Nice sorting
+    table['TmpVals'] = abs(table.index - .25)
+    table.sort_values('TmpVals', inplace=True)
+    del table['TmpVals']
 
 def get_from_pdg_mcd(filename, skiprows=range(38)):
     '''
@@ -192,3 +202,44 @@ def update_from_mcd(full_table, update_table):
     full_table.update(update_table_neg)
 
     return full_table
+
+
+def produce_files(particle2008, particle2018):
+    'This produces listed output files from all input files.'
+    
+    skiprows = (
+        list(range(100)) +     # The initial comments
+        list(range(495,499)) + # Some commented lines in the middle
+        [136] +                # The f(0)(1370) since it was renumbered
+        [142]                  # The omega(1420) since it was renumbered
+    )
+    
+    full_table = get_from_pdg_extended(data.open_text(data, 'mass_width_2008.fwf'),
+                                       [data.open_text(data, 'pdgid_to_latex.csv')],
+                                       skiprows=skiprows)
+        
+    full_table.to_csv(particle2008, float_format='%.12g')
+    
+    #addons = get_from_pdg_extended(data.open_text(data, 'mass_width_2008_ext.fwf'),
+    #                               [data.open_text(data, 'pdgid_to_latex.csv')],
+    #                               skiprows=list(range(35)))
+                                   
+    #full_table = pd.concat([full_table, addons])
+    #sort_particles(full_table)
+   
+    ext_table = get_from_pdg_mcd(data.open_text(data, 'mass_width_2018.mcd'))
+    new_table = update_from_mcd(full_table, ext_table)
+   
+    new_table.to_csv(particle2018, float_format='%.12g')
+
+def main():
+    'Regenerate output files - run directly inside the package'
+    master_dir = os.path.dirname(FILE_DIR)
+    data_dir = os.path.join(master_dir, 'data')
+    particle2008 = os.path.join(data_dir, 'particle2008.csv')
+    particle2018 = os.path.join(data_dir, 'particle2018.csv')
+
+    produce_files(particle2008, particle2018)
+
+if __name__ == '__main__':
+    main()
