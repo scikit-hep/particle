@@ -73,7 +73,7 @@ class Particle(object):
         The lower uncertainty on the particle mass, in MeV.
 
     mass_upper
-        The lower uncertainty on the particle mass, in MeV.
+        The upper uncertainty on the particle mass, in MeV.
 
     name
         The particle name as in the PDG data file.
@@ -137,7 +137,7 @@ class Particle(object):
         A = F     - particle that has anti-particle partner different from particle
                     with ascii name formed by concatenation of the name shown below with string "bar" and charge
                     by the rule (nu(e) <--> nubar(e), p <--> pbar, Delta++ <--> Deltabar--)
-        A = blank - particle that coincide with its antiparticle (gamma, pi0, eta).
+        A = blank - particle that coincides with its antiparticle (gamma, pi0, eta).
     """
     pdgid = attr.ib(converter=PDGID)
     name = attr.ib()
