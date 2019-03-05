@@ -110,7 +110,7 @@ def get_from_pdg_extended(filename, latexes=None, skiprows=None):
 
     full_inversion = pdg_table_inv.Anti == Inv.Full
     pdg_table_inv.Latex.where(~full_inversion,
-                              pdg_table_inv.Latex.str.replace(r'^(\\mathrm{|)([\w\\]\w*)', r'\1\\bar{\2}'),
+                              pdg_table_inv.Latex.str.replace(r'^(\\mathrm{|)([a-zA-Z\\][a-zA-Z]*)', r'\1\\bar{\2}'),
                               inplace=True)
     pdg_table_inv.Latex = pdg_table_inv.Latex.str.replace(r'+', r'%').str.replace(r'-', r'+').str.replace(r'%', r'-')
 
