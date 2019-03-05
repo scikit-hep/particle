@@ -9,6 +9,21 @@ import os.path
 from setuptools import setup
 from setuptools import find_packages
 
+test_deps = [
+    'pytest',
+    'pandas',
+]
+
+install_deps = [
+    'enum34>=1.1; python_version<"3.4"',
+    'importlib_resources>=1.0; python_version<"3.7"',
+    'attrs>=17.4.0',
+    'hepunits>=0.1.0'
+]
+
+extras = {
+    'test': test_deps,
+}
 
 def get_version():
     g = {}
@@ -28,14 +43,10 @@ setup(
     license = 'new BSD',
     packages = find_packages(),
     package_data={'': ['data/*.*']},
-    install_requires = [
-        'enum34>=1.1; python_version<"3.4"',
-        'importlib_resources>=1.0; python_version<"3.7"',
-        'attrs>=17.4.0',
-        'hepunits>=0.1.0'
-    ],
+    install_requires = install_deps,
     setup_requires = ['pytest-runner'],
-    tests_require = ['pytest', 'pandas'],
+    tests_require = test_deps,
+    extras_require = extras,
     keywords = [
         'HEP', 'PDG', 'PDGID', 'particle',
     ],

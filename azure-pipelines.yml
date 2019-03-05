@@ -42,11 +42,12 @@ jobs:
 
   - script: |
       python -m pip install --upgrade pip
-      pip install pytest pytest-cov
+      python -m pip install --upgrade pytest
+      python -m pip install numpy pytest-cov
     displayName: 'Install dependencies'
 
   - script: |
-      pip install -e .
+      pip install -e .[test]
     displayName: 'Install package'
 
   - script: |
