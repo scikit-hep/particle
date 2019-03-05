@@ -1,15 +1,14 @@
 import pytest
 
+# Requires pandas
+pd = pytest.importorskip('pandas')
+
 from collections import Counter
 
 from particle import data
 from particle.particle.convert import produce_files
 
-# Requires pandas
-pd = pytest.importorskip('pandas')
-
 FILES = ['particle2008.csv', 'particle2018.csv']
-
 
 def test_generate(tmp_path):
     'This verifies that the input and output files match.'
