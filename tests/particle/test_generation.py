@@ -1,32 +1,22 @@
-
 import pytest
-import sys
 
-# Requires Python 3 and pandas
+# Requires pandas
 pd = pytest.importorskip('pandas')
 
+from collections import Counter
+
 from particle import data
-from particle.particle.convert import (get_from_pdg_extended,
-                                       get_from_pdg_mcd,
-                                       update_from_mcd)
+from particle.particle.convert import produce_files
+
+FILES = ['particle2008.csv', 'particle2018.csv']
 
 def test_generate(tmp_path):
     'This verifies that the input and output files match.'
 
-
-    full_table = get_from_pdg_extended(data.open_text(data, 'mass_width_2008.fwf'),
-                                   [data.open_text(data, 'pdgid_to_latex.csv')],
-                                   skiprows=list(range(100)) + list(range(495,499)))
-
-
     particle2008 = tmp_path / 'particle2008.csv'
-    full_table.to_csv(particle2008, float_format='%.12g')
-
-    ext_table = get_from_pdg_mcd(data.open_text(data, 'mass_width_2018.mcd'))
-    new_table = update_from_mcd(full_table, ext_table)
-
     particle2018 = tmp_path / 'particle2018.csv'
-    new_table.to_csv(particle2018, float_format='%.12g')
+
+    produce_files(particle2008, particle2018)
 
     particle2008_data = data.open_text(data, 'particle2008.csv')
     with particle2008.open() as src, particle2008_data as res:
@@ -37,3 +27,18 @@ def test_generate(tmp_path):
         assert src.read() == res.read()
 
 
+@pytest.mark.parametrize('filename', FILES)
+def test_file_dup(filename):
+    particle_data = data.open_text(data, filename)
+    p = pd.read_csv(particle_data)
+
+    duplicates = {item for item, count in Counter(p.ID).items() if count > 1}
+    assert duplicates == set()
+
+
+@pytest.mark.parametrize('filename', FILES)
+def test_file_has_latex(filename):
+    particle_data = data.open_text(data, filename)
+    p = pd.read_csv(particle_data)
+
+    assert p[p.Latex == ''].empty

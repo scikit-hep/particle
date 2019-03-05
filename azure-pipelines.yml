@@ -8,59 +8,45 @@ trigger:
 
 jobs:
 
-- job: 'Test'
-
+- job: 'Linux'
   pool:
-    vmImage: $(imageName)
-
+    vmImage: 'ubuntu-16.04'
   strategy:
     matrix:
-      Python27-Linux:
-        imageName: 'ubuntu-16.04'
+      Python27:
         python.version: '2.7'
-      Python27-Win:
-        imageName: 'vs2017-win2016'
-        python.version: '2.7'
-      Python35-Linux:
-        imageName: 'ubuntu-16.04'
+      Python35:
         python.version: '3.5'
-      Python36-Linux:
-        imageName: 'ubuntu-16.04'
+      Python36:
         python.version: '3.6'
-      Python37-Linux:
-        imageName: 'ubuntu-16.04'
-        python.version: '3.7'
-      Python37-Win:
-        imageName: 'vs2017-win2016'
+      Python37:
         python.version: '3.7'
 
   steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
-      architecture: 'x64'
+    - template: .ci/azure-steps.yml
 
-  - script: |
-      python -m pip install --upgrade pip
-      pip install pytest pytest-cov
-    displayName: 'Install dependencies'
+- job: 'Windows'
+  pool:
+    vmImage: 'vs2017-win2016'
+  strategy:
+    matrix:
+      Python27:
+        python.version: '2.7'
+      Python37:
+        python.version: '3.7'
 
-  - script: |
-      pip install -e .
-    displayName: 'Install package'
+  steps:
+    - template: .ci/azure-steps.yml
 
-  - script: |
-      pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=particle --cov-report=xml --cov-report=html
-    displayName: 'Test with pytest and collect coverage metrics'
+- job: 'macOS'
+  pool:
+    vmImage: 'macOS-10.13'
+  strategy:
+    matrix:
+      Python27:
+        python.version: '2.7'
+      Python37:
+        python.version: '3.7'
 
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFiles: '**/test-*.xml'
-      testRunTitle: 'Publish test results for Python $(python.version)'
-    condition: succeededOrFailed()
-
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: Cobertura
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+  steps:
+    - template: .ci/azure-steps.yml

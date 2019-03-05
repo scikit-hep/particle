@@ -1,0 +1,59 @@
+* EXTENSION TO THE 2008 EXTENDED FILE
+* "MASSES, WIDTHS, QUANTUM NUMBERS (IGJPC) AND MC ID NUMBERS FROM 2008 EDITION OF RPP"
+*
+* Prepared by Scikit-HEP particle package maintainers, March 2019.
+* For questions regarding the content of this file, contact
+* the Scikit-HEP admins at scikit-hep-admins@googlegroups.com.
+*
+* Some of the particles in this file were not present in the 2008 extended file.
+* Others effectively replace their entries, for the following reasons:
+*
+* 1) Particles commented out in the 2008 extended file:
+* Name                2018 PDGID
+* Delta(1900)         12222, 12122, 11212, 11112
+*
+* 2) Particles whose PDG ID changed compared to the 2008 extended file:
+* Name                2008 PDGID   2018 PDGID
+* f(0)(1370)          30221        10221
+* omega(1420)         100223       1000223
+*
+* 3) Particles whose PDG ID was not set in the 2008 extended file:
+* Name                2018 PDGID
+* Xi(1690)            203322, 203312
+* Xi(1950)            103326, 103316
+* Xi(2030)            203326, 203316
+* Omega(2250)         203338
+* Lambda(c)(2625)     104122
+* Lambda(c)(2880)     204126
+* Xi(c)(2815)         104322, 104312
+* Xi(c)(2790)         104324, 104314
+* Xi(c)(2815)         104322, 104312
+* Xi(c)(2790)         104324, 104314
+*
+* See the full table for descriptions of fields.
+*
+*MASS(MeV)    ,Err+   ,Err-   ,WIDTH(MeV)  ,Err+   ,Err-   ,I  ,G,J   ,P,C,A,PDG-MC ,Chrg,R,S,Name             ,Quarks
+0             ,0      ,0      ,0           ,0      ,0      ,0  , ,1   ,-, , ,     21,   0, ,R,g                ,
+0             ,0      ,0      ,0           ,0      ,0      ,   , ,0   , , , ,     25,   0, ,R,H                ,
+0             ,0      ,0      ,0           ,0      ,0      ,0  ,+,0   ,+,+, ,  10221,   0, ,R,f(0)(1370)       ,x(uU+dD)+y(sS)
+0             ,0      ,0      ,0           ,0      ,0      ,0  ,-,1   ,-,-, ,1000223,   0, ,R,omega(1420)      ,x(uU+dD)+y(sS)
+0             ,0      ,0      ,0           ,0      ,0      ,   , ,1   ,+,-, ,  10553,   0, ,R,h(b)(1P)         ,bB
+0             ,0      ,0      ,0           ,0      ,0      ,0  ,-,2   ,-,-, ,  30553,   0, ,R,Upsilon(2)(1D)   ,bB
+0             ,0      ,0      ,0           ,0      ,0      ,3/2, ,1/2 ,-, ,F,  12222,  ++,3,R,Delta(1900)      ,uuu
+0             ,0      ,0      ,0           ,0      ,0      ,3/2, ,1/2 ,-, ,F,  12122,   +,3,R,Delta(1900)      ,uud
+0             ,0      ,0      ,0           ,0      ,0      ,3/2, ,1/2 ,-, ,F,  11212,   0,3,R,Delta(1900)      ,udd
+0             ,0      ,0      ,0           ,0      ,0      ,3/2, ,1/2 ,-, ,F,  11112,   -,3,R,Delta(1900)      ,ddd
+0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,?   ,?, ,F, 203322,   0,3,D,Xi(1690)         ,uss
+0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,?   ,?, ,F, 203312,   -,3,D,Xi(1690)         ,dss
+0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,?   ,?, ,F, 103326,   0,3,D,Xi(1950)         ,uss
+0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,?   ,?, ,F, 103316,   -,3,D,Xi(1950)         ,dss
+0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,>3/2,?, ,F, 203326,   0,3,D,Xi(2030)         ,uss
+0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,>3/2,?, ,F, 203316,   -,3,D,Xi(2030)         ,dss
+0             ,0      ,0      ,0           ,0      ,0      ,0  , ,?   ,?, ,F, 203338,   -,3,R,Omega(2250)      ,sss
+0             ,0      ,0      ,0           ,0      ,0      ,0  , ,3/2 ,-, ,F, 104122,   +,3,R,Lambda(c)(2625)  ,udc
+0             ,0      ,0      ,0           ,0      ,0      ,0  , ,5/2 ,+, ,F, 204126,   +,3,R,Lambda(c)(2880)  ,udc
+0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,3/2 ,-, ,F, 104322,   +,3,R,Xi(c)(2815)      ,usc
+0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,3/2 ,-, ,F, 104312,   0,3,R,Xi(c)(2815)      ,dsc
+0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,1/2 ,-, ,F, 104324,   +,3,R,Xi(c)(2790)      ,usc
+0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,1/2 ,-, ,F, 104314,   0,3,R,Xi(c)(2790)      ,dsc
+0             ,0      ,0      ,0           ,0      ,0      ,0  , ,1/2 ,+, ,F,   5332,   -,3,R,Omega(b)         ,ssb
