@@ -1,11 +1,15 @@
 import pytest
-import sys
+
+from collections import Counter
+
+from particle import data
+from particle.particle.convert import produce_files
 
 # Requires pandas
 pd = pytest.importorskip('pandas')
 
-from particle import data
-from particle.particle.convert import produce_files
+FILES = ['particle2008.csv', 'particle2018.csv']
+
 
 def test_generate(tmp_path):
     'This verifies that the input and output files match.'
@@ -22,3 +26,20 @@ def test_generate(tmp_path):
     particle2018_data = data.open_text(data, 'particle2018.csv')
     with particle2018.open() as src, particle2018_data as res:
         assert src.read() == res.read()
+
+
+@pytest.mark.parametrize('filename', FILES)
+def test_file_dup(filename):
+    particle_data = data.open_text(data, filename)
+    p = pd.read_csv(particle_data)
+
+    duplicates = {item for item, count in Counter(p.ID).items() if count > 1}
+    assert duplicates == set()
+
+
+@pytest.mark.parametrize('filename', FILES)
+def test_file_has_latex(filename):
+    particle_data = data.open_text(data, filename)
+    p = pd.read_csv(particle_data)
+
+    assert p[p.Latex == ''].empty
