@@ -206,30 +206,30 @@ def update_from_mcd(full_table, update_table):
 
 def produce_files(particle2008, particle2018):
     'This produces listed output files from all input files.'
-    
+
     skiprows = (
         list(range(100)) +     # The initial comments
         list(range(495,499)) + # Some commented lines in the middle
         [136] +                # The f(0)(1370) since it was renumbered
         [142]                  # The omega(1420) since it was renumbered
     )
-    
+
     full_table = get_from_pdg_extended(data.open_text(data, 'mass_width_2008.fwf'),
                                        [data.open_text(data, 'pdgid_to_latex.csv')],
                                        skiprows=skiprows)
-        
+
     full_table.to_csv(particle2008, float_format='%.12g')
-    
-    #addons = get_from_pdg_extended(data.open_text(data, 'mass_width_2008_ext.fwf'),
-    #                               [data.open_text(data, 'pdgid_to_latex.csv')],
-    #                               skiprows=list(range(35)))
-                                   
-    #full_table = pd.concat([full_table, addons])
-    #sort_particles(full_table)
-   
+
+    addons = get_from_pdg_extended(data.open_text(data, 'mass_width_2008_ext.fwf'),
+                                   [data.open_text(data, 'pdgid_to_latex.csv')],
+                                   skiprows=list(range(35)))
+
+    full_table = pd.concat([full_table, addons])
+    sort_particles(full_table)
+
     ext_table = get_from_pdg_mcd(data.open_text(data, 'mass_width_2018.mcd'))
     new_table = update_from_mcd(full_table, ext_table)
-   
+
     new_table.to_csv(particle2018, float_format='%.12g')
 
 def main():
