@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 0.3.1
+-------------
+Under development
+
+* More package documentation.
+
 Version 0.3.0
 -------------
 March 6th, 2019
