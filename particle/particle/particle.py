@@ -48,13 +48,102 @@ class Particle(object):
 
     Class properties:
 
+    C
+        The charge conjugation parity quantum number, if relevant.
 
+    G
+        The G-parity quantum number, if relevant.
+
+    I
+        The isospin quantum number, if relevant.
+
+    P
+        The parity quantum number, if relevant.
+
+    charge
+        The particle charge, in units of the positron charge.
+
+    latex
+        The particle name in LaTeX.
+
+    mass
+        The particle mass, in MeV.
+
+    mass_lower
+        The lower uncertainty on the particle mass, in MeV.
+
+    mass_upper
+        The upper uncertainty on the particle mass, in MeV.
+
+    name
+        The particle name as in the PDG data file.
+
+        Note:
+        This name does not contain the charge. See alternative `fullname`.
+
+    pdgid
+        The PDG ID.
+
+    quarks
+        The quark content of the particle. Empty string if not relevant.
+
+        Note:
+        Capital letters represent anti-quarks, 'qQ' stands for light quark,
+        light anti-quark pair with unknown wave functions.
+        x, y stand for wave function coefficients, see the Review of Particle Physics (RPP) 'Quark Model' Review.
+        p, q stand for CP violation parameters, see the RPP 'CP violation in KL Decays' review.
+
+    rank
+        The particle rank as specified by the PDG, i.e. the number of baryon stars - used only on baryons.
+
+        Possible values are:
+        4 - Existence is certain, and properties are at least fairly well explored.
+        3 - Existence ranges from very likely to certain, but further confirmation
+             is desirable and/or quantum numbers, branching fractions, etc. are not well determined.
+        2 - Evidence of existence is only fair.
+        1 - Evidence of existence is poor.
+
+    status
+        The particle status as specified by the PDG.
+
+        Possible values are:
+        R - Established particles in the Review of Particle Physics (RPP) Summary Table
+            in Particle Physics Booklet
+            (established quarks, gauge bosons, leptons, mesons and baryons, except those in D below).
+        D - The particle is omitted from the Summary Tables in the Particle Physics Booklet,
+            but not from the Review. These entries are omitted only to save space
+            even though they are well established.
+        S - The particle is omitted from the particle properties Summary Tables
+            because it is not well established.
+        F - Special case: "Further mesons", see RPP, these states are in the RPP database
+            but are poorly established or observed by a single group and thus need confirmation.
+            If used, these should be referred to the original publication.
+
+    width
+        The particle decay width, in MeV.
+
+    width_lower
+        The lower uncertainty on the particle decay width, in MeV.
+
+    width_upper
+        The upper uncertainty on the particle decay width, in MeV.
+
+    anti_flag
+        The particle-antiparticle flag.
+
+        A = B     - particle that has anti-particle partner different from particle
+                    with ASCII name formed by concatenation of the name shown below with charge
+                    ( e- <--> e+, pi+ <--> pi-, K+ <--> K-, W+ <--> W- ).
+        A = F     - particle that has anti-particle partner different from particle
+                    with ascii name formed by concatenation of the name shown below with string "bar" and charge
+                    by the rule (nu(e) <--> nubar(e), p <--> pbar, Delta++ <--> Deltabar--)
+        A = blank - particle that coincides with its antiparticle (gamma, pi0, eta).
     """
     pdgid = attr.ib(converter=PDGID)
     name = attr.ib()
     mass = attr.ib()
     width = attr.ib()
-    anti = attr.ib(converter=Inv)  # Info about particle name for anti-particles
+    anti_flag = attr.ib(converter=Inv)  # Info about particle name for anti-particles
 
     rank = attr.ib(0)  # Next line is Isospin
     I = attr.ib(None)  # noqa: E741
@@ -120,7 +209,7 @@ class Particle(object):
                     G=int(v['G']),
                     P=int(v['P']),
                     C=int(v['C']),
-                    anti=int(v['Anti']),
+                    anti_flag=int(v['Anti']),
                     rank=int(v['Rank']),
                     status=int(v['Status']),
                     name=v['Name'],
@@ -200,7 +289,7 @@ class Particle(object):
     @property
     def bar(self):
         'Check to see if particle is inverted.'
-        return self.pdgid < 0 and self.anti == Inv.Full
+        return self.pdgid < 0 and self.anti_flag == Inv.Full
 
     @property
     def spin_type(self):  # -> SpinType:
@@ -217,7 +306,7 @@ class Particle(object):
 
     def invert(self):
         "Get the antiparticle."
-        if self.anti == Inv.Full or (self.anti == Inv.Barless and self.three_charge != Charge.o):
+        if self.anti_flag == Inv.Full or (self.anti_flag == Inv.Barless and self.three_charge != Charge.o):
             return self.from_pdgid(-self.pdgid)
         else:
             return copy(self)
@@ -230,10 +319,10 @@ class Particle(object):
 
         Internally used when creating the fullname.
         """
-        if self.anti == Inv.Barless: return True   # antiparticle flips sign of particle
+        if self.anti_flag == Inv.Barless: return True   # antiparticle flips sign of particle
         if self.pdgid in (23, 111, 130, 310, 311, -311): return True  # the Z0, pi0, KL0, KS0, K0 and K0bar
         if abs(self.pdgid) in (2212, 2112): return False   # proton and neutron
-        if self.three_charge == 0 and self.anti == Inv.Same: return False   # all quarkonia and the photon
+        if self.three_charge == 0 and self.anti_flag == Inv.Same: return False   # all quarkonia and the photon
         if (self.pdgid.is_baryon
             and _digit(self.pdgid, Location.Nq2) == 1
             and self.pdgid.has_strange
@@ -246,7 +335,7 @@ class Particle(object):
     # Pretty descriptions
 
     def __str__(self):
-        _tilde = '~' if self.anti == Inv.Full and self.pdgid < 0 else ''
+        _tilde = '~' if self.anti_flag == Inv.Full and self.pdgid < 0 else ''
         _charge = Charge_undo[self.three_charge] if self._charge_in_name() else ''
         return self.name + _tilde + _charge
 
@@ -301,7 +390,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
             val += "    SpinType: {self.spin_type!s}\n".format(self=self)
         if self.quarks:
             val += "    Quarks: {self.quarks}\n".format(self=self)
-        val += "    Antiparticle status: {self.anti.name} (antiparticle name: {iself.fullname})".format(self=self, iself=self.invert())
+        val += "    Antiparticle status: {self.anti_flag.name} (antiparticle name: {iself.fullname})".format(self=self, iself=self.invert())
         # val += "    Radius: {self.radius} GeV".format(self=self)
         return val
 
