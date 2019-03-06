@@ -12,17 +12,17 @@ Under development
 * More documentation in Particle class.
 * More tests; table generation is now tested as well.
 * Bug fixes in CSV data files and LaTeX naming updates.
-* Added missing particles for 2018 datafiles.
+* Added missing particles for 2018 data files.
 
 Version 0.2.2
-^^^^^^^^^^^^^
+-------------
 Feb 5th, 2019
 
 * Bug fix in setup.py.
 * CHANGELOG file added.
 
 Version 0.2.1
-^^^^^^^^^^^^^
+-------------
 Feb 4th, 2019
 
 * Particle now has direct lifetime and ctau access.
