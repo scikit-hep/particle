@@ -3,8 +3,7 @@ Changelog
 
 Version 0.3.0
 -------------
-
-Under development
+March 6th, 2019
 
 * Particle search engine replaced with more intuitive and powerful version.
 * Various improvements in the handling of particle names and literals.
