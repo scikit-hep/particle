@@ -60,6 +60,17 @@ class Particle(object):
     P
         The parity quantum number, if relevant.
 
+    anti_flag
+        The particle-antiparticle flag.
+
+        A = B     - particle that has anti-particle partner different from particle
+                    with ASCII name formed by concatenation of the name shown below with charge
+                    ( e- <--> e+, pi+ <--> pi-, K+ <--> K-, W+ <--> W- ).
+        A = F     - particle that has anti-particle partner different from particle
+                    with ascii name formed by concatenation of the name shown below with string "bar" and charge
+                    by the rule (nu(e) <--> nubar(e), p <--> pbar, Delta++ <--> Deltabar--)
+        A = blank - particle that coincides with its antiparticle (gamma, pi0, eta).
+
     charge
         The particle charge, in units of the positron charge.
 
@@ -127,17 +138,6 @@ class Particle(object):
 
     width_upper
         The upper uncertainty on the particle decay width, in MeV.
-
-    anti_flag
-        The particle-antiparticle flag.
-
-        A = B     - particle that has anti-particle partner different from particle
-                    with ASCII name formed by concatenation of the name shown below with charge
-                    ( e- <--> e+, pi+ <--> pi-, K+ <--> K-, W+ <--> W- ).
-        A = F     - particle that has anti-particle partner different from particle
-                    with ascii name formed by concatenation of the name shown below with string "bar" and charge
-                    by the rule (nu(e) <--> nubar(e), p <--> pbar, Delta++ <--> Deltabar--)
-        A = blank - particle that coincides with its antiparticle (gamma, pi0, eta).
     """
     pdgid = attr.ib(converter=PDGID)
     name = attr.ib()
