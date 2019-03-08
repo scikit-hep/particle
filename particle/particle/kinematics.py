@@ -9,7 +9,6 @@ from hepunits.units import MeV, ns
 from hepunits.constants import hbar
 
 
-
 def width_to_lifetime(Gamma):
     """
     Convert from a particle decay width to a lifetime.

@@ -1,36 +1,40 @@
 '''
-This is a conversion file, either run directly as python -m particle.particle.convert
+This is a conversion file, not part of the public API.
+
+It can either be run directly as
+
+    >>> python -m particle.particle.convert
+
 or used by ConvertParticleDB.ipynb or the tests.
 
 This file requires pandas. But most users will not need this file, as it only
-converts PDG files into the CSV file the other tools use.
+converts PDG data files into the CSV file(s) the public API tools use.
 
 Usage
 -----
 
-You can load a table from a classic "extended" style PDG table (only produced in 2008),
-combined with a LaTeX file:
+You can load a table from a classic "extended style" PDG table (only produced in 2008),
+combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
 
+    >>> full_table = get_from_pdg_extended('particle/data/mass_width_2008.fwf',
+    ...                                    ['particle/data/pdgid_to_latex.csv'])
 
-    full_table = get_from_pdg_extended('particle/data/mass_width_2008.csv',
-                                       'particle/data/pdgid_to_latex.txt')
+You can also read in a modern "standard" file (this will produce fewer columns):
 
-You can also read in modern file (this will produce fewer columns):
-
-    ext_table = get_from_pdg_mcd('particle/data/mass_width_2018.mcd')
+    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2018.mcd')
 
 A utility is even provided to use the modern table to update the full table:
 
-    new_table = update_from_mcd(full_table, ext_table)
+    >>> new_table = update_from_mcd(full_table, ext_table)
 
 You can see what particles were missing from the full table if you want:
 
-    rem = set(ext_table.index) - set(full_table.index)
-    print(ext_table.loc[rem].sort_index())
+    >>> rem = set(ext_table.index) - set(full_table.index)
+    >>> print(ext_table.loc[rem].sort_index())
 
 When you are done, you can save one or more of the tables:
 
-    full_table.to_csv('particle2008.csv', float_format='%.8g')
+    >>> full_table.to_csv('particle2008.csv', float_format='%.8g')
 
 '''
 
@@ -48,13 +52,31 @@ from .. import data
 def get_from_latex(filename):
     """
     Produce a pandas series from a file with latex mappings in itself.
-    The file format is the following: PDGID, ParticleLatexName.
+    The CVS file format is the following: PDGID, ParticleLatexName.
     """
     latex_table = pd.read_csv(filename, index_col=0)
     return latex_table.particle
 
 def get_from_pdg_extended(filename, latexes=None, skiprows=None):
-    'Read a file, plus a list of latex files, to produce a pandas DataFrame with particle information'
+    """
+    Read an "extended style" PDG data file (only produced in 2008), plus a list of LaTex files,
+    to produce a pandas DataFrame with particle information.
+
+    Parameters
+    ----------
+    filename: string
+        Input file name
+    latexes: list
+        A list of names of LaTeX files describing the pair (PDG ID, LaTeX name) in CSV format
+    skiprows : list
+        List of line numbers to skip when reading in the file.
+
+    Example
+    -------
+    >>> full_table = get_from_pdg_extended('particle/data/mass_width_2008.fwf',
+    ...                                    ['particle/data/pdgid_to_latex.csv'],
+    ...                                    skiprows=list(range(35)))    # skip the first 35 lines of the file
+    """
 
     def unmap(mapping):
         return lambda x: mapping[x.strip()]
@@ -141,7 +163,11 @@ def sort_particles(table):
 
 def get_from_pdg_mcd(filename, skiprows=range(38)):
     '''
-    Reads in a current-style PDG file (2018 tested)
+    Reads in a current-style PDG .mcd file (mass_width_2018.mcd file tested).
+
+    Example
+    -------
+    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2018.mcd')
     '''
 
     # The format here includes the space before a column
@@ -193,7 +219,14 @@ def get_from_pdg_mcd(filename, skiprows=range(38)):
     return ds
 
 def update_from_mcd(full_table, update_table):
-    'Update existing particles only'
+    """
+    Update the full table (aka the PDG extended-style table) with the up-to-date information
+    from the PDG .mcd file for all existing particles in the latter.
+
+    Example
+    -------
+    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2018.mcd')
+    """
 
     full_table = full_table.copy()
     full_table.update(update_table)
