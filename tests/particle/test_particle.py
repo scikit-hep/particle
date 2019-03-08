@@ -14,6 +14,7 @@ from particle.pdgid import PDGID
 
 from hepunits.units import second
 
+
 def test_enums_Charge():
     assert Charge.p + Charge.m == Charge.o
     assert Charge.pp + Charge.mm == Charge.o
@@ -28,7 +29,7 @@ def test_enums_SpinType():
 def test_from_search():
     # 1 match found
     prepr = repr(Particle.from_search(name='gamma'))
-    assert prepr == "<Particle: pdgid=22, fullname='gamma', mass=0.0 MeV>"
+    assert prepr == "<Particle: pdgid=22, name='gamma', mass=0.0 MeV>"
 
     # No match found
     with pytest.raises(ParticleNotFound):
@@ -38,31 +39,42 @@ def test_from_search():
     with pytest.raises(RuntimeError):
         Particle.from_search(name=lambda x: 'Upsilon' in x)
 
+
 def test_lambda_style_search():
-    particles = Particle.from_search_list(lambda p: p.name == 'p')
+    particles = Particle.from_search_list(lambda p: p.pdgname == 'p')
     assert len(particles) == 2
     assert 2212 in particles
     assert -2212 in particles
 
-    assert Particle.from_search(lambda p: p.name == 'p' and p > 0) == 2212
-    assert Particle.from_search(lambda p: p.name == 'p' and p < 0) == -2212
+    assert Particle.from_search(lambda p: p.pdgname == 'p' and p > 0) == 2212
+    assert Particle.from_search(lambda p: p.pdgname == 'p' and p < 0) == -2212
+
 
 def test_fuzzy_name_search():
     particles = Particle.from_search_list('p~')
     assert len(particles) == 1
     assert -2212 in particles
 
+
 def test_keyword_style_search():
-    particles = Particle.from_search_list(name = 'p')
+    particles = Particle.from_search_list(pdgname = 'p')
     assert len(particles) == 2
     assert 2212 in particles
     assert -2212 in particles
 
+    particles = Particle.from_search_list(name = 'p')
+    assert len(particles) == 1
+    assert 2212 in particles
+
+    assert Particle.from_search(pdgname = 'p', particle=True) == 2212
+    assert Particle.from_search(pdgname = 'p', particle=False) == -2212
+
     assert Particle.from_search(name = 'p', particle=True) == 2212
-    assert Particle.from_search(name = 'p', particle=False) == -2212
+    assert Particle.from_search(name = 'p~', particle=False) == -2212
+
 
 def test_keyword_lambda_style_search():
-    particles = Particle.from_search_list(name = lambda x: 'p' == x)
+    particles = Particle.from_search_list(pdgname = lambda x: 'p' == x)
     assert len(particles) == 2
     assert 2212 in particles
     assert -2212 in particles
@@ -78,6 +90,7 @@ def test_keyword_lambda_style_search():
 
     # Unit based comparison
     assert 2212 in Particle.from_search_list(lifetime = lambda x : x > 1*second)
+
 
 def test_pdg():
     assert Particle.from_pdgid(211).pdgid == 211
@@ -117,13 +130,13 @@ def test_str():
 def test_rep():
     pi = Particle.from_pdgid(211)
     assert "pdgid=211" in repr(pi)
-    assert "fullname='pi+'" in repr(pi)
+    assert "name='pi+'" in repr(pi)
     assert "mass=139.57" in repr(pi)
 
 
 def test_basic_props():
     pi = Particle.from_pdgid(211)
-    assert pi.name == 'pi'
+    assert pi.pdgname == 'pi'
     assert pi.pdgid == 211
     assert pi.three_charge == Charge.p
 
@@ -141,7 +154,7 @@ def test_describe():
     pi = Particle.from_pdgid(211)
     assert __description in pi.describe()
 
-    __description = r"""Name: gamma      ID: 22           Fullname: gamma          Latex: $\gamma$
+    __description = r"""PDG name: gamma      ID: 22           name: gamma          Latex: $\gamma$
 Mass  = 0.0 MeV
 Width = 0.0 MeV
 I (isospin)       = <2     G (parity)        = ?      Q (charge)       = 0

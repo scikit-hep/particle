@@ -125,13 +125,13 @@ you can get a particle directly, or you can use a search:
 
     >>> from particle import Particle
     >>> Particle.from_pdgid(211)
-    <Particle: pdgid=211, fullname='pi+', mass=139.57061 ± 0.00024 MeV>
+    <Particle: pdgid=211, name='pi+', mass=139.57061 ± 0.00024 MeV>
     >>>
     >>> Particle.from_search_list('pi')[0]
-    <Particle: pdgid=111, fullname='pi0', mass=134.9770 ± 0.0005 MeV>
+    <Particle: pdgid=111, name='pi0', mass=134.9770 ± 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which include
-``name``, ``fullname``, ``mass``, ``width``, ``charge``, ``anti``, ``rank``,
+``pdgname``, ``name``, ``mass``, ``width``, ``charge``, ``anti``, ``rank``,
 ``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``, ``latex``,
 ``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``.
 You can pass a callable or an exact match for any property.  `particle` can be
@@ -139,7 +139,7 @@ set to `True`/`False`, as well, to limit the search to particles or
 antiparticles.  You can also build the search yourself with the first positional
 argument, which accepts a callable that is given the particle object itself. If
 the first positional argument is a string, that will match against the
-particle's ``fullname``.  The alternative ``.from_search()`` *requires only one*
+particle's ``name``.  The alternative ``.from_search()`` *requires only one*
 match returned by the search, and will throw an error if more or less than one
 match is found.
 
@@ -162,11 +162,11 @@ with easily recognisable names. For example:
 
     >>> from particle.particle import literals as lp
     >>> lp.pi_plus
-    <Particle: pdgid=211, fullname='pi+', mass=139.57061 ± 0.00024 MeV>
+    <Particle: pdgid=211, name='pi+', mass=139.57061 ± 0.00024 MeV>
     >>>
     >>> from particle.particle.literals import Lambda_b_0
     >>>> Lambda_b_0
-    <Particle: pdgid=5122, fullname='Lambda(b)0', mass=5619.60 ± 0.17 MeV>
+    <Particle: pdgid=5122, name='Lambda(b)0', mass=5619.60 ± 0.17 MeV>
     >>> Lambda_b_0.J
     0.5
 
@@ -175,9 +175,9 @@ You can quickly search for particles from the command line with:
 .. code-block:: bash
 
     $ python -m particle search 'K*0'
-    <Particle: pdgid=313, fullname='K*(892)0', mass=895.55 ± 0.20 MeV>
-    <Particle: pdgid=30313, fullname='K*(1680)0', mass=1718 ± 18 MeV>
-    <Particle: pdgid=100313, fullname='K*(1410)0', mass=1421 ± 9 MeV>
+    <Particle: pdgid=313, name='K*(892)0', mass=895.55 ± 0.20 MeV>
+    <Particle: pdgid=30313, name='K*(1680)0', mass=1718 ± 18 MeV>
+    <Particle: pdgid=100313, name='K*(1410)0', mass=1421 ± 9 MeV>
 
 If you only select one particle, either by a search or by giving the PDGID number, you can see more information about
 the particle:
@@ -185,7 +185,7 @@ the particle:
 .. code-block:: bash
 
     $ python -m particle search 311
-    Name: K          ID: 311          Fullname: K0             Latex: $K^{0}$
+    PDG name: K          ID: 311          name: K0             Latex: $K^{0}$
     Mass  = 497.611 ± 0.013 MeV
     Width = -1.0 MeV
     I (isospin)       = 1/2    G (parity)        = 0      Q (charge)       = 0
