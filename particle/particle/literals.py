@@ -10,12 +10,12 @@ Typical use cases::
 
     >>> from particle.particle import literals as lp
     >>> lp.pi_plus
-    <Particle: pdgid=211, fullname='pi+', mass=139.57061 ± 0.00024 MeV>
+    <Particle: pdgid=211, name='pi+', mass=139.57061 ± 0.00024 MeV>
     >>> lp.pi_plus.is_meson
     1.0
     >>> from particle.particle.literals import Lambda_b_0
     >>>> Lambda_b_0
-    <Particle: pdgid=5122, fullname='Lambda(b)0', mass=5619.60 ± 0.17 MeV>
+    <Particle: pdgid=5122, name='Lambda(b)0', mass=5619.60 ± 0.17 MeV>
     >>> Lambda_b_0.J
     0.5
 

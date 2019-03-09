@@ -86,14 +86,14 @@ class Particle(object):
     mass_upper
         The upper uncertainty on the particle mass, in MeV.
 
-    name
+    pdgid
+        The PDG ID.
+
+    pdgname
         The particle name as in the PDG data file.
 
         Note:
-        This name does not contain the charge. See alternative `fullname`.
-
-    pdgid
-        The PDG ID.
+        This name does not contain the charge. See alternative `name`.
 
     quarks
         The quark content of the particle. Empty string if not relevant.
@@ -140,7 +140,7 @@ class Particle(object):
         The upper uncertainty on the particle decay width, in MeV.
     """
     pdgid = attr.ib(converter=PDGID)
-    name = attr.ib()
+    pdgname = attr.ib()
     mass = attr.ib()
     width = attr.ib()
     anti_flag = attr.ib(converter=Inv)  # Info about particle name for anti-particles
@@ -161,7 +161,7 @@ class Particle(object):
     width_lower = attr.ib(0.0)
 
     def __repr__(self):
-        return "<{self.__class__.__name__}: pdgid={pdgid}, fullname='{self!s}', mass={mass} MeV>".format(
+        return "<{self.__class__.__name__}: pdgid={pdgid}, name='{self!s}', mass={mass} MeV>".format(
             self=self, pdgid=int(self.pdgid),
             mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
     _table = None # Loaded table of entries
@@ -191,7 +191,7 @@ class Particle(object):
 
             for v in r:
                 value = int(v['ID'])
-                name = v['Name']
+                pdgname = v['Name']
 
                 # Replace the previous value if appending
                 if value in cls._table:
@@ -212,7 +212,7 @@ class Particle(object):
                     anti_flag=int(v['Anti']),
                     rank=int(v['Rank']),
                     status=int(v['Status']),
-                    name=v['Name'],
+                    pdgname=v['Name'],
                     quarks=v['Quarks'],
                     latex=v['Latex']))
 
@@ -317,7 +317,7 @@ class Particle(object):
     def _charge_in_name(self):
         """Assess whether the particle charge is part of the particle name.
 
-        Internally used when creating the fullname.
+        Internally used when creating the name.
         """
         if self.anti_flag == Inv.Barless: return True   # antiparticle flips sign of particle
         if self.pdgid in (23, 111, 130, 310, 311, -311): return True  # the Z0, pi0, KL0, KS0, K0 and K0bar
@@ -337,9 +337,9 @@ class Particle(object):
     def __str__(self):
         _tilde = '~' if self.anti_flag == Inv.Full and self.pdgid < 0 else ''
         _charge = Charge_undo[self.three_charge] if self._charge_in_name() else ''
-        return self.name + _tilde + _charge
+        return self.pdgname + _tilde + _charge
 
-    fullname = property(__str__, doc='The nice name, with charge added, and a tilde for an antiparticle, if relevant.')
+    name = property(__str__, doc='The nice name, with charge added, and a tilde for an antiparticle, if relevant.')
 
     def _repr_latex_(self):
         name = self.latex
@@ -372,7 +372,7 @@ class Particle(object):
         if self.pdgid == 0:
             return "Name: Unknown"
 
-        val = """Name: {self.name:<10} ID: {self.pdgid:<12} Fullname: {self!s:<14} Latex: {latex}
+        val = """PDG name: {self.pdgname:<10} ID: {self.pdgid:<12} Name: {self!s:<14} Latex: {latex}
 Mass  = {mass} MeV
 {width_or_lifetime}
 I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       = {Q}
@@ -390,14 +390,14 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
             val += "    SpinType: {self.spin_type!s}\n".format(self=self)
         if self.quarks:
             val += "    Quarks: {self.quarks}\n".format(self=self)
-        val += "    Antiparticle status: {self.anti_flag.name} (antiparticle name: {iself.fullname})".format(self=self, iself=self.invert())
+        val += "    Antiparticle status: {self.anti_flag.name} (antiparticle name: {iself.name})".format(self=self, iself=self.invert())
         # val += "    Radius: {self.radius} GeV".format(self=self)
         return val
 
     @property
     def programmatic_name(self):
         'This name could be used for a variable name.'
-        return programmatic_name(self.fullname)
+        return programmatic_name(self.name)
 
     @property
     def html_name(self):
@@ -440,11 +440,11 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         The first and only positional argument is given each particle
         candidate, and returns true/false. Example:
 
-            >>> Particle.from_search_list(lambda p: 'p' in p.fullname)
-            # Returns list of all particles with p somewhere in fullname
+            >>> Particle.from_search_list(lambda p: 'p' in p.name)
+            # Returns list of all particles with p somewhere in name
 
         You can also pass particle=True/False to force a particle or antiparticle. If
-        this is not callable, it will do a "fuzzy" search on the fullname. So this is identical:
+        this is not callable, it will do a "fuzzy" search on the name. So this is identical:
 
             >>> Particle.from_search_list('p')
             # Returns list of all particles with p somewhere in name
@@ -489,7 +489,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
                     if not filter_fn(item):
                         continue
                 else:
-                    if not(filter_fn in item.fullname):
+                    if not(filter_fn in item.name):
                         continue
 
             # At this point, if you break, you will not add a match
@@ -592,35 +592,35 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
         particle = False if mat['bar'] is not None else (True if mat['charge'] == '0' else None)
 
-        fullname = mat['name']
+        name = mat['name']
 
         if mat['family']:
-            fullname += '({mat[family]})'.format(mat=mat)
+            name += '({mat[family]})'.format(mat=mat)
         if mat['state']:
-            fullname += '({mat[state]})'.format(mat=mat)
+            name += '({mat[state]})'.format(mat=mat)
 
         if mat['star']:
-            fullname += '*'
+            name += '*'
 
         J = float(mat['state']) if mat['state'] is not None else None
 
         if mat['mass']:
-            maxname = fullname + '({mat[mass]})'.format(mat=mat)
+            maxname = name + '({mat[mass]})'.format(mat=mat)
         else:
-            maxname = fullname
+            maxname = name
 
         vals = cls.from_search_list(name = lambda x: maxname in x,
                                     three_charge=Charge_mapping[mat['charge']],
                                     particle=particle,
                                     J=J)
         if not vals:
-            vals = cls.from_search_list(name = lambda x: fullname in x,
+            vals = cls.from_search_list(name = lambda x: name in x,
                                         three_charge=Charge_mapping[mat['charge']],
                                         particle=particle,
                                         J=J)
 
         if not vals:
-            raise ParticleNotFound("Could not find particle {0} or {1}".format(maxname, fullname))
+            raise ParticleNotFound("Could not find particle {0} or {1}".format(maxname, name))
 
         if len(vals) > 1 and mat['mass'] is not None:
             vals = [val for val in vals if mat['mass'] in val.latex]
