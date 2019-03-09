@@ -184,9 +184,12 @@ class Particle(object):
         if not append or cls._table is None:
             cls._table = []
 
-        file_to_open = data.open_text(data, 'particle2018.csv') if filename is None else open(filename)
+        if filename is None:
+            filename = data.open_text(data, 'particle2018.csv')
+        elif not hasattr(filename, 'read'):
+            filename = open(filename)
 
-        with file_to_open as f:
+        with filename as f:
             r = csv.DictReader(f)
 
             for v in r:
