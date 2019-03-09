@@ -185,7 +185,7 @@ the particle:
 .. code-block:: bash
 
     $ python -m particle search 311
-    PDG name: K          ID: 311          name: K0             Latex: $K^{0}$
+    PDG name: K          ID: 311          Name: K0             Latex: $K^{0}$
     Mass  = 497.611 ± 0.013 MeV
     Width = -1.0 MeV
     I (isospin)       = 1/2    G (parity)        = 0      Q (charge)       = 0
