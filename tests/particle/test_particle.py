@@ -154,7 +154,7 @@ def test_describe():
     pi = Particle.from_pdgid(211)
     assert __description in pi.describe()
 
-    __description = r"""PDG name: gamma      ID: 22           name: gamma          Latex: $\gamma$
+    __description = r"""PDG name: gamma      ID: 22           Name: gamma          Latex: $\gamma$
 Mass  = 0.0 MeV
 Width = 0.0 MeV
 I (isospin)       = <2     G (parity)        = ?      Q (charge)       = 0
