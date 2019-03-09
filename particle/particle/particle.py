@@ -372,7 +372,7 @@ class Particle(object):
         if self.pdgid == 0:
             return "Name: Unknown"
 
-        val = """PDG name: {self.pdgname:<10} ID: {self.pdgid:<12} name: {self!s:<14} Latex: {latex}
+        val = """PDG name: {self.pdgname:<10} ID: {self.pdgid:<12} Name: {self!s:<14} Latex: {latex}
 Mass  = {mass} MeV
 {width_or_lifetime}
 I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       = {Q}
