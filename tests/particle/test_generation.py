@@ -16,7 +16,7 @@ def test_generate(tmp_path):
     particle2008 = tmp_path / 'particle2008.csv'
     particle2018 = tmp_path / 'particle2018.csv'
 
-    produce_files(particle2008, particle2018)
+    produce_files(particle2008, particle2018, '2018')
 
     particle2008_data = data.open_text(data, 'particle2008.csv')
     with particle2008.open() as src, particle2008_data as res:

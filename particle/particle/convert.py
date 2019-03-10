@@ -1,17 +1,20 @@
 '''
 This is a conversion file, not part of the public API.
 
-It can either be run directly as
+The default CSV files can be updated directly using the command:
 
-    >>> python -m particle.particle.convert
+    >>> python -m particle.particle.convert regenerate 2018
 
-or used by ConvertParticleDB.ipynb or the tests.
+A custom fwf file and latex file can be converted into the CSV format using:
+
+    >>> python -m particle.particle.convert extended file.fwf latex.csv output.csv
 
 This file requires pandas. But most users will not need this file, as it only
-converts PDG data files into the CSV file(s) the public API tools use.
+converts PDG data files into the CSV file(s) the public API tools use. The tests
+load some of these functions to verify the CSV files are in sync with the sources.
 
-Usage
------
+Internal usage
+--------------
 
 You can load a table from a classic "extended style" PDG table (only produced in 2008),
 combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
@@ -42,6 +45,7 @@ import os
 FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 import pandas as pd
+import six
 
 from .enums import (SpinType, Parity, Charge, Inv, Status,
                     Parity_mapping, Inv_mapping, Status_mapping,
@@ -57,7 +61,24 @@ def get_from_latex(filename):
     latex_table = pd.read_csv(filename, index_col=0)
     return latex_table.particle
 
-def get_from_pdg_extended(filename, latexes=None, skiprows=None):
+def filter_file(fileobject):
+    """
+    Open a file if not already a file-like object, and strip lines that start with *.
+    Returns a new file-like object (StringIO instance).
+    """
+
+    if not hasattr(fileobject, 'read'):
+        fileobject = open(fileobject)
+
+    stream = six.StringIO()
+    for line in fileobject:
+        # We need to strip the unicode byte ordering if present before checking for *
+        if not line.lstrip('\ufeff').lstrip().startswith('*'):
+            stream.write(line)
+    stream.seek(0)
+    return stream
+
+def get_from_pdg_extended(filename, latexes=None):
     """
     Read an "extended style" PDG data file (only produced in 2008), plus a list of LaTex files,
     to produce a pandas DataFrame with particle information.
@@ -68,15 +89,13 @@ def get_from_pdg_extended(filename, latexes=None, skiprows=None):
         Input file name
     latexes: list
         A list of names of LaTeX files describing the pair (PDG ID, LaTeX name) in CSV format
-    skiprows : list
-        List of line numbers to skip when reading in the file.
 
     Example
     -------
     >>> full_table = get_from_pdg_extended('particle/data/mass_width_2008.fwf',
-    ...                                    ['particle/data/pdgid_to_latex.csv'],
-    ...                                    skiprows=list(range(35)))    # skip the first 35 lines of the file
+    ...                                    ['particle/data/pdgid_to_latex.csv'])
     """
+    'Read a file, plus a list of latex files, to produce a pandas DataFrame with particle information'
 
     def unmap(mapping):
         return lambda x: mapping[x.strip()]
@@ -97,8 +116,10 @@ def get_from_pdg_extended(filename, latexes=None, skiprows=None):
         Quarks=lambda x: x.strip()
     )
 
+    filename = filter_file(filename)
+
     # Read in the table, apply the converters, add names, ignore comments
-    pdg_table = pd.read_csv(filename, skiprows=skiprows, names='Mass,MassUpper,MassLower,Width,WidthUpper,WidthLower,I,G,J,P,C,Anti,'
+    pdg_table = pd.read_csv(filename, names='Mass,MassUpper,MassLower,Width,WidthUpper,WidthLower,I,G,J,P,C,Anti,'
                             'ID,Charge,Rank,Status,Name,Quarks'.split(','),
                             converters=PDG_converters
                             )
@@ -156,12 +177,12 @@ def get_from_pdg_extended(filename, latexes=None, skiprows=None):
     return full.fillna('')
 
 def sort_particles(table):
-    # Nice sorting
+    "Sort a particle list table nicely"
     table['TmpVals'] = abs(table.index - .25)
     table.sort_values('TmpVals', inplace=True)
     del table['TmpVals']
 
-def get_from_pdg_mcd(filename, skiprows=range(38)):
+def get_from_pdg_mcd(filename):
     '''
     Reads in a current-style PDG .mcd file (mass_width_2018.mcd file tested).
 
@@ -176,6 +197,8 @@ def get_from_pdg_mcd(filename, skiprows=range(38)):
     # Also, we can't use * as a comment char, since it is valid
     # in the particle names, as well!
 
+    filename = filter_file(filename)
+
     nar = pd.read_fwf(filename, colspecs=(
         (0,8),
         (8,16),
@@ -189,7 +212,7 @@ def get_from_pdg_mcd(filename, skiprows=range(38)):
         (97,106),
         (106,128),
         ),
-        skiprows=skiprows, header=None, names=(
+        header=None, names=(
         'ID1', 'ID2', 'ID3', 'ID4',
             'Mass', 'MassUpper', 'MassLower',
             'Width', 'WidthUpper', 'WidthLower',
@@ -237,42 +260,76 @@ def update_from_mcd(full_table, update_table):
     return full_table
 
 
-def produce_files(particle2008, particle2018):
+def produce_files(particle2008, particle2018, year):
     'This produces listed output files from all input files.'
 
-    skiprows = (
-        list(range(100)) +     # The initial comments
-        list(range(495,499)) + # Some commented lines in the middle
-        [136] +                # The f(0)(1370) since it was renumbered
-        [142]                  # The omega(1420) since it was renumbered
-    )
 
     full_table = get_from_pdg_extended(data.open_text(data, 'mass_width_2008.fwf'),
-                                       [data.open_text(data, 'pdgid_to_latex.csv')],
-                                       skiprows=skiprows)
+                                       [data.open_text(data, 'pdgid_to_latex.csv')])
+
+    # 30221  The f(0)(1370) since it was renumbered
+    # 100223 The omega(1420) since it was renumbered
+
+    full_table.drop([30221, 100223], axis=0, inplace=True)
 
     full_table.to_csv(particle2008, float_format='%.12g')
 
     addons = get_from_pdg_extended(data.open_text(data, 'mass_width_2008_ext.fwf'),
-                                   [data.open_text(data, 'pdgid_to_latex.csv')],
-                                   skiprows=list(range(35)))
+                                   [data.open_text(data, 'pdgid_to_latex.csv')])
 
     full_table = pd.concat([full_table, addons])
     sort_particles(full_table)
 
-    ext_table = get_from_pdg_mcd(data.open_text(data, 'mass_width_2018.mcd'))
+    ext_table = get_from_pdg_mcd(data.open_text(data, 'mass_width_'+year+'.mcd'))
     new_table = update_from_mcd(full_table, ext_table)
 
     new_table.to_csv(particle2018, float_format='%.12g')
 
-def main():
+
+def main(year):
     'Regenerate output files - run directly inside the package'
     master_dir = os.path.dirname(FILE_DIR)
     data_dir = os.path.join(master_dir, 'data')
     particle2008 = os.path.join(data_dir, 'particle2008.csv')
-    particle2018 = os.path.join(data_dir, 'particle2018.csv')
+    particlenew = os.path.join(data_dir, 'particle'+year+'.csv')
 
-    produce_files(particle2008, particle2018)
+    produce_files(particle2008, particlenew, year)
+
+
+def convert(fwf, latex, output):
+    table = get_from_pdg_extended(fwf,
+                                  [data.open_text(data, 'pdgid_to_latex.csv'),
+                                   latex])
+
+    table.to_csv(output, float_format='%.12g')
+
+
+def run_regen(args):
+    main(args.year)
+
+
+def run_convert(args):
+    convert(args.fwf, args.latex, args.output)
+
 
 if __name__ == '__main__':
-    main()
+    from argparse import ArgumentParser, FileType
+
+    parser = ArgumentParser()
+    subparsers = parser.add_subparsers(help='Options (pick one)')
+    subparsers.required = True
+    subparsers.dest = 'command'
+
+    parser_regen = subparsers.add_parser('regenerate', help='Regenerate the built in files from the built in names')
+    parser_regen.add_argument('year', help='Year of file to read in/produce (2008 is always read/produced)')
+    parser_regen.set_defaults(func=run_regen)
+
+    parser_convert = subparsers.add_parser('extended', help='Make a new file from extended inputs')
+    parser_convert.add_argument('fwf', type=FileType('r'),  help='Fixed width format extended file')
+    parser_convert.add_argument('latex', type=FileType('r'), help='Latex file with names')
+    parser_convert.add_argument('output', type=FileType('w'), help='Output file name')
+    parser_convert.set_defaults(func=run_convert)
+
+    args = parser.parse_args()
+    args.func(args)
+
