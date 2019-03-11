@@ -2,6 +2,7 @@
     :alt: particle
     :target: https://github.com/scikit-hep/particle
 
+
 Particle: PDG particle data and identification codes
 ====================================================
 
@@ -40,6 +41,7 @@ The current version of the package reflects a pythonic version of the
 utility functions defined in HepPID and HepPDT versions 3.04.01,
 see http://lcgapp.cern.ch/project/simu/HepPDT/.
 
+
 Installation
 ------------
 
@@ -51,12 +53,14 @@ Install ``particle`` like any other Python package:
 
 or similar (use ``--user``, ``virtualenv``, etc. if you wish).
 
+
 Strict dependencies
 -------------------
 
 - `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (2.7+, 3.5+)
 - `importlib_resources backport <http://importlib-resources.readthedocs.io/en/latest/>`_ if using Python < 3.7
 - `attrs <http://www.attrs.org/en/stable/>`_ provides classes without boilerplate (similar to DataClasses in Python 3.7)
+
 
 Getting started: PDGIDs
 -----------------------
@@ -144,7 +148,7 @@ match returned by the search, and will throw an error if more or less than one
 match is found.
 
 Once you have a particle, any of the properties can be accessed, along with several methods.
-Though they are not real properties, you can access ``bar``, ``radius``, and ``spin_type``.
+Though they are not real properties, you can access ``has_name_barred``, ``radius``, and ``spin_type``.
 You can also ``.invert()`` a particle.
 
 There are lots of printing choices for particles:
