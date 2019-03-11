@@ -293,7 +293,15 @@ class Particle(object):
 
     @property
     def spin_type(self):  # -> SpinType:
-        'Access the SpinType enum.'
+        """
+        Access the SpinType enum.
+
+        Note that this is relevant for bosons only. SpinType.NonDefined is returned otherwise.
+        """
+        # Fermions - 2J+1 is always an even number
+        if self.pdgid.j_spin % 2 == 0:
+            return SpinType.NonDefined
+
         if self.J in [0, 1, 2]:
             J = int(self.J)
 

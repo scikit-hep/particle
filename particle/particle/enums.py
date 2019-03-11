@@ -9,14 +9,20 @@ from enum import IntEnum
 
 
 class SpinType(IntEnum):
-    """Enum representing the spin type of a particle."""
-    Scalar = 1  # (0, 1)
+    """
+    Enum representing the spin type.
+
+    Relevant only for bosons. SpinType.NonDefined is to be used for non-bosons.
+    """
+    #          Values of (J, P)
+    Scalar = 1         # (0, 1)
     PseudoScalar = -1  # (0,-1)
-    Vector = 2  # (1,-1)
-    Axial = -2  # (1, 1)
-    Tensor = 3  # (2, 1)
+    Vector = 2         # (1,-1)
+    Axial = -2         # (1, 1)
+    Tensor = 3         # (2, 1)
     PseudoTensor = -3  # (2,-1)
-    Unknown = 0  # (0, 0)
+    Unknown = 0
+    NonDefined = 5
 
 
 class Parity(IntEnum):

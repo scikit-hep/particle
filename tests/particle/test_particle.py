@@ -169,6 +169,45 @@ J (total angular) = 1.0    C (charge parity) = -      P (space parity) = -
     assert __description in Sigma_c_pp.describe()
 
 
+spin_type_classification = (
+    # Gauge bosons
+    (23, SpinType.Unknown),      # Z0 - no parity defined for it
+    # Leptons aren't assigned a SpinType
+    (11, SpinType.NonDefined),      # e-
+    # Only mesons are given a SpinType
+    # - Pseudo-scalars J^P = 0^-
+    (211, SpinType.PseudoScalar),   # pi+
+    (310, SpinType.PseudoScalar),   # K_S
+    (-421, SpinType.PseudoScalar),  # D0_bar
+    # - Scalars J^P = 0^+
+    (9000211, SpinType.Scalar),     # a_0(980)+
+    (9010221, SpinType.Scalar),     # f_0(980)
+    # - Vector J^P = 1^-
+    (333, SpinType.Vector),         # phi(1020)
+    (443, SpinType.Vector),         # J/psi
+    # Axial-vector - J^P = 1^+
+    (20213, SpinType.Axial),        # a_1(1260)+
+    (20313, SpinType.Axial),        # K_1(1400)0
+    (10433, SpinType.Axial),        # D_s1(2536)+
+    # Tensor - J^P = 2^+
+    (225, SpinType.Tensor),         # f_2(1270)
+    (315, SpinType.Tensor),         # K*_2(1430)0
+    # Pseudo-tensor - J^P = 2^-
+    (10225, SpinType.PseudoTensor), # eta_2(1645)
+    # J > 2 mesons
+    (329, SpinType.Unknown),        # K*_4(2045)+
+    # Baryons aren't assigned a SpinType
+    (2212, SpinType.NonDefined),    # proton
+)
+
+
+@pytest.mark.parametrize("pid,stype", spin_type_classification)
+def test_invert_related_methods(pid, stype):
+    particle = Particle.from_pdgid(pid)
+
+    assert particle.spin_type == stype
+
+
 ampgen_style_names = (
     ("pi+", 211),
     ("pi-", -211),
