@@ -10,9 +10,10 @@ from enum import IntEnum
 
 class SpinType(IntEnum):
     """
-    Enum representing the spin type.
+    Enum representing the spin type. Relevant only for bosons.
 
-    Relevant only for bosons. SpinType.NonDefined is to be used for non-bosons.
+    SpinType.Unknown is returned for bosons if one of the values (J,P) is not known/relevant.
+    SpinType.NonDefined is to be used for non-bosons.
     """
     #          Values of (J, P)
     Scalar = 1         # (0, 1)
