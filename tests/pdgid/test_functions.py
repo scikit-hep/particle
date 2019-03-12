@@ -1,6 +1,6 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
 
-from __future__ import division
+from __future__ import absolute_import, division, print_function
 
 import pytest
 
@@ -332,7 +332,7 @@ def mesons_JSL_states_list(PDGIDs, jsl):
         return _states[jsl]
 
 
-def test_JSL_meson_numbers(PDGIDs):
+def test_JSL_mesons(PDGIDs):
     _JSL_eq_000 = mesons_JSL_states_list(PDGIDs, '000')
     _JSL_eq_011 = mesons_JSL_states_list(PDGIDs, '011')
     _JSL_eq_101 = mesons_JSL_states_list(PDGIDs, '101')
@@ -418,6 +418,38 @@ def test_S_non_mesons(PDGIDs):
 def test_L_non_mesons(PDGIDs):
     _L_eq_None= (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
     for id in _L_eq_None: assert L(id) == None
+
+
+def test_PC_mesons(PDGIDs):
+# List of pairs (P, C) for a list of PDG IDs
+    list_PC_pairs = (
+        (PDGIDs.Pi0, -1, +1),
+        (PDGIDs.PiPlus, -1, None),
+        (PDGIDs.eta, -1, +1),
+        (PDGIDs.eta_prime, -1, +1),
+        (PDGIDs.KL, -1, +1),
+        (PDGIDs.KS, -1, +1),
+        (PDGIDs.KMinus, -1, None),
+        (PDGIDs.D0, -1, +1),
+        (PDGIDs.DPlus, -1, None),
+        (PDGIDs.DsPlus, -1, None),
+        (PDGIDs.B0, -1, +1),
+        (PDGIDs.BPlus, -1, None),
+        (PDGIDs.Bs, -1, +1),
+        (PDGIDs.BcPlus, -1, None),
+        (PDGIDs.T0, -1, +1),
+        (PDGIDs.a_0_1450_plus, +1, None),
+        (PDGIDs.K1_1270_0, +1, -1),
+        (PDGIDs.rho_770_minus, -1, None),
+        (PDGIDs.K1_1400_0, +1, +1),
+        (PDGIDs.K1_1400_0, +1, +1),
+        (PDGIDs.rho_1700_0, -1, -1),
+        (PDGIDs.a2_1320_minus, +1, None),
+        (PDGIDs.omega_3_1670, -1, -1)
+        )
+    for trio in list_PC_pairs:
+        assert P(trio[0]) == trio[1]
+        assert C(trio[0]) == trio[2]
 
 
 def test_PC_badly_known_mesons(PDGIDs):
