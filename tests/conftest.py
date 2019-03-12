@@ -56,6 +56,7 @@ class PDGIDsEnum(IntEnum):
     rho_1700_0 = 30113
     a2_1320_minus = -215
     omega_3_1670 = 227
+    f_4_2300 = 9010229  # example of a not-well-known meson
     Proton = 2212
     AntiNeutron = -2112
     Lambda = 3122
