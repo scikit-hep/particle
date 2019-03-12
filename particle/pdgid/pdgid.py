@@ -38,6 +38,9 @@ class PDGID(int):
     __invert__ = __neg__
 
     def info(self):
+        """
+        Print all PDGID properties one per line, for easy inspection.
+        """
         val = ''
         for item in _fnames:
             val += "{item:14} {value}\n".format(item=item, value=getattr(self, item))

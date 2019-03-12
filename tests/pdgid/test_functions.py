@@ -114,6 +114,7 @@ def test_is_meson(PDGIDs):
                PDGIDs.rho_1700_0,
                PDGIDs.a2_1320_minus,
                PDGIDs.omega_3_1670,
+               PDGIDs.f_4_2300,
                PDGIDs.D0, PDGIDs.DPlus, PDGIDs.DsPlus,
                PDGIDs.B0, PDGIDs.BPlus, PDGIDs.Bs, PDGIDs.BcPlus,
                PDGIDs.T0,

@@ -357,7 +357,11 @@ def S(pdgid):
     """
     Returns the spin S.
 
-    Note that this is valid for mesons only. None is returned otherwise.
+    Notes
+    -----
+    - This is valid for mesons only. None is returned otherwise.
+    - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
+      and None is returned too.
     """
     if not is_meson(pdgid): return None
     if not is_valid(pdgid): return None
@@ -378,7 +382,11 @@ def s_spin(pdgid):
     """
     Returns the spin S as 2S+1.
 
-    Note that this is valid for mesons only. None is returned otherwise.
+    Notes
+    -----
+    - This is valid for mesons only. None is returned otherwise.
+    - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
+      and None is returned too.
     """
     value = S(pdgid)
     return (2*value+1) if value is not None else value
@@ -388,7 +396,11 @@ def L(pdgid):
     """
     Returns the orbital angular momentum L.
 
-    Note that this is valid for mesons only. None is returned otherwise.
+    Notes
+    -----
+    - This is valid for mesons only. None is returned otherwise.
+    - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
+      and None is returned too.
     """
     if not is_meson(pdgid): return None
     if not is_valid(pdgid): return None
@@ -422,7 +434,11 @@ def l_spin(pdgid):
     """
     Returns the orbital angular momentum L as 2L+1.
 
-    Note that this is valid for mesons only. None is returned otherwise.
+    Notes
+    -----
+    - This is valid for mesons only. None is returned otherwise.
+    - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
+      and None is returned too.
     """
     value = L(pdgid)
     return (2*value+1) if value is not None else value
@@ -432,23 +448,34 @@ def P(pdgid):
     """
     Returns the parity quantum number P = (-1)^(L+1).
 
-    Note that this is valid for mesons only. None is returned otherwise.
+    Notes
+    -----
+    - This is valid for mesons only. None is returned otherwise.
+    - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
+      and None is returned too.
     """
     if not is_meson(pdgid): return None
     if not is_valid(pdgid): return None
 
     # At this stage it is guaranteed that L != None
-    return (-1)**(L(pdgid)+1)
+    return (-1)**(L(pdgid)+1) if L(pdgid) is not None else None
 
 
 def C(pdgid):
     """
     Returns the charge conjugation quantum number C = (-1)^(L+S).
 
-    Note that this is valid for neutral mesons only. None is returned otherwise.
+    Notes
+    -----
+    - This is valid for mesons only. None is returned otherwise.
+    - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
+      and None is returned too.
     """
     if not is_meson(pdgid) or not three_charge(pdgid) == 0: return None
     if not is_valid(pdgid): return None
+
+    if L(pdgid) is None or S(pdgid) is None:
+        return None
 
     # At this stage it is guaranteed that L and S != None
     return (-1)**(L(pdgid)+S(pdgid))
@@ -463,7 +490,7 @@ def A(pdgid):
 
 
 def Z(pdgid):
-    """Returns the Z if the PDG ID corresponds to a nucleus. Else it returns None."""
+    """Returns the charge Z if the PDG ID corresponds to a nucleus. Else it returns None."""
     # A proton can also be a Hydrogen nucleus
     if abspid(pdgid) == 2212: return 1
     if _digit(pdgid, Location.N10) != 1 or _digit(pdgid, Location.N9) != 0 : return None
