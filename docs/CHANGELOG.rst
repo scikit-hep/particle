@@ -5,10 +5,14 @@ Version 0.4.0
 -------------
 Under development
 
-* Rename ``Particle.fullname/name`` to ``Particle.name/pdgname``.
-* More package documentation (data files, ``particle`` submodule).
+* Changes in API:
+  - Rename ``Particle.fullname/name`` to ``Particle.name/pdgname``.
+  - Rename ``Particle.bar`` to ``Particle.has_name_barred``.
+* Neutrinos added to the 2018 data files.
 * Test suite of ``Particle`` class extended.
+* More package documentation (data files, ``particle`` submodule).
 * Rework for simpler usage of ``particle.particle.convert`` (non-public helper module).
+
 
 Version 0.3.0
 -------------
