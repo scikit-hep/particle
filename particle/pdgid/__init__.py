@@ -91,6 +91,8 @@ from .functions import s_spin
 from .functions import S
 from .functions import l_spin
 from .functions import L
+from .functions import P
+from .functions import C
 from .functions import A
 from .functions import Z
 

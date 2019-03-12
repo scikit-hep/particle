@@ -31,6 +31,8 @@ from particle.pdgid import S
 from particle.pdgid import s_spin
 from particle.pdgid import L
 from particle.pdgid import l_spin
+from particle.pdgid import P
+from particle.pdgid import C
 from particle.pdgid import A
 from particle.pdgid import Z
 
@@ -374,6 +376,12 @@ def test_JSL_meson_numbers(PDGIDs):
         assert L(id) == 2
 
 
+def test_JSL_badly_known_mesons(PDGIDs):
+    assert j_spin(PDGIDs.f_4_2300) == 9
+    assert s_spin(PDGIDs.f_4_2300) == None
+    assert l_spin(PDGIDs.f_4_2300) == None
+
+
 def test_J_non_mesons(PDGIDs):
     # TODO:  test special particles, supersymmetric particles, R-hadrons, di-quarks, nuclei and pentaquarks
     _J_eq_0 = ()
@@ -410,6 +418,21 @@ def test_S_non_mesons(PDGIDs):
 def test_L_non_mesons(PDGIDs):
     _L_eq_None= (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
     for id in _L_eq_None: assert L(id) == None
+
+
+def test_PC_badly_known_mesons(PDGIDs):
+    assert P(PDGIDs.f_4_2300) == None
+    assert C(PDGIDs.f_4_2300) == None
+
+
+def test_P_non_mesons(PDGIDs):
+    _non_mesons = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
+    for id in _non_mesons: assert C(id) == None
+
+
+def test_C_non_mesons(PDGIDs):
+    _non_mesons = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
+    for id in _non_mesons: assert C(id) == None
 
 
 def test_A(PDGIDs):
