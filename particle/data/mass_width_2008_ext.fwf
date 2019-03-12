@@ -33,6 +33,9 @@
 * See the full table for descriptions of fields.
 *
 *MASS(MeV)    ,Err+   ,Err-   ,WIDTH(MeV)  ,Err+   ,Err-   ,I  ,G,J   ,P,C,A,PDG-MC ,Chrg,R,S,Name             ,Quarks
+0             ,0      ,0      ,0           ,0      ,0      ,0  , ,1/2 , , ,F,     12,   0, ,D,nu(e)            ,
+0             ,0      ,0      ,0           ,0      ,0      ,0  , ,1/2 , , ,F,     14,   0, ,D,nu(mu)           ,
+0             ,0      ,0      ,0           ,0      ,0      ,0  , ,1/2 , , ,F,     16,   0, ,D,nu(tau)          ,
 0             ,0      ,0      ,0           ,0      ,0      ,0  , ,1   ,-, , ,     21,   0, ,R,g                ,
 0             ,0      ,0      ,0           ,0      ,0      ,   , ,0   , , , ,     25,   0, ,R,H                ,
 0             ,0      ,0      ,0           ,0      ,0      ,0  ,+,0   ,+,+, ,  10221,   0, ,R,f(0)(1370)       ,x(uU+dD)+y(sS)

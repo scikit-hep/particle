@@ -47,8 +47,8 @@ class Inv(IntEnum):
     Possible Values
     ---------------
         Same   : particle = antiparticle, e.g. pi0.
-        Full   : antiparticle is denoted with a bar (atop the change of charge, if !=0),
-                 e.g. proton, Lambda.
+        Full   : antiparticle is denoted with a bar, e.g. proton, Lambda.
+                 Note that the charge may or may not be part of the name, e.g. Lb0 vs neutrinos.
         Barless: antiparticle is obtained with a change of charge, e.g. pi+ vs pi-.
     """
     Same = 0

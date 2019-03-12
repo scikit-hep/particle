@@ -332,7 +332,7 @@ class Particle(object):
             and not (self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top)
            ):
            return False   # Lambda baryons
-        if abs(self.pdgid) < 9: return False   # all quarks
+        if abs(self.pdgid) < 19: return False   # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
         return True
 
     # Pretty descriptions
