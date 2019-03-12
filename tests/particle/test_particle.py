@@ -168,6 +168,33 @@ J (total angular) = 1.0    C (charge parity) = -      P (space parity) = -
     Sigma_c_pp = Particle.from_pdgid(4222)
     assert __description in Sigma_c_pp.describe()
 
+checklist_is_name_barred = (
+    (1, False),       # d quark
+    (-2, True),       # u antiquark
+    (11, False),      # e-
+    (-13, False),     # mu+
+    (111, False),     # pi0
+    (211, False),     # pi+
+    (-211, False),    # pi-
+    (-213, False),    # rho(770)-
+    (443, False),     # J/psi
+    (300553, False),  # Upsilon(4S)
+    (130, False),     # K_L
+    (2212, False),    # proton
+    (-2112, True),    # antineutron
+    (3322, False),    # Xi0
+    (-3322, True),    # Xi0_bar
+    (-511, True),     # B0_bar
+    (-5122, True),    # Lb0_bar
+)
+
+
+@pytest.mark.parametrize("pid,has_bar", checklist_is_name_barred)
+def test_is_name_barred(pid, has_bar):
+    particle = Particle.from_pdgid(pid)
+
+    assert particle.is_name_barred == has_bar
+
 
 ampgen_style_names = (
     ("pi+", 211),

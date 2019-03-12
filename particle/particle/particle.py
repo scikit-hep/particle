@@ -290,8 +290,11 @@ class Particle(object):
             return 1.5
 
     @property
-    def bar(self):
-        'Check to see if particle is inverted.'
+    def is_name_barred(self):
+        """
+        Check to see if particle is inverted (hence is it an antiparticle)
+        and has a bar in its name.
+        """
         return self.pdgid < 0 and self.anti_flag == Inv.Full
 
     @property
@@ -550,7 +553,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
     @classmethod
     def from_string(cls, name):
-        'Get a particle from a PDG style name - returns best match'
+        'Get a particle from a PDG style name - returns the best match.'
         matches =  cls.from_string_list(name)
         if matches:
             return matches[0]
@@ -561,11 +564,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
     @classmethod
     def from_string_list(cls, name):
-        'Get a list of particle from a PDG style name'
-
-        # Patch in common names
-        if name == 'Upsilon':
-            name = 'Upsilon(1S)'
+        'Get a list of particles from a PDG style name.'
 
         # Forcable override
         bar = False
