@@ -148,7 +148,7 @@ match returned by the search, and will throw an error if more or less than one
 match is found.
 
 Once you have a particle, any of the properties can be accessed, along with several methods.
-Though they are not real properties, you can access ``has_name_barred``, ``radius``, and ``spin_type``.
+Though they are not real properties, you can access ``is_name_barred``, ``radius``, and ``spin_type``.
 You can also ``.invert()`` a particle.
 
 There are lots of printing choices for particles:

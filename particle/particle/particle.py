@@ -290,7 +290,7 @@ class Particle(object):
             return 1.5
 
     @property
-    def has_name_barred(self):
+    def is_name_barred(self):
         """
         Check to see if particle is inverted (hence is it an antiparticle)
         and has a bar in its name.
