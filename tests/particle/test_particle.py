@@ -261,8 +261,11 @@ def test_ampgen_style_names(name, pid):
 decfile_style_names = (
     ("anti-K*0", -313),
     ("a_1(1260)+", 20213),
-    # "D'_1+"
-    # "D_2*+"
+    ("D'_1+", 10413),
+    ("D_2*+", 415),
+    ("D_s+", 431),
+    ("anti-B0", -511),
+    ("anti-Lambda_b0", -5122)
 )
 
 

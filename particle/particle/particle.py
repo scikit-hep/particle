@@ -550,7 +550,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
     @classmethod
     def from_dec(cls, name):
-        'Get a particle from a DecFile style name - returns best match'
+        'Get a particle from a .dec DecFile style name - returns the best match.'
 
         mat = getdec.match(name)
         if mat is None:
@@ -605,6 +605,8 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         name = mat['name']
 
         if mat['family']:
+            if '_' in mat['family']:
+                mat['family'] = mat['family'].strip('_') 
             name += '({mat[family]})'.format(mat=mat)
         if mat['state']:
             name += '({mat[state]})'.format(mat=mat)
