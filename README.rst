@@ -135,17 +135,44 @@ you can get a particle directly, or you can use a search:
     <Particle: pdgid=111, name='pi0', mass=134.9770 ± 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which include
-``pdgname``, ``name``, ``mass``, ``width``, ``charge``, ``anti``, ``rank``,
+``pdgname``, ``name``, ``mass``, ``width``, ``charge``, ``anti_flag``, ``rank``,
 ``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``, ``latex``,
 ``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``.
 You can pass a callable or an exact match for any property.  `particle` can be
-set to `True`/`False`, as well, to limit the search to particles or
+set to ``True``/``False``, as well, to limit the search to particles or
 antiparticles.  You can also build the search yourself with the first positional
 argument, which accepts a callable that is given the particle object itself. If
 the first positional argument is a string, that will match against the
 particle's ``name``.  The alternative ``.from_search()`` *requires only one*
 match returned by the search, and will throw an error if more or less than one
 match is found.
+
+Here are possible sophisticated searches:
+
+.. code-block:: python
+    >>> # Print out all particles with asymmetric decay width uncertainties
+    >>> ps = Particle.from_search_list(lambda p: p.width_lower != p.width_upper)
+    >>> for p in ps:
+    ...     print(p.name, p.pdgid, p.width_lower, p.width_upper)
+    >>>
+    >>> # Find all antiparticles with 'Omega' in the name
+    >>> Particle.from_search_list('Omega', particle=False)   # several found
+    >>>
+    >>> # Find all antiparticles of name=='Omega'
+    >>> Particle.from_search_list(name='Omega', particle=False)  # none found
+    >>>
+    >>> # Find all antiparticles of pdgname=='Omega'
+    >>> Particle.from_search_list(pdgname='Omega', particle=False)  # only 1, of course
+    [<Particle: pdgid=-3334, name='Omega~+', mass=1672.5 ± 0.3 MeV>]
+    >>>
+    >>> # Find all neutral beauty hadrons
+    >>> Particle.from_search_list(lambda p: p.pdgid.has_bottom and p.charge==0)
+    >>>
+    >>> # Find all strange mesons with c*tau > 1 meter
+    >>> from hepunits.units import meter
+    >>> Particle.from_search_list(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1 * meter, particle=True)
+    [<Particle: pdgid=130, name='K(L)0', mass=497.611 ± 0.013 MeV>,
+     <Particle: pdgid=321, name='K+', mass=493.677 ± 0.016 MeV>]
 
 Once you have a particle, any of the properties can be accessed, along with several methods.
 Though they are not real properties, you can access ``is_name_barred``, ``radius``, and ``spin_type``.

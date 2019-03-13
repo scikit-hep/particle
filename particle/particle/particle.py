@@ -452,13 +452,13 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         Search for a particle, returning a list of candidates.
 
         The first and only positional argument is given each particle
-        candidate, and returns true/false. Example:
+        candidate, and returns True/False. Example:
 
             >>> Particle.from_search_list(lambda p: 'p' in p.name)
             # Returns list of all particles with p somewhere in name
 
-        You can also pass particle=True/False to force a particle or antiparticle. If
-        this is not callable, it will do a "fuzzy" search on the name. So this is identical:
+        You can pass particle=True/False to force a particle or antiparticle.
+        IF this is not callable, it will do a "fuzzy" search on the name. So this is identical:
 
             >>> Particle.from_search_list('p')
             # Returns list of all particles with p somewhere in name
@@ -473,7 +473,13 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
            >>> Particle.from_search_list(name='p', particle=True)
            # Returns proton only
 
-        See also from_search, which throws an exception if the particle is not found or too many are found.
+        Versatile searches require a (lambda) function as argument:
+
+        >>> # Get all neutral beauty hadrons
+        >>> Particle.from_search_list(lambda p: p.pdgid.has_bottom and p.charge==0)
+
+
+        See also ``from_search``, which throws an exception if the particle is not found or too many are found.
         '''
 
         # Note that particle can be called by position to keep compatibility with Python 2, but that behavior should
@@ -606,7 +612,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
         if mat['family']:
             if '_' in mat['family']:
-                mat['family'] = mat['family'].strip('_') 
+                mat['family'] = mat['family'].strip('_')
             name += '({mat[family]})'.format(mat=mat)
         if mat['state']:
             name += '({mat[state]})'.format(mat=mat)
