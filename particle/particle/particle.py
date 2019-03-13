@@ -264,12 +264,13 @@ class Particle(object):
 
     @property
     def charge(self):
-       return self.three_charge / 3
+        """The particle charge, in units of the positron charge."""
+        return self.three_charge / 3
 
     @property
     def three_charge(self):
-        'The particle charge (integer * 3).'
-        return Charge(self.pdgid.three_charge)
+        'Three times the particle charge (charge * 3), in units of the positron charge.'
+        return self.pdgid.three_charge
 
     @property
     def lifetime(self):

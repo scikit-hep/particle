@@ -135,7 +135,7 @@ you can get a particle directly, or you can use a search:
     <Particle: pdgid=111, name='pi0', mass=134.9770 ± 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which include
-``pdgname``, ``name``, ``mass``, ``width``, ``charge``, ``anti``, ``rank``,
+``pdgname``, ``name``, ``mass``, ``width``, ``charge``, ``three_charge``, ``anti``, ``rank``,
 ``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``, ``latex``,
 ``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``.
 You can pass a callable or an exact match for any property.  `particle` can be
