@@ -334,7 +334,7 @@ class Particle(object):
         Internally used when creating the name.
         """
         if self.anti_flag == Inv.Barless: return True   # antiparticle flips sign of particle
-        if self.pdgid in (23, 111, 130, 310, 311, -311): return True  # the Z0, pi0, KL0, KS0, K0 and K0bar
+        if self.pdgid in (23, 25, 111, 130, 310, 311, -311): return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
         if abs(self.pdgid) in (2212, 2112): return False   # proton and neutron
         if self.three_charge == 0 and self.anti_flag == Inv.Same: return False   # all quarkonia and the photon
         if (self.pdgid.is_baryon
