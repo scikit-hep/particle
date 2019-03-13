@@ -7,11 +7,11 @@ Under development
 
 * Changes in API:
   - Rename ``Particle.fullname/name`` to ``Particle.name/pdgname``.
-  - Rename ``Particle.bar`` to ``Particle.has_name_barred``.
+  - Rename ``Particle.bar`` to ``Particle.is_name_barred``.
 * Neutrinos added to the 2018 data files.
-* Test suite of ``Particle`` class extended.
-* More package documentation (data files, ``particle`` submodule).
-* Rework for simpler usage of ``particle.particle.convert`` (non-public helper module).
+* Test suite of ``particle`` and ``pdgid`` submodules much extended.
+* More package documentation (data files, ``particle`` and ``pdgid`` submodules).
+* Simpler usage of ``particle.particle.convert`` (non-public helper module).
 
 
 Version 0.3.0
