@@ -1,3 +1,8 @@
+# Licensed under a 3-clause BSD style license, see LICENSE.
+"""
+Collection of regular expression helper utilities for the ``Particle`` class.
+"""
+
 import re
 
 getname = re.compile(r'''
@@ -13,6 +18,7 @@ getname = re.compile(r'''
 $                                           # End of string
 ''', re.VERBOSE)
 
+# Help manipulating .dec DecFile style names
 getdec = re.compile(r'''
 ^                                           # Beginning of string
       (?P<bar>        (anti-)     )?        # Optional anti-

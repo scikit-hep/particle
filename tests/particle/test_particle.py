@@ -92,6 +92,18 @@ def test_keyword_lambda_style_search():
     assert 2212 in Particle.from_search_list(lifetime = lambda x : x > 1*second)
 
 
+def test_complex_search():
+    # Find all strange mesons with c*tau > 1 meter
+    particles = Particle.from_search_list(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1000., particle=True)
+    assert len(particles) == 2 # K+ and KL0
+    assert 130 in particles
+    assert 321 in particles
+
+    # Find all strange anti-mesons with c*tau > 1 meter
+    particles = Particle.from_search_list(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1000., particle=False)
+    assert len(particles) == 1 # only the K-
+    assert -321 in particles
+
 def test_pdg():
     assert Particle.from_pdgid(211).pdgid == 211
     with pytest.raises(InvalidParticle):
@@ -314,8 +326,11 @@ def test_ampgen_style_names(name, pid):
 decfile_style_names = (
     ("anti-K*0", -313),
     ("a_1(1260)+", 20213),
-    # "D'_1+"
-    # "D_2*+"
+    ("D'_1+", 10413),
+    ("D_2*+", 415),
+    ("D_s+", 431),
+    ("anti-B0", -511),
+    ("anti-Lambda_b0", -5122)
 )
 
 
