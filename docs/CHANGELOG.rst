@@ -15,6 +15,7 @@ Under development
 * Test suite of ``particle`` and ``pdgid`` submodules extended.
 * More package documentation (data files, ``particle`` and ``pdgid`` submodules).
 * Added utility conversion function of particle names from LaTeX to HTML.
+* Fixed LaTeX names of Delta(1232) baryons in ``data\pdgid_to_latex.csv`` file.
 * Simpler usage of ``particle.particle.convert`` (non-public helper module).
 
 
