@@ -66,7 +66,8 @@ def str_with_unc(value, upper, lower=None):
                                                                       upper=upper, lower=lower,
                                                                       fsv=fsv, fse=fse)
 
-list_name_greek_letters = (
+# List of greek letter names as used in Unicode (see unicodedata package)
+_list_name_greek_letters = [
     'Alpha',
     'Beta',
     'Chi',
@@ -76,7 +77,7 @@ list_name_greek_letters = (
     'Gamma',
     'Iota',
     'Kappa',
-    'Lambda',
+    'Lamda',
     'Mu',
     'Nu',
     'Omega',
@@ -90,39 +91,21 @@ list_name_greek_letters = (
     'Theta',
     'Upsilon',
     'Xi',
-    'Zeta',
-    'alpha',
-    'beta',
-    'chi',
-    'delta',
-    'epsilon',
-    'eta',
-    'gamma',
-    'iota',
-    'kappa',
-    'lambda',
-    'mu',
-    'nu',
-    'omega',
-    'omicron',
-    'phi',
-    'pi',
-    'psi',
-    'rho',
-    'sigma',
-    'tau',
-    'theta',
-    'upsilon',
-    'xi',
-    'zeta'
-)
-
+    'Zeta'
+]
+_list_name_greek_letters += [l.lower() for l in _list_name_greek_letters]
 
 def greek_letter_name_to_unicode(letter):
-    if letter == letter.lower():
-        return unicodedata.lookup('GREEK SMALL LETTER %s' % letter.upper())
-    else:
-        return unicodedata.lookup('GREEK CAPITAL LETTER %s' % letter.upper())
+    """
+    Return a greek letter name as a Unicode character.
+
+    Examples
+    --------
+    Omega -> Ω
+    omega -> ω
+    """
+    return unicodedata.lookup('GREEK {case} LETTER {name}'.format(
+        case = 'SMALL' if letter == letter.lower() else 'CAPITAL', name = letter.upper()))
 
 
 def latex_to_html_name(name):
@@ -131,8 +114,8 @@ def latex_to_html_name(name):
     name = re.sub(r'\_\{(.*?)\}', r'<SUB>\1</SUB>', name)
     name = re.sub(r'\\mathrm\{(.*?)\}', r'\1', name)
     name = re.sub(r'\\left\[(.*?)\\right\]', r'[\1] ', name)
-    for gl in list_name_greek_letters:
-        # Special care - unicodedata library uses "lamda" for "lambda" :S!
-        name = name.replace(r'\%s'%gl, greek_letter_name_to_unicode(gl.replace('ambda', 'amda')))
+    name = name.replace('ambda', 'amda') # Special care - unicodedata library uses "lamda" for "lambda" :S!
+    for gl in _list_name_greek_letters:
+        name = name.replace(r'\%s'%gl, greek_letter_name_to_unicode(gl))
     name = re.sub(r'\\bar\{(.*?)\}', r'<SPAN STYLE="text-decoration:overline">\1</SPAN>', name)
     return name
