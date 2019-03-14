@@ -8,6 +8,7 @@ Under development
 * Changes in API:
   - Rename ``Particle.fullname/name`` to ``Particle.name/pdgname``.
   - Rename ``Particle.bar`` to ``Particle.is_name_barred``.
+  - Rename ``Particle.latex`` to ``Particle.latexname``.
 * Neutrinos added to the 2018 data files.
 * Test suite of ``particle`` and ``pdgid`` submodules much extended.
 * More package documentation (data files, ``particle`` and ``pdgid`` submodules).

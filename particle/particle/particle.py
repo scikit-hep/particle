@@ -74,7 +74,7 @@ class Particle(object):
     charge
         The particle charge, in units of the positron charge.
 
-    latex
+    latexname
         The particle name in LaTeX.
 
     mass
@@ -154,7 +154,7 @@ class Particle(object):
     # (B (just charge), F (add bar) , and '' (No change))
     quarks = attr.ib('', converter=str)
     status = attr.ib(Status.Nonexistent, converter=Status)
-    latex = attr.ib('')
+    latexname = attr.ib('')
     mass_upper = attr.ib(0.0)
     mass_lower = attr.ib(0.0)
     width_upper = attr.ib(0.0)
@@ -217,7 +217,7 @@ class Particle(object):
                     status=int(v['Status']),
                     pdgname=v['Name'],
                     quarks=v['Quarks'],
-                    latex=v['Latex']))
+                    latexname=v['Latex']))
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
@@ -356,9 +356,9 @@ class Particle(object):
     name = property(__str__, doc='The nice name, with charge added, and a tilde for an antiparticle, if relevant.')
 
     def _repr_latex_(self):
-        name = self.latex
+        name = self.latexname
         # name += "^{" +  Parity_undo[self.three_charge] + '}'
-        return ("$" + name + '$') if self.latex else '?'
+        return ("$" + name + '$') if self.latexname else '?'
 
     def _width_or_lifetime(self):
         """Display either the particle width or the lifetime.
@@ -386,7 +386,7 @@ class Particle(object):
         if self.pdgid == 0:
             return "Name: Unknown"
 
-        val = """PDG name: {self.pdgname:<10} ID: {self.pdgid:<12} Name: {self!s:<14} Latex: {latex}
+        val = """PDG name: {self.pdgname:<10} ID: {self.pdgid:<12} Name: {self!s:<14} Latex: {latexname}
 Mass  = {mass} MeV
 {width_or_lifetime}
 I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       = {Q}
@@ -398,7 +398,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
            P=Parity_undo[self.P],
            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
            width_or_lifetime=self._width_or_lifetime(),
-           latex = self._repr_latex_())
+           latexname = self._repr_latex_())
 
         if self.spin_type != SpinType.Unknown:
             val += "    SpinType: {self.spin_type!s}\n".format(self=self)
@@ -416,7 +416,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
     @property
     def html_name(self):
         'This is the name using HTML instead of LaTeX.'
-        name = self.latex
+        name = self.latexname
         name = re.sub(r'\^\{(.*?)\}', r'<SUP>\1</SUP>', name)
         name = re.sub(r'\_\{(.*?)\}', r'<SUB>\1</SUB>', name)
         name = re.sub(r'\\mathrm\{(.*?)\}', r'\1', name)
@@ -633,7 +633,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
             raise ParticleNotFound("Could not find particle {0} or {1}".format(maxname, name))
 
         if len(vals) > 1 and mat['mass'] is not None:
-            vals = [val for val in vals if mat['mass'] in val.latex]
+            vals = [val for val in vals if mat['mass'] in val.latexname]
 
         if len(vals) > 1:
             vals = sorted(vals)

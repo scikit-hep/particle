@@ -30,7 +30,7 @@ A few older years are included, too.
 ``pdgid_to_latex.csv``
 ======================
 
-A list of PDG IDs and latex names. The negative values are normally generated based on the ``Inv`` rule,
+A list of PDG IDs and LaTeX names. The negative values are normally generated based on the ``Inv`` rule,
 but if you have a special case, you can set a negative value as well and it will override.
 
 

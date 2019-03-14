@@ -136,7 +136,7 @@ you can get a particle directly, or you can use a search:
 
 You can search for the properties using keyword arguments, which include
 ``pdgname``, ``name``, ``mass``, ``width``, ``charge``, ``anti``, ``rank``,
-``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``, ``latex``,
+``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``, ``latexname``,
 ``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``.
 You can pass a callable or an exact match for any property.  `particle` can be
 set to `True`/`False`, as well, to limit the search to particles or
