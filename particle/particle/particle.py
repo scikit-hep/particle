@@ -12,8 +12,6 @@ from copy import copy
 from fractions import Fraction
 from functools import reduce, total_ordering
 
-import unicodedata
-
 # External dependencies
 import attr
 
@@ -31,7 +29,7 @@ from .enums import (SpinType, Parity, Charge, Inv, Status,
                     Charge_undo, Charge_prog, Charge_mapping)
 
 from .utilities import (programmatic_name, str_with_unc,
-                        list_name_greek_letters)
+                        latex_to_html_name)
 
 from .kinematics import width_to_lifetime
 
@@ -418,25 +416,10 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         'This name could be used for a variable name.'
         return programmatic_name(self.name)
 
-    def _greek_letter_name_to_unicode(self, letter):
-        if letter == letter.lower():
-            return unicodedata.lookup('GREEK SMALL LETTER %s' % letter.upper())
-        else:
-            return unicodedata.lookup('GREEK CAPITAL LETTER %s' % letter.upper())
-
     @property
     def htmlname(self):
         'This is the name using HTML instead of LaTeX.'
-        name = self.latexname
-        name = re.sub(r'\^\{(.*?)\}', r'<SUP>\1</SUP>', name)
-        name = re.sub(r'\_\{(.*?)\}', r'<SUB>\1</SUB>', name)
-        name = re.sub(r'\\mathrm\{(.*?)\}', r'\1', name)
-        name = re.sub(r'\\left\[(.*?)\\right\]', r'[\1] ', name)
-        for gl in list_name_greek_letters:
-            # Special care - unicodedata library uses "lamda" for "lambda" :S!
-            name = name.replace(r'\%s'%gl, self._greek_letter_name_to_unicode(gl.replace('ambda', 'amda')))
-        name = re.sub(r'\\bar\{(.*?)\}', r'<SPAN STYLE="text-decoration:overline">\1</SPAN>', name)
-        return name
+        return latex_to_html_name(self.latexname)
 
     @classmethod
     def empty(cls):

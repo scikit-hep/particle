@@ -2,6 +2,7 @@
 
 import re
 import math
+import unicodedata
 
 
 def programmatic_name(name):
@@ -115,3 +116,23 @@ list_name_greek_letters = (
     'xi',
     'zeta'
 )
+
+
+def greek_letter_name_to_unicode(letter):
+    if letter == letter.lower():
+        return unicodedata.lookup('GREEK SMALL LETTER %s' % letter.upper())
+    else:
+        return unicodedata.lookup('GREEK CAPITAL LETTER %s' % letter.upper())
+
+
+def latex_to_html_name(name):
+    """Conversion of particle names from LaTeX to HTML."""
+    name = re.sub(r'\^\{(.*?)\}', r'<SUP>\1</SUP>', name)
+    name = re.sub(r'\_\{(.*?)\}', r'<SUB>\1</SUB>', name)
+    name = re.sub(r'\\mathrm\{(.*?)\}', r'\1', name)
+    name = re.sub(r'\\left\[(.*?)\\right\]', r'[\1] ', name)
+    for gl in list_name_greek_letters:
+        # Special care - unicodedata library uses "lamda" for "lambda" :S!
+        name = name.replace(r'\%s'%gl, greek_letter_name_to_unicode(gl.replace('ambda', 'amda')))
+    name = re.sub(r'\\bar\{(.*?)\}', r'<SPAN STYLE="text-decoration:overline">\1</SPAN>', name)
+    return name
