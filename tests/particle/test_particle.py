@@ -160,12 +160,31 @@ def test_lifetime_props():
 
 
 def test_describe():
+    # Test print-out of symmetric lifetime errors
     __description = u'Lifetime = 26.033 ± 0.005 ns'
     if sys.version_info < (3, 0):
         __description = __description.replace(u'±', u'+/-')
     pi = Particle.from_pdgid(211)
     assert __description in pi.describe()
 
+    # Test print-out of asymmetric lifetime errors
+    __description = 'Lifetime = 1.12e+09 + 1.7e+08 - 1.6e+08 ns'
+    Omega_b_minus = Particle.from_pdgid(5332)
+    assert __description in Omega_b_minus.describe()
+
+    # Test print-out of symmetric width errors
+    __description = u'Width = 2495.2 ± 2.3 MeV'
+    if sys.version_info < (3, 0):
+        __description = __description.replace(u'±', u'+/-')
+    H0 = Particle.from_pdgid(23)
+    assert __description in H0.describe()
+
+    # Test print-out of asymmetric width errors
+    __description = 'Width = 1.89 + 0.09 - 0.18 MeV'
+    Sigma_c_pp = Particle.from_pdgid(4222)
+    assert __description in Sigma_c_pp.describe()
+
+    # Test print-out of zero width values
     __description = r"""PDG name: gamma      ID: 22           Name: gamma          Latex: $\gamma$
 Mass  = 0.0 MeV
 Width = 0.0 MeV
@@ -176,9 +195,6 @@ J (total angular) = 1.0    C (charge parity) = -      P (space parity) = -
     photon = Particle.from_pdgid(22)
     assert photon.describe() == __description
 
-    __description = 'Width = 1.89 + 0.09 - 0.18 MeV'
-    Sigma_c_pp = Particle.from_pdgid(4222)
-    assert __description in Sigma_c_pp.describe()
 
 checklist_is_name_barred = (
     (1, False),       # d quark

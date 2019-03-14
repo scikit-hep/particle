@@ -163,7 +163,8 @@ def get_from_pdg_extended(filename, latexes=None):
     # This will override any negative values
     full.Latex.update(latex_series)
 
-    # These items are not very important - can be reconstructed from the PDG
+    # These items are not very important - can be reconstructed from the PDG ID
+    # TODO: maybe first check the consistency between what is read in and what the PDG ID provides (being maniac)?
     del full['Charge'], full['J']
 
     # Nice sorting
@@ -332,4 +333,3 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     args.func(args)
-

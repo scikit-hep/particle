@@ -264,12 +264,13 @@ class Particle(object):
 
     @property
     def charge(self):
-       return self.three_charge / 3
+        """The particle charge, in units of the positron charge."""
+        return self.three_charge / 3
 
     @property
     def three_charge(self):
-        'The particle charge (integer * 3).'
-        return Charge(self.pdgid.three_charge)
+        'Three times the particle charge (charge * 3), in units of the positron charge.'
+        return self.pdgid.three_charge
 
     @property
     def lifetime(self):
@@ -334,7 +335,7 @@ class Particle(object):
         Internally used when creating the name.
         """
         if self.anti_flag == Inv.Barless: return True   # antiparticle flips sign of particle
-        if self.pdgid in (23, 111, 130, 310, 311, -311): return True  # the Z0, pi0, KL0, KS0, K0 and K0bar
+        if self.pdgid in (23, 25, 111, 130, 310, 311, -311): return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
         if abs(self.pdgid) in (2212, 2112): return False   # proton and neutron
         if self.three_charge == 0 and self.anti_flag == Inv.Same: return False   # all quarkonia and the photon
         if (self.pdgid.is_baryon
