@@ -13,3 +13,6 @@ from .particle import Particle, SpinType, Parity, Charge, Inv, Status, ParticleN
 
 # Direct access to kinematics functions
 from .particle import width_to_lifetime, lifetime_to_width
+
+# Direct access to handy LaTeX to HTML particle name conversions
+from .particle import latex_to_html_name

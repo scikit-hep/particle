@@ -1,5 +1,5 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
-"""
+r"""
 The Particle Data Group (PDG) defines the standard particle identification numbering scheme
 in the form of a signed 7-digit number +/- N Nr Nl Nq1 Nq2 Nq3 Nj.
 

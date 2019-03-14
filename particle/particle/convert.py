@@ -5,7 +5,7 @@ The default CSV files can be updated directly using the command:
 
     >>> python -m particle.particle.convert regenerate 2018
 
-A custom fwf file and latex file can be converted into the CSV format using:
+A custom fwf file and LaTeX file can be converted into the CSV format using:
 
     >>> python -m particle.particle.convert extended file.fwf latex.csv output.csv
 
@@ -55,7 +55,7 @@ from .. import data
 
 def get_from_latex(filename):
     """
-    Produce a pandas series from a file with latex mappings in itself.
+    Produce a pandas series from a file with LaTeX mappings in itself.
     The CVS file format is the following: PDGID, ParticleLatexName.
     """
     latex_table = pd.read_csv(filename, index_col=0)
@@ -80,7 +80,7 @@ def filter_file(fileobject):
 
 def get_from_pdg_extended(filename, latexes=None):
     """
-    Read an "extended style" PDG data file (only produced in 2008), plus a list of LaTex files,
+    Read an "extended style" PDG data file (only produced in 2008), plus a list of LaTeX files,
     to produce a pandas DataFrame with particle information.
 
     Parameters
@@ -95,7 +95,7 @@ def get_from_pdg_extended(filename, latexes=None):
     >>> full_table = get_from_pdg_extended('particle/data/mass_width_2008.fwf',
     ...                                    ['particle/data/pdgid_to_latex.csv'])
     """
-    'Read a file, plus a list of latex files, to produce a pandas DataFrame with particle information'
+    'Read a file, plus a list of LaTeX files, to produce a pandas DataFrame with particle information'
 
     def unmap(mapping):
         return lambda x: mapping[x.strip()]
@@ -124,7 +124,7 @@ def get_from_pdg_extended(filename, latexes=None):
                             converters=PDG_converters
                             )
 
-    # Read the latex
+    # Read the LaTeX
     latex_series = pd.concat([get_from_latex(latex) for latex in latexes])
 
 

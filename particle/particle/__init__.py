@@ -3,3 +3,4 @@
 from .particle import Particle, ParticleNotFound
 from .enums import SpinType, Parity, Charge, Inv, Status
 from .kinematics import width_to_lifetime, lifetime_to_width
+from .utilities import latex_to_html_name

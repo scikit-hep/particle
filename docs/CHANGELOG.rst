@@ -7,11 +7,16 @@ Under development
 
 * Changes in API:
   - Rename ``Particle.fullname/name`` to ``Particle.name/pdgname``.
-  - Rename ``Particle.bar`` to ``Particle.has_name_barred``.
+  - Rename ``Particle.bar`` to ``Particle.is_name_barred``.
+  - Rename ``Particle.latex`` to ``Particle.latexname``.
+  - Rename ``Particle.html_name`` to ``Particle.htmlname``.
 * Neutrinos added to the 2018 data files.
-* Test suite of ``Particle`` class extended.
-* More package documentation (data files, ``particle`` submodule).
-* Rework for simpler usage of ``particle.particle.convert`` (non-public helper module).
+* Better handling of particle names in HTML and LaTeX.
+* Test suite of ``particle`` and ``pdgid`` submodules extended.
+* More package documentation (data files, ``particle`` and ``pdgid`` submodules).
+* Added utility conversion function of particle names from LaTeX to HTML.
+* Fixed LaTeX names of Delta(1232) baryons in ``data\pdgid_to_latex.csv`` file.
+* Simpler usage of ``particle.particle.convert`` (non-public helper module).
 
 
 Version 0.3.0

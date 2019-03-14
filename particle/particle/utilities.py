@@ -2,6 +2,7 @@
 
 import re
 import math
+import unicodedata
 
 
 def programmatic_name(name):
@@ -64,3 +65,57 @@ def str_with_unc(value, upper, lower=None):
         return '{value:{fsv}} + {upper:{fse}} - {lower:{fse}}'.format(value=value,
                                                                       upper=upper, lower=lower,
                                                                       fsv=fsv, fse=fse)
+
+# List of greek letter names as used in Unicode (see unicodedata package)
+_list_name_greek_letters = [
+    'Alpha',
+    'Beta',
+    'Chi',
+    'Delta',
+    'Epsilon',
+    'Eta',
+    'Gamma',
+    'Iota',
+    'Kappa',
+    'Lamda',
+    'Mu',
+    'Nu',
+    'Omega',
+    'Omicron',
+    'Phi',
+    'Pi',
+    'Psi',
+    'Rho',
+    'Sigma',
+    'Tau',
+    'Theta',
+    'Upsilon',
+    'Xi',
+    'Zeta'
+]
+_list_name_greek_letters += [l.lower() for l in _list_name_greek_letters]
+
+def greek_letter_name_to_unicode(letter):
+    """
+    Return a greek letter name as a Unicode character.
+
+    Examples
+    --------
+    Omega -> Ω
+    omega -> ω
+    """
+    return unicodedata.lookup('GREEK {case} LETTER {name}'.format(
+        case = 'SMALL' if letter == letter.lower() else 'CAPITAL', name = letter.upper()))
+
+
+def latex_to_html_name(name):
+    """Conversion of particle names from LaTeX to HTML."""
+    name = re.sub(r'\^\{(.*?)\}', r'<SUP>\1</SUP>', name)
+    name = re.sub(r'\_\{(.*?)\}', r'<SUB>\1</SUB>', name)
+    name = re.sub(r'\\mathrm\{(.*?)\}', r'\1', name)
+    name = re.sub(r'\\left\[(.*?)\\right\]', r'[\1] ', name)
+    name = name.replace('ambda', 'amda') # Special care - unicodedata library uses "lamda" for "lambda" :S!
+    for gl in _list_name_greek_letters:
+        name = name.replace(r'\%s'%gl, greek_letter_name_to_unicode(gl))
+    name = re.sub(r'\\bar\{(.*?)\}', r'<SPAN STYLE="text-decoration:overline">\1</SPAN>', name)
+    return name
