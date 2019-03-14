@@ -458,7 +458,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
             # Returns list of all particles with p somewhere in name
 
         You can pass particle=True/False to force a particle or antiparticle.
-        IF this is not callable, it will do a "fuzzy" search on the name. So this is identical:
+        If this is not callable, it will do a "fuzzy" search on the name. So this is identical:
 
             >>> Particle.from_search_list('p')
             # Returns list of all particles with p somewhere in name
