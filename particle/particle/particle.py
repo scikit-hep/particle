@@ -414,7 +414,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         return programmatic_name(self.name)
 
     @property
-    def html_name(self):
+    def htmlname(self):
         'This is the name using HTML instead of LaTeX.'
         name = self.latexname
         name = re.sub(r'\^\{(.*?)\}', r'<SUP>\1</SUP>', name)

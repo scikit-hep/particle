@@ -184,7 +184,7 @@ J (total angular) = 1.0    C (charge parity) = -      P (space parity) = -
     assert photon.describe() == __description
 
 
-checklist_html_name = (
+checklist_htmlname = (
     (1, 'd'),                            # d quark
     (-2, '~u'),                          # u antiquark
     (11, 'e<SUP>-</SUP>'),               # e-
@@ -208,11 +208,11 @@ checklist_html_name = (
 )
 
 
-@pytest.mark.parametrize("pid,html_name", checklist_html_name)
-def test_html_name(pid, html_name):
+@pytest.mark.parametrize("pid,htmlname", checklist_htmlname)
+def test_htmlname(pid, htmlname):
     particle = Particle.from_pdgid(pid)
 
-    assert particle.html_name == html_name
+    assert particle.htmlname == htmlname
 
 
 checklist_is_name_barred = (

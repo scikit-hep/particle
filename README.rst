@@ -152,7 +152,7 @@ Though they are not real properties, you can access ``is_name_barred``, ``radius
 You can also ``.invert()`` a particle.
 
 There are lots of printing choices for particles:
-``describe()``, ``programmatic_name``, ``html_name``, HTML printing outs in notebooks,
+``describe()``, ``programmatic_name``, ``htmlname``, HTML printing outs in notebooks,
 and of course ``repr`` and ``str`` support.
 
 You can get the ``.pdgid`` from a particle, as well.

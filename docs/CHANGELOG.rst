@@ -9,6 +9,7 @@ Under development
   - Rename ``Particle.fullname/name`` to ``Particle.name/pdgname``.
   - Rename ``Particle.bar`` to ``Particle.is_name_barred``.
   - Rename ``Particle.latex`` to ``Particle.latexname``.
+  - Rename ``Particle.html_name`` to ``Particle.htmlname``.
 * Neutrinos added to the 2018 data files.
 * Test suite of ``particle`` and ``pdgid`` submodules much extended.
 * More package documentation (data files, ``particle`` and ``pdgid`` submodules).
