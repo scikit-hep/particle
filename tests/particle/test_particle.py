@@ -208,6 +208,7 @@ checklist_htmlname = (
 )
 
 
+@pytest.mark.skipif(sys.version_info < (3,0), reason="Requires Python 3")
 @pytest.mark.parametrize("pid,htmlname", checklist_htmlname)
 def test_htmlname(pid, htmlname):
     particle = Particle.from_pdgid(pid)
