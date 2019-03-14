@@ -150,6 +150,7 @@ match is found.
 Here are possible sophisticated searches:
 
 .. code-block:: python
+
     >>> # Print out all particles with asymmetric decay width uncertainties
     >>> ps = Particle.from_search_list(lambda p: p.width_lower != p.width_upper)
     >>> for p in ps:
