@@ -11,7 +11,7 @@ Under development
   - Rename ``Particle.latex`` to ``Particle.latexname``.
   - Rename ``Particle.html_name`` to ``Particle.htmlname``.
 * Neutrinos added to the 2018 data files.
-* Test suite of ``particle`` and ``pdgid`` submodules much extended.
+* Test suite of ``particle`` and ``pdgid`` submodules extended.
 * More package documentation (data files, ``particle`` and ``pdgid`` submodules).
 * Simpler usage of ``particle.particle.convert`` (non-public helper module).
 
