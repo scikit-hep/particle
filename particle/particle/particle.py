@@ -464,7 +464,9 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
 
         >>> # Get all neutral beauty hadrons
         >>> Particle.from_search_list(lambda p: p.pdgid.has_bottom and p.charge==0)
-
+        >>>
+        >>> # Trivially find all pseudoscalar charm mesons
+        >>> Particle.from_search_list(lambda p: p.pdgid.is_meson and p.pdgid.has_charm and p.spin_type==SpinType.PseudoScalar)
 
         See also ``from_search``, which throws an exception if the particle is not found or too many are found.
         '''
