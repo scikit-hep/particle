@@ -552,6 +552,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def from_dec(cls, name):
         'Get a particle from a .dec DecFile style name - returns the best match.'
 
+        # First things first, check if a standard search finds the one particle
+        # This should also speed-up the otherwise long regex-based search coming below ...
+        try:
+            return Particle.from_search(name=name)
+        except:
+            pass
+
         mat = getdec.match(name)
         if mat is None:
             return cls.find(name=name)
