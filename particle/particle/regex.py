@@ -1,9 +1,11 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
+
 """
 Collection of regular expression helper utilities for the ``Particle`` class.
 """
 
 import re
+
 
 getname = re.compile(r'''
 ^                                           # Beginning of string
@@ -17,6 +19,7 @@ getname = re.compile(r'''
       (?P<charge>     [0\+\-][+-]?)         # Required 0, -, --, or +, ++
 $                                           # End of string
 ''', re.VERBOSE)
+
 
 # Help manipulating .dec DecFile style names
 getdec = re.compile(r'''

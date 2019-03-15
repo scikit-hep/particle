@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Licensed under a 3-clause BSD style license, see LICENSE.
 
 import re
 import math
@@ -66,6 +67,7 @@ def str_with_unc(value, upper, lower=None):
                                                                       upper=upper, lower=lower,
                                                                       fsv=fsv, fse=fse)
 
+
 # List of greek letter names as used in Unicode (see unicodedata package)
 _list_name_greek_letters = [
     'Alpha',
@@ -94,6 +96,7 @@ _list_name_greek_letters = [
     'Zeta'
 ]
 _list_name_greek_letters += [l.lower() for l in _list_name_greek_letters]
+
 
 def greek_letter_name_to_unicode(letter):
     """

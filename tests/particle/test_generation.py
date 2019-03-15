@@ -1,3 +1,5 @@
+# Licensed under a 3-clause BSD style license, see LICENSE.
+
 import pytest
 
 # Requires pandas
@@ -8,7 +10,9 @@ from collections import Counter
 from particle import data
 from particle.particle.convert import produce_files
 
+
 FILES = ['particle2008.csv', 'particle2018.csv']
+
 
 def test_generate(tmp_path):
     'This verifies that the input and output files match.'

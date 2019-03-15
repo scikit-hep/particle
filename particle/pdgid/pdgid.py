@@ -1,4 +1,5 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
+
 """
 Class representing a PDGID.
 
@@ -10,6 +11,7 @@ from __future__ import absolute_import
 from . import functions as _functions
 
 from inspect import isfunction
+
 
 # Collect all the user defined, non-hidden functions in the pdgid.functions module
 _fnames = [ fname for fname in dir(_functions) if not fname.startswith('_')

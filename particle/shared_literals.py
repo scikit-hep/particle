@@ -1,4 +1,5 @@
 # Licensed under a 3-clause BSD style license, see LICENSE.
+
 """
 Helper (internal) module with common particle aliases.
 
@@ -7,9 +8,9 @@ See the particle.literals and the pdgid.literals submodules for the actually exp
 
 from __future__ import absolute_import
 
+
 # Names have to be valid identifiers.
 # Values can be repeated.
-
 common_particles = dict(
     # Gauge bosons
     photon=22,

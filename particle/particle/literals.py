@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+# Licensed under a 3-clause BSD style license, see LICENSE.
+
 """
 Definitions of handy particle literals
 ======================================
@@ -23,6 +25,7 @@ List of available/defined particle literals:
 
 {0}
 """
+
 from ..shared_literals import common_particles
 from .particle import Particle, ParticleNotFound
 

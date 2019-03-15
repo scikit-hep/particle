@@ -42,6 +42,7 @@ possibilites = (
     (1234.5,        2,        2,        u'1234.5 ± 2.0'),
 )
 
+
 @pytest.mark.parametrize("value,err_u,err_l,test_str", possibilites)
 def test_unc_printout(value, err_u, err_l, test_str):
 

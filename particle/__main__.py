@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Licensed under a 3-clause BSD style license, see LICENSE.
 
 from __future__ import absolute_import,  print_function
 
@@ -6,6 +7,7 @@ from .particle import Particle
 from .pdgid import PDGID
 
 import argparse
+
 
 parser = argparse.ArgumentParser(description='Particle utility')
 
@@ -49,4 +51,3 @@ if 'pdgid' in opts:
         p = PDGID(value)
         print(p)
         print(PDGID(value).info())
-

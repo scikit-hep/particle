@@ -1,3 +1,5 @@
+# Licensed under a 3-clause BSD style license, see LICENSE.
+
 """
 Definitions of handy particle PDGID literals
 ============================================
@@ -22,11 +24,14 @@ List of available/defined particle PDGID literals:
 
 {0}
 """
+
 from ..shared_literals import common_particles
 from .pdgid import PDGID
 
+
 for item in common_particles:
     locals()[item] = PDGID(common_particles[item])
+
 
 __doc = ""
 for item in common_particles: __doc += "  {item!s} = PDGID({pdgid})\n".format(item=item, pdgid=common_particles[item])
