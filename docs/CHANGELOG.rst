@@ -11,8 +11,9 @@ Under development
   - Rename ``Particle.latex`` to ``Particle.latexname``.
   - Rename ``Particle.html_name`` to ``Particle.htmlname``.
 * Neutrinos added to the 2018 data files.
+* Better print-out of particle properties.
 * Better handling of particle names in HTML and LaTeX.
-* Test suite of ``particle`` and ``pdgid`` submodules extended.
+* Test suite of ``particle`` and ``pdgid`` submodules improved and extended.
 * More package documentation (data files, ``particle`` and ``pdgid`` submodules).
 * Added utility conversion function of particle names from LaTeX to HTML.
 * Fixed LaTeX names of Delta(1232) baryons in ``data\pdgid_to_latex.csv`` file.
