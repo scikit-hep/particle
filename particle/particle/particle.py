@@ -163,7 +163,7 @@ class Particle(object):
     width_lower = attr.ib(0.0)
 
     def __repr__(self):
-        return "<{self.__class__.__name__}: pdgid={pdgid}, name='{self!s}', mass={mass} MeV>".format(
+        return "<{self.__class__.__name__}: name='{self!s}', pdgid={pdgid}, mass={mass} MeV>".format(
             self=self, pdgid=int(self.pdgid),
             mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
     _table = None # Loaded table of entries
@@ -381,11 +381,11 @@ class Particle(object):
         if self.pdgid == 0:
             return "Name: Unknown"
 
-        val = """PDG name: {self.pdgname:<10} ID: {self.pdgid:<12} Name: {self!s:<14} Latex: {latexname}
+        val = """Name: {self!s:<14} ID: {self.pdgid:<12} Latex: {latexname}
 Mass  = {mass} MeV
 {width_or_lifetime}
-I (isospin)       = {self.I!s:<6} G (parity)        = {G:<5}  Q (charge)       = {Q}
-J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) = {P}
+Q (charge)        = {Q:<6}  J (total angular) = {self.J!s:<7}  P (space parity) = {P}
+C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     = {G}
 """.format(self=self,
            G=Parity_undo[self.G],
            C=Parity_undo[self.C],
@@ -399,7 +399,7 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
             val += "    SpinType: {self.spin_type!s}\n".format(self=self)
         if self.quarks:
             val += "    Quarks: {self.quarks}\n".format(self=self)
-        val += "    Antiparticle status: {self.anti_flag.name} (antiparticle name: {iself.name})".format(self=self, iself=self.invert())
+        val += "    Antiparticle name: {iself.name} (antiparticle status: {self.anti_flag.name})".format(iself=self.invert(), self=self)
         return val
 
     @property
