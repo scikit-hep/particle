@@ -15,17 +15,6 @@ from particle.pdgid import PDGID
 from hepunits.units import second
 
 
-def test_enums_Charge():
-    assert Charge.p + Charge.m == Charge.o
-    assert Charge.pp + Charge.mm == Charge.o
-
-
-def test_enums_SpinType():
-    assert SpinType.PseudoScalar == - SpinType.Scalar
-    assert SpinType.Axial == - SpinType.Vector
-    assert SpinType.PseudoTensor == - SpinType.Tensor
-
-
 def test_from_search():
     # 1 match found
     prepr = repr(Particle.from_search(name='gamma'))
