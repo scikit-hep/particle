@@ -31,7 +31,7 @@ def get_version():
     return g["__version__"]
 
 setup(
-    name = 'particle',
+    name = 'Particle',
     author = 'Eduardo Rodrigues',
     author_email = 'eduardo.rodrigues@cern.ch',
     maintainer = 'The Scikit-HEP admins',
@@ -48,7 +48,7 @@ setup(
     tests_require = test_deps,
     extras_require = extras,
     keywords = [
-        'HEP', 'PDG', 'PDGID', 'particle',
+        'HEP', 'PDG', 'PDGID', 'particle', 'particle data table',
     ],
     classifiers = [
         # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
