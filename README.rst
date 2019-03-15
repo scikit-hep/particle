@@ -176,7 +176,7 @@ Here are possible sophisticated searches:
      <Particle: pdgid=321, name='K+', mass=493.677 ± 0.016 MeV>]
 
 Once you have a particle, any of the properties can be accessed, along with several methods.
-Though they are not real properties, you can access ``is_name_barred``, ``radius``, and ``spin_type``.
+Though they are not real properties, you can access ``is_name_barred``, and ``spin_type``.
 You can also ``.invert()`` a particle.
 
 There are lots of printing choices for particles:

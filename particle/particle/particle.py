@@ -285,14 +285,6 @@ class Particle(object):
         return c_light*self.lifetime
 
     @property
-    def radius(self):
-        'Particle radius, hard coded from the PDG data.'
-        if abs(self.pdgid) in [411, 421, 431]:
-            return 5.0
-        else:
-            return 1.5
-
-    @property
     def is_name_barred(self):
         """
         Check to see if particle is inverted (hence is it an antiparticle)
@@ -408,7 +400,6 @@ J (total angular) = {self.J!s:<6} C (charge parity) = {C:<5}  P (space parity) =
         if self.quarks:
             val += "    Quarks: {self.quarks}\n".format(self=self)
         val += "    Antiparticle status: {self.anti_flag.name} (antiparticle name: {iself.name})".format(self=self, iself=self.invert())
-        # val += "    Radius: {self.radius} GeV".format(self=self)
         return val
 
     @property
