@@ -332,12 +332,13 @@ class Particle(object):
         if self.pdgid in (23, 25, 111, 130, 310, 311, -311): return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
         if abs(self.pdgid) in (2212, 2112): return False   # proton and neutron
         if self.three_charge == 0 and self.anti_flag == Inv.Same: return False   # all quarkonia and the photon
+        # Lambda baryons
         if (self.pdgid.is_baryon
-            and _digit(self.pdgid, Location.Nq2) == 1
+            and _digit(self.pdgid, Location.Nq2) == 1 and self.I == 0  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
             and self.pdgid.has_strange
             and not (self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top)
            ):
-           return False   # Lambda baryons
+           return False
         if abs(self.pdgid) < 19: return False   # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
         return True
 
