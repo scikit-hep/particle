@@ -18,7 +18,7 @@ from hepunits.units import second
 def test_from_search():
     # 1 match found
     prepr = repr(Particle.from_search(name='gamma'))
-    assert prepr == "<Particle: pdgid=22, name='gamma', mass=0.0 MeV>"
+    assert prepr == "<Particle: name='gamma', pdgid=22, mass=0.0 MeV>"
 
     # No match found
     with pytest.raises(ParticleNotFound):
@@ -174,13 +174,13 @@ def test_describe():
     assert __description in Sigma_c_pp.describe()
 
     # Test print-out of zero width values
-    __description = r"""PDG name: gamma      ID: 22           Name: gamma          Latex: $\gamma$
+    __description = r"""Name: gamma          ID: 22           Latex: $\gamma$
 Mass  = 0.0 MeV
 Width = 0.0 MeV
-I (isospin)       = <2     G (parity)        = ?      Q (charge)       = 0
-J (total angular) = 1.0    C (charge parity) = -      P (space parity) = -
+Q (charge)        = 0       J (total angular) = 1.0      P (space parity) = -
+C (charge parity) = -       I (isospin)       = <2       G (G-parity)     = ?
     SpinType: SpinType.Vector
-    Antiparticle status: Same (antiparticle name: gamma)"""
+    Antiparticle name: gamma (antiparticle status: Same)"""
     photon = Particle.from_pdgid(22)
     assert photon.describe() == __description
 
