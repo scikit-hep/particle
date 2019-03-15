@@ -557,7 +557,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             return cls.find(name=name)
         mat = mat.groupdict()
 
-        return cls._from_group_dict_list(mat)[0]
+        try:
+            return cls._from_group_dict_list(mat)[0]
+        except IndexError:
+            raise ParticleNotFound('{0} not found from dec-style name'.format(name))
 
     @classmethod
     def from_string(cls, name):
