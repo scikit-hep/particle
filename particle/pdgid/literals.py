@@ -13,7 +13,7 @@ Typical use cases::
     >>> lid.pi_plus.is_meson
     True
     >>> from particle.pdgid.literals import Lambda_b_0
-    >>>> Lambda_b_0
+    >>> Lambda_b_0
     <PDGID: 5122>
     >>> Lambda_b_0.has_bottom
     True

@@ -98,7 +98,7 @@ For example:
     <PDGID: 211>
     >>>
     >>> from particle.pdgid.literals import Lambda_b_0
-    >>>> Lambda_b_0
+    >>> Lambda_b_0
     <PDGID: 5122>
     >>> Lambda_b_0.has_bottom
     True
@@ -129,10 +129,10 @@ you can get a particle directly, or you can use a search:
 
     >>> from particle import Particle
     >>> Particle.from_pdgid(211)
-    <Particle: pdgid=211, name='pi+', mass=139.57061 ± 0.00024 MeV>
+    <Particle: name='pi+', pdgid=211, mass=139.57061 ± 0.00024 MeV>
     >>>
     >>> Particle.from_search_list('pi')[0]
-    <Particle: pdgid=111, name='pi0', mass=134.9770 ± 0.0005 MeV>
+    <Particle: name='pi0', pdgid=111, mass=134.9770 ± 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which include
 ``pdgname``, ``name``, ``mass``, ``width``, ``charge``, ``three_charge``, ``anti_flag``, ``rank``,
@@ -164,7 +164,7 @@ Here are possible sophisticated searches:
     >>>
     >>> # Find all antiparticles of pdgname=='Omega'
     >>> Particle.from_search_list(pdgname='Omega', particle=False)  # only 1, of course
-    [<Particle: pdgid=-3334, name='Omega~+', mass=1672.5 ± 0.3 MeV>]
+    [<Particle: name='Omega~+', pdgid=-3334, mass=1672.5 ± 0.3 MeV>]
     >>>
     >>> # Find all neutral beauty hadrons
     >>> Particle.from_search_list(lambda p: p.pdgid.has_bottom and p.charge==0)
@@ -172,8 +172,8 @@ Here are possible sophisticated searches:
     >>> # Find all strange mesons with c*tau > 1 meter
     >>> from hepunits.units import meter
     >>> Particle.from_search_list(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1 * meter, particle=True)
-    [<Particle: pdgid=130, name='K(L)0', mass=497.611 ± 0.013 MeV>,
-     <Particle: pdgid=321, name='K+', mass=493.677 ± 0.016 MeV>]
+    [<Particle: name='K(L)0', pdgid=130, mass=497.611 ± 0.013 MeV>,
+     <Particle: name='K+', pdgid=321, mass=493.677 ± 0.016 MeV>]
 
 Once you have a particle, any of the properties can be accessed, along with several methods.
 Though they are not real properties, you can access ``is_name_barred``, and ``spin_type``.
@@ -194,11 +194,11 @@ with easily recognisable names. For example:
 
     >>> from particle.particle import literals as lp
     >>> lp.pi_plus
-    <Particle: pdgid=211, name='pi+', mass=139.57061 ± 0.00024 MeV>
+    <Particle: name='pi+', pdgid=211, mass=139.57061 ± 0.00024 MeV>
     >>>
     >>> from particle.particle.literals import Lambda_b_0
-    >>>> Lambda_b_0
-    <Particle: pdgid=5122, name='Lambda(b)0', mass=5619.60 ± 0.17 MeV>
+    >>> Lambda_b_0
+    <Particle: name='Lambda(b)0', pdgid=5122, mass=5619.60 ± 0.17 MeV>
     >>> Lambda_b_0.J
     0.5
 
@@ -207,9 +207,9 @@ You can quickly search for particles from the command line with:
 .. code-block:: bash
 
     $ python -m particle search 'K*0'
-    <Particle: pdgid=313, name='K*(892)0', mass=895.55 ± 0.20 MeV>
-    <Particle: pdgid=30313, name='K*(1680)0', mass=1718 ± 18 MeV>
-    <Particle: pdgid=100313, name='K*(1410)0', mass=1421 ± 9 MeV>
+    <Particle: name='K*(892)0', pdgid=313, mass=895.55 ± 0.20 MeV>
+    <Particle: name='K*(1680)0', pdgid=30313, mass=1718 ± 18 MeV>
+    <Particle: name='K*(1410)0', pdgid=100313, mass=1421 ± 9 MeV>
 
 If you only select one particle, either by a search or by giving the PDGID number, you can see more information about
 the particle:
@@ -217,10 +217,11 @@ the particle:
 .. code-block:: bash
 
     $ python -m particle search 311
-    PDG name: K          ID: 311          Name: K0             Latex: $K^{0}$
+    Name: K0             ID: 311          Latex: $K^{0}$
     Mass  = 497.611 ± 0.013 MeV
     Width = -1.0 MeV
-    I (isospin)       = 1/2    G (parity)        = 0      Q (charge)       = 0
-    J (total angular) = 0.0    C (charge parity) = 0      P (space parity) = ?
+    Q (charge)        = 0       J (total angular) = 0.0      P (space parity) = -
+    C (charge parity) = ?       I (isospin)       = 1/2      G (G-parity)     = ?
+        SpinType: SpinType.PseudoScalar
         Quarks: dS
-        Antiparticle status: Full (antiparticle name: K~0)
+        Antiparticle name: K~0 (antiparticle status: Full)

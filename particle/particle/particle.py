@@ -334,7 +334,7 @@ class Particle(object):
         if self.three_charge == 0 and self.anti_flag == Inv.Same: return False   # all quarkonia and the photon
         # Lambda baryons
         if (self.pdgid.is_baryon
-            and _digit(self.pdgid, Location.Nq2) == 1 and self.I == 0  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
+            and _digit(self.pdgid, Location.Nq2) == 1 and self.I == '0'  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
             and self.pdgid.has_strange
             and not (self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top)
            ):
