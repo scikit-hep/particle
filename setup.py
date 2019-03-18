@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-# Licensed under a 3-clause BSD style license, see LICENSE.
+# Copyright (c) 2018-2019, Eduardo Rodrigues and Henry Schreiner.
+#
+# Distributed under the 3-clause BSD license, see accompanying file LICENSE
+# or https://github.com/scikit-hep/particle for details.
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -31,13 +34,13 @@ def get_version():
     return g["__version__"]
 
 setup(
-    name = 'particle',
+    name = 'Particle',
     author = 'Eduardo Rodrigues',
     author_email = 'eduardo.rodrigues@cern.ch',
-    maintainer = 'Eduardo Rodrigues',
-    maintainer_email = 'eduardo.rodrigues@cern.ch',
+    maintainer = 'The Scikit-HEP admins',
+    maintainer_email = 'scikit-hep-admins@googlegroups.com',
     version = get_version(),
-    description = 'Utilities to deal with PDG data tables and particle IDs',
+    description = 'PDG particle data and identification codes',
     long_description = open('README.rst').read(),
     url = 'https://github.com/scikit-hep/particle',
     license = 'new BSD',
@@ -48,7 +51,7 @@ setup(
     tests_require = test_deps,
     extras_require = extras,
     keywords = [
-        'HEP', 'PDG', 'PDGID', 'particle',
+        'HEP', 'PDG', 'PDGID', 'particle', 'particle data table',
     ],
     classifiers = [
         # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers

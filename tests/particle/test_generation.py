@@ -1,3 +1,8 @@
+# Copyright (c) 2018-2019, Eduardo Rodrigues and Henry Schreiner.
+#
+# Distributed under the 3-clause BSD license, see accompanying file LICENSE
+# or https://github.com/scikit-hep/particle for details.
+
 import pytest
 
 # Requires pandas
@@ -8,7 +13,9 @@ from collections import Counter
 from particle import data
 from particle.particle.convert import produce_files
 
+
 FILES = ['particle2008.csv', 'particle2018.csv']
+
 
 def test_generate(tmp_path):
     'This verifies that the input and output files match.'

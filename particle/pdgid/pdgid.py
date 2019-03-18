@@ -1,4 +1,8 @@
-# Licensed under a 3-clause BSD style license, see LICENSE.
+# Copyright (c) 2018-2019, Eduardo Rodrigues and Henry Schreiner.
+#
+# Distributed under the 3-clause BSD license, see accompanying file LICENSE
+# or https://github.com/scikit-hep/particle for details.
+
 """
 Class representing a PDGID.
 
@@ -10,6 +14,7 @@ from __future__ import absolute_import
 from . import functions as _functions
 
 from inspect import isfunction
+
 
 # Collect all the user defined, non-hidden functions in the pdgid.functions module
 _fnames = [ fname for fname in dir(_functions) if not fname.startswith('_')

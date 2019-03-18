@@ -1,3 +1,8 @@
+# Copyright (c) 2018-2019, Eduardo Rodrigues and Henry Schreiner.
+#
+# Distributed under the 3-clause BSD license, see accompanying file LICENSE
+# or https://github.com/scikit-hep/particle for details.
+
 '''
 This is a conversion file, not part of the public API.
 
@@ -53,6 +58,7 @@ from .enums import (SpinType, Parity, Charge, Inv, Status,
 
 from .. import data
 
+
 def get_from_latex(filename):
     """
     Produce a pandas series from a file with LaTeX mappings in itself.
@@ -60,6 +66,7 @@ def get_from_latex(filename):
     """
     latex_table = pd.read_csv(filename, index_col=0)
     return latex_table.particle
+
 
 def filter_file(fileobject):
     """
@@ -77,6 +84,7 @@ def filter_file(fileobject):
             stream.write(line)
     stream.seek(0)
     return stream
+
 
 def get_from_pdg_extended(filename, latexes=None):
     """
@@ -177,11 +185,13 @@ def get_from_pdg_extended(filename, latexes=None):
     # Return the table, making sure NaNs are just empty strings, and sort
     return full.fillna('')
 
+
 def sort_particles(table):
     "Sort a particle list table nicely"
     table['TmpVals'] = abs(table.index - .25)
     table.sort_values('TmpVals', inplace=True)
     del table['TmpVals']
+
 
 def get_from_pdg_mcd(filename):
     '''
@@ -241,6 +251,7 @@ def get_from_pdg_mcd(filename):
 
 
     return ds
+
 
 def update_from_mcd(full_table, update_table):
     """

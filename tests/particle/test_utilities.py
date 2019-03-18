@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-# Licensed under a 3-clause BSD style license, see LICENSE.
+# Copyright (c) 2018-2019, Eduardo Rodrigues and Henry Schreiner.
+#
+# Distributed under the 3-clause BSD license, see accompanying file LICENSE
+# or https://github.com/scikit-hep/particle for details.
 
 import pytest
 import sys
@@ -41,6 +44,7 @@ possibilites = (
     (1234.5,        5,        5,        u'1234 ± 5'),
     (1234.5,        2,        2,        u'1234.5 ± 2.0'),
 )
+
 
 @pytest.mark.parametrize("value,err_u,err_l,test_str", possibilites)
 def test_unc_printout(value, err_u, err_l, test_str):

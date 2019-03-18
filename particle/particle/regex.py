@@ -1,9 +1,14 @@
-# Licensed under a 3-clause BSD style license, see LICENSE.
+# Copyright (c) 2018-2019, Eduardo Rodrigues and Henry Schreiner.
+#
+# Distributed under the 3-clause BSD license, see accompanying file LICENSE
+# or https://github.com/scikit-hep/particle for details.
+
 """
 Collection of regular expression helper utilities for the ``Particle`` class.
 """
 
 import re
+
 
 getname = re.compile(r'''
 ^                                           # Beginning of string
@@ -17,6 +22,7 @@ getname = re.compile(r'''
       (?P<charge>     [0\+\-][+-]?)         # Required 0, -, --, or +, ++
 $                                           # End of string
 ''', re.VERBOSE)
+
 
 # Help manipulating .dec DecFile style names
 getdec = re.compile(r'''
