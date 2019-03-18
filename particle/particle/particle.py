@@ -552,12 +552,24 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def from_dec(cls, name):
         'Get a particle from a .dec DecFile style name - returns the best match.'
 
-        # First things first, check if a standard search finds the one particle
-        # This should also speed-up the otherwise long regex-based search coming below ...
-        try:
-            return Particle.from_search(name=name)
-        except:
-            pass
+        # Many names defined in .dec files just aren't well-enough defined, hence are ambiguous!
+        # The required mapping is here provided:
+        dec_to_pdg_mapping = {
+            'phi' : 'phi(1020)',
+            'Upsilon': 'Upsilon(1S)',
+            'Upsilon(5S)' : 'Upsilon(10860)'
+        }
+
+        if name in dec_to_pdg_mapping.keys():
+            return cls.from_string(dec_to_pdg_mapping[name])
+
+        # In other cases a bulk replacement is more efficient given the several charge states possible
+        dec_to_pdg_replacements = {
+            'Sigma*': 'Sigma(1385)',
+        }
+        for oldw, neww in dec_to_pdg_replacements.items():
+            if oldw in name:
+                return cls.from_dec(name.replace(oldw, neww))
 
         mat = getdec.match(name)
         if mat is None:
