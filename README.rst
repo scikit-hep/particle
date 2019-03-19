@@ -131,7 +131,7 @@ you can get a particle directly, or you can use a search:
     >>> Particle.from_pdgid(211)
     <Particle: name='pi+', pdgid=211, mass=139.57061 ± 0.00024 MeV>
     >>>
-    >>> Particle.from_search_list('pi')[0]
+    >>> Particle.findall('pi')[0]
     <Particle: name='pi0', pdgid=111, mass=134.9770 ± 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which include
@@ -143,7 +143,7 @@ set to ``True``/``False``, as well, to limit the search to particles or
 antiparticles.  You can also build the search yourself with the first positional
 argument, which accepts a callable that is given the particle object itself. If
 the first positional argument is a string, that will match against the
-particle's ``name``.  The alternative ``.from_search()`` *requires only one*
+particle's ``name``.  The alternative ``.find()`` *requires only one*
 match returned by the search, and will throw an error if more or less than one
 match is found.
 
@@ -152,26 +152,26 @@ Here are possible sophisticated searches:
 .. code-block:: python
 
     >>> # Print out all particles with asymmetric decay width uncertainties
-    >>> ps = Particle.from_search_list(lambda p: p.width_lower != p.width_upper)
+    >>> ps = Particle.findall(lambda p: p.width_lower != p.width_upper)
     >>> for p in ps:
     ...     print(p.name, p.pdgid, p.width_lower, p.width_upper)
     >>>
     >>> # Find all antiparticles with 'Omega' in the name
-    >>> Particle.from_search_list('Omega', particle=False)   # several found
+    >>> Particle.findall('Omega', particle=False)   # several found
     >>>
     >>> # Find all antiparticles of name=='Omega'
-    >>> Particle.from_search_list(name='Omega', particle=False)  # none found
+    >>> Particle.findall(name='Omega', particle=False)  # none found
     >>>
-    >>> # Find all antiparticles of pdg_name=='Omega'
-    >>> Particle.from_search_list(pdg_name='Omega', particle=False)  # only 1, of course
+    >>> # Find all antiparticles of pdgname=='Omega'
+    >>> Particle.findall(pdg_name='Omega', particle=False)  # only 1, of course
     [<Particle: name='Omega~+', pdgid=-3334, mass=1672.5 ± 0.3 MeV>]
     >>>
     >>> # Find all neutral beauty hadrons
-    >>> Particle.from_search_list(lambda p: p.pdgid.has_bottom and p.charge==0)
+    >>> Particle.findall(lambda p: p.pdgid.has_bottom and p.charge==0)
     >>>
     >>> # Find all strange mesons with c*tau > 1 meter
     >>> from hepunits.units import meter
-    >>> Particle.from_search_list(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1 * meter, particle=True)
+    >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1 * meter, particle=True)
     [<Particle: name='K(L)0', pdgid=130, mass=497.611 ± 0.013 MeV>,
      <Particle: name='K+', pdgid=321, mass=493.677 ± 0.016 MeV>]
 

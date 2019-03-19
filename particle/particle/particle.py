@@ -439,41 +439,41 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
 
     @classmethod
-    def from_search_list(cls, filter_fn=None, particle=None, **search_terms):
+    def findall(cls, filter_fn=None, particle=None, **search_terms):
         '''
         Search for a particle, returning a list of candidates.
 
         The first and only positional argument is given each particle
         candidate, and returns True/False. Example:
 
-            >>> Particle.from_search_list(lambda p: 'p' in p.name)
+            >>> Particle.findall(lambda p: 'p' in p.name)
             # Returns list of all particles with p somewhere in name
 
         You can pass particle=True/False to force a particle or antiparticle.
         If this is not callable, it will do a "fuzzy" search on the name. So this is identical:
 
-            >>> Particle.from_search_list('p')
+            >>> Particle.findall('p')
             # Returns list of all particles with p somewhere in name
 
         You can also pass keyword arguments, which are either called with the
         matching property if they are callable, or are compared if they are not.
         This would do an exact search on the name, instead of a fuzzy search:
 
-           >>> Particle.from_search_list(name='p')
+           >>> Particle.findall(name='p')
            # Returns proton and antiproton only
 
-           >>> Particle.from_search_list(name='p', particle=True)
+           >>> Particle.findall(name='p', particle=True)
            # Returns proton only
 
         Versatile searches require a (lambda) function as argument:
 
         >>> # Get all neutral beauty hadrons
-        >>> Particle.from_search_list(lambda p: p.pdgid.has_bottom and p.charge==0)
+        >>> Particle.findall(lambda p: p.pdgid.has_bottom and p.charge==0)
         >>>
         >>> # Trivially find all pseudoscalar charm mesons
-        >>> Particle.from_search_list(lambda p: p.pdgid.is_meson and p.pdgid.has_charm and p.spin_type==SpinType.PseudoScalar)
+        >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_charm and p.spin_type==SpinType.PseudoScalar)
 
-        See also ``from_search``, which throws an exception if the particle is not found or too many are found.
+        See also ``find``, which throws an exception if the particle is not found or too many are found.
         '''
 
         # Note that particle can be called by position to keep compatibility with Python 2, but that behavior should
@@ -531,15 +531,15 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return sorted(results)
 
     @classmethod
-    def from_search(cls, *args, **search_terms):
+    def find(cls, *args, **search_terms):
         '''
         Require that your search returns one and only one result.
         The method otherwise raises a ParticleNotFound or RuntimeError exception.
 
-        See from_search_list for full listing of parameters.
+        See findall for full listing of parameters.
         '''
 
-        results = cls.from_search_list(*args, **search_terms)
+        results = cls.findall(*args, **search_terms)
 
         if len(results) == 1:
             return results[0]
@@ -554,7 +554,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
         mat = getdec.match(name)
         if mat is None:
-            return cls.from_search(name=name)
+            return cls.find(name=name)
         mat = mat.groupdict()
 
         return cls._from_group_dict_list(mat)[0]
@@ -583,7 +583,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
         mat = getname.match(name)
         if mat is None:
-            return cls.from_search_list(name=name, particle=False if bar else None)
+            return cls.findall(name=name, particle=False if bar else None)
         mat = mat.groupdict()
 
         if bar:
@@ -621,12 +621,12 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         else:
             maxname = name
 
-        vals = cls.from_search_list(name = lambda x: maxname in x,
+        vals = cls.findall(name = lambda x: maxname in x,
                                     three_charge=Charge_mapping[mat['charge']],
                                     particle=particle,
                                     J=J)
         if not vals:
-            vals = cls.from_search_list(name = lambda x: name in x,
+            vals = cls.findall(name = lambda x: name in x,
                                         three_charge=Charge_mapping[mat['charge']],
                                         particle=particle,
                                         J=J)
