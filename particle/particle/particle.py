@@ -552,29 +552,60 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def from_dec(cls, name):
         'Get a particle from a .dec DecFile style name - returns the best match.'
 
+        # Simplest search first - search by name
+        try:
+            return cls.from_string(name)
+        except:
+            pass
+
         # Many names defined in .dec files just aren't well-enough defined, hence are ambiguous!
+        # Others are difficult to match with the standard regex rules.
         # The required mapping is here provided:
         dec_to_pdg_mapping = {
             'phi' : 'phi(1020)',
+            'J/psi': 'J/psi(1S)',
             'Upsilon': 'Upsilon(1S)',
-            'Upsilon(5S)' : 'Upsilon(10860)'
+            'Upsilon(5S)' : 'Upsilon(10860)',
+            'n0': 'n',
+            'p+': 'p',
+            'X_1(3872)': 'X(3872)'
         }
-
         if name in dec_to_pdg_mapping.keys():
             return cls.from_string(dec_to_pdg_mapping[name])
 
         # In other cases a bulk replacement is more efficient given the several charge states possible
         dec_to_pdg_replacements = {
             'Sigma*': 'Sigma(1385)',
+            'Xi*': 'Xi(1530)'
         }
         for oldw, neww in dec_to_pdg_replacements.items():
             if oldw in name:
                 return cls.from_dec(name.replace(oldw, neww))
 
+        # Deal with antiquarks
+        _q = re.match("(anti-)(?P<quark>[bcdstu])", name)
+        if _q is not None:
+            return cls.from_search(_q.groupdict()['quark']+'~', particle=False)
+
         mat = getdec.match(name)
         if mat is None:
             return cls.find(name=name)
         mat = mat.groupdict()
+
+        # TODO: a lot of this should rather be done in the regex `getdec` - this is temporary
+        if mat['name'] in ('f', 'h', 'chi', 'eta', 'omega', 'nu'):
+            mat['charge'] = '0'
+        if mat['name'] in ('B', 'Lambda', 'Sigma', 'Omega', 'Xi'):
+            if mat['family'] is not None:
+                if mat['charge'] is None:
+                    mat['charge'] = '0'
+                    mat['family'] = mat['family'][:-1]
+        if mat['family'] is not None and mat['family'][-2:]=='10':
+            mat['family'] = mat['family'][:-1]
+            mat['charge'] = '0'
+        if mat['state'] is not None and (mat['state']=='00' or mat['state']=='10' or mat['state']=='20'):
+            mat['state'] = mat['state'][:-1]
+            mat['charge'] = '0'
 
         try:
             return cls._from_group_dict_list(mat)[0]
@@ -589,8 +620,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             return matches[0]
         else:
             raise ParticleNotFound('{0} not found in particle table'.format(name))
-
-
 
     @classmethod
     def from_string_list(cls, name):

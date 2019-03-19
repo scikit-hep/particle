@@ -31,9 +31,9 @@ getdec = re.compile(r'''
       (?P<name>       [a-zA-Z]+?  )         # One or more characters, non-greedy
       (?P<prime>      '*          )         # Optional prime(s)
 (?: _ (?P<state>      \d+         )    )?   # Optional state in ()
-(?:   (?P<family>     _[udsctb][\w]*)  )?   # Optional family like (s)
+(?:   (?P<family>     _[udsctbemna][\w]*) )?# Optional family like (s)
 (?:\( (?P<mass>       \d+         ) \) )?   # Optional mass in ()
       (?P<star>       \*?         )         # Optional star
-      (?P<charge>     [0\+\-][+-]?)         # Required 0, -, --, or +, ++
+      (?P<charge>     [0\+\-][+-]?)?        # Optional 0, -, --, or +, ++
 $                                           # End of string
 ''', re.VERBOSE)
