@@ -62,7 +62,7 @@ from .. import data
 def get_from_latex(filename):
     """
     Produce a pandas series from a file with LaTeX mappings in itself.
-    The CVS file format is the following: PDGID, Particlelatex_name.
+    The CVS file format is the following: PDGID, ParticleLatexName.
     """
     latex_table = pd.read_csv(filename, index_col=0)
     return latex_table.particle
