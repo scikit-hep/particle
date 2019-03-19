@@ -19,81 +19,81 @@ from particle.pdgid import PDGID
 from hepunits.units import second
 
 
-def test_from_search():
+def test_find():
     # 1 match found
-    prepr = repr(Particle.from_search(name='gamma'))
+    prepr = repr(Particle.find(name='gamma'))
     assert prepr == "<Particle: name='gamma', pdgid=22, mass=0.0 MeV>"
 
     # No match found
     with pytest.raises(ParticleNotFound):
-        Particle.from_search(name='NonExistent')
+        Particle.find(name='NonExistent')
 
     # Multiple matches found
     with pytest.raises(RuntimeError):
-        Particle.from_search(name=lambda x: 'Upsilon' in x)
+        Particle.find(name=lambda x: 'Upsilon' in x)
 
 
 def test_lambda_style_search():
-    particles = Particle.from_search_list(lambda p: p.pdgname == 'p')
+    particles = Particle.findall(lambda p: p.pdgname == 'p')
     assert len(particles) == 2
     assert 2212 in particles
     assert -2212 in particles
 
-    assert Particle.from_search(lambda p: p.pdgname == 'p' and p > 0) == 2212
-    assert Particle.from_search(lambda p: p.pdgname == 'p' and p < 0) == -2212
+    assert Particle.find(lambda p: p.pdgname == 'p' and p > 0) == 2212
+    assert Particle.find(lambda p: p.pdgname == 'p' and p < 0) == -2212
 
 
 def test_fuzzy_name_search():
-    particles = Particle.from_search_list('p~')
+    particles = Particle.findall('p~')
     assert len(particles) == 1
     assert -2212 in particles
 
 
 def test_keyword_style_search():
-    particles = Particle.from_search_list(pdgname = 'p')
+    particles = Particle.findall(pdgname = 'p')
     assert len(particles) == 2
     assert 2212 in particles
     assert -2212 in particles
 
-    particles = Particle.from_search_list(name = 'p')
+    particles = Particle.findall(name = 'p')
     assert len(particles) == 1
     assert 2212 in particles
 
-    assert Particle.from_search(pdgname = 'p', particle=True) == 2212
-    assert Particle.from_search(pdgname = 'p', particle=False) == -2212
+    assert Particle.find(pdgname = 'p', particle=True) == 2212
+    assert Particle.find(pdgname = 'p', particle=False) == -2212
 
-    assert Particle.from_search(name = 'p', particle=True) == 2212
-    assert Particle.from_search(name = 'p~', particle=False) == -2212
+    assert Particle.find(name = 'p', particle=True) == 2212
+    assert Particle.find(name = 'p~', particle=False) == -2212
 
 
 def test_keyword_lambda_style_search():
-    particles = Particle.from_search_list(pdgname = lambda x: 'p' == x)
+    particles = Particle.findall(pdgname = lambda x: 'p' == x)
     assert len(particles) == 2
     assert 2212 in particles
     assert -2212 in particles
 
     # Fuzzy name
-    particles = Particle.from_search_list(name = lambda x: 'p' in x)
+    particles = Particle.findall(name = lambda x: 'p' in x)
     assert len(particles) > 2
     assert 2212 in particles
     assert -2212 in particles
 
     # Name and particle
-    assert Particle.from_search(name = lambda x: x == 'p', particle=True) == 2212
+    assert Particle.find(name = lambda x: x == 'p', particle=True) == 2212
 
     # Unit based comparison
-    assert 2212 in Particle.from_search_list(lifetime = lambda x : x > 1*second)
+    assert 2212 in Particle.findall(lifetime = lambda x : x > 1*second)
 
 
 def test_complex_search():
     # Find all strange mesons with c*tau > 1 meter
-    particles = Particle.from_search_list(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1000., particle=True)
+    particles = Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1000., particle=True)
     assert len(particles) == 2 # K+ and KL0
     assert 130 in particles
     assert 321 in particles
 
     # Find all strange anti-mesons with c*tau > 1 meter
-    particles = Particle.from_search_list(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1000., particle=False)
+    particles = Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1000., particle=False)
     assert len(particles) == 1 # only the K-
     assert -321 in particles
 
