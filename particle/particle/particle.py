@@ -80,7 +80,7 @@ class Particle(object):
     charge
         The particle charge, in units of the positron charge.
 
-    latexname
+    latex_name
         The particle name in LaTeX.
 
     mass
@@ -95,7 +95,7 @@ class Particle(object):
     pdgid
         The PDG ID.
 
-    pdgname
+    pdg_name
         The particle name as in the PDG data file.
 
         Note:
@@ -146,7 +146,7 @@ class Particle(object):
         The upper uncertainty on the particle decay width, in MeV.
     """
     pdgid = attr.ib(converter=PDGID)
-    pdgname = attr.ib()
+    pdg_name = attr.ib()
     mass = attr.ib()
     width = attr.ib()
     anti_flag = attr.ib(converter=Inv)  # Info about particle name for anti-particles
@@ -160,7 +160,7 @@ class Particle(object):
     # (B (just charge), F (add bar) , and '' (No change))
     quarks = attr.ib('', converter=str)
     status = attr.ib(Status.Nonexistent, converter=Status)
-    latexname = attr.ib('')
+    latex_name = attr.ib('')
     mass_upper = attr.ib(0.0)
     mass_lower = attr.ib(0.0)
     width_upper = attr.ib(0.0)
@@ -200,7 +200,7 @@ class Particle(object):
 
             for v in r:
                 value = int(v['ID'])
-                pdgname = v['Name']
+                pdg_name = v['Name']
 
                 # Replace the previous value if appending
                 if value in cls._table:
@@ -221,9 +221,9 @@ class Particle(object):
                     anti_flag=int(v['Anti']),
                     rank=int(v['Rank']),
                     status=int(v['Status']),
-                    pdgname=v['Name'],
+                    pdg_name=v['Name'],
                     quarks=v['Quarks'],
-                    latexname=v['Latex']))
+                    latex_name=v['Latex']))
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
@@ -351,14 +351,14 @@ class Particle(object):
     def __str__(self):
         _tilde = '~' if self.anti_flag == Inv.Full and self.pdgid < 0 else ''
         _charge = Charge_undo[self.three_charge] if self._charge_in_name() else ''
-        return self.pdgname + _tilde + _charge
+        return self.pdg_name + _tilde + _charge
 
     name = property(__str__, doc='The nice name, with charge added, and a tilde for an antiparticle, if relevant.')
 
     def _repr_latex_(self):
-        name = self.latexname
+        name = self.latex_name
         # name += "^{" +  Parity_undo[self.three_charge] + '}'
-        return ("$" + name + '$') if self.latexname else '?'
+        return ("$" + name + '$') if self.latex_name else '?'
 
     def _width_or_lifetime(self):
         """Display either the particle width or the lifetime.
@@ -386,7 +386,7 @@ class Particle(object):
         if self.pdgid == 0:
             return "Name: Unknown"
 
-        val = """Name: {self!s:<14} ID: {self.pdgid:<12} Latex: {latexname}
+        val = """Name: {self!s:<14} ID: {self.pdgid:<12} Latex: {latex_name}
 Mass  = {mass} MeV
 {width_or_lifetime}
 Q (charge)        = {Q:<6}  J (total angular) = {self.J!s:<7}  P (space parity) = {P}
@@ -398,7 +398,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
            P=Parity_undo[self.P],
            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
            width_or_lifetime=self._width_or_lifetime(),
-           latexname = self._repr_latex_())
+           latex_name = self._repr_latex_())
 
         if self.spin_type != SpinType.Unknown:
             val += "    SpinType: {self.spin_type!s}\n".format(self=self)
@@ -413,9 +413,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return programmatic_name(self.name)
 
     @property
-    def htmlname(self):
+    def html_name(self):
         'This is the name using HTML instead of LaTeX.'
-        return latex_to_html_name(self.latexname)
+        return latex_to_html_name(self.latex_name)
 
     @classmethod
     def empty(cls):
@@ -635,7 +635,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             raise ParticleNotFound("Could not find particle {0} or {1}".format(maxname, name))
 
         if len(vals) > 1 and mat['mass'] is not None:
-            vals = [val for val in vals if mat['mass'] in val.latexname]
+            vals = [val for val in vals if mat['mass'] in val.latex_name]
 
         if len(vals) > 1:
             vals = sorted(vals)

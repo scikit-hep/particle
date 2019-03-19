@@ -6,10 +6,9 @@ Version 0.4.0
 Under development
 
 * Changes in API:
-    - Rename ``Particle.fullname/name`` to ``Particle.name/pdgname``.
+    - Rename ``Particle.fullname/name`` to ``Particle.name/pdg_name``.
     - Rename ``Particle.bar`` to ``Particle.is_name_barred``.
-    - Rename ``Particle.latex`` to ``Particle.latexname``.
-    - Rename ``Particle.html_name`` to ``Particle.htmlname``.
+    - Rename ``Particle.latex`` to ``Particle.latex_name``.
 * Neutrinos added to the 2018 data files.
 * Better print-out of particle properties.
 * Better handling of particle names in HTML and LaTeX.

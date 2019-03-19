@@ -34,13 +34,13 @@ def test_from_search():
 
 
 def test_lambda_style_search():
-    particles = Particle.from_search_list(lambda p: p.pdgname == 'p')
+    particles = Particle.from_search_list(lambda p: p.pdg_name == 'p')
     assert len(particles) == 2
     assert 2212 in particles
     assert -2212 in particles
 
-    assert Particle.from_search(lambda p: p.pdgname == 'p' and p > 0) == 2212
-    assert Particle.from_search(lambda p: p.pdgname == 'p' and p < 0) == -2212
+    assert Particle.from_search(lambda p: p.pdg_name == 'p' and p > 0) == 2212
+    assert Particle.from_search(lambda p: p.pdg_name == 'p' and p < 0) == -2212
 
 
 def test_fuzzy_name_search():
@@ -50,7 +50,7 @@ def test_fuzzy_name_search():
 
 
 def test_keyword_style_search():
-    particles = Particle.from_search_list(pdgname = 'p')
+    particles = Particle.from_search_list(pdg_name = 'p')
     assert len(particles) == 2
     assert 2212 in particles
     assert -2212 in particles
@@ -59,15 +59,15 @@ def test_keyword_style_search():
     assert len(particles) == 1
     assert 2212 in particles
 
-    assert Particle.from_search(pdgname = 'p', particle=True) == 2212
-    assert Particle.from_search(pdgname = 'p', particle=False) == -2212
+    assert Particle.from_search(pdg_name = 'p', particle=True) == 2212
+    assert Particle.from_search(pdg_name = 'p', particle=False) == -2212
 
     assert Particle.from_search(name = 'p', particle=True) == 2212
     assert Particle.from_search(name = 'p~', particle=False) == -2212
 
 
 def test_keyword_lambda_style_search():
-    particles = Particle.from_search_list(pdgname = lambda x: 'p' == x)
+    particles = Particle.from_search_list(pdg_name = lambda x: 'p' == x)
     assert len(particles) == 2
     assert 2212 in particles
     assert -2212 in particles
@@ -141,7 +141,7 @@ def test_rep():
 
 def test_basic_props():
     pi = Particle.from_pdgid(211)
-    assert pi.pdgname == 'pi'
+    assert pi.pdg_name == 'pi'
     assert pi.pdgid == 211
     assert pi.three_charge == Charge.p
 
@@ -189,7 +189,7 @@ C (charge parity) = -       I (isospin)       = <2       G (G-parity)     = ?
     assert photon.describe() == __description
 
 
-checklist_htmlname = (
+checklist_html_name = (
     (22, 'γ'),                           # photon
     (1, 'd'),                            # d quark
     (-2, '<SPAN STYLE="text-decoration:overline">u</SPAN>'),  # u antiquark
@@ -219,11 +219,11 @@ checklist_htmlname = (
 
 
 @pytest.mark.skipif(sys.version_info < (3,0), reason="Requires Python 3")
-@pytest.mark.parametrize("pid,htmlname", checklist_htmlname)
-def test_htmlname(pid, htmlname):
+@pytest.mark.parametrize("pid,html_name", checklist_html_name)
+def test_html_name(pid, html_name):
     particle = Particle.from_pdgid(pid)
 
-    assert particle.htmlname == htmlname
+    assert particle.html_name == html_name
 
 
 checklist_is_name_barred = (
