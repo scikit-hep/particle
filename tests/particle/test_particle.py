@@ -294,6 +294,8 @@ def test_invert_related_methods(pid, stype):
 
 
 ampgen_style_names = (
+    ("b", 5),
+    ("b~", -5),
     ("pi+", 211),
     ("pi-", -211),
     ("K~*0", -313),
@@ -317,6 +319,7 @@ def test_ampgen_style_names(name, pid):
 
 
 decfile_style_names = (
+    ("anti-b", -5),
     ("anti-K*0", -313),
     ("a_1(1260)+", 20213),
     ("D'_1+", 10413),

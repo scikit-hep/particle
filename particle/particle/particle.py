@@ -582,14 +582,18 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             if oldw in name:
                 return cls.from_dec(name.replace(oldw, neww))
 
-        # Deal with antiquarks
-        _q = re.match("(anti-)(?P<quark>[bcdstu])", name)
-        if _q is not None:
-            return cls.from_search(_q.groupdict()['quark']+'~', particle=False)
+
 
         mat = getdec.match(name)
+
         if mat is None:
-            return cls.find(name=name)
+            # Deal with antiquarks
+            particle = None
+            if "anti-" in name:
+                name = name.replace('anti-', '')
+                particle = False
+            return cls.find(pdg_name=name, particle=particle)
+
         mat = mat.groupdict()
 
         # TODO: a lot of this should rather be done in the regex `getdec` - this is temporary
@@ -625,19 +629,25 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def from_string_list(cls, name):
         'Get a list of particles from a PDG style name.'
 
-        # Forcable override
-        bar = False
+        # Forcible override
+        particle = None
 
+        short_name = name
         if '~' in name:
-            name = name.replace('~','')
-            bar = True
+            short_name = name.replace('~','')
+            particle = False
 
-        mat = getname.match(name)
+        mat = getname.match(short_name)
         if mat is None:
-            return cls.findall(name=name, particle=False if bar else None)
+            list_can = cls.findall(name=name, particle=particle)
+            if list_can:
+                return list_can
+            # If you don't have any matches there, try a fuzzier search that will capture antiparticles too
+            else:
+                return cls.findall(pdg_name=short_name, particle=particle)
         mat = mat.groupdict()
 
-        if bar:
+        if particle is False:
             mat['bar'] = 'bar'
 
         try:
@@ -651,7 +661,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         #if '_' in mat['name']:
         #    mat['name'], mat['family'] = mat['name'].split('_')
 
-        particle = False if mat['bar'] is not None else (True if mat['charge'] == '0' else None)
+        kw = dict()
+        kw['particle'] = False if mat['bar'] is not None else (True if mat['charge'] == '0' else None)
 
         name = mat['name']
 
@@ -665,22 +676,19 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if mat['star']:
             name += '*'
 
-        J = float(mat['state']) if mat['state'] is not None else None
+        kw['J'] = float(mat['state']) if mat['state'] is not None else None
 
         if mat['mass']:
             maxname = name + '({mat[mass]})'.format(mat=mat)
         else:
             maxname = name
 
-        vals = cls.findall(name = lambda x: maxname in x,
-                                    three_charge=Charge_mapping[mat['charge']],
-                                    particle=particle,
-                                    J=J)
+        if 'charge' in mat and mat['charge'] is not None:
+            kw['three_charge'] = Charge_mapping[mat['charge']]
+
+        vals = cls.findall(name = lambda x: maxname in x, **kw)
         if not vals:
-            vals = cls.findall(name = lambda x: name in x,
-                                        three_charge=Charge_mapping[mat['charge']],
-                                        particle=particle,
-                                        J=J)
+            vals = cls.findall(name = lambda x: name in x, **kw)
 
         if not vals:
             raise ParticleNotFound("Could not find particle {0} or {1}".format(maxname, name))
