@@ -135,8 +135,8 @@ you can get a particle directly, or you can use a search:
     <Particle: name='pi0', pdgid=111, mass=134.9770 ± 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which include
-``pdgname``, ``name``, ``mass``, ``width``, ``charge``, ``three_charge``, ``anti_flag``, ``rank``,
-``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``, ``latexname``,
+``pdg_name``, ``name``, ``mass``, ``width``, ``charge``, ``three_charge``, ``anti_flag``, ``rank``,
+``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``, ``latex_name``,
 ``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``.
 You can pass a callable or an exact match for any property.  `particle` can be
 set to ``True``/``False``, as well, to limit the search to particles or
@@ -163,7 +163,7 @@ Here are possible sophisticated searches:
     >>> Particle.findall(name='Omega', particle=False)  # none found
     >>>
     >>> # Find all antiparticles of pdgname=='Omega'
-    >>> Particle.findall(pdgname='Omega', particle=False)  # only 1, of course
+    >>> Particle.findall(pdg_name='Omega', particle=False)  # only 1, of course
     [<Particle: name='Omega~+', pdgid=-3334, mass=1672.5 ± 0.3 MeV>]
     >>>
     >>> # Find all neutral beauty hadrons
@@ -180,7 +180,7 @@ Though they are not real properties, you can access ``is_name_barred``, and ``sp
 You can also ``.invert()`` a particle.
 
 There are lots of printing choices for particles:
-``describe()``, ``programmatic_name``, ``htmlname``, HTML printing outs in notebooks,
+``describe()``, ``programmatic_name``, ``html_name``, HTML printing outs in notebooks,
 and of course ``repr`` and ``str`` support.
 
 You can get the ``.pdgid`` from a particle, as well.
