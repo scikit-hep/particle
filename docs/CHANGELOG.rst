@@ -6,6 +6,7 @@ Version 0.4.0
 Under development
 
 * Changes in API:
+    - Rename ``Particle.from_search/from_search_list`` to ``Particle.find/findall``.
     - Rename ``Particle.fullname/name`` to ``Particle.name/pdgname``.
     - Rename ``Particle.bar`` to ``Particle.is_name_barred``.
     - Rename ``Particle.latex`` to ``Particle.latexname``.
