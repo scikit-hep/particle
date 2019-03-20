@@ -13,6 +13,7 @@ Under development
 * Neutrinos added to the 2018 data files.
 * Better print-out of particle properties.
 * Better handling of particle names in HTML and LaTeX.
+* Better handling of ``Particle.empty()``.
 * Test suite of ``particle`` and ``pdgid`` submodules improved and extended.
 * More package documentation (data files, ``particle`` and ``pdgid`` submodules).
 * Added utility conversion function of particle names from LaTeX to HTML.

@@ -160,7 +160,7 @@ class Particle(object):
     # (B (just charge), F (add bar) , and '' (No change))
     quarks = attr.ib('', converter=str)
     status = attr.ib(Status.Nonexistent, converter=Status)
-    latex_name = attr.ib('')
+    latex_name = attr.ib('Unknown')
     mass_upper = attr.ib(0.0)
     mass_lower = attr.ib(0.0)
     width_upper = attr.ib(0.0)
@@ -271,7 +271,7 @@ class Particle(object):
     @property
     def charge(self):
         """The particle charge, in units of the positron charge."""
-        return self.three_charge / 3
+        return self.three_charge / 3 if self.three_charge is not None else None
 
     @property
     def three_charge(self):
