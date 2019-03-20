@@ -224,4 +224,4 @@ the particle:
     C (charge parity) = ?       I (isospin)       = 1/2      G (G-parity)     = ?
         SpinType: SpinType.PseudoScalar
         Quarks: dS
-        Antiparticle name: K~0 (antiparticle status: Full)
+        Antiparticle name: K~0 (antiparticle status: Barred)

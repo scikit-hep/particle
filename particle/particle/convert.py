@@ -147,8 +147,8 @@ def get_from_pdg_extended(filename, latexes=None):
     pdg_table = pdg_table.assign(Latex=latex_series)
 
     # Some post processing to produce inverted particles
-    pdg_table_inv = pdg_table[(pdg_table.Anti == Inv.Full)
-                              | ((pdg_table.Anti == Inv.Barless)
+    pdg_table_inv = pdg_table[(pdg_table.Anti == Inv.Barred)
+                              | ((pdg_table.Anti == Inv.ChargeInv)
                                  # Maybe add?    & (pdg_table.Charge != Par.u)
                                  & (pdg_table.Charge != Charge.o))].copy()
 
@@ -159,7 +159,7 @@ def get_from_pdg_extended(filename, latexes=None):
                             .str.replace('mAYBE NON', 'Maybe non')
                             .str.replace('X', 'x').str.replace('Y', 'y'))
 
-    full_inversion = pdg_table_inv.Anti == Inv.Full
+    full_inversion = pdg_table_inv.Anti == Inv.Barred
     pdg_table_inv.Latex.where(~full_inversion,
                               pdg_table_inv.Latex.str.replace(r'^(\\mathrm{|)([a-zA-Z\\][a-zA-Z]*)', r'\1\\bar{\2}'),
                               inplace=True)
@@ -281,7 +281,6 @@ def produce_files(particle2008, particle2018, year):
 
     # 30221  The f(0)(1370) since it was renumbered
     # 100223 The omega(1420) since it was renumbered
-
     full_table.drop([30221, 100223], axis=0, inplace=True)
 
     full_table.to_csv(particle2008, float_format='%.12g')

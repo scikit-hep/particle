@@ -57,14 +57,14 @@ class Inv(IntEnum):
 
     Possible Values
     ---------------
-        Same   : particle = antiparticle, e.g. pi0.
-        Full   : antiparticle is denoted with a bar, e.g. proton, Lambda.
-                 Note that the charge may or may not be part of the name, e.g. Lb0 vs neutrinos.
-        Barless: antiparticle is obtained with a change of charge, e.g. pi+ vs pi-.
+        Same     : particle = antiparticle, e.g. pi0.
+        Barred   : antiparticle is denoted with a bar, e.g. proton, Lambda.
+                   Note that the charge may or may not be part of the name, e.g. Lb0 vs neutrinos.
+        ChargeInv: antiparticle is obtained with a change of charge, e.g. pi+ vs pi-.
     """
     Same = 0
-    Full = 1
-    Barless = 2
+    Barred = 1
+    ChargeInv = 2
 
 
 class Status(IntEnum):
@@ -86,7 +86,7 @@ Charge_mapping = {
     '-': Charge.m, '--': Charge.mm,
     '?': Charge.u, '': Charge.u}
 
-Inv_mapping = {'': Inv.Same, 'F': Inv.Full, 'B': Inv.Barless}
+Inv_mapping = {'': Inv.Same, 'F': Inv.Barred, 'B': Inv.ChargeInv}
 Status_mapping = {'R': Status.Common, 'D': Status.Rare, 'S': Status.Unsure, 'F': Status.Further}
 
 # Mappings that allow the above classes to be turned into text mappings
