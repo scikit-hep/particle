@@ -294,7 +294,7 @@ class Particle(object):
         Check to see if particle is inverted (hence is it an antiparticle)
         and has a bar in its name.
         """
-        return self.pdgid < 0 and self.anti_flag == Inv.Full
+        return self.pdgid < 0 and self.anti_flag == Inv.Barred
 
     @property
     def spin_type(self):  # -> SpinType:
@@ -319,7 +319,7 @@ class Particle(object):
 
     def invert(self):
         "Get the antiparticle."
-        if self.anti_flag == Inv.Full or (self.anti_flag == Inv.Barless and self.three_charge != Charge.o):
+        if self.anti_flag == Inv.Barred or (self.anti_flag == Inv.ChargeInv and self.three_charge != Charge.o):
             return self.from_pdgid(-self.pdgid)
         else:
             return copy(self)
@@ -332,10 +332,11 @@ class Particle(object):
 
         Internally used when creating the name.
         """
-        if self.anti_flag == Inv.Barless: return True   # antiparticle flips sign of particle
+        if self.anti_flag == Inv.ChargeInv: return True   # antiparticle flips sign of particle
         if self.pdgid in (23, 25, 111, 130, 310, 311, -311): return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
         if abs(self.pdgid) in (2212, 2112): return False   # proton and neutron
         if self.three_charge == 0 and self.anti_flag == Inv.Same: return False   # all quarkonia and the photon
+        if self.pdgid in (9000113, 9010113): return True  # special particles not yet well-known in the 2018 table
         # Lambda baryons
         if (self.pdgid.is_baryon
             and _digit(self.pdgid, Location.Nq2) == 1 and self.I == '0'  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
@@ -349,7 +350,7 @@ class Particle(object):
     # Pretty descriptions
 
     def __str__(self):
-        _tilde = '~' if self.anti_flag == Inv.Full and self.pdgid < 0 else ''
+        _tilde = '~' if self.anti_flag == Inv.Barred and self.pdgid < 0 else ''
         _charge = Charge_undo[self.three_charge] if self._charge_in_name() else ''
         return self.pdg_name + _tilde + _charge
 
