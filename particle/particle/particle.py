@@ -587,11 +587,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         mat = getdec.match(name)
 
         if mat is None:
+
             # Deal with antiquarks
             particle = None
             if "anti-" in name:
                 name = name.replace('anti-', '')
                 particle = False
+
             return cls.find(pdg_name=name, particle=particle)
 
         mat = mat.groupdict()
