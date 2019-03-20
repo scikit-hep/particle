@@ -30,6 +30,11 @@
 * Xi(c)(2815)         104322, 104312
 * Xi(c)(2790)         104324, 104314
 *
+* 4) Particles not well-known until recently and entries in the 2018 extended file is not ideal:
+* Name                2018 PDGID
+* pi(1)(1400)         9000213, 9000113
+* pi(1)(1600)         9010213, 9010113
+*
 * See the full table for descriptions of fields.
 *
 *MASS(MeV)    ,Err+   ,Err-   ,WIDTH(MeV)  ,Err+   ,Err-   ,I  ,G,J   ,P,C,A,PDG-MC ,Chrg,R,S,Name             ,Quarks
@@ -38,6 +43,10 @@
 0             ,0      ,0      ,0           ,0      ,0      ,0  , ,1/2 , , ,F,     16,   0, ,D,nu(tau)          ,
 0             ,0      ,0      ,0           ,0      ,0      ,0  , ,1   ,-, , ,     21,   0, ,R,g                ,
 0             ,0      ,0      ,0           ,0      ,0      ,   , ,0   , , , ,     25,   0, ,R,H                ,
+0             ,0      ,0      ,0           ,0      ,0      ,1  ,-,1   ,-, ,B,9000213,   +, ,R,pi(1)(1400)      ,Maybe non-qQ
+0             ,0      ,0      ,0           ,0      ,0      ,1  ,-,1   ,-,+, ,9000113,   0, ,R,pi(1)(1400)      ,Maybe non-qQ
+0             ,0      ,0      ,0           ,0      ,0      ,1  ,-,1   ,-, ,B,9010213,   +, ,R,pi(1)(1600)      ,Maybe non-qQ
+0             ,0      ,0      ,0           ,0      ,0      ,1  ,-,1   ,-,+, ,9010113,   0, ,R,pi(1)(1600)      ,Maybe non-qQ
 0             ,0      ,0      ,0           ,0      ,0      ,0  ,+,0   ,+,+, ,  10221,   0, ,R,f(0)(1370)       ,x(uU+dD)+y(sS)
 0             ,0      ,0      ,0           ,0      ,0      ,0  ,-,1   ,-,-, ,1000223,   0, ,R,omega(1420)      ,x(uU+dD)+y(sS)
 0             ,0      ,0      ,0           ,0      ,0      ,   , ,1   ,+,-, ,  10553,   0, ,R,h(b)(1P)         ,bB
