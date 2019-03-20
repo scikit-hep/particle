@@ -3,7 +3,7 @@ Changelog
 
 Version 0.4.0
 -------------
-Under development
+March 20th, 2019
 
 * Changes in API:
     - Rename ``Particle.from_search/from_search_list`` to ``Particle.find/findall``.
@@ -15,9 +15,10 @@ Under development
 * Better handling of particle names in HTML and LaTeX.
 * Better handling of ``Particle.empty()``.
 * Test suite of ``particle`` and ``pdgid`` submodules improved and extended.
-* More package documentation (data files, ``particle`` and ``pdgid`` submodules).
+* Comprehensive package documentation (data files, ``particle`` and ``pdgid`` submodules).
 * Added utility conversion function of particle names from LaTeX to HTML.
 * Fixed LaTeX names of Delta(1232) baryons in ``data\pdgid_to_latex.csv`` file.
+* Several bug fixes.
 * Simpler usage of ``particle.particle.convert`` (non-public helper module).
 
 
