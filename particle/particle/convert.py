@@ -289,6 +289,10 @@ def produce_files(particle2008, particle2018, year):
                                    [data.open_text(data, 'pdgid_to_latex.csv')])
 
     full_table = pd.concat([full_table, addons])
+
+    # Allow replacement of particles by the ext file
+    full_table = full_table[~full_table.index.duplicated(keep='last')]
+
     sort_particles(full_table)
 
     ext_table = get_from_pdg_mcd(data.open_text(data, 'mass_width_'+year+'.mcd'))
