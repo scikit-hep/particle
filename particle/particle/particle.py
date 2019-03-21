@@ -345,6 +345,7 @@ class Particle(object):
            ):
            return False
         if abs(self.pdgid) < 19: return False   # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
+        if self.three_charge is None: return False  # deal with corner cases ;-)
         return True
 
     # Pretty descriptions
