@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 0.4.1
+-------------
+Under development
+
+* Bug fix for corner cases of using the package for non-valid particles.
+* Work on documentation.
+
+
 Version 0.4.0
 -------------
 March 20th, 2019
