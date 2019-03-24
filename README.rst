@@ -162,7 +162,7 @@ Here are possible sophisticated searches:
     >>> # Find all antiparticles of name=='Omega'
     >>> Particle.findall(name='Omega', particle=False)  # none found
     >>>
-    >>> # Find all antiparticles of pdgname=='Omega'
+    >>> # Find all antiparticles of pdg_name=='Omega'
     >>> Particle.findall(pdg_name='Omega', particle=False)  # only 1, of course
     [<Particle: name='Omega~+', pdgid=-3334, mass=1672.5 ± 0.3 MeV>]
     >>>
