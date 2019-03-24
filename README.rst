@@ -202,7 +202,8 @@ with easily recognisable names. For example:
     >>> Lambda_b_0.J
     0.5
 
-You can quickly search for particles from the command line with:
+You can quickly search for particles from the command line with
+(note: quotes may be used/needed but only double quotes work as expected on Windows):
 
 .. code-block:: bash
 
