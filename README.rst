@@ -202,11 +202,12 @@ with easily recognisable names. For example:
     >>> Lambda_b_0.J
     0.5
 
-You can quickly search for particles from the command line with:
+You can quickly search for particles from the command line with
+(note: quotes may be used/needed but only double quotes work as expected on Windows):
 
 .. code-block:: bash
 
-    $ python -m particle search 'K*0'
+    $ python -m particle search "K*0"
     <Particle: name='K*(892)0', pdgid=313, mass=895.55 ± 0.20 MeV>
     <Particle: name='K*(1680)0', pdgid=30313, mass=1718 ± 18 MeV>
     <Particle: name='K*(1410)0', pdgid=100313, mass=1421 ± 9 MeV>

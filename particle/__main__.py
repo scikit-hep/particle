@@ -16,10 +16,10 @@ parser = argparse.ArgumentParser(description='Particle utility')
 
 subparsers = parser.add_subparsers(help="Subcommands")
 
-search = subparsers.add_parser('search', help='Look up particles by PID or name')
+search = subparsers.add_parser('search', help='Look up particles by PID or name (Ex.: python -m particle search D+ D-)')
 search.add_argument('particle', nargs='+', help='Name(s) or ID(s)')
 
-pdgid = subparsers.add_parser('pdgid', help='Print info from PID')
+pdgid = subparsers.add_parser('pdgid', help='Print info from PID (Ex.: python -m particle pdgid 11 13)')
 pdgid.add_argument('pdgid', nargs='+', help='ID(s)')
 
 opts = parser.parse_args()
