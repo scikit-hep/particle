@@ -7,6 +7,7 @@ Under development
 
 * Bug fix for corner cases of using the package for non-valid particles.
 * Work on documentation.
+* PyPI badge created from https://img.shields.io.
 
 
 Version 0.4.0

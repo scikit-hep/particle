@@ -6,9 +6,9 @@
 Particle: PDG particle data and identification codes
 ====================================================
 
-.. image:: https://badge.fury.io/py/particle.svg
+.. image:: https://img.shields.io/pypi/v/particle.svg
   :alt: PyPI
-  :target: https://badge.fury.io/py/particle
+  :target: https://pypi.python.org/pypi/particle
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.2552429.svg
   :target: https://doi.org/10.5281/zenodo.2552429
