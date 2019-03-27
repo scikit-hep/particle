@@ -564,27 +564,42 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         # Others are difficult to match with the standard regex rules.
         # The required mapping is here provided:
         dec_to_pdg_mapping = {
+            'omega(2S)': 'omega(1650)',
             'phi' : 'phi(1020)',
+            'K_L0': 'K(L)0',
+            'K_S0': 'K(S)0',
             'J/psi': 'J/psi(1S)',
             'Upsilon': 'Upsilon(1S)',
+            'Upsilon_2(1D)': 'Upsilon(2)(1D)',
             'Upsilon(5S)' : 'Upsilon(10860)',
             'n0': 'n',
             'p+': 'p',
-            'X_1(3872)': 'X(3872)'
+            'X_1(3872)': 'X(3872)',
+            'Omega_c*0': 'Omega(c)(2770)'
         }
         if name in dec_to_pdg_mapping.keys():
             return cls.from_string(dec_to_pdg_mapping[name])
 
         # In other cases a bulk replacement is more efficient given the several charge states possible
         dec_to_pdg_replacements = {
+            'rho(2S)': 'rho(1450)',
+            'anti-Sigma*': 'Sigma(1385)~',
+            'anti-Xi*': 'Xi(1530)~',
+            'anti-Sigma_c*': 'Sigma(c)(2520)~',
+            'anti-Xi_c*': 'Xi(c)(2645)~',
+            'anti-B_1': 'B(1)(5721)~',
             'Sigma*': 'Sigma(1385)',
-            'Xi*': 'Xi(1530)'
+            'Xi*': 'Xi(1530)',
+            'Sigma_c*': 'Sigma(c)(2520)',
+            'Xi_c*': 'Xi(c)(2645)',
+            'B_1': 'B(1)(5721)',
         }
-        for oldw, neww in dec_to_pdg_replacements.items():
+        for oldw, neww in sorted(dec_to_pdg_replacements.items(), reverse=True):
             if oldw in name:
                 return cls.from_dec(name.replace(oldw, neww))
 
-
+        for w in ('chi_', 'eta_'):
+            if w in name: name = re.sub(r'\_(.*?)\(', r'(\1)(', name)
 
         mat = getdec.match(name)
 
