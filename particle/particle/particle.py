@@ -568,6 +568,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             'phi' : 'phi(1020)',
             'K_L0': 'K(L)0',
             'K_S0': 'K(S)0',
+            'B_s10': 'B(s1)(5830)0',
+            'anti-B_s10': 'B(s1)(5830)~0',
             'J/psi': 'J/psi(1S)',
             'Upsilon': 'Upsilon(1S)',
             'Upsilon_2(1D)': 'Upsilon(2)(1D)',
@@ -577,7 +579,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             'X_1(3872)': 'X(3872)',
             'Omega_c*0': 'Omega(c)(2770)'
         }
-        if name in dec_to_pdg_mapping.keys():
+        if name in sorted(dec_to_pdg_mapping.keys(), reverse=True):
             return cls.from_string(dec_to_pdg_mapping[name])
 
         # In other cases a bulk replacement is more efficient given the several charge states possible

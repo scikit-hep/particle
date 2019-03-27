@@ -498,25 +498,17 @@ dec_names = [
  ]
 
 
-# Sub-list of .dec particle names presently not dealt with properly by `Particle.from_dec`
-dec_names_undealt_with = (
+# Sub-list of .dec particle names unkown to the PDG data table (the .mcd and our .csv files)
+list_dec_but_not_in_pdt = [
+ "B'_1+",
+ "B'_1-",
+ "B'_10",
  "B'_c1+",
  "B'_c1-",
  "B'_s10",
  'B_0*+',
  'B_0*-',
  'B_0*0',
- 'B_s10',
- "anti-B'_s10",
- 'anti-B_0*0',
- 'anti-B_s10')
-
-
-# Sub-list of .dec particle names unkown to the PDG data table (the .mcd and our .csv files)
-list_dec_but_not_in_pdt = [
- "B'_1+",
- "B'_1-",
- "B'_10",
  'B_1+',
  'B_1-',
  'B_10',
@@ -529,6 +521,7 @@ list_dec_but_not_in_pdt = [
  'B_c2*+',
  'B_c2*-',
  'B_s0*0',
+ 'B_s10',
  'D(2S)+',
  'D(2S)-',
  'D(2S)0',
@@ -557,8 +550,11 @@ list_dec_but_not_in_pdt = [
  'Xi_cc*+',
  'Xi_cc*++',
  "anti-B'_10",
+ "anti-B'_s10",
+ 'anti-B_0*0',
  'anti-B_10',
  'anti-B_s0*0',
+ 'anti-B_s10',
  'anti-D(2S)0',
  'anti-D*(2S)0',
  'anti-Omega_b*+',
@@ -645,4 +641,4 @@ def test_decfile_style_names_valid():
         except ParticleNotFound:
             failures.add(name)
 
-    assert failures == set(dec_names_undealt_with)
+    assert failures == set()
