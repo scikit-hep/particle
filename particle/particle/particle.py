@@ -552,7 +552,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def from_dec(cls, name):
-        'Get a particle from a .dec DecFile style name - returns the best match.'
+        'Get a particle from a .dec decay file (DecFile) style name - returns the best match.'
 
         # Simplest search first - search by name
         try:
@@ -579,10 +579,12 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             'X_1(3872)': 'X(3872)',
             'Omega_c*0': 'Omega(c)(2770)'
         }
-        if name in sorted(dec_to_pdg_mapping.keys(), reverse=True):
+        if name in dec_to_pdg_mapping:
             return cls.from_string(dec_to_pdg_mapping[name])
 
-        # In other cases a bulk replacement is more efficient given the several charge states possible
+        # In other cases a bulk replacement is more efficient given the several charge states possible.
+        # Note: the dictionary needs to be sorted in such a way that the replacements for
+        #       names of the kind "anti-X" are always dealt with before those for names "X".
         dec_to_pdg_replacements = {
             'rho(2S)': 'rho(1450)',
             'anti-Sigma*': 'Sigma(1385)~',
@@ -600,6 +602,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             if oldw in name:
                 return cls.from_dec(name.replace(oldw, neww))
 
+        # Special case of certain quarkonium states of the kind X_qj,
+        # where q and j are the quark family (c, b) and total spin, respectively.
         for w in ('chi_', 'eta_'):
             if w in name: name = re.sub(r'\_(.*?)\(', r'(\1)(', name)
 
