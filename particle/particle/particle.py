@@ -150,7 +150,7 @@ class Particle(object):
     mass = attr.ib()
     width = attr.ib()
     anti_flag = attr.ib(converter=Inv)  # Info about particle name for anti-particles
-    Particle_enum_three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
+    _three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
     rank = attr.ib(0)  # Next line is Isospin
     I = attr.ib(None)  # noqa: E741
     # J = attr.ib(None)  # Total angular momentum
@@ -218,7 +218,7 @@ class Particle(object):
                     P=int(v['P']),
                     C=int(v['C']),
                     anti_flag=int(v['Anti']),
-                    Particle_enum_three_charge=int(v['Charge']),
+                    three_charge=int(v['Charge']),
                     rank=int(v['Rank']),
                     status=int(v['Status']),
                     pdg_name=v['Name'],
@@ -284,7 +284,7 @@ class Particle(object):
     @property
     def three_charge(self):
         'Three times the particle charge (charge * 3), in units of the positron charge.'
-        return int(self.Particle_enum_three_charge) if self.Particle_enum_three_charge!=Charge.u else None
+        return int(self._three_charge) if self._three_charge!=Charge.u else None
 
     @property
     def lifetime(self):
