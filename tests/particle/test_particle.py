@@ -97,6 +97,7 @@ def test_complex_search():
     assert len(particles) == 1 # only the K-
     assert -321 in particles
 
+
 def test_pdg():
     assert Particle.from_pdgid(211).pdgid == 211
     with pytest.raises(InvalidParticle):
@@ -150,6 +151,17 @@ def test_lifetime_props():
     pi = Particle.from_pdgid(211)
     assert pi.lifetime == approx(26.0327460625985)   # in nanoseconds
     assert pi.ctau == approx(7804.4209306)   # in millimeters
+
+
+def test_charge_consistency():
+    """
+    The charge of a particle is presently stored in the CSV files
+    (see Particle.charge for the motivation), but it can also be retrieved
+    from the particle's PDG ID, *if* the latter is valid.
+    This test makes sure both numbers are consistent for all particles in the PDG table.
+    """
+    for p in Particle.table():
+        assert p.three_charge == p.pdgid.three_charge
 
 
 def test_describe():
@@ -287,7 +299,7 @@ spin_type_classification = (
 
 
 @pytest.mark.parametrize("pid,stype", spin_type_classification)
-def test_invert_related_methods(pid, stype):
+def test_spin_type(pid, stype):
     particle = Particle.from_pdgid(pid)
 
     assert particle.spin_type == stype

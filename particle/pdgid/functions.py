@@ -347,7 +347,7 @@ def j_spin(pdgid):
         if fund > 10 and fund < 17 : return 2  # 4th generation leptons not dealt with !
         if fund > 20 and fund < 25 : return 3
         return None
-    elif _extra_bits(pdgid) > 0 : return 0
+    elif _extra_bits(pdgid) > 0 : return None
     if pdgid in (130, 310): return 1   # Special cases of the KS and KL !
     return abspid(pdgid) % 10
 
