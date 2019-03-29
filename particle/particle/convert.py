@@ -137,7 +137,7 @@ def get_from_pdg_extended(filename, latexes=None):
 
 
     # Filtering out non-particles (quarks, negative IDs)
-    # pdg_table = pdg_table[pdg_table.Charge != Par.u]
+    # pdg_table = pdg_table[pdg_table.Charge != Charge.u]
     pdg_table = pdg_table[pdg_table.ID >= 0]
 
     # PDG's ID should be the key to table
@@ -149,10 +149,11 @@ def get_from_pdg_extended(filename, latexes=None):
     # Some post processing to produce inverted particles
     pdg_table_inv = pdg_table[(pdg_table.Anti == Inv.Barred)
                               | ((pdg_table.Anti == Inv.ChargeInv)
-                                 # Maybe add?    & (pdg_table.Charge != Par.u)
+                                 # Maybe add?    & (pdg_table.Charge != Charge.u)
                                  & (pdg_table.Charge != Charge.o))].copy()
 
     pdg_table_inv.index = -pdg_table_inv.index
+    pdg_table_inv.Charge = -pdg_table_inv.Charge
     pdg_table_inv.Quarks = (pdg_table_inv.Quarks.str.swapcase()
                             .str.replace('SQRT', 'sqrt')
                             .str.replace('P', 'p').str.replace('Q', 'q')
@@ -173,7 +174,7 @@ def get_from_pdg_extended(filename, latexes=None):
 
     # These items are not very important - can be reconstructed from the PDG ID
     # TODO: maybe first check the consistency between what is read in and what the PDG ID provides (being maniac)?
-    del full['Charge'], full['J']
+    del full['J']
 
     # Nice sorting
     sort_particles(full)
@@ -245,7 +246,7 @@ def get_from_pdg_mcd(filename):
     del ds['NameCharge'], ds['ID1'], ds['ID2'], ds['ID3'], ds['ID4']
     ds.sort_index(inplace=True)
 
-    # This should be in MeV, not GeV, and absolue value
+    # This should be in MeV, not GeV, and absolute value
     for name in ('Mass', 'MassUpper', 'MassLower', 'Width', 'WidthUpper', 'WidthLower'):
         ds[name] = abs(ds[name]*1000)
 
@@ -279,9 +280,11 @@ def produce_files(particle2008, particle2018, year):
     full_table = get_from_pdg_extended(data.open_text(data, 'mass_width_2008.fwf'),
                                        [data.open_text(data, 'pdgid_to_latex.csv')])
 
-    # 30221  The f(0)(1370) since it was renumbered
-    # 100223 The omega(1420) since it was renumbered
-    full_table.drop([30221, 100223], axis=0, inplace=True)
+    # Entries to remove, see comments in file mass_width_2008_ext.fwf:
+    # 30221 - the f(0)(1370) since it was renumbered
+    # 100223 - the omega(1420) since it was renumbered
+    # 5132 and 5232 - the Xi_b baryons got their IDs swapped at some stage
+    full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
 
     full_table.to_csv(particle2008, float_format='%.12g')
 
