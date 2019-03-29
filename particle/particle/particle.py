@@ -171,13 +171,18 @@ class Particle(object):
             self=self, pdgid=int(self.pdgid),
             mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
     _table = None # Loaded table of entries
+    _table_names = None # Names of loaded tables
+
+    @classmethod
+    def table_loaded(cls):
+        return not cls._table is None
 
     @classmethod
     def table(cls):
         """
         This accesses the internal particle data CSV table, loading it from the default location if needed.
         """
-        if cls._table is None:
+        if not cls.table_loaded():
             cls.load_table()
 
         return cls._table
@@ -186,14 +191,23 @@ class Particle(object):
     def load_table(cls, filename=None, append=False):
         """
         Load a particle data CSV table. Optionally append to the existing data already loaded if append=True.
+        As a special case, if this is called with append=True and the table is not loaded, the default will
+        be loaded first before appending (set append=False if you don't want this behavior).
         """
-        if not append or cls._table is None:
+        if append and not cls.table_loaded():
+            cls.load_table(append=False) # default load
+        elif not append:
             cls._table = []
+            cls._table_names = []
 
         if filename is None:
             filename = data.open_text(data, 'particle2018.csv')
+            cls._table_names.append('particle2018.csv')
         elif not hasattr(filename, 'read'):
+            cls._table_names.append(filename)
             filename = open(filename)
+        else:
+            cls._table_names.append('{0!r} {1}'.format(filename, len(cls._table_names)))
 
         with filename as f:
             r = csv.DictReader(f)

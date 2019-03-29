@@ -226,3 +226,26 @@ the particle:
         SpinType: SpinType.PseudoScalar
         Quarks: dS
         Antiparticle name: K~0 (antiparticle status: Barred)
+
+Advanced: Loading custom tables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can control the particle data tables if you so desire. You can append a new data table using the following syntax:
+
+.. code-block:: python
+
+    >>> from particle import Particle
+    >>> Particle.load_table('new_particles.csv', append=True)
+
+You can also replace the particle table entirely with ``append=False`` (the default).
+
+
+Advanced: Conversion
+^^^^^^^^^^^^^^^^^^^^
+
+You can convert and update the particle tables with the utilities in ``particle.particle.convert``. This requires the
+``pandas`` package, and is only tested with Python 3. Run the following command for more help:
+
+.. code-block:: bash
+
+    $ python3 -m particle.particle.convert --help
