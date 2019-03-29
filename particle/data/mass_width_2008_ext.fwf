@@ -16,6 +16,9 @@
 * Name                2008 PDGID   2018 PDGID
 * f(0)(1370)          30221        10221
 * omega(1420)         100223       1000223
+* For the following 2 particles: swap of PDGID or bug in PDG file mass_width_2008.fwf !?
+* Xi(b)0              5132         5232
+* Xi(b)-              5232         5132
 *
 * 3) Particles whose PDG ID was not set in the 2008 extended file:
 * Name                2018 PDGID
@@ -68,4 +71,6 @@
 0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,3/2 ,-, ,F, 104312,   0,3,R,Xi(c)(2815)      ,dsc
 0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,1/2 ,-, ,F, 104324,   +,3,R,Xi(c)(2790)      ,usc
 0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,1/2 ,-, ,F, 104314,   0,3,R,Xi(c)(2790)      ,dsc
+0             ,0      ,0      ,0          ,0       ,0      ,1/2, ,1/2 ,+, ,F,   5232,   0,3,R,Xi(b)            ,usb
+0             ,0      ,0      ,0          ,0       ,0      ,1/2, ,1/2 ,+, ,F,   5132,   -,3,R,Xi(b)            ,dsb
 0             ,0      ,0      ,0           ,0      ,0      ,0  , ,1/2 ,+, ,F,   5332,   -,3,R,Omega(b)         ,ssb
