@@ -170,11 +170,26 @@ class Particle(object):
         return "<{self.__class__.__name__}: name='{self!s}', pdgid={pdgid}, mass={mass} MeV>".format(
             self=self, pdgid=int(self.pdgid),
             mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
+
     _table = None # Loaded table of entries
     _table_names = None # Names of loaded tables
 
     @classmethod
+    def table_names(cls):
+        """
+        Return the list of names loaded (will load the table, check with table_loaded() first if you don't want to load).
+        """
+
+        if cls._table_names is None:
+            cls.load_table()
+
+        return tuple(cls._table_names) # make a copy to avoid user manipulation
+
+    @classmethod
     def table_loaded(cls):
+        """
+        Check to see if the table is loaded.
+        """
         return not cls._table is None
 
     @classmethod
