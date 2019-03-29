@@ -340,6 +340,10 @@ class Particle(object):
 
         Note that this is relevant for bosons only. SpinType.NonDefined is returned otherwise.
         """
+        # Non-valid or non-standard PDG IDs
+        if self.pdgid.j_spin is None:
+            return SpinType.NonDefined
+
         # Fermions - 2J+1 is always an even number
         if self.pdgid.j_spin % 2 == 0:
             return SpinType.NonDefined
