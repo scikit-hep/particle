@@ -12,11 +12,6 @@ import os.path
 from setuptools import setup
 from setuptools import find_packages
 
-test_deps = [
-    'pytest',
-    'pandas',
-]
-
 install_deps = [
     'enum34>=1.1; python_version<"3.4"',
     'importlib_resources>=1.0; python_version<"3.7"',
@@ -25,7 +20,8 @@ install_deps = [
 ]
 
 extras = {
-    'test': test_deps,
+    'test': ['pytest', 'pandas'],
+    'convert': ['pandas'],
 }
 
 def get_version():
@@ -48,7 +44,7 @@ setup(
     package_data={'': ['data/*.*']},
     install_requires = install_deps,
     setup_requires = ['pytest-runner'],
-    tests_require = test_deps,
+    tests_require = extras['test'],
     extras_require = extras,
     keywords = [
         'HEP', 'PDG', 'PDGID', 'particle', 'particle data table',
