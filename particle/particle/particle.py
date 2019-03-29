@@ -270,7 +270,15 @@ class Particle(object):
 
     @property
     def charge(self):
-        """The particle charge, in units of the positron charge."""
+        """
+        The particle charge, in units of the positron charge.
+
+        Design note: the particle charge can also be retrieved from the particle PDG ID.
+        To allow for user-defined particles, it is necessary to rather store
+        the particle charge in the data tables themselves.
+        Consistency of both ways of retrieving the particle charge is guaranteed
+        for all PDG table particles.
+        """
         return self.three_charge / 3 if self.three_charge is not None else None
 
     @property
