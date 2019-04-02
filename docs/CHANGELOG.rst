@@ -3,8 +3,12 @@ Changelog
 
 Version 0.4.1
 -------------
-Under development
+April 2th, 2019
 
+* Enhancements to  ``Particle`` class:
+  - Particles in .dec decay files dealt with, see ``Particle.from_dec(...)`` method.
+  - Loading tables made nicer, with more documentation.
+  - Particle charge is an entry of CSV files again, so that user particles are better dealt with.
 * Bug fix for corner cases of using the package for non-valid particles.
 * Work on documentation.
 * PyPI badge created from https://img.shields.io.
