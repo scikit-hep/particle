@@ -8,6 +8,12 @@ from __future__ import absolute_import, division, print_function
 
 import sys
 
+
+try:
+    from pathlib2 import Path
+except ImportError:
+    from pathlib import Path
+
 import pytest
 from pytest import approx
 
@@ -17,6 +23,9 @@ from particle.particle.particle import ParticleNotFound, InvalidParticle
 from particle.pdgid import PDGID
 
 from hepunits.units import second
+
+
+DIR = Path(__file__).parent.resolve()
 
 
 def test_find():
@@ -199,6 +208,20 @@ C (charge parity) = -       I (isospin)       = <2       G (G-parity)     = ?
     Antiparticle name: gamma (antiparticle status: Same)"""
     photon = Particle.from_pdgid(22)
     assert photon.describe() == __description
+
+
+def test_default_table_loading():
+    Particle.table()
+    p = Particle.from_pdgid(211)
+    assert p.table_loaded() is True
+    assert p.table_names() == ('particle2018.csv',)
+
+
+def test_explicit_table_loading():
+    Particle.load_table(DIR / '../../particle/data/particle2018.csv')
+    assert Particle.table_loaded() == True
+    assert len(Particle.table_names()) == 1
+    assert Particle.table() is not None
 
 
 checklist_html_name = (
