@@ -145,6 +145,7 @@ def test_basic_props():
     assert pi.pdg_name == 'pi'
     assert pi.pdgid == 211
     assert pi.three_charge == Charge.p
+    assert pi.charge == 1
 
 
 def test_lifetime_props():
