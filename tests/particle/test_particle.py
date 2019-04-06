@@ -217,6 +217,10 @@ def test_default_table_loading():
     assert p.table_names() == ('particle2018.csv',)
 
 
+def test_default_table_loading_bis():
+    assert Particle.table_names() == ('particle2018.csv',)
+
+
 def test_explicit_table_loading():
     Particle.load_table(DIR / '../../particle/data/particle2018.csv')
     assert Particle.table_loaded() == True
