@@ -218,6 +218,8 @@ class Particle(object):
             filename = data.open_text(data, 'particle2018.csv')
             cls._table_names.append('particle2018.csv')
         elif not hasattr(filename, 'read'):
+            # Conversion to handle pathlib on Python < 3.6:
+            filename = str(filename)
             cls._table_names.append(filename)
             filename = open(filename)
         else:
