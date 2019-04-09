@@ -62,6 +62,12 @@ Strict dependencies
 - `attrs <http://www.attrs.org/en/stable/>`_ provides classes without boilerplate (similar to DataClasses in Python 3.7)
 
 
+Changelog
+---------
+
+See the `changelog <https://github.com/scikit-hep/particle/blob/master/docs/CHANGELOG.rst>`__ for a history of notable changes.
+
+
 Getting started: PDGIDs
 -----------------------
 
