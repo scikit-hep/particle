@@ -3,6 +3,8 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
+from __future__ import absolute_import
+
 from .particle import Particle, ParticleNotFound
 from .enums import SpinType, Parity, Charge, Inv, Status
 from .kinematics import width_to_lifetime, lifetime_to_width
