@@ -50,3 +50,9 @@ jobs:
 
   steps:
     - template: .ci/azure-steps.yml
+
+- job: 'Package'
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+    - template: .ci/azure-wheel.yml
