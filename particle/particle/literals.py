@@ -16,8 +16,8 @@ Typical use cases::
     >>> from particle.particle import literals as lp
     >>> lp.pi_plus
     <Particle: name='pi+', pdgid=211, mass=139.57061 ± 0.00024 MeV>
-    >>> lp.pi_plus.is_meson
-    1.0
+    >>> lp.pi_plus.name
+    'pi+'
     >>> from particle.particle.literals import Lambda_b_0
     >>> Lambda_b_0
     <Particle: name='Lambda(b)0', pdgid=5122, mass=5619.60 ± 0.17 MeV>
