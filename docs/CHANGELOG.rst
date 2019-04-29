@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version 0.4.2
+-------------
+April 29th, 2019
+
+* Added re-release of the 2018 PDG data table (neutrinos added, formatting fixes).
+* CI scripts for Azure enhanced.
+* Test coverage improvements.
+
+
 Version 0.4.1
 -------------
 April 2th, 2019
