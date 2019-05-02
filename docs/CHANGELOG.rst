@@ -1,6 +1,10 @@
 Changelog
 =========
 
+Version 0.4.3
+-------------
+In development.
+
 Version 0.4.2
 -------------
 April 29th, 2019
@@ -8,6 +12,7 @@ April 29th, 2019
 * Added re-release of the 2018 PDG data table (neutrinos added, formatting fixes).
 * CI scripts for Azure enhanced.
 * Test coverage improvements.
+* Wheel now available on PyPI.
 
 
 Version 0.4.1
