@@ -266,6 +266,31 @@ def test_html_name(pid, html_name):
     assert particle.html_name == html_name
 
 
+checklist_is_self_conjugate = (
+    (1, False),       # d quark
+    (-13, False),     # mu+
+    (111, True),      # pi0
+    (211, False),     # pi+
+    (-211, False),    # pi-
+    (443, True),      # J/psi
+    (300553, True),   # Upsilon(4S)
+    (130, True),      # K_L
+    (2212, False),    # proton
+    (-2112, False),   # antineutron
+    (3322, False),    # Xi0
+    (-3322, False),   # Xi0_bar
+    (-511, False),    # B0_bar
+    (5122, False),    # Lb0
+)
+
+
+@pytest.mark.parametrize("pid,is_self_conjugate", checklist_is_self_conjugate)
+def test_is_self_conjugate(pid, is_self_conjugate):
+    particle = Particle.from_pdgid(pid)
+
+    assert particle.is_self_conjugate == is_self_conjugate
+
+
 checklist_is_name_barred = (
     (1, False),       # d quark
     (-2, True),       # u antiquark
