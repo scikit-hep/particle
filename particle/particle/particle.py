@@ -360,6 +360,13 @@ class Particle(object):
 
         return SpinType.Unknown
 
+    @property
+    def is_self_conjugate(self):
+        """
+        Is the particle self-conjugate, i.e. its own antiparticle?
+        """
+        return self.anti_flag == Inv.Same
+
     def invert(self):
         "Get the antiparticle."
         if self.anti_flag == Inv.Barred or (self.anti_flag == Inv.ChargeInv and self.three_charge != Charge.o):

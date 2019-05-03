@@ -5,6 +5,10 @@ Version 0.4.3
 -------------
 In development.
 
+* Added Particle.is_self_conjugate property.
+* Speed-up of searches for decay file particle names.
+
+
 Version 0.4.2
 -------------
 April 29th, 2019
