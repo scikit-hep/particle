@@ -620,10 +620,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             'n0': 'n',
             'p+': 'p',
             'X_1(3872)': 'X(3872)',
-            'Omega_c*0': 'Omega(c)(2770)'
+            'Omega_c*0': 'Omega(c)(2770)0'
         }
         if name in dec_to_pdg_mapping:
-            return cls.from_string(dec_to_pdg_mapping[name])
+            return cls.find(name=dec_to_pdg_mapping[name])
 
         # In other cases a bulk replacement is more efficient given the several charge states possible.
         # Note: the dictionary needs to be sorted in such a way that the replacements for
