@@ -166,7 +166,7 @@ class Particle(object):
     width_lower = attr.ib(0.0)
 
     def __repr__(self):
-        return "<{self.__class__.__name__}: name='{self!s}', pdgid={pdgid}, mass={mass} MeV>".format(
+        return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass} MeV>'.format(
             self=self, pdgid=int(self.pdgid),
             mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
 
@@ -628,12 +628,16 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         # Others are difficult to match with the standard regex rules.
         # The required mapping is here provided:
         dec_to_pdg_mapping = {
+            "f_0": 'f(0)(980)',
+            "f'_0": 'f(0)(1370)',
             "f'_1": 'f(1)(1420)',
+            "h'_1": 'h(1)(1380)',
             'omega(2S)': 'omega(1420)',
             'phi' : 'phi(1020)',
             'K_L0': 'K(L)0',
             'K_S0': 'K(S)0',
             'B_s10': 'B(s1)(5830)0',
+            "anti-D'_10": 'D(1)(2420)~0',
             'anti-B_s10': 'B(s1)(5830)~0',
             'J/psi': 'J/psi(1S)',
             'Upsilon': 'Upsilon(1S)',

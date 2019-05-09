@@ -721,14 +721,11 @@ list_undealt_with = [
  "K'_10",
  "Xi'_b-",
  "Xi'_b0",
- "anti-D'_10",
  "anti-K''*0",
  "anti-K'*0",
  "anti-K'_10",
  "anti-Xi'_b+",
- "anti-Xi'_b0",
- "f'_0",
- "h'_1"
+ "anti-Xi'_b0"
 ]
 
 for elm in list_dec_but_not_in_pdt+list_dec_specific:
