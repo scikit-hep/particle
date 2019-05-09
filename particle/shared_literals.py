@@ -78,11 +78,11 @@ common_particles = dict(
     Kst_892_0=313,
     Kst_892_0_bar=-313,
     Kst_892_plus=323,
-    Kst_892_minus_bar=-323,
+    Kst_892_minus=-323,
     K_0st_1430_0=10311,
     K_0st_1430_0_bar=-10311,
     K_0st_1430_plus=10321,
-    K_0st_1430_minus_bar=-10321,
+    K_0st_1430_minus=-10321,
 
     # Charm mesons
     D_0=421,
