@@ -604,9 +604,23 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def from_dec(cls, name):
         'Get a particle from a .dec decay file (DecFile) style name - returns the best match.'
 
+        # Catch 2 really special cases - names too short for a proper matching
+        specials = {
+            'n0': 'n',
+            'anti-n0': 'n~',
+            'p+': 'p',
+            'anti-p-' : 'p~'
+        }
+        if name in specials:
+            return cls.find(name=specials[name])
+
+        # Extra special cases where the lowest-level particle
+        # does *not* have the smallest PDG ID, which the query matches by default to.
+        name = re.sub(r'Delta(?=[0\+\-][+-]?)', r'Delta(1232)', name)
+
         # Simplest search first - search by name
         try:
-            return cls.from_string(name)
+            return cls.find(name=name)
         except:
             pass
 
@@ -614,7 +628,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         # Others are difficult to match with the standard regex rules.
         # The required mapping is here provided:
         dec_to_pdg_mapping = {
-            'omega(2S)': 'omega(1650)',
+            'omega(2S)': 'omega(1420)',
             'phi' : 'phi(1020)',
             'K_L0': 'K(L)0',
             'K_S0': 'K(S)0',
@@ -624,8 +638,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             'Upsilon': 'Upsilon(1S)',
             'Upsilon_2(1D)': 'Upsilon(2)(1D)',
             'Upsilon(5S)' : 'Upsilon(10860)',
-            'n0': 'n',
-            'p+': 'p',
             'X_1(3872)': 'X(3872)',
             'Omega_c*0': 'Omega(c)(2770)0'
         }
@@ -636,6 +648,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         # Note: the dictionary needs to be sorted in such a way that the replacements for
         #       names of the kind "anti-X" are always dealt with before those for names "X".
         dec_to_pdg_replacements = {
+            'a_0': 'a(0)(980)',
             'rho(2S)': 'rho(1450)',
             'anti-Sigma*': 'Sigma(1385)~',
             'anti-Xi*': 'Xi(1530)~',
@@ -650,7 +663,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         }
         for oldw, neww in sorted(dec_to_pdg_replacements.items(), reverse=True):
             if oldw in name:
-                return cls.from_dec(name.replace(oldw, neww))
+                return cls.find(name=name.replace(oldw, neww))
 
         # Special case of certain quarkonium states of the kind X_qj,
         # where q and j are the quark family (c, b) and total spin, respectively.
@@ -666,8 +679,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             if "anti-" in name:
                 name = name.replace('anti-', '')
                 particle = False
+                return cls.find(pdg_name=name, particle=particle)
 
-            return cls.find(pdg_name=name, particle=particle)
+            return cls.find(name=name, particle=particle)
 
         mat = mat.groupdict()
 
