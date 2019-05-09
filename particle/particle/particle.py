@@ -628,6 +628,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         # Others are difficult to match with the standard regex rules.
         # The required mapping is here provided:
         dec_to_pdg_mapping = {
+            "f'_1": 'f(1)(1420)',
             'omega(2S)': 'omega(1420)',
             'phi' : 'phi(1020)',
             'K_L0': 'K(L)0',
@@ -661,6 +662,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             'Xi*': 'Xi(1530)',
             'Sigma_c*': 'Sigma(c)(2520)',
             'Xi_c*': 'Xi(c)(2645)',
+            "D'_1": 'D(1)(2420)',
             'B_1': 'B(1)(5721)',
         }
         for oldw, neww in sorted(dec_to_pdg_replacements.items(), reverse=True):
@@ -760,6 +762,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             name += '({mat[family]})'.format(mat=mat)
         if mat['state']:
             name += '({mat[state]})'.format(mat=mat)
+
+        if 'prime' in mat and mat['prime']:
+            name += "'"
 
         if mat['star']:
             name += '*'
