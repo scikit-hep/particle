@@ -3,10 +3,14 @@ Changelog
 
 Version 0.4.3
 -------------
-In development.
+May 10th, 2019
 
+* Searches given a .dec decay file particle name:
+  - Speed-up of searches.
+  - Corner cases dealt with.
+  - Extended test suite for the ``Particle.from_dec(...)`` method.
 * Added Particle.is_self_conjugate property.
-* Speed-up of searches for decay file particle names.
+* Bug fix in the PDG extended file from 2008 (in excited K, D and B meson names).
 
 
 Version 0.4.2
