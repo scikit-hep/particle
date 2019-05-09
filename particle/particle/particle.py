@@ -639,7 +639,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             'Upsilon_2(1D)': 'Upsilon(2)(1D)',
             'Upsilon(5S)' : 'Upsilon(10860)',
             'X_1(3872)': 'X(3872)',
-            'Omega_c*0': 'Omega(c)(2770)0'
+            'Omega_c*0': 'Omega(c)(2770)0',
+            'Sigma_b+': 'Sigma(b)+',
+            'Sigma_b*+': 'Sigma(b)*+',
         }
         if name in dec_to_pdg_mapping:
             return cls.find(name=dec_to_pdg_mapping[name])
@@ -746,9 +748,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def _from_group_dict_list(cls, mat):
-
-        #if '_' in mat['name']:
-        #    mat['name'], mat['family'] = mat['name'].split('_')
 
         kw = dict()
         kw['particle'] = False if mat['bar'] is not None else (True if mat['charge'] == '0' else None)
