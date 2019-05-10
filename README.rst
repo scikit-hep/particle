@@ -73,7 +73,7 @@ Getting started: PDGIDs
 
 .. code-block:: python
 
-    >>> from particle.pdgid import PDGID
+    >>> from particle import PDGID
     >>>
     >>> pid = PDGID(211)
     >>> pid
