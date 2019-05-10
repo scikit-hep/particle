@@ -166,7 +166,7 @@ class Particle(object):
     width_lower = attr.ib(0.0)
 
     def __repr__(self):
-        return "<{self.__class__.__name__}: name='{self!s}', pdgid={pdgid}, mass={mass} MeV>".format(
+        return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass} MeV>'.format(
             self=self, pdgid=int(self.pdgid),
             mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
 
@@ -628,18 +628,25 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         # Others are difficult to match with the standard regex rules.
         # The required mapping is here provided:
         dec_to_pdg_mapping = {
+            "f_0": 'f(0)(980)',
+            "f'_0": 'f(0)(1370)',
+            "f'_1": 'f(1)(1420)',
+            "h'_1": 'h(1)(1380)',
             'omega(2S)': 'omega(1420)',
             'phi' : 'phi(1020)',
             'K_L0': 'K(L)0',
             'K_S0': 'K(S)0',
             'B_s10': 'B(s1)(5830)0',
+            "anti-D'_10": 'D(1)(2420)~0',
             'anti-B_s10': 'B(s1)(5830)~0',
             'J/psi': 'J/psi(1S)',
             'Upsilon': 'Upsilon(1S)',
             'Upsilon_2(1D)': 'Upsilon(2)(1D)',
             'Upsilon(5S)' : 'Upsilon(10860)',
             'X_1(3872)': 'X(3872)',
-            'Omega_c*0': 'Omega(c)(2770)0'
+            'Omega_c*0': 'Omega(c)(2770)0',
+            'Sigma_b+': 'Sigma(b)+',
+            'Sigma_b*+': 'Sigma(b)*+',
         }
         if name in dec_to_pdg_mapping:
             return cls.find(name=dec_to_pdg_mapping[name])
@@ -659,6 +666,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             'Xi*': 'Xi(1530)',
             'Sigma_c*': 'Sigma(c)(2520)',
             'Xi_c*': 'Xi(c)(2645)',
+            "D'_1": 'D(1)(2420)',
             'B_1': 'B(1)(5721)',
         }
         for oldw, neww in sorted(dec_to_pdg_replacements.items(), reverse=True):
@@ -747,9 +755,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @classmethod
     def _from_group_dict_list(cls, mat):
 
-        #if '_' in mat['name']:
-        #    mat['name'], mat['family'] = mat['name'].split('_')
-
         kw = dict()
         kw['particle'] = False if mat['bar'] is not None else (True if mat['charge'] == '0' else None)
 
@@ -761,6 +766,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             name += '({mat[family]})'.format(mat=mat)
         if mat['state']:
             name += '({mat[state]})'.format(mat=mat)
+
+        if 'prime' in mat and mat['prime']:
+            name += "'"
 
         if mat['star']:
             name += '*'

@@ -31,7 +31,7 @@ DIR = Path(__file__).parent.resolve()
 def test_find():
     # 1 match found
     prepr = repr(Particle.find(name='gamma'))
-    assert prepr == "<Particle: name='gamma', pdgid=22, mass=0.0 MeV>"
+    assert prepr == '<Particle: name="gamma", pdgid=22, mass=0.0 MeV>'
 
     # No match found
     with pytest.raises(ParticleNotFound):
@@ -145,7 +145,7 @@ def test_str():
 def test_rep():
     pi = Particle.from_pdgid(211)
     assert "pdgid=211" in repr(pi)
-    assert "name='pi+'" in repr(pi)
+    assert 'name="pi+"' in repr(pi)
     assert "mass=139.57" in repr(pi)
 
 
@@ -387,10 +387,19 @@ decfile_style_names = (
     ("s", 3),
     ("anti-b", -5),
     ("anti-K*0", -313),
+    ("eta", 221),
+    ("eta'", 331),
     ("a_0+", 9000211),
     ("a_00", 9000111),
     ("a_1-", -20213),
     ("a_10", 20113),
+    ("f_0", 9010221),
+    ("f'_0", 10221),
+    ("f_1", 20223),
+    ("f'_1", 20333),
+    ("f'_2", 335),
+    ("h_1", 10223),
+    ("h'_1", 10333),
     ("rho+", 213),
     ("rho(2S)0", 100113),
     ("omega", 223),
@@ -402,14 +411,29 @@ decfile_style_names = (
     ("Delta-", 1114),
     ("D+", 411),
     ("D'_1+", 10413),
+    ("anti-D'_10", -10423),
     ("D_2*+", 415),
     ("D_s+", 431),
     ("anti-B0", -511),
-    ("anti-Lambda_b0", -5122),
     ("B+", 521),
     ("B-", -521),
     ("B*+", 523),
-    ("B*-", -523)
+    ("B*-", -523),
+    ("N(1440)+", 12212),
+    ("anti-N(1440)-", -12212),
+    ("anti-Lambda_b0", -5122),
+    ("Sigma_b+", 5222),
+    ("Sigma_b0", 5212),
+    ("Sigma_b-", 5112),
+    ("anti-Sigma_b-", -5222),
+    ("anti-Sigma_b0", -5212),
+    ("anti-Sigma_b+", -5112),
+    ("Sigma_b*+", 5224),
+    ("Sigma_b*0", 5214),
+    ("Sigma_b*-", 5114),
+    ("anti-Sigma_b*-", -5224),
+    ("anti-Sigma_b*0", -5214),
+    ("anti-Sigma_b*+", -5114)
 )
 
 
