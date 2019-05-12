@@ -135,10 +135,10 @@ you can get a particle directly, or you can use a search:
 
     >>> from particle import Particle
     >>> Particle.from_pdgid(211)
-    <Particle: name='pi+', pdgid=211, mass=139.57061 ± 0.00024 MeV>
+    <Particle: name="pi+", pdgid=211, mass=139.57061 ± 0.00024 MeV>
     >>>
     >>> Particle.findall('pi')[0]
-    <Particle: name='pi0', pdgid=111, mass=134.9770 ± 0.0005 MeV>
+    <Particle: name="pi0", pdgid=111, mass=134.9770 ± 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which include
 ``pdg_name``, ``name``, ``mass``, ``width``, ``charge``, ``three_charge``, ``anti_flag``, ``rank``,
@@ -170,7 +170,7 @@ Here are possible sophisticated searches:
     >>>
     >>> # Find all antiparticles of pdg_name=='Omega'
     >>> Particle.findall(pdg_name='Omega', particle=False)  # only 1, of course
-    [<Particle: name='Omega~+', pdgid=-3334, mass=1672.5 ± 0.3 MeV>]
+    [<Particle: name="Omega~+", pdgid=-3334, mass=1672.5 ± 0.3 MeV>]
     >>>
     >>> # Find all neutral beauty hadrons
     >>> Particle.findall(lambda p: p.pdgid.has_bottom and p.charge==0)
@@ -178,8 +178,8 @@ Here are possible sophisticated searches:
     >>> # Find all strange mesons with c*tau > 1 meter
     >>> from hepunits.units import meter
     >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1 * meter, particle=True)
-    [<Particle: name='K(L)0', pdgid=130, mass=497.611 ± 0.013 MeV>,
-     <Particle: name='K+', pdgid=321, mass=493.677 ± 0.016 MeV>]
+    [<Particle: name="K(L)0", pdgid=130, mass=497.611 ± 0.013 MeV>,
+     <Particle: name="K+", pdgid=321, mass=493.677 ± 0.016 MeV>]
 
 Once you have a particle, any of the properties can be accessed, along with several methods.
 Though they are not real properties, you can access ``is_name_barred``, and ``spin_type``.
@@ -200,11 +200,11 @@ with easily recognisable names. For example:
 
     >>> from particle.particle import literals as lp
     >>> lp.pi_plus
-    <Particle: name='pi+', pdgid=211, mass=139.57061 ± 0.00024 MeV>
+    <Particle: name="pi+", pdgid=211, mass=139.57061 ± 0.00024 MeV>
     >>>
     >>> from particle.particle.literals import Lambda_b_0
     >>> Lambda_b_0
-    <Particle: name='Lambda(b)0', pdgid=5122, mass=5619.60 ± 0.17 MeV>
+    <Particle: name="Lambda(b)0", pdgid=5122, mass=5619.60 ± 0.17 MeV>
     >>> Lambda_b_0.J
     0.5
 
@@ -214,9 +214,9 @@ You can quickly search for particles from the command line with
 .. code-block:: bash
 
     $ python -m particle search "K*0"
-    <Particle: name='K*(892)0', pdgid=313, mass=895.55 ± 0.20 MeV>
-    <Particle: name='K*(1680)0', pdgid=30313, mass=1718 ± 18 MeV>
-    <Particle: name='K*(1410)0', pdgid=100313, mass=1421 ± 9 MeV>
+    <Particle: name="K*(892)0", pdgid=313, mass=895.55 ± 0.20 MeV>
+    <Particle: name="K*(1680)0", pdgid=30313, mass=1718 ± 18 MeV>
+    <Particle: name="K*(1410)0", pdgid=100313, mass=1421 ± 9 MeV>
 
 If you only select one particle, either by a search or by giving the PDGID number, you can see more information about
 the particle:
