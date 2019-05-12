@@ -51,6 +51,9 @@ def test_lambda_style_search():
     assert Particle.find(lambda p: p.pdg_name == 'p' and p > 0) == 2212
     assert Particle.find(lambda p: p.pdg_name == 'p' and p < 0) == -2212
 
+def test_lambda_lifetime_search():
+    listing = Particle.findall(lambda p: p.lifetime > 1000)
+    assert listing
 
 def test_fuzzy_name_search():
     particles = Particle.findall('p~')
