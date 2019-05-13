@@ -26,7 +26,7 @@ extras = {
 
 def get_version():
     g = {}
-    exec(open(os.path.join("particle", "version.py")).read(), g)
+    exec(open(os.path.join("particle", "_version.py")).read(), g)
     return g["__version__"]
 
 setup(
