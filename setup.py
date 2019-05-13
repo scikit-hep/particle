@@ -7,10 +7,14 @@
 from __future__ import absolute_import
 from __future__ import print_function
 
-import os.path
+import os
+import sys
 
 from setuptools import setup
 from setuptools import find_packages
+
+needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
+pytest_runner = ['pytest-runner'] if needs_pytest else []
 
 install_deps = [
     'enum34>=1.1; python_version<"3.4"',
@@ -43,7 +47,7 @@ setup(
     packages = find_packages(),
     package_data={'': ['data/*.*']},
     install_requires = install_deps,
-    setup_requires = ['pytest-runner'],
+    setup_requires = [] + pytest_runner,
     tests_require = extras['test'],
     extras_require = extras,
     keywords = [

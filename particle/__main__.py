@@ -10,9 +10,11 @@ from .particle import Particle
 from .pdgid import PDGID
 
 import argparse
+import sys
 
-
-parser = argparse.ArgumentParser(description='Particle utility')
+parser = argparse.ArgumentParser(
+        prog='particle',
+        description='Particle command line display utility. Has two modes.')
 
 subparsers = parser.add_subparsers(help="Subcommands")
 
@@ -41,6 +43,7 @@ if 'particle' in opts:
 
         if len(particles) == 0:
             print("Particle", cand, "not found.")
+            sys.exit(1)
         elif len(particles) == 1:
             print(particles[0].describe())
         else:

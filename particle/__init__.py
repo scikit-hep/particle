@@ -3,8 +3,6 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-from __future__ import absolute_import
-
 # Convenient access to the version number
 from ._version import __version__
 
