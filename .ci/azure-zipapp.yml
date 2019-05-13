@@ -1,0 +1,25 @@
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.7'
+    architecture: 'x64'
+
+- script: |
+    python -m pip install --upgrade pip
+    python -m pip install enum34 importlib_resources attrs hepunits --target .
+  displayName: 'Install dependencies'
+
+- script: |
+     rm -r *.dist-info tests notebooks docs
+     mv enum enum34
+  displayName: 'Adjustments to prepare a universal ZipApp'
+
+- script: |
+    python -m zipapp -p "/usr/bin/env python" -o particle.pyz $(Build.SourcesDirectory)
+  workingDirectory: $(Build.BinariesDirectory)
+  displayName: 'Make ZipApp'
+
+- task: PublishPipelineArtifact@0
+  inputs:
+    artifactName: 'zipapp'
+    targetPath: $(Build.BinariesDirectory)
