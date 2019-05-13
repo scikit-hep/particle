@@ -25,6 +25,10 @@ Particle: PDG particle data and identification codes
    :alt: Tests
    :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
 
+.. image:: https://mybinder.org/badge_logo.svg
+   :alt: Binder
+   :target: https://mybinder.org/v2/gh/scikit-hep/particle/master?filepath=notebooks%2FParticleDemo.ipynb
+
 
 Particle provides a pythonic interface to the `Particle Data Group <http://pdg.lbl.gov/>`_ (PDG)
 particle data tables and particle identification codes.
