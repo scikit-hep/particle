@@ -6,7 +6,7 @@
 from __future__ import absolute_import
 
 # Convenient access to the version number
-from .version import __version__
+from ._version import __version__
 
 # Direct access to PDGID
 from .pdgid import PDGID

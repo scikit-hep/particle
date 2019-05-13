@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Version 0.4.4
+-------------
+Under development.
+
+
 Version 0.4.3
 -------------
 May 10th, 2019
