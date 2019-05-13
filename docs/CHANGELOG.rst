@@ -3,7 +3,11 @@ Changelog
 
 Version 0.4.4
 -------------
-Under development.
+May 13th, 2019
+
+* Setup improvements.
+* zipapp CI added.
+* Particle search methods made robust against exceptions.
 
 
 Version 0.4.3
