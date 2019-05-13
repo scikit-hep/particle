@@ -10,15 +10,16 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
-    python -m zipapp -p "/usr/bin/env python" -o particle.pyz .
-  displayName: 'Make ZipApp'
+     rm -r *.dist-info tests notebooks docs
+     mv enum enum34
+  displayName: 'Adjustments to prepare a universal ZipApp'
 
 - script: |
-    mkdir -p output
-    mv particle.pyz output
-  displayName: 'Move ZipApp'
+    python -m zipapp -p "/usr/bin/env python" -o particle.pyz $(Build.SourcesDirectory)
+  workingDirectory: $(Build.BinariesDirectory)
+  displayName: 'Make ZipApp'
 
 - task: PublishPipelineArtifact@0
   inputs:
     artifactName: 'zipapp'
-    targetPath: 'output'
+    targetPath: $(Build.BinariesDirectory)

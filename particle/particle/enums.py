@@ -9,7 +9,10 @@ Examples are charge, spin and parity.
 """
 
 # Backport needed if Python 2 is used
-from enum import IntEnum
+try:
+    from enum import IntEnum
+except ImportError:
+    from enum34 import IntEnum # Used in ZipApp
 
 
 class SpinType(IntEnum):
