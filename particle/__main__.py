@@ -6,6 +6,7 @@
 
 from __future__ import absolute_import,  print_function
 
+from ._version import __version__
 from .particle import Particle
 from .pdgid import PDGID
 
@@ -15,6 +16,8 @@ import sys
 parser = argparse.ArgumentParser(
         prog='particle',
         description='Particle command line display utility. Has two modes.')
+
+parser.add_argument('--version', action='version', version='%(prog)s {version}'.format(version=__version__))
 
 subparsers = parser.add_subparsers(help="Subcommands")
 
