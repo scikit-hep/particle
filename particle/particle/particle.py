@@ -552,7 +552,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             # If a filter function is passed, evaluate and skip if False
             if filter_fn is not None:
                 if callable(filter_fn):
-                    if not filter_fn(item):
+                    # Just skip exceptions, which are there for good reasons
+                    # Example: calls to Particle.ctau for particles given
+                    #          default negative, and hence invalid, widths
+                    try:
+                        if not filter_fn(item):
+                            continue
+                    except:
                         continue
                 else:
                     if not(filter_fn in item.name):
