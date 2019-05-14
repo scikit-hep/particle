@@ -64,6 +64,12 @@ def test_keyword_style_search():
     assert 2212 in particles
     assert -2212 in particles
 
+
+def test_keyword_style_search_with_except_catch():
+    particles = Particle.findall(ctau=float('inf'))
+    assert 11 in particles
+
+
     particles = Particle.findall(name = 'p')
     assert len(particles) == 1
     assert 2212 in particles
@@ -135,6 +141,23 @@ def test_int_compare():
     assert 0 > Particle.from_pdgid(-211)
     assert 0 <= Particle.from_pdgid(211)
     assert 0 >= Particle.from_pdgid(-211)
+
+
+def test_string():
+    pi = Particle.from_string('pi+')
+    assert pi.pdgid == 211
+
+    with pytest.raises(ParticleNotFound):
+        Particle.from_string('unknown')
+
+
+def test_fuzzy_string():
+    """
+    The input name is not specific enough, in which case the search is done
+    by pdg_name after failing a match by name.
+    """
+    p = Particle.from_string('a(0)(980)')  # all 3 charge stages match
+    assert p.pdgid == 9000111
 
 
 def test_str():
@@ -212,14 +235,14 @@ C (charge parity) = -       I (isospin)       = <2       G (G-parity)     = ?
 
 
 def test_default_table_loading():
+    assert Particle.table_names() == ('particle2018.csv',)
+
+
+def test_default_table_loading_bis():
     Particle.table()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
     assert p.table_names() == ('particle2018.csv',)
-
-
-def test_default_table_loading_bis():
-    assert Particle.table_names() == ('particle2018.csv',)
 
 
 def test_explicit_table_loading():
