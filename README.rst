@@ -27,7 +27,7 @@ Particle: PDG particle data and identification codes
 
 .. image:: https://mybinder.org/badge_logo.svg
    :alt: Binder
-   :target: https://mybinder.org/v2/gh/scikit-hep/particle/master?filepath=notebooks%2FParticleDemo.ipynb
+   :target: https://mybinder.org/v2/gh/scikit-hep/particle/master?urlpath=lab/tree/notebooks/ParticleDemo.ipynb
 
 
 Particle provides a pythonic interface to the `Particle Data Group <http://pdg.lbl.gov/>`_ (PDG)

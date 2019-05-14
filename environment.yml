@@ -1,0 +1,9 @@
+name: particle_demo
+dependencies:
+  - python>=3.7
+  - pandas
+  - attrs
+  - pip
+  - jupyterlab
+  - pip:
+    - hepunits
