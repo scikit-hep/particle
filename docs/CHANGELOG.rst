@@ -1,6 +1,16 @@
 Changelog
 =========
 
+Version 0.4.5
+-------------
+In development.
+
+* Changes in API:
+    - ``Particle.table()`` renamed to ``Particle.all()``.
+* Demo notebook added, with a launcher for Binder.
+* Extra tests for particle searches.
+
+
 Version 0.4.4
 -------------
 May 13th, 2019

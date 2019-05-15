@@ -192,9 +192,11 @@ class Particle(object):
         return not cls._table is None
 
     @classmethod
-    def table(cls):
+    def all(cls):
         """
-        This accesses the internal particle data CSV table, loading it from the default location if needed.
+        Access, hence get hold of, the internal particle data CSV table,
+        loading it from the default location if no table has yet been loaded.
+        All `Particle` (instances) are returned as a list.
         """
         if not cls.table_loaded():
             cls.load_table()
@@ -483,7 +485,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         """
         if not is_valid(value):
             raise InvalidParticle("Input PDGID {0} is invalid!".format(value))
-        table = cls.table()
+        table = cls.all()
         try:
             return table[table.index(value)]
         except ValueError:
@@ -539,7 +541,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         results = set()
 
         # Filter out values
-        for item in cls.table():
+        for item in cls.all():
             # At this point, continue if a match fails
 
             # particle=True is particle, False is antiparticle, and None is both
