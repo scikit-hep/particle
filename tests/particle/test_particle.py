@@ -193,7 +193,7 @@ def test_charge_consistency():
     from the particle's PDG ID, *if* the latter is valid.
     This test makes sure both numbers are consistent for all particles in the PDG table.
     """
-    for p in Particle.table():
+    for p in Particle.all():
         assert p.three_charge == p.pdgid.three_charge
 
 
@@ -239,7 +239,7 @@ def test_default_table_loading():
 
 
 def test_default_table_loading_bis():
-    Particle.table()
+    Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
     assert p.table_names() == ('particle2018.csv',)
@@ -249,7 +249,7 @@ def test_explicit_table_loading():
     Particle.load_table(DIR / '../../particle/data/particle2018.csv')
     assert Particle.table_loaded() == True
     assert len(Particle.table_names()) == 1
-    assert Particle.table() is not None
+    assert Particle.all() is not None
 
 
 checklist_html_name = (
