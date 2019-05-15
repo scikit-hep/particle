@@ -147,13 +147,14 @@ you can get a particle directly, or you can use a search:
 
 You can search for the properties using keyword arguments, which include
 ``pdg_name``, ``name``, ``mass``, ``width``, ``charge``, ``three_charge``, ``anti_flag``, ``rank``,
-``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``, ``latex_name``,
+``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``,
 ``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``.
-You can pass a callable or an exact match for any property.  `particle` can be
-set to ``True``/``False``, as well, to limit the search to particles or
-antiparticles.  You can also build the search yourself with the first positional
-argument, which accepts a callable that is given the particle object itself. If
-the first positional argument is a string, that will match against the
+You can pass a callable or an exact match for any property.
+The argument `particle` can be set to ``True``/``False``, as well,
+to limit the search to particles or antiparticles.
+You can also build the search yourself with the first positional
+argument, which accepts a callable that is given the particle object itself.
+If the first positional argument is a string, that will match against the
 particle's ``name``.  The alternative ``.find()`` *requires only one*
 match returned by the search, and will throw an error if more or less than one
 match is found.
@@ -191,7 +192,7 @@ Though they are not real properties, you can access ``is_name_barred``, and ``sp
 You can also ``.invert()`` a particle.
 
 There are lots of printing choices for particles:
-``describe()``, ``programmatic_name``, ``html_name``, HTML printing outs in notebooks,
+``describe()``, ``programmatic_name``, ``latex_name``, ``html_name``, HTML printing outs in notebooks,
 and of course ``repr`` and ``str`` support.
 
 You can get the ``.pdgid`` from a particle, as well.
