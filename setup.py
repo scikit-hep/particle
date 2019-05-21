@@ -43,7 +43,7 @@ setup(
     description = 'PDG particle data and identification codes',
     long_description = open('README.rst').read(),
     url = 'https://github.com/scikit-hep/particle',
-    license = 'new BSD',
+    license='BSD 3-Clause License',
     packages = find_packages(),
     package_data={'': ['data/*.*']},
     install_requires = install_deps,
