@@ -1,12 +1,13 @@
 Changelog
 =========
 
-Version 0.4.5
+Version 0.5.0
 -------------
 In development.
 
 * Changes in API:
     - ``Particle.table()`` renamed to ``Particle.all()``.
+* Added the 2019 PDG data table, now default.
 * Demo notebook added, with a launcher for Binder.
 * Extra tests for particle searches.
 
