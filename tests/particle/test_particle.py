@@ -206,7 +206,9 @@ def test_describe():
     assert __description in pi.describe()
 
     # Test print-out of asymmetric lifetime errors
-    __description = 'Lifetime = 1.12e+09 + 1.7e+08 - 1.6e+08 ns'
+    __description = 'Lifetime = 1.65e-03 ± 1.8e-04 ns'
+    if sys.version_info < (3, 0):
+        __description = __description.replace(u'±', u'+/-')
     Omega_b_minus = Particle.from_pdgid(5332)
     assert __description in Omega_b_minus.describe()
 
@@ -235,18 +237,18 @@ C (charge parity) = -       I (isospin)       = <2       G (G-parity)     = ?
 
 
 def test_default_table_loading():
-    assert Particle.table_names() == ('particle2018.csv',)
+    assert Particle.table_names() == ('particle2019.csv',)
 
 
 def test_default_table_loading_bis():
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
-    assert p.table_names() == ('particle2018.csv',)
+    assert p.table_names() == ('particle2019.csv',)
 
 
 def test_explicit_table_loading():
-    Particle.load_table(DIR / '../../particle/data/particle2018.csv')
+    Particle.load_table(DIR / '../../particle/data/particle2019.csv')
     assert Particle.table_loaded() == True
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
