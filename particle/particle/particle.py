@@ -217,8 +217,8 @@ class Particle(object):
             cls._table_names = []
 
         if filename is None:
-            filename = data.open_text(data, 'particle2018.csv')
-            cls._table_names.append('particle2018.csv')
+            filename = data.open_text(data, 'particle2019.csv')
+            cls._table_names.append('particle2019.csv')
         elif not hasattr(filename, 'read'):
             # Conversion to handle pathlib on Python < 3.6:
             filename = str(filename)
