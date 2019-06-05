@@ -206,7 +206,7 @@ def test_describe():
     assert __description in pi.describe()
 
     # Test print-out of asymmetric lifetime errors
-    __description = 'Lifetime = 1.65e-03 ± 1.8e-04 ns'
+    __description = u'Lifetime = 1.65e-03 ± 1.8e-04 ns'
     if sys.version_info < (3, 0):
         __description = __description.replace(u'±', u'+/-')
     Omega_b_minus = Particle.from_pdgid(5332)
