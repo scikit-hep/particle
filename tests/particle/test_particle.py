@@ -256,9 +256,9 @@ checklist_html_name = (
     (20213, 'a<SUB>1</SUB>(1260)<SUP>+</SUP>'),# a_1(1260)+
     (321, 'K<SUP>+</SUP>'),              # K+
     (130, 'K<SUB>L</SUB><SUP>0</SUP>'),  # K_L
-    (10321, 'K<SUB>0</SUB><SUP>*</SUP>(1430)<SUP>+</SUP>'), # K(0)*(1430)+
+    (10321, 'K<SUB>0</SUB><SUP>*</SUP>(1430)<SUP>+</SUP>'),   # K(0)*(1430)+
     (-10321, 'K<SUB>0</SUB><SUP>*</SUP>(1430)<SUP>-</SUP>'),  # K(0)*(1430)-
-    (10433, 'D<SUB>s1</SUB>(2536)/D<SUB>s1</SUB><SUP>+</SUP>(L)<SUP>+</SUP>'),           # D_s1(2536)+
+    (10433, 'D<SUB>s1</SUB>(2536)<SUP>+</SUP>'),              # D_s1(2536)+
     (-511, '<SPAN STYLE="text-decoration:overline">B</SPAN><SUP>0</SUP>'),               # B0_bar
     (443, 'J/ψ(1S)'),                    # J/psi
     (10441, 'χ<SUB>c0</SUB>(1P)'),       # chi_c0(1P)
