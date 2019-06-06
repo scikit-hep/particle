@@ -205,13 +205,14 @@ checklist_describe = (
     # Test print-out of symmetric width errors
     [413, u'Width = 0.0834 ± 0.0018 MeV'],  # D*(2010)+
     [443, u'Width = 0.093 ± 0.003 MeV'],  # J/psi
-    [4222, 'Width = 1.89 + 0.09 - 0.18 MeV'],  # Sigma_c++
     # Test print-out of asymmetric width errors
+    [4222, 'Width = 1.89 + 0.09 - 0.18 MeV'],  # Sigma_c(2455)++
     [23, u'Width = 2495.2 ± 2.3 MeV'],  # H0
     # Test print-out of symmetric lifetime errors
+    [5332, u'Lifetime = 1.65e-03 ± 1.8e-04 ns'],  # Omega_b-
     [211, u'Lifetime = 26.033 ± 0.005 ns'],  # pion
     # Test print-out of asymmetric lifetime errors
-    [5332, u'Lifetime = 1.65e-03 ± 1.8e-04 ns'],  # Omega_b-
+    [4332, 'Lifetime = 2.7e-04 + 3e-05 - 3e-05 ns']  # Omega_c^0
     )
 if sys.version_info < (3, 0):
     for i, pair_vals in enumerate(checklist_describe):
