@@ -211,7 +211,7 @@ checklist_describe = (
     # Test print-out of symmetric lifetime errors
     [211, u'Lifetime = 26.033 ± 0.005 ns'],  # pion
     # Test print-out of asymmetric lifetime errors
-    [5332, 'Lifetime = 1.65e-03 ± 1.8e-04 ns'],  # Omega_b-
+    [5332, u'Lifetime = 1.65e-03 ± 1.8e-04 ns'],  # Omega_b-
     )
 if sys.version_info < (3, 0):
     for i, pair_vals in enumerate(checklist_describe):
