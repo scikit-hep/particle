@@ -197,43 +197,31 @@ def test_charge_consistency():
         assert p.three_charge == p.pdgid.three_charge
 
 
-def test_describe():
-    # Test print-out of symmetric lifetime errors
-    __description = u'Lifetime = 26.033 ± 0.005 ns'
-    if sys.version_info < (3, 0):
-        __description = __description.replace(u'±', u'+/-')
-    pi = Particle.from_pdgid(211)
-    assert __description in pi.describe()
-
-    # Test print-out of asymmetric lifetime errors
-    __description = u'Lifetime = 1.65e-03 ± 1.8e-04 ns'
-    if sys.version_info < (3, 0):
-        __description = __description.replace(u'±', u'+/-')
-    Omega_b_minus = Particle.from_pdgid(5332)
-    assert __description in Omega_b_minus.describe()
-
-    # Test print-out of symmetric width errors
-    __description = u'Width = 2495.2 ± 2.3 MeV'
-    if sys.version_info < (3, 0):
-        __description = __description.replace(u'±', u'+/-')
-    H0 = Particle.from_pdgid(23)
-    assert __description in H0.describe()
-
-    # Test print-out of asymmetric width errors
-    __description = 'Width = 1.89 + 0.09 - 0.18 MeV'
-    Sigma_c_pp = Particle.from_pdgid(4222)
-    assert __description in Sigma_c_pp.describe()
-
+checklist_describe = (
+    # Test undefined width value
+    [1, 'Width = ?'],  # d quark
     # Test print-out of zero width values
-    __description = r"""Name: gamma          ID: 22           Latex: $\gamma$
-Mass  = 0.0 MeV
-Width = 0.0 MeV
-Q (charge)        = 0       J (total angular) = 1.0      P (space parity) = -
-C (charge parity) = -       I (isospin)       = <2       G (G-parity)     = ?
-    SpinType: SpinType.Vector
-    Antiparticle name: gamma (antiparticle status: Same)"""
-    photon = Particle.from_pdgid(22)
-    assert photon.describe() == __description
+    [22, 'Width = 0.0 MeV'],  # photon
+    # Test print-out of symmetric width errors
+    [413, u'Width = 0.0834 ± 0.0018 MeV'],  # D*(2010)+
+    [443, u'Width = 0.093 ± 0.003 MeV'],  # J/psi
+    [4222, 'Width = 1.89 + 0.09 - 0.18 MeV'],  # Sigma_c++
+    # Test print-out of asymmetric width errors
+    [23, u'Width = 2495.2 ± 2.3 MeV'],  # H0
+    # Test print-out of symmetric lifetime errors
+    [211, u'Lifetime = 26.033 ± 0.005 ns'],  # pion
+    # Test print-out of asymmetric lifetime errors
+    [5332, 'Lifetime = 1.65e-03 ± 1.8e-04 ns'],  # Omega_b-
+    )
+if sys.version_info < (3, 0):
+    for i, pair_vals in enumerate(checklist_describe):
+        checklist_describe[i][1] = pair_vals[1].replace(u'±', u'+/-')
+
+
+@pytest.mark.parametrize("pid,description", checklist_describe)
+def test_describe(pid, description):
+    particle = Particle.from_pdgid(pid)
+    assert description in particle.describe()
 
 
 def test_default_table_loading():

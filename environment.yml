@@ -1,9 +1,12 @@
 name: particle_demo
 dependencies:
   - python>=3.7
-  - pandas
-  - attrs
-  - pip
-  - jupyterlab
+  # Setting recent versions to make the conda solve faster
+  - numpy>=1.16
+  - pandas>=0.24
+  - attrs>=19.0
+  - pip>=9.0
+  - jupyterlab>=0.35
   - pip:
     - hepunits
+    - RISE

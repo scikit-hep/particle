@@ -179,7 +179,7 @@ def get_from_pdg_extended(filename, latexes=None):
     # Nice sorting
     sort_particles(full)
 
-    # This should be absolue value
+    # These should be absolute values
     for name in ('MassLower', 'WidthLower'):
         full[name] = abs(full[name])
 
