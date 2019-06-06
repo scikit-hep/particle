@@ -199,23 +199,23 @@ def test_charge_consistency():
 
 checklist_describe = (
     # Test undefined width value
-    (1, 'Width = ?'),  # d quark
+    [1, 'Width = ?'],  # d quark
     # Test print-out of zero width values
-    (22, 'Width = 0.0 MeV'),  # photon
+    [22, 'Width = 0.0 MeV'],  # photon
     # Test print-out of symmetric width errors
-    (413, u'Width = 0.0834 ± 0.0018 MeV'),  # D*(2010)+
-    (443, u'Width = 0.093 ± 0.003 MeV'),  # J/psi
+    [413, u'Width = 0.0834 ± 0.0018 MeV'],  # D*(2010)+
+    [443, u'Width = 0.093 ± 0.003 MeV'],  # J/psi
+    [4222, 'Width = 1.89 + 0.09 - 0.18 MeV'],  # Sigma_c++
     # Test print-out of asymmetric width errors
-    (4222, 'Width = 1.89 + 0.09 - 0.18 MeV'),  # Sigma_c++
-    (23, u'Width = 2495.2 ± 2.3 MeV'),  # H0
+    [23, u'Width = 2495.2 ± 2.3 MeV'],  # H0
     # Test print-out of symmetric lifetime errors
-    (211, u'Lifetime = 26.033 ± 0.005 ns'),  # pion
+    [211, u'Lifetime = 26.033 ± 0.005 ns'],  # pion
     # Test print-out of asymmetric lifetime errors
-    (5332, 'Lifetime = 1.12e+09 + 1.7e+08 - 1.6e+08 ns'),  # Omega_b-
+    [5332, 'Lifetime = 1.12e+09 + 1.7e+08 - 1.6e+08 ns'],  # Omega_b-
     )
 if sys.version_info < (3, 0):
-    for item in checklist_describe():
-        item[1] = item[1].replace(u'±', u'+/-')
+    for i, pair_vals in enumerate(checklist_describe):
+        checklist_describe[i][1] = pair_vals[1].replace(u'±', u'+/-')
 
 
 @pytest.mark.parametrize("pid,description", checklist_describe)
