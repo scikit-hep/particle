@@ -314,10 +314,11 @@ def main(year):
     produce_files(particle2008, particlenew, year)
 
 
-def convert(fwf, latex, output):
-    table = get_from_pdg_extended(fwf,
-                                  [data.open_text(data, 'pdgid_to_latex.csv')])#,
-#                                   latex])
+def convert(output, fwf, latex):
+    latexes = [data.open_text(data, 'pdgid_to_latex.csv')]
+    if latex:
+        latexes.append(latex)
+    table = get_from_pdg_extended(fwf, latexes)
 
     table.to_csv(output, float_format='%.12g')
 
@@ -327,7 +328,7 @@ def run_regen(args):
 
 
 def run_convert(args):
-    convert(args.fwf, args.latex, args.output)
+    convert(args.output, args.fwf, args.latex)
 
 
 if __name__ == '__main__':
@@ -343,9 +344,9 @@ if __name__ == '__main__':
     parser_regen.set_defaults(func=run_regen)
 
     parser_convert = subparsers.add_parser('extended', help='Make a new file from extended inputs')
-    parser_convert.add_argument('fwf', type=FileType('r'),  help='Fixed width format extended file')
-    parser_convert.add_argument('latex', type=FileType('r'), help='Latex file with names')
     parser_convert.add_argument('output', type=FileType('w'), help='Output file name')
+    parser_convert.add_argument('fwf', type=FileType('r'),  help='Fixed width format extended file')
+    parser_convert.add_argument('latex', type=FileType('r'), help='Optional Latex file with names', nargs='?', default=None)
     parser_convert.set_defaults(func=run_convert)
 
     args = parser.parse_args()
