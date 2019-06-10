@@ -10,6 +10,7 @@ In development.
 * Added the 2019 PDG data table, now default.
 * Enhancements to  ``Particle`` class:
   - Numerous LaTeX particle names updated.
+  - Correctly deal with experimental width upper limits.
   - Better display of lifetimes and widths.
   - More tests.
 * Demo notebook added, with a launcher for Binder.
