@@ -416,13 +416,18 @@ class Particle(object):
 
     def _width_or_lifetime(self):
         """Display either the particle width or the lifetime.
-
         Internally used by the describe() method.
+
+        Note
+        ----
+        Width errors equal to -1 flag an experimental upper limit on the width.
         """
         if self.width < 0:
             return 'Width = ?'
-        if self.width == 0:
+        elif self.width == 0:
             return 'Width = 0.0 MeV'
+        elif  self.width_lower == -1 and self.width_upper == -1:
+            return 'Width < {width} MeV'.format(width=self.width)
         elif self.width < 0.05:  # corresponds to a lifetime of approximately 1.3e-20 seconds
             if self.width_lower == self.width_upper:
                 e = width_to_lifetime(self.width-self.width_lower)-self.lifetime

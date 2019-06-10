@@ -12,7 +12,7 @@ The default CSV files can be updated directly using the command:
 
 A custom fwf file and LaTeX file can be converted into the CSV format using:
 
-    >>> python -m particle.particle.convert extended file.fwf latex.csv output.csv
+    >>> python -m particle.particle.convert extended output.csv file.fwf latex.csv
 
 This file requires pandas. But most users will not need this file, as it only
 converts PDG data files into the CSV file(s) the public API tools use. The tests
@@ -179,9 +179,11 @@ def get_from_pdg_extended(filename, latexes=None):
     # Nice sorting
     sort_particles(full)
 
-    # These should be absolute values
-    for name in ('MassLower', 'WidthLower'):
-        full[name] = abs(full[name])
+    # All the 'MassLower' and 'WidthLower' values should be absolute values
+    # except for the special cases when they are equal to -1,
+    # which flag experimental upper limits or badly known particles
+    full.loc[full['MassLower'] != -1, 'MassLower'] = abs(full['MassLower'])
+    full.loc[full['WidthLower'] != -1, 'WidthLower'] = abs(full['WidthLower'])
 
     # Return the table, making sure NaNs are just empty strings, and sort
     return full.fillna('')
