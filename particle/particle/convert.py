@@ -8,7 +8,7 @@ This is a conversion file, not part of the public API.
 
 The default CSV files can be updated directly using the command:
 
-    >>> python -m particle.particle.convert regenerate 2018
+    >>> python -m particle.particle.convert regenerate 2019
 
 A custom fwf file and LaTeX file can be converted into the CSV format using:
 
@@ -29,7 +29,7 @@ combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
 
 You can also read in a modern "standard" file (this will produce fewer columns):
 
-    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2018.mcd')
+    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2019.mcd')
 
 A utility is even provided to use the modern table to update the full table:
 
@@ -196,11 +196,11 @@ def sort_particles(table):
 
 def get_from_pdg_mcd(filename):
     '''
-    Reads in a current-style PDG .mcd file (mass_width_2018.mcd file tested).
+    Reads in a current-style PDG .mcd file (mass_width_2019.mcd file tested).
 
     Example
     -------
-    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2018.mcd')
+    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2019.mcd')
     '''
 
     # The format here includes the space before a column
@@ -261,7 +261,7 @@ def update_from_mcd(full_table, update_table):
 
     Example
     -------
-    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2018.mcd')
+    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2019.mcd')
     """
 
     full_table = full_table.copy()
@@ -273,7 +273,7 @@ def update_from_mcd(full_table, update_table):
     return full_table
 
 
-def produce_files(particle2008, particle2018, year):
+def produce_files(particle2008, particle2019, year):
     'This produces listed output files from all input files.'
 
 
@@ -301,7 +301,7 @@ def produce_files(particle2008, particle2018, year):
     ext_table = get_from_pdg_mcd(data.open_text(data, 'mass_width_'+year+'.mcd'))
     new_table = update_from_mcd(full_table, ext_table)
 
-    new_table.to_csv(particle2018, float_format='%.12g')
+    new_table.to_csv(particle2019, float_format='%.12g')
 
 
 def main(year):
@@ -314,10 +314,11 @@ def main(year):
     produce_files(particle2008, particlenew, year)
 
 
-def convert(fwf, latex, output):
-    table = get_from_pdg_extended(fwf,
-                                  [data.open_text(data, 'pdgid_to_latex.csv'),
-                                   latex])
+def convert(output, fwf, latex=None):
+    latexes = [data.open_text(data, 'pdgid_to_latex.csv')]
+    if latex:
+        latexes.append(latex)
+    table = get_from_pdg_extended(fwf, latexes)
 
     table.to_csv(output, float_format='%.12g')
 
@@ -327,7 +328,7 @@ def run_regen(args):
 
 
 def run_convert(args):
-    convert(args.fwf, args.latex, args.output)
+    convert(args.output, args.fwf, args.latex)
 
 
 if __name__ == '__main__':
@@ -343,9 +344,9 @@ if __name__ == '__main__':
     parser_regen.set_defaults(func=run_regen)
 
     parser_convert = subparsers.add_parser('extended', help='Make a new file from extended inputs')
-    parser_convert.add_argument('fwf', type=FileType('r'),  help='Fixed width format extended file')
-    parser_convert.add_argument('latex', type=FileType('r'), help='Latex file with names')
     parser_convert.add_argument('output', type=FileType('w'), help='Output file name')
+    parser_convert.add_argument('fwf', type=FileType('r'),  help='Fixed width format extended file')
+    parser_convert.add_argument('latex', type=FileType('r'), help='Optional Latex file with names', nargs='?', default=None)
     parser_convert.set_defaults(func=run_convert)
 
     args = parser.parse_args()

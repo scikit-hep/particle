@@ -217,8 +217,8 @@ class Particle(object):
             cls._table_names = []
 
         if filename is None:
-            filename = data.open_text(data, 'particle2018.csv')
-            cls._table_names.append('particle2018.csv')
+            filename = data.open_text(data, 'particle2019.csv')
+            cls._table_names.append('particle2019.csv')
         elif not hasattr(filename, 'read'):
             # Conversion to handle pathlib on Python < 3.6:
             filename = str(filename)
@@ -641,7 +641,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             "f_0": 'f(0)(980)',
             "f'_0": 'f(0)(1370)',
             "f'_1": 'f(1)(1420)',
-            "h'_1": 'h(1)(1380)',
+            "h'_1": 'h(1)(1415)',
             'omega(2S)': 'omega(1420)',
             'phi' : 'phi(1020)',
             'K_L0': 'K(L)0',

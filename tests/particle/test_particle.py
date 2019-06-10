@@ -205,13 +205,14 @@ checklist_describe = (
     # Test print-out of symmetric width errors
     [413, u'Width = 0.0834 ± 0.0018 MeV'],  # D*(2010)+
     [443, u'Width = 0.093 ± 0.003 MeV'],  # J/psi
-    [4222, 'Width = 1.89 + 0.09 - 0.18 MeV'],  # Sigma_c++
     # Test print-out of asymmetric width errors
+    [4222, 'Width = 1.89 + 0.09 - 0.18 MeV'],  # Sigma_c(2455)++
     [23, u'Width = 2495.2 ± 2.3 MeV'],  # H0
     # Test print-out of symmetric lifetime errors
+    [5332, u'Lifetime = 1.65e-03 ± 1.8e-04 ns'],  # Omega_b-
     [211, u'Lifetime = 26.033 ± 0.005 ns'],  # pion
     # Test print-out of asymmetric lifetime errors
-    [5332, 'Lifetime = 1.12e+09 + 1.7e+08 - 1.6e+08 ns'],  # Omega_b-
+    [4332, 'Lifetime = 2.7e-04 + 3e-05 - 3e-05 ns']  # Omega_c^0
     )
 if sys.version_info < (3, 0):
     for i, pair_vals in enumerate(checklist_describe):
@@ -225,18 +226,18 @@ def test_describe(pid, description):
 
 
 def test_default_table_loading():
-    assert Particle.table_names() == ('particle2018.csv',)
+    assert Particle.table_names() == ('particle2019.csv',)
 
 
 def test_default_table_loading_bis():
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
-    assert p.table_names() == ('particle2018.csv',)
+    assert p.table_names() == ('particle2019.csv',)
 
 
 def test_explicit_table_loading():
-    Particle.load_table(DIR / '../../particle/data/particle2018.csv')
+    Particle.load_table(DIR / '../../particle/data/particle2019.csv')
     assert Particle.table_loaded() == True
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
@@ -255,9 +256,9 @@ checklist_html_name = (
     (20213, 'a<SUB>1</SUB>(1260)<SUP>+</SUP>'),# a_1(1260)+
     (321, 'K<SUP>+</SUP>'),              # K+
     (130, 'K<SUB>L</SUB><SUP>0</SUP>'),  # K_L
-    (10321, 'K<SUB>0</SUB><SUP>*</SUP>(1430)<SUP>+</SUP>'), # K(0)*(1430)+
+    (10321, 'K<SUB>0</SUB><SUP>*</SUP>(1430)<SUP>+</SUP>'),   # K(0)*(1430)+
     (-10321, 'K<SUB>0</SUB><SUP>*</SUP>(1430)<SUP>-</SUP>'),  # K(0)*(1430)-
-    (10433, 'D<SUB>s1</SUB>(2536)/D<SUB>s1</SUB><SUP>+</SUP>(L)<SUP>+</SUP>'),           # D_s1(2536)+
+    (10433, 'D<SUB>s1</SUB>(2536)<SUP>+</SUP>'),              # D_s1(2536)+
     (-511, '<SPAN STYLE="text-decoration:overline">B</SPAN><SUP>0</SUP>'),               # B0_bar
     (443, 'J/ψ(1S)'),                    # J/psi
     (10441, 'χ<SUB>c0</SUB>(1P)'),       # chi_c0(1P)
