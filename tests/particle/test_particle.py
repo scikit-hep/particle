@@ -212,7 +212,13 @@ checklist_describe = (
     [5332, u'Lifetime = 1.65e-03 ± 1.8e-04 ns'],  # Omega_b-
     [211, u'Lifetime = 26.033 ± 0.005 ns'],  # pion
     # Test print-out of asymmetric lifetime errors
-    [4332, 'Lifetime = 2.7e-04 + 3e-05 - 3e-05 ns']  # Omega_c^0
+    [4332, 'Lifetime = 2.7e-04 + 3e-05 - 3e-05 ns'],  # Omega_c^0
+    # Test particles with at present an upper limit on their width
+    [423, 'Width < 2.1 MeV'],     # D*(2007)0
+    [10431, 'Width < 10.0 MeV'],  # D(s0)*(2317)+
+    [20433, 'Width < 6.3 MeV'],   # D(s1)(2460)+
+    [4212, 'Width < 4.6 MeV'],    # Sigma(c)(2455)+
+    [4214, 'Width < 17.0 MeV'],   # Sigma(c)(2520)+
     )
 if sys.version_info < (3, 0):
     for i, pair_vals in enumerate(checklist_describe):
