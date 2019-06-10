@@ -314,7 +314,7 @@ def main(year):
     produce_files(particle2008, particlenew, year)
 
 
-def convert(output, fwf, latex):
+def convert(output, fwf, latex=None):
     latexes = [data.open_text(data, 'pdgid_to_latex.csv')]
     if latex:
         latexes.append(latex)
