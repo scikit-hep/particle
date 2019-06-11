@@ -182,8 +182,8 @@ Here are possible sophisticated searches:
     >>> Particle.findall(lambda p: p.pdgid.has_bottom and p.charge==0)
     >>>
     >>> # Find all strange mesons with c*tau > 1 meter
-    >>> from hepunits.units import meter
-    >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.width > 0 and p.ctau > 1 * meter, particle=True)
+    >>> from hepunits import meter
+    >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.ctau > 1 * meter, particle=True)
     [<Particle: name="K(L)0", pdgid=130, mass=497.611 ± 0.013 MeV>,
      <Particle: name="K+", pdgid=321, mass=493.677 ± 0.016 MeV>]
 
