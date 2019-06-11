@@ -22,7 +22,7 @@ from particle.particle import Particle
 from particle.particle.particle import ParticleNotFound, InvalidParticle
 from particle.pdgid import PDGID
 
-from hepunits.units import second
+from hepunits import second
 
 
 DIR = Path(__file__).parent.resolve()
