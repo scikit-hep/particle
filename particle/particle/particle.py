@@ -652,7 +652,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             'K_L0': 'K(L)0',
             'K_S0': 'K(S)0',
             'B_s10': 'B(s1)(5830)0',
-            "anti-D'_10": 'D(1)(2420)~0',
+            #"anti-D'_10": 'D(1)(2420)~0',
             'anti-B_s10': 'B(s1)(5830)~0',
             'J/psi': 'J/psi(1S)',
             'Upsilon': 'Upsilon(1S)',
@@ -681,7 +681,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             'Xi*': 'Xi(1530)',
             'Sigma_c*': 'Sigma(c)(2520)',
             'Xi_c*': 'Xi(c)(2645)',
-            "D'_1": 'D(1)(2420)',
+            #"D'_1": 'D(1)(2420)',
             'B_1': 'B(1)(5721)',
         }
         for oldw, neww in sorted(dec_to_pdg_replacements.items(), reverse=True):
