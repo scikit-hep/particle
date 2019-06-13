@@ -5,15 +5,15 @@ Version 0.5.0
 -------------
 In development.
 
+* Added the 2019 PDG data table, now default.
 * Changes in API:
     - ``Particle.table()`` renamed to ``Particle.all()``.
-* Added the 2019 PDG data table, now default.
 * Enhancements to  ``Particle`` class:
   - Numerous LaTeX particle names updated.
   - Correctly deal with experimental width upper limits.
   - Better display of lifetimes and widths.
   - More tests.
-* Demo notebook added, with a launcher for Binder.
+* Demo notebook added, with a launcher for Binder in the README.
 * Extra tests for particle searches.
 
 
