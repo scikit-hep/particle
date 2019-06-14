@@ -3,7 +3,7 @@ Changelog
 
 Version 0.5.0
 -------------
-In development.
+June 14th, 2019
 
 * Added the 2019 PDG data table, now default.
   - Some poorly established particles not in the current PDG data files
