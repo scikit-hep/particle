@@ -6,6 +6,8 @@ Version 0.5.0
 In development.
 
 * Added the 2019 PDG data table, now default.
+  - Some poorly established particles not in the current PDG data files
+    were previously erroneously made available. They have now been removed.
 * Changes in API:
     - ``Particle.table()`` renamed to ``Particle.all()``.
 * Enhancements to  ``Particle`` class:
