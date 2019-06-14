@@ -258,8 +258,10 @@ def get_from_pdg_mcd(filename):
 
 def update_from_mcd(full_table, update_table):
     """
-    Update the full table (aka the PDG extended-style table) with the up-to-date information
-    from the PDG .mcd file for all existing particles in the latter.
+    Update the full table (aka the PDG extended-style table) with the
+    up-to-date information from the PDG .mcd file.
+    Only the particles in the latter are kept when performing the update,
+    i.e. entries only in the extended file are removed in this update process.
 
     Example
     -------
@@ -271,6 +273,9 @@ def update_from_mcd(full_table, update_table):
     update_table_neg = update_table.copy()
     update_table_neg.index = -update_table_neg.index
     full_table.update(update_table_neg)
+
+    # Only keep rows present in the update table, i.e. the .mcd file
+    full_table = full_table[full_table.index.isin(update_table.index) | full_table.index.isin(update_table_neg.index)]
 
     return full_table
 
