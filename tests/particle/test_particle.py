@@ -17,7 +17,7 @@ except ImportError:
 import pytest
 from pytest import approx
 
-from particle.particle.enums import Charge, SpinType
+from particle.particle.enums import Charge, SpinType, Status
 from particle.particle import Particle
 from particle.particle.particle import ParticleNotFound, InvalidParticle
 from particle.pdgid import PDGID
@@ -376,6 +376,15 @@ def test_spin_type(pid, stype):
     particle = Particle.from_pdgid(pid)
 
     assert particle.spin_type == stype
+
+
+def test_default_particle():
+    p = Particle.empty()
+
+    assert repr(p) == '<Particle: name="Unknown", pdgid=0, mass=0.0 MeV>'
+    assert p.spin_type == SpinType.NonDefined
+    assert p.programmatic_name == 'Unknown'
+    assert p.status == Status.Nonexistent
 
 
 ampgen_style_names = (
