@@ -1,6 +1,14 @@
 Changelog
 =========
 
+
+Version 0.5.1
+-------------
+Under development.
+
+* Added tests for default/dummy particle (PDG ID = mass = 0).
+
+
 Version 0.5.0
 -------------
 June 14th, 2019
