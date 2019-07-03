@@ -7,6 +7,8 @@ Version 0.5.1
 Under development.
 
 * Added tests for default/dummy particle (PDG ID = mass = 0).
+* Demo notebook updated.
+* Doctests introduced in the CI.
 
 
 Version 0.5.0
