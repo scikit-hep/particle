@@ -8,11 +8,11 @@ This is a conversion file, not part of the public API.
 
 The default CSV files can be updated directly using the command:
 
-    >>> python -m particle.particle.convert regenerate 2019
+    >>> python -m particle.particle.convert regenerate 2019    # doctest: +SKIP
 
 A custom fwf file and LaTeX file can be converted into the CSV format using:
 
-    >>> python -m particle.particle.convert extended output.csv file.fwf latex.csv
+    >>> python -m particle.particle.convert extended output.csv file.fwf latex.csv    # doctest: +SKIP
 
 This file requires pandas. But most users will not need this file, as it only
 converts PDG data files into the CSV file(s) the public API tools use. The tests
@@ -38,7 +38,7 @@ A utility is even provided to use the modern table to update the full table:
 You can see what particles were missing from the full table if you want:
 
     >>> rem = set(ext_table.index) - set(full_table.index)
-    >>> print(ext_table.loc[rem].sort_index())
+    >>> print(ext_table.loc[rem].sort_index())    # doctest: +SKIP
 
 When you are done, you can save one or more of the tables:
 
@@ -265,7 +265,7 @@ def update_from_mcd(full_table, update_table):
 
     Example
     -------
-    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2019.mcd')
+    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2019.mcd')    # doctest: +SKIP
     """
 
     full_table = full_table.copy()
