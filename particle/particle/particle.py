@@ -507,32 +507,32 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         The first and only positional argument is given each particle
         candidate, and returns True/False. Example:
 
-            >>> Particle.findall(lambda p: 'p' in p.name)
+            >>> Particle.findall(lambda p: 'p' in p.name)    # doctest: +SKIP
             # Returns list of all particles with p somewhere in name
 
         You can pass particle=True/False to force a particle or antiparticle.
         If this is not callable, it will do a "fuzzy" search on the name. So this is identical:
 
-            >>> Particle.findall('p')
+            >>> Particle.findall('p')    # doctest: +SKIP
             # Returns list of all particles with p somewhere in name
 
         You can also pass keyword arguments, which are either called with the
         matching property if they are callable, or are compared if they are not.
         This would do an exact search on the name, instead of a fuzzy search:
 
-           >>> Particle.findall(name='p')
-           # Returns proton and antiproton only
+           >>> Particle.findall(pdg_name='p')  # Returns proton and antiproton only
+           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>, <Particle: name="p~", pdgid=-2212, mass=938.272081 ± 0.000006 MeV>]
 
-           >>> Particle.findall(name='p', particle=True)
-           # Returns proton only
+           >>> Particle.findall(pdg_name='p', particle=True)  # Returns proton only
+           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>]
 
         Versatile searches require a (lambda) function as argument:
 
         >>> # Get all neutral beauty hadrons
-        >>> Particle.findall(lambda p: p.pdgid.has_bottom and p.charge==0)
+        >>> Particle.findall(lambda p: p.pdgid.has_bottom and p.charge==0)    # doctest: +SKIP
         >>>
         >>> # Trivially find all pseudoscalar charm mesons
-        >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_charm and p.spin_type==SpinType.PseudoScalar)
+        >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_charm and p.spin_type==SpinType.PseudoScalar)  # doctest: +SKIP
 
         See also ``find``, which throws an exception if the particle is not found or too many are found.
         '''
