@@ -26,6 +26,7 @@ steps:
 - script: |
     python -m pytest --doctest-modules --ignore-glob="*__main__.py" --ignore-glob="test*"
   displayName: 'Run doctests'
+  condition: and(succeeded(), ne(variables['python.version'], '2.7'))
 
 - task: PublishTestResults@2
   inputs:
