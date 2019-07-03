@@ -23,6 +23,10 @@ steps:
     python -m pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=particle --cov-report=xml --cov-report=html
   displayName: 'Test with pytest and collect coverage metrics'
 
+- script: |
+    python -m pytest --doctest-modules --ignore-glob="*__main__.py" --ignore-glob="test*"
+  displayName: 'Run doctests'
+
 - task: PublishTestResults@2
   inputs:
     testResultsFiles: '**/test-*.xml'
