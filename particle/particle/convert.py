@@ -50,7 +50,13 @@ import os
 FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 import pandas as pd
-import six
+try:
+    from io import StringIO
+except ImportError: # Python2 workaround, could also use six
+    try:
+        from cStringIO import StringIO
+    except ImportError:
+        from StringIO import StringIO
 
 from .enums import (SpinType, Parity, Charge, Inv, Status,
                     Parity_mapping, Inv_mapping, Status_mapping,
@@ -77,7 +83,7 @@ def filter_file(fileobject):
     if not hasattr(fileobject, 'read'):
         fileobject = open(fileobject)
 
-    stream = six.StringIO()
+    stream = StringIO()
     for line in fileobject:
         # We need to strip the unicode byte ordering if present before checking for *
         if not line.lstrip('\ufeff').lstrip().startswith('*'):
