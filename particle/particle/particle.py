@@ -9,6 +9,7 @@ from __future__ import absolute_import, division, print_function
 # Python standard library
 import operator
 import os
+import sys
 import re
 import csv
 from copy import copy
@@ -148,22 +149,22 @@ class Particle(object):
     pdgid = attr.ib(converter=PDGID)
     pdg_name = attr.ib()
     mass = attr.ib()
-    width = attr.ib()
-    anti_flag = attr.ib(converter=Inv)  # Info about particle name for anti-particles
-    _three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    rank = attr.ib(0)  # Next line is Isospin
+    mass_upper = attr.ib(0.0)
+    mass_lower = attr.ib(0.0)
+    width = attr.ib(-1.)
+    width_upper = attr.ib(0.0)
+    width_lower = attr.ib(0.0)
+    Q_times_3 = attr.ib(Charge.u, converter=Charge)  # charge * 3
     I = attr.ib(None)  # noqa: E741
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity
     C = attr.ib(Parity.u, converter=Parity)  # Charge conjugation parity
-    quarks = attr.ib('', converter=str)
+    anti_flag = attr.ib(0, converter=Inv)  # Info about particle name for anti-particles
+    rank = attr.ib(0)  # Next line is Isospin
     status = attr.ib(Status.Nonexistent, converter=Status)
+    quarks = attr.ib('', converter=str)
     latex_name = attr.ib('Unknown')
-    mass_upper = attr.ib(0.0)
-    mass_lower = attr.ib(0.0)
-    width_upper = attr.ib(0.0)
-    width_lower = attr.ib(0.0)
 
     def __repr__(self):
         return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass} MeV>'.format(
@@ -202,6 +203,74 @@ class Particle(object):
             cls.load_table()
 
         return cls._table
+
+    @classmethod
+    def dump_table(cls,
+                   exclusive_fields=[],
+                   exclude_fields=[],
+                   n_rows=-1,
+                   filename=None,
+                   tablefmt='simple'):
+        """
+        Dump the internal particle data CSV table,
+        loading it from the default location if no table has yet been loaded.
+        Optionally dump to a file.
+
+        Parameters
+        ----------
+        exclusive_fields: list, optional, default is []
+            Exclusive list of fields to print out.
+        exclude_fields: list, optional, default is []
+            List of table fields to exclude in the printout.
+            Relevant only when exclusive_fields is not given.
+        n_rows: int, optional, defaults to all rows
+            Number of table rows to print out.
+        filename: str, optional
+            Name of file where to dump the table.
+            By default the table is dumped to stdout.
+        tablefmt: str, optional
+
+        See tabulate's tabulate function for a description of available options.
+
+        Examples
+        --------
+        Particle.dump_table()
+        Particle.dump_table(n_rows=5)
+        Particle.dump_table(exclusive_fields=['pdgid', 'pdg_name'])
+        Particle.dump_table(tablefmt='rst', filename='output.txt')
+        """
+        from tabulate import tabulate
+
+        if not cls.table_loaded():
+            cls.load_table()
+
+        # Get all table headers from the class attributes
+        tbl_names = [a.name for a in Particle.__attrs_attrs__]
+
+        if exclusive_fields:
+            tbl_names = exclusive_fields
+        else:
+            for fld in exclude_fields:
+                try:
+                    tbl_names.remove(fld)
+                except:
+                    pass
+
+        # Only dump a given number of rows?
+        tbl_all = cls.all()
+        if n_rows >= 0:
+            tbl_all = tbl_all[:n_rows]
+
+        # Build all table rows
+        tbl = []
+        for p in tbl_all:
+            tbl.append([getattr(p, attr)for attr in tbl_names])
+
+        if filename:
+            with open(filename, 'w') as outfile:
+                print(tabulate(tbl, headers=tbl_names, tablefmt=tablefmt), file=outfile)
+        else:
+            print(tabulate(tbl, headers=tbl_names, tablefmt=tablefmt))
 
     @classmethod
     def load_table(cls, filename=None, append=False):
@@ -251,7 +320,7 @@ class Particle(object):
                     P=int(v['P']),
                     C=int(v['C']),
                     anti_flag=int(v['Anti']),
-                    three_charge=int(v['Charge']),
+                    Q_times_3=int(v['Charge']),
                     rank=int(v['Rank']),
                     status=int(v['Status']),
                     pdg_name=v['Name'],
@@ -317,7 +386,7 @@ class Particle(object):
     @property
     def three_charge(self):
         'Three times the particle charge (charge * 3), in units of the positron charge.'
-        return int(self._three_charge) if self._three_charge!=Charge.u else None
+        return int(self.Q_times_3) if self.Q_times_3!=Charge.u else None
 
     @property
     def lifetime(self):
