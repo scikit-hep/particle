@@ -4,3 +4,4 @@ attrs
 pandas
 pytest
 hepunits
+tabulate
