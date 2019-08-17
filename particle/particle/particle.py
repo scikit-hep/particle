@@ -215,6 +215,10 @@ class Particle(object):
         loading it from the default location if no table has yet been loaded.
         Optionally dump to a file.
 
+        Note
+        ----
+        Uses the `tabulate` package.
+
         Parameters
         ----------
         exclusive_fields: list, optional, default is []
@@ -227,16 +231,18 @@ class Particle(object):
         filename: str, optional
             Name of file where to dump the table.
             By default the table is dumped to stdout.
-        tablefmt: str, optional
-
-        See tabulate's tabulate function for a description of available options.
+        tablefmt: str, optional, default is 'simple'
+            Table formatting option, see the tabulate's package
+            tabulate function for a description of available options.
+            The most common options are:
+            'plain', 'simple', 'grid', 'rst', 'html', 'latex'.
 
         Examples
         --------
         Particle.dump_table()
         Particle.dump_table(n_rows=5)
         Particle.dump_table(exclusive_fields=['pdgid', 'pdg_name'])
-        Particle.dump_table(tablefmt='rst', filename='output.txt')
+        Particle.dump_table(filename='output.txt', tablefmt='rst')
         """
         from tabulate import tabulate
 
