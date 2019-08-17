@@ -9,7 +9,6 @@ from __future__ import absolute_import, division, print_function
 # Python standard library
 import operator
 import os
-import sys
 import re
 import csv
 from copy import copy
