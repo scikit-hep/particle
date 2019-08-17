@@ -64,7 +64,7 @@ def test_charge(PDGIDs):
     assert charge(PDGIDs.Invalid2) == None
 
 
-def test_three_charge(PDGIDs):
+def testQ_times_3(PDGIDs):
     assert three_charge(PDGIDs.Photon) == 0
     assert three_charge(PDGIDs.Electron) == -3
     assert three_charge(PDGIDs.jpsi) == 0
