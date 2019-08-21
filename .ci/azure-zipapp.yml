@@ -6,7 +6,7 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    python -m pip install enum34 importlib_resources attrs hepunits --target .
+    python -m pip install enum34 importlib_resources attrs hepunits tabulate --target .
   displayName: 'Install dependencies'
 
 - script: |
