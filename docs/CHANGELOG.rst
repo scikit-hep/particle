@@ -6,9 +6,11 @@ Version 0.5.1
 -------------
 Under development.
 
+* Added ``Particle.dump_table(...)`` method.
 * Added tests for default/dummy particle (PDG ID = mass = 0).
 * Demo notebook updated.
 * Doctests introduced in the CI.
+* Dependency on package ``six`` removed.
 
 
 Version 0.5.0
