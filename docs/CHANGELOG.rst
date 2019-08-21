@@ -4,7 +4,7 @@ Changelog
 
 Version 0.5.1
 -------------
-Under development.
+August 21st, 2019
 
 * Added ``Particle.dump_table(...)`` method.
 * Added tests for default/dummy particle (PDG ID = mass = 0).
