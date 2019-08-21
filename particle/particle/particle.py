@@ -493,16 +493,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if not is_valid(value):
             raise InvalidParticle("Input PDGID {0} is invalid!".format(value))
         table = cls.all()
-        try:
+        if value in table:
             return table[table.index(value)]
-        except ValueError: # from None (Python2 workaround below)
-            err = ParticleNotFound('Could not find PDGID {0}'.format(value))
-            # I think this could be six.raise_from(err, None)
-            # But we are not requiring six
-            if hasattr(err, '__supress_context__'):
-                err.__supress_context__ = True
-            raise err
-
+        else:
+            raise ParticleNotFound('Could not find PDGID {0}'.format(value))
 
     @classmethod
     def findall(cls, filter_fn=None, particle=None, **search_terms):
