@@ -271,6 +271,7 @@ class Particle(object):
         for p in tbl_all:
             tbl.append([getattr(p, attr)for attr in tbl_names])
 
+        filename = str(filename)  # Conversion to handle pathlib on Python < 3.6
         if filename:
             with open(filename, 'w') as outfile:
                 print(tabulate(tbl, headers=tbl_names, tablefmt=tablefmt), file=outfile)
