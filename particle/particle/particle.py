@@ -150,10 +150,10 @@ class Particle(object):
     mass = attr.ib()
     mass_upper = attr.ib(0.0)
     mass_lower = attr.ib(0.0)
-    width = attr.ib(-1.)
-    width_upper = attr.ib(0.0)
-    width_lower = attr.ib(0.0)
-    Q_times_3 = attr.ib(Charge.u, converter=Charge)  # charge * 3
+    width = attr.ib(-1.0)
+    width_upper = attr.ib(-1.0)
+    width_lower = attr.ib(-1.0)
+    _three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
     I = attr.ib(None)  # noqa: E741
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
@@ -213,11 +213,29 @@ class Particle(object):
         """
         Dump the internal particle data CSV table,
         loading it from the default location if no table has yet been loaded.
-        Optionally dump to a file.
 
-        Note
-        ----
-        Uses the `tabulate` package.
+        The table attributes are those of the class. By default all attributes
+        are used as table fields. Their complete list is:
+            pdgid
+            pdg_name
+            mass
+            mass_upper
+            mass_lower
+            width
+            width_upper
+            width_lower
+            three_charge
+            I
+            G
+            P
+            C
+            anti_flag
+            rank
+            status
+            quarks
+            latex_name
+
+        Optionally dump to a file.
 
         Parameters
         ----------
@@ -237,6 +255,10 @@ class Particle(object):
             The most common options are:
             'plain', 'simple', 'grid', 'rst', 'html', 'latex'.
 
+        Note
+        ----
+        Uses the `tabulate` package.
+
         Examples
         --------
         Particle.dump_table()
@@ -251,6 +273,8 @@ class Particle(object):
 
         # Get all table headers from the class attributes
         tbl_names = [a.name for a in Particle.__attrs_attrs__]
+        # ... and replace '_three_charge' with the better, public property
+        tbl_names[tbl_names.index('_three_charge')] = 'three_charge'
 
         if exclusive_fields:
             tbl_names = exclusive_fields
@@ -269,10 +293,10 @@ class Particle(object):
         # Build all table rows
         tbl = []
         for p in tbl_all:
-            tbl.append([getattr(p, attr)for attr in tbl_names])
+            tbl.append([getattr(p, attr) for attr in tbl_names])
 
-        filename = str(filename)  # Conversion to handle pathlib on Python < 3.6
         if filename:
+            filename = str(filename)  # Conversion to handle pathlib on Python < 3.6
             with open(filename, 'w') as outfile:
                 print(tabulate(tbl, headers=tbl_names, tablefmt=tablefmt), file=outfile)
         else:
@@ -326,7 +350,7 @@ class Particle(object):
                     P=int(v['P']),
                     C=int(v['C']),
                     anti_flag=int(v['Anti']),
-                    Q_times_3=int(v['Charge']),
+                    three_charge=int(v['Charge']),
                     rank=int(v['Rank']),
                     status=int(v['Status']),
                     pdg_name=v['Name'],
@@ -392,7 +416,7 @@ class Particle(object):
     @property
     def three_charge(self):
         'Three times the particle charge (charge * 3), in units of the positron charge.'
-        return int(self.Q_times_3) if self.Q_times_3!=Charge.u else None
+        return int(self._three_charge) if self._three_charge!=Charge.u else None
 
     @property
     def lifetime(self):
