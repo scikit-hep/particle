@@ -9,6 +9,9 @@ from ._version import __version__
 # Direct access to PDGID
 from .pdgid import PDGID
 
+# Direct access to other ID classes
+from .pythia import PythiaID
+
 # Direct access to Particle (the CSV file is not read until a particle is accessed)
 from .particle import Particle, SpinType, Parity, Charge, Inv, Status, ParticleNotFound
 
@@ -17,3 +20,6 @@ from .particle import width_to_lifetime, lifetime_to_width
 
 # Direct access to handy LaTeX to HTML particle name conversions
 from .particle import latex_to_html_name
+
+# Direct access to handy bi-directional maps
+from .converters import Pythia2PDGIDBiMap
