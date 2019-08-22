@@ -3,7 +3,6 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-
 """
 Class representing a Pythia ID.
 """
@@ -36,7 +35,7 @@ class PythiaID(int):
     >>> p.name
     'pi+'
     """
-    
+
     __slots__ = ()  # Keep PythiaID a slots based class
 
     @classmethod

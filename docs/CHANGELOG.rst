@@ -6,6 +6,8 @@ Version 0.6.0
 Under development.
 
 * Introduction of the ``PythiaID`` class.
+* Introduction of MC ID converters:
+  - ``Pythia2PDGIDBiMap`` bi-directional map.
 * New data files:
   - File ``data/pdgid_to_pythiaid.csv`` for PDGID-PythiaID conversions.
 
