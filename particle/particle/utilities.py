@@ -123,5 +123,5 @@ def latex_to_html_name(name):
     name = name.replace('ambda', 'amda') # Special care - unicodedata library uses "lamda" for "lambda" :S!
     for gl in _list_name_greek_letters:
         name = name.replace(r'\%s'%gl, greek_letter_name_to_unicode(gl))
-    name = re.sub(r'\\bar\{(.*?)\}', r'<SPAN STYLE="text-decoration:overline">\1</SPAN>', name)
+    name = re.sub(r'\\bar\{(.*?)\}', r'\1&#773;', name)
     return name
