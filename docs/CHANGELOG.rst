@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 0.6.0
+-------------
+Under development.
+
+* Introduction of the ``PythiaID`` class.
+* New data files:
+  - File ``data/pdgid_to_pythiaid.csv`` for PDGID-PythiaID conversions.
+
 
 Version 0.5.1
 -------------

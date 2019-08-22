@@ -4,7 +4,7 @@
 # or https://github.com/scikit-hep/particle for details.
 
 """
-Class representing a PDGID.
+Class representing a PDG ID.
 
 All methods of HepPID are implemented in a Pythonic version, see the functions module.
 """
@@ -22,7 +22,7 @@ _fnames = [ fname for fname in dir(_functions) if not fname.startswith('_')
 
 class PDGID(int):
     """
-    Holds a PDGID.
+    Holds a PDG ID.
 
     Example
     -------

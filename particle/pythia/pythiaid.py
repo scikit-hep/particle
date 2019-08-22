@@ -3,6 +3,11 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
+
+"""
+Class representing a Pythia ID.
+"""
+
 from __future__ import absolute_import
 
 import csv
@@ -18,10 +23,13 @@ with data.open_text(data, 'pdgid_to_pythiaid.csv') as _f:
 
 class PythiaID(int):
     """
+    Holds a Pythia ID.
 
     Examples
     --------
     >>> pythiaid = PythiaID(211)
+
+    >>> from particle import Particle
     >>> p = Particle.from_pdgid(pythiaid.to_pdgid())
 
     >>> p = Particle.find(pdgid=pythiaid.to_pdgid())
