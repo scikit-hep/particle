@@ -36,6 +36,7 @@ class PythiaID(int):
     >>> p.name
     'pi+'
     """
+    
     __slots__ = ()  # Keep PythiaID a slots based class
 
     @classmethod
