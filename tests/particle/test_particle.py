@@ -252,10 +252,10 @@ def test_explicit_table_loading():
 checklist_html_name = (
     (22, 'γ'),                           # photon
     (1, 'd'),                            # d quark
-    (-2, '<SPAN STYLE="text-decoration:overline">u</SPAN>'),  # u antiquark
+    (-2, 'u&#773;'),                     # u antiquark
     (11, 'e<SUP>-</SUP>'),               # e-
     (-13, 'μ<SUP>+</SUP>'),              # mu+
-    (-14, '<SPAN STYLE="text-decoration:overline">ν</SPAN><SUB>μ</SUB>'),  # nu_mu_bar
+    (-14, 'ν&#773;<SUB>μ</SUB>'),        # nu_mu_bar
     (111, 'π<SUP>0</SUP>'),              # pi0
     (-211, 'π<SUP>-</SUP>'),             # pi-
     (-213, 'ρ(770)<SUP>-</SUP>'),        # rho(770)-
@@ -265,16 +265,16 @@ checklist_html_name = (
     (10321, 'K<SUB>0</SUB><SUP>*</SUP>(1430)<SUP>+</SUP>'),   # K(0)*(1430)+
     (-10321, 'K<SUB>0</SUB><SUP>*</SUP>(1430)<SUP>-</SUP>'),  # K(0)*(1430)-
     (10433, 'D<SUB>s1</SUB>(2536)<SUP>+</SUP>'),              # D_s1(2536)+
-    (-511, '<SPAN STYLE="text-decoration:overline">B</SPAN><SUP>0</SUP>'),               # B0_bar
+    (-511, 'B&#773;<SUP>0</SUP>'),       # B0_bar
     (443, 'J/ψ(1S)'),                    # J/psi
     (10441, 'χ<SUB>c0</SUB>(1P)'),       # chi_c0(1P)
     (300553, 'Υ(4S)'),                   # Upsilon(4S)
     (2212, 'p'),                         # proton
-    (-2112, '<SPAN STYLE="text-decoration:overline">n</SPAN>'),                          # antineutron
-    (-2224, '<SPAN STYLE="text-decoration:overline">Δ</SPAN>(1232)<SUP>--</SUP>'),       # Delta_bar(1232)--
+    (-2112, 'n&#773;'),                  # antineutron
+    (-2224, 'Δ&#773;(1232)<SUP>--</SUP>'),   # Delta_bar(1232)--
     (3322, 'Ξ<SUP>0</SUP>'),             # Xi0
-    (-3322, '<SPAN STYLE="text-decoration:overline">Ξ</SPAN><SUP>0</SUP>'),              # Xi0_bar
-    (-5122, '<SPAN STYLE="text-decoration:overline">Λ</SPAN><SUB>b</SUB><SUP>0</SUP>')   # Lb0_bar
+    (-3322, 'Ξ&#773;<SUP>0</SUP>'),     # Xi0_bar
+    (-5122, 'Λ&#773;<SUB>b</SUB><SUP>0</SUP>')   # Lb0_bar
 )
 
 
