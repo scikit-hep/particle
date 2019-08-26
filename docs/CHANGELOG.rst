@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 0.5.2
+-------------
+August 26th, 2019
+
+* Better handling of LaTeX to HTML conversions of particle names.
+* Added the tabulate package dependency to the zipapp.
+
 
 Version 0.5.1
 -------------
