@@ -82,7 +82,8 @@ _list_name_greek_letters = [
     'Gamma',
     'Iota',
     'Kappa',
-    'Lamda',
+    'Lamda', # Unicodedata library uses "lamda" for "lambda" :S!
+    'Lambda',
     'Mu',
     'Nu',
     'Omega',
@@ -107,6 +108,7 @@ def greek_letter_name_to_unicode(letter):
 
     Examples
     --------
+    Lamda -> Λ    (Unicodedata library uses "lamda" for "lambda" :S!)
     Omega -> Ω
     omega -> ω
     """
@@ -120,8 +122,7 @@ def latex_to_html_name(name):
     name = re.sub(r'\_\{(.*?)\}', r'<SUB>\1</SUB>', name)
     name = re.sub(r'\\mathrm\{(.*?)\}', r'\1', name)
     name = re.sub(r'\\left\[(.*?)\\right\]', r'[\1] ', name)
-    name = name.replace('ambda', 'amda') # Special care - unicodedata library uses "lamda" for "lambda" :S!
     for gl in _list_name_greek_letters:
-        name = name.replace(r'\%s'%gl, greek_letter_name_to_unicode(gl))
-    name = re.sub(r'\\bar\{(.*?)\}', r'<SPAN STYLE="text-decoration:overline">\1</SPAN>', name)
+        name = name.replace(r'\%s'%gl, '&%s;'%gl)
+    name = re.sub(r'\\bar\{(.*?)\}', r'\1&#773;', name)
     return name
