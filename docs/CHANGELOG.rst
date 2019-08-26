@@ -12,6 +12,14 @@ Under development.
   - File ``data/pdgid_to_pythiaid.csv`` for PDGID-PythiaID conversions.
 
 
+Version 0.5.2
+-------------
+August 26th, 2019
+
+* Better handling of LaTeX to HTML conversions of particle names.
+* Added the tabulate package dependency to the zipapp.
+
+
 Version 0.5.1
 -------------
 August 21st, 2019
