@@ -17,9 +17,13 @@ class BiMap(object):
 
     Examples
     --------
+    >>> from particle import PDGID, PythiaID
+
     >>> bimap = BiMap(PDGID, PythiaID)
+
     >>> bimap[PDGID(9010221)]
     <PythiaID: 10221>
+
     >>> bimap[PythiaID(10221)]
     <PDGID: 9010221>
     """
@@ -49,6 +53,14 @@ class BiMap(object):
         msg = "Matching {a}-{b} for input {v} not found !".format(
               a=self.__A.__name__, b=self.__B.__name__, v=value)
         raise MatchingIDNotFound(msg)
+
+    def __repr__(self):
+        return "<{self.__class__.__name__}({a}-{b}): {n} matches>".format(
+                self=self,
+                a=self.__A.__name__, b=self.__B.__name__, n=self.__len__())
+
+    def __str__(self):
+        return repr(self)
 
     def __len__(self):
         """Returns the number of matches."""
