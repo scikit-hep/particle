@@ -12,29 +12,44 @@ from ..exceptions import MatchingIDNotFound
 
 
 class BiMap(object):
-    """
-    Bi-bidirectional map class.
 
-    Examples
-    --------
-    >>> from particle import PDGID, PythiaID
-
-    >>> bimap = BiMap(PDGID, PythiaID)
-
-    >>> bimap[PDGID(9010221)]
-    <PythiaID: 10221>
-
-    >>> bimap[PythiaID(10221)]
-    <PDGID: 9010221>
-    """
     def __init__(self, class_A, class_B, filename=None):
+        """
+        Bi-bidirectional map class.
+
+        Examples
+        --------
+        >>> from particle import PDGID, PythiaID
+
+        >>> bimap = BiMap(PDGID, PythiaID)
+
+        >>> bimap[PDGID(9010221)]
+        <PythiaID: 10221>
+
+        >>> bimap[PythiaID(10221)]
+        <PDGID: 9010221>
+
+        Advanced usage:
+        >>> # Either pass a file name or a file object
+        >>> from particle import data
+        >>> filename = data.open_text(data, 'pdgid_to_pythiaid.csv')
+        >>> bimap = BiMap(PDGID, PythiaID, filename)
+        """
         self.__A = class_A
         self.__B = class_B
+
         name_A = self.__A.__name__.upper()
         name_B = self.__B.__name__.upper()
-        if not filename:
-            filename = '{a}_to_{b}.csv'.format(a=name_A.lower(), b=name_B.upper())
-        with data.open_text(data, filename) as _f:
+
+        if filename is None:
+            filename = '{a}_to_{b}.csv'.format(a=name_A.lower(), b=name_B.lower())
+            filename = data.open_text(data, filename)
+        elif not hasattr(filename, 'read'):
+            # Conversion to handle pathlib on Python < 3.6:
+            filename = str(filename)
+            filename = open(filename)
+        
+        with filename as _f:
             self._to_map = {int(v[name_B]):int(v[name_A]) for v in csv.DictReader(_f)}
             _f.seek(0)
             self._from_map = {int(v[name_A]):int(v[name_B]) for v in csv.DictReader(_f)}
