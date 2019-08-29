@@ -13,7 +13,7 @@ from .bimap import BiMap
 
 
 EvtGenName2PDGIDBiMap = BiMap(PDGID, str,
-                              converters=[int,str],
+                              converters=(int,str),
                               filename=data.open_text(data, 'pdgid_to_evtgenname.csv'))
 EvtGenName2PDGIDBiMap.__doc__ = """
 Bi-bidirectional map between PDG IDs and EvtGen names.
