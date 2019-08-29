@@ -21,7 +21,7 @@ class BiMap(object):
         ----------
         class_A, class_B: class types
             Input class types.
-        converters: list, optional, default=[int,int]
+        converters: tuple, optional, default=(int,int)
             Converter functions applied on each entry (row) of the file
             providing the class_a-class_B matches.
             The order of the list elements must agree with that of the classes
