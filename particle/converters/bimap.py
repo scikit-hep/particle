@@ -13,7 +13,7 @@ from ..exceptions import MatchingIDNotFound
 
 class BiMap(object):
 
-    def __init__(self, class_A, class_B, converters=[int,int], filename=None):
+    def __init__(self, class_A, class_B, converters=(int,int), filename=None):
         """
         Bi-bidirectional map class.
 
