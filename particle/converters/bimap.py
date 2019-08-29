@@ -13,19 +13,37 @@ from ..exceptions import MatchingIDNotFound
 
 class BiMap(object):
 
-    def __init__(self, class_A, class_B, filename=None):
+    def __init__(self, class_A, class_B, converters=(int,int), filename=None):
         """
         Bi-bidirectional map class.
+
+        Parameters
+        ----------
+        class_A, class_B: class types
+            Input class types.
+        converters: tuple, optional, default=(int,int)
+            Converter functions applied on each entry (row) of the file
+            providing the class_a-class_B matches.
+            The order of the list elements must agree with that of the classes
+            passed in in the constructor.
+            By default, data on the file is assumed to be integers,
+            which is the typical case for PDG IDs and alike.
+        filename: string or file object, optional,
+                  default='<class_B_name>_to_<class_A_name>.csv',
+                  where the names are taken as lowercase.
+            Specify a file from which to read all class_a-class_B matches.
+            It does not matter whether the file contains the input as
+            val_A,val_B or val_B,val_A.
 
         Examples
         --------
         >>> from particle import PDGID, PythiaID
 
+        Basic/standard usage:
         >>> bimap = BiMap(PDGID, PythiaID)
 
         >>> bimap[PDGID(9010221)]
         <PythiaID: 10221>
-
         >>> bimap[PythiaID(10221)]
         <PDGID: 9010221>
 
@@ -33,7 +51,7 @@ class BiMap(object):
         >>> # Either pass a file name or a file object
         >>> from particle import data
         >>> filename = data.open_text(data, 'pdgid_to_pythiaid.csv')
-        >>> bimap = BiMap(PDGID, PythiaID, filename)
+        >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
         """
         self.class_A = class_A
         self.class_B = class_B
@@ -50,9 +68,11 @@ class BiMap(object):
             filename = open(filename)
 
         with filename as _f:
-            self._to_map = {int(v[name_B]):int(v[name_A]) for v in csv.DictReader(_f)}
+            self._to_map = {converters[1](v[name_B]):converters[0](v[name_A])
+                            for v in csv.DictReader(_f)}
             _f.seek(0)
-            self._from_map = {int(v[name_A]):int(v[name_B]) for v in csv.DictReader(_f)}
+            self._from_map = {converters[0](v[name_A]):converters[1](v[name_B])
+                              for v in csv.DictReader(_f)}
 
     def __getitem__(self, value):
         if isinstance(value, self.class_B):
