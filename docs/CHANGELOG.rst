@@ -3,13 +3,20 @@ Changelog
 
 Version 0.6.0
 -------------
-Under development.
+September 1st, 2019
 
-* Introduction of the ``PythiaID`` class.
-* Introduction of MC ID converters:
-  - ``Pythia2PDGIDBiMap`` bi-directional map.
+* Introduction of classes for MC particle identification codes:
+  - ``PythiaID`` class.
+  - ``GeantID`` class.
+* Introduction of MC particle identification code converters:
+  - Generic ``BiMap`` bi-bidirectional map class.
+  - ``Pythia2PDGIDBiMap`` bi-directional map between PDG and Pythia IDs.
+  - ``Geant2PDGIDBiMap`` bi-directional map between PDG and Geant IDs.
+  - ``EvtGenName2PDGIDBiMap`` bi-directional map between PDG IDs and EvtGen names.
 * New data files:
   - File ``data/pdgid_to_pythiaid.csv`` for PDGID-PythiaID conversions.
+  - File ``data/pdgid_to_geantid.csv`` for PDGID-GeantID conversions.
+  - File ``data/pdgid_to_evtgenname.csv `` for PDG ID - EvtGen name conversions.
 
 
 Version 0.5.2
