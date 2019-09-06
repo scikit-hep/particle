@@ -58,6 +58,10 @@ class GeantID(int):
         return repr(self)
 
     def __neg__(self):
+        """
+        Note:
+        Allowed operation though ALL Geant identification codes are positive!
+        """
         return self.__class__(-int(self))
 
     __invert__ = __neg__
