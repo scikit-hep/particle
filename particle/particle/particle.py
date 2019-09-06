@@ -208,8 +208,11 @@ class Particle(object):
                    exclusive_fields=[],
                    exclude_fields=[],
                    n_rows=-1,
+                   filter_fn=None,
                    filename=None,
-                   tablefmt='simple'):
+                   tablefmt='simple',
+                   floatfmt='.12g',
+                   numalign='decimal'):
         """
         Dump the internal particle data CSV table,
         loading it from the default location if no table has yet been loaded.
@@ -246,7 +249,10 @@ class Particle(object):
             Relevant only when exclusive_fields is not given.
         n_rows: int, optional, defaults to all rows
             Number of table rows to print out.
-        filename: str, optional
+        filter_fn: function, optional, default is None
+            Apply a filter to each particle.
+            See findall(...) for typical use cases.
+        filename: str, optional, default is None
             Name of file where to dump the table.
             By default the table is dumped to stdout.
         tablefmt: str, optional, default is 'simple'
@@ -254,6 +260,12 @@ class Particle(object):
             tabulate function for a description of available options.
             The most common options are:
             'plain', 'simple', 'grid', 'rst', 'html', 'latex'.
+        floatfmt: str, optional, default is '.12g'
+            Number formatting, see the tabulate's package
+            tabulate function for a description of available options.
+        numalign: str or None, oprional, default is 'decimal'
+            Column alignment for numbers, see the tabulate's package
+            tabulate function for a description of available options.
 
         Note
         ----
@@ -264,6 +276,7 @@ class Particle(object):
         Particle.dump_table()
         Particle.dump_table(n_rows=5)
         Particle.dump_table(exclusive_fields=['pdgid', 'pdg_name'])
+        Particle.dump_table(filter_fn=lambda p: p.pdgid.has_bottom)
         Particle.dump_table(filename='output.txt', tablefmt='rst')
         """
         from tabulate import tabulate
@@ -285,8 +298,14 @@ class Particle(object):
                 except:
                     pass
 
-        # Only dump a given number of rows?
+        # Start with the full table
         tbl_all = cls.all()
+
+        # Apply a filter, if specified
+        if filter_fn is not None:
+            tbl_all = cls.findall(filter_fn)
+
+        # In any case, only dump a given number of rows?
         if n_rows >= 0:
             tbl_all = tbl_all[:n_rows]
 
@@ -298,9 +317,12 @@ class Particle(object):
         if filename:
             filename = str(filename)  # Conversion to handle pathlib on Python < 3.6
             with open(filename, 'w') as outfile:
-                print(tabulate(tbl, headers=tbl_names, tablefmt=tablefmt), file=outfile)
+                print(tabulate(tbl, headers=tbl_names, tablefmt=tablefmt,
+                               floatfmt=floatfmt, numalign=numalign),
+                      file=outfile)
         else:
-            print(tabulate(tbl, headers=tbl_names, tablefmt=tablefmt))
+            print(tabulate(tbl, headers=tbl_names, tablefmt=tablefmt,
+                           floatfmt=floatfmt, numalign=numalign))
 
     @classmethod
     def load_table(cls, filename=None, append=False):
