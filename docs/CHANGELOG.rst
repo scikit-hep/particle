@@ -1,6 +1,14 @@
 Changelog
 =========
 
+
+Version 0.6.1
+-------------
+In development.
+
+* Particle table CSV file updated for PDG change of 2 particle names.
+
+
 Version 0.6.0
 -------------
 September 1st, 2019
