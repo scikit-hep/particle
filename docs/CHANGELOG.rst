@@ -4,9 +4,11 @@ Changelog
 
 Version 0.6.1
 -------------
-In development.
+September 6th, 2019
 
-* Particle table CSV file updated for PDG change of 2 particle names.
+* Enhancement to `` Particle.dump_table()``.
+* Added tests for Pythia and Geant identification code converters.
+* Particle table CSV file updated for PDG change of 3 particle names.
 
 
 Version 0.6.0
