@@ -19,7 +19,7 @@
 * For the following 2 particles: swap of PDGID or bug in PDG file mass_width_2008.fwf !?
 * Xi(b)0              5132         5232
 * Xi(b)-              5232         5132
-* Name - PDG ID match bug found in PDG in 2019
+* Name - PDG ID match bug found in tables of particle information PDG file, 2019
 * Name                Wrong PDGID   Correct PDGID
 * Upsilon(2)(1D)      30553         20555
 *
