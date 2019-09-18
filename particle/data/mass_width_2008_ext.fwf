@@ -19,6 +19,9 @@
 * For the following 2 particles: swap of PDGID or bug in PDG file mass_width_2008.fwf !?
 * Xi(b)0              5132         5232
 * Xi(b)-              5232         5132
+* Name - PDG ID match bug found in tables of particle information PDG file, 2019
+* Name                Wrong PDGID   Correct PDGID
+* Upsilon(2)(1D)      30553         20555
 *
 * 3) Particles whose PDG ID was not set in the 2008 extended file:
 * Name                2018 PDGID
@@ -106,7 +109,7 @@
 0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,1   ,-, ,B,    523,   +, ,R,B*               ,uB
 0             ,0      ,0      ,0           ,0      ,0      ,1/2, ,2   ,+, ,B,    525,   +,3,R,B(2)*(5747)      ,uB
 0             ,0      ,0      ,0           ,0      ,0      ,   , ,1   ,+,-, ,  10553,   0, ,R,h(b)(1P)         ,bB
-0             ,0      ,0      ,0           ,0      ,0      ,0  ,-,2   ,-,-, ,  30553,   0, ,R,Upsilon(2)(1D)   ,bB
+0             ,0      ,0      ,0           ,0      ,0      ,0  ,-,2   ,-,-, ,  20555,   0, ,R,Upsilon(2)(1D)   ,bB
 0             ,0      ,0      ,0           ,0      ,0      ,3/2, ,1/2 ,-, ,F,  12222,  ++,3,R,Delta(1900)      ,uuu
 0             ,0      ,0      ,0           ,0      ,0      ,3/2, ,1/2 ,-, ,F,  12122,   +,3,R,Delta(1900)      ,uud
 0             ,0      ,0      ,0           ,0      ,0      ,3/2, ,1/2 ,-, ,F,  11212,   0,3,R,Delta(1900)      ,udd

@@ -14,6 +14,10 @@ A custom fwf file and LaTeX file can be converted into the CSV format using:
 
     >>> python -m particle.particle.convert extended output.csv file.fwf latex.csv    # doctest: +SKIP
 
+The command is typically
+
+    >>> python -m particle.particle.convert extended output.csv particle/data/mass_width_2008.fwf    # doctest: +SKIP
+
 This file requires pandas. But most users will not need this file, as it only
 converts PDG data files into the CSV file(s) the public API tools use. The tests
 load some of these functions to verify the CSV files are in sync with the sources.
@@ -297,6 +301,7 @@ def produce_files(particle2008, particle2019, year):
     # 30221 - the f(0)(1370) since it was renumbered
     # 100223 - the omega(1420) since it was renumbered
     # 5132 and 5232 - the Xi_b baryons got their IDs swapped at some stage
+    # 30553 - the Upsilon(2)(1D) was wrongly assigned its ID, and has been renumbered
     full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
 
     full_table.to_csv(particle2008, float_format='%.12g')
