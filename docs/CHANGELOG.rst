@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 0.6.2
+-------------
+September 19th, 2019
+
+* Fix for inconsistent PDG ID and name of Upsilon_2(1D).
+* Several fixes for renames of particle names by the PDG.
+
 
 Version 0.6.1
 -------------
