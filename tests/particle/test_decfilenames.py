@@ -616,10 +616,13 @@ list_dec_but_not_in_pdt = [
  'Sigma_b0',
  'Upsilon_1(1D)',
  'Upsilon_1(2D)',
+ 'Upsilon_2(1D)',
  'Upsilon_2(2D)',
  'Upsilon_3(1D)',
  'Upsilon_3(2D)',
  'X_1(3872)',
+ "Xi'_b-",
+ "Xi'_b0",
  'Xi_b*-',
  'Xi_b*0',
  'Xi_bc+',
@@ -649,6 +652,8 @@ list_dec_but_not_in_pdt = [
  'anti-Omega_cc-',
  'anti-Sigma_b*0',
  'anti-Sigma_b0',
+ "anti-Xi'_b0",
+ "anti-Xi'_b+",
  'anti-Xi_b*+',
  'anti-Xi_b*0',
  'anti-Xi_bc-',
@@ -665,6 +670,7 @@ list_dec_but_not_in_pdt = [
  'eta_b2(2D)',
  'h_b(2P)',
  'h_b(3P)',
+ 'omega(2S)',
  'rho(3S)+',
  'rho(3S)-',
  'rho(3S)0'
@@ -723,26 +729,7 @@ list_dec_specific = [
 
 # Sub-list of particle names that Particle.from_dec has trouble with at present
 # Consider this as a TODO
-list_undealt_with = [
- "D'_s1+",
- "D'_s1-",
- "K''*+",
- "K''*-",
- "K''*0",
- "K'*+",
- "K'*-",
- "K'*0",
- "K'_1+",
- "K'_1-",
- "K'_10",
- "Xi'_b-",
- "Xi'_b0",
- "anti-K''*0",
- "anti-K'*0",
- "anti-K'_10",
- "anti-Xi'_b+",
- "anti-Xi'_b0"
-]
+list_undealt_with = []
 
 for elm in list_dec_but_not_in_pdt+list_dec_specific:
     dec_names.remove(elm)

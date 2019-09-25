@@ -433,7 +433,6 @@ decfile_style_names = (
     ("rho+", 213),
     ("rho(2S)0", 100113),
     ("omega", 223),
-    ("omega(2S)", 1000223),
     ("omega(1650)", 30223),
     ("Delta++", 2224),
     ("Delta+", 2214),
