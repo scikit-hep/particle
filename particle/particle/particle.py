@@ -592,6 +592,11 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return val
 
     @property
+    def evtgen_name(self):
+        'This is the name used in EvtGen.'
+        return EvtGenName2PDGIDBiMap[self.pdgid]
+
+    @property
     def programmatic_name(self):
         'This name could be used for a variable name.'
         return programmatic_name(self.name)
