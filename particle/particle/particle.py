@@ -37,6 +37,8 @@ from .utilities import (programmatic_name, str_with_unc,
 
 from .kinematics import width_to_lifetime
 
+from ..converters.evtgen import EvtGenName2PDGIDBiMap
+
 
 class ParticleNotFound(RuntimeError):
     pass
@@ -736,117 +738,15 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             raise RuntimeError("Found too many particles")
 
     @classmethod
-    def from_dec(cls, name):
-        'Get a particle from a .dec decay file (DecFile) style name - returns the best match.'
-
-        # Catch 2 really special cases - names too short for a proper matching
-        specials = {
-            'n0': 'n',
-            'anti-n0': 'n~',
-            'p+': 'p',
-            'anti-p-' : 'p~'
-        }
-        if name in specials:
-            return cls.find(name=specials[name])
-
-        # Extra special cases where the lowest-level particle
-        # does *not* have the smallest PDG ID, which the query matches by default to.
-        name = re.sub(r'Delta(?=[0\+\-][+-]?)', r'Delta(1232)', name)
-
-        # Simplest search first - search by name
+    def from_evtgen_name(cls, name):
+        """
+        Get a particle from a .dec decay file (DecFile) style name,
+        i.e. an EvtGen name.
+        """
         try:
-            return cls.find(name=name)
-        except:
-            pass
-
-        # Many names defined in .dec files just aren't well-enough defined, hence are ambiguous!
-        # Others are difficult to match with the standard regex rules.
-        # The required mapping is here provided:
-        dec_to_pdg_mapping = {
-            "f_0": 'f(0)(980)',
-            "f'_0": 'f(0)(1370)',
-            "f'_1": 'f(1)(1420)',
-            "h'_1": 'h(1)(1415)',
-            'omega(2S)': 'omega(1420)',
-            'phi' : 'phi(1020)',
-            'K_L0': 'K(L)0',
-            'K_S0': 'K(S)0',
-            'B_s10': 'B(s1)(5830)0',
-            #"anti-D'_10": 'D(1)(2420)~0',
-            'anti-B_s10': 'B(s1)(5830)~0',
-            'J/psi': 'J/psi(1S)',
-            'Upsilon': 'Upsilon(1S)',
-            'Upsilon_2(1D)': 'Upsilon(2)(1D)',
-            'Upsilon(5S)' : 'Upsilon(10860)',
-            'X_1(3872)': 'X(3872)',
-            'Omega_c*0': 'Omega(c)(2770)0',
-            'Sigma_b+': 'Sigma(b)+',
-            'Sigma_b*+': 'Sigma(b)*+',
-        }
-        if name in dec_to_pdg_mapping:
-            return cls.find(name=dec_to_pdg_mapping[name])
-
-        # In other cases a bulk replacement is more efficient given the several charge states possible.
-        # Note: the dictionary needs to be sorted in such a way that the replacements for
-        #       names of the kind "anti-X" are always dealt with before those for names "X".
-        dec_to_pdg_replacements = {
-            'a_0': 'a(0)(980)',
-            'rho(2S)': 'rho(1450)',
-            'anti-Sigma*': 'Sigma(1385)~',
-            'anti-Xi*': 'Xi(1530)~',
-            'anti-Sigma_c*': 'Sigma(c)(2520)~',
-            'anti-Xi_c*': 'Xi(c)(2645)~',
-            'anti-B_1': 'B(1)(5721)~',
-            'Sigma*': 'Sigma(1385)',
-            'Xi*': 'Xi(1530)',
-            'Sigma_c*': 'Sigma(c)(2520)',
-            'Xi_c*': 'Xi(c)(2645)',
-            #"D'_1": 'D(1)(2420)',
-            'B_1': 'B(1)(5721)',
-        }
-        for oldw, neww in sorted(dec_to_pdg_replacements.items(), reverse=True):
-            if oldw in name:
-                return cls.find(name=name.replace(oldw, neww))
-
-        # Special case of certain quarkonium states of the kind X_qj,
-        # where q and j are the quark family (c, b) and total spin, respectively.
-        for w in ('chi_', 'eta_'):
-            if w in name: name = re.sub(r'\_(.*?)\(', r'(\1)(', name)
-
-        mat = getdec.match(name)
-
-        if mat is None:
-
-            # Deal with antiquarks
-            particle = None
-            if "anti-" in name:
-                name = name.replace('anti-', '')
-                particle = False
-                return cls.find(pdg_name=name, particle=particle)
-
-            return cls.find(name=name, particle=particle)
-
-        mat = mat.groupdict()
-
-        # TODO: a lot of this should rather be done in the regex `getdec` - this is temporary
-        if mat['name'] in ('f', 'h', 'chi', 'eta', 'omega', 'nu'):
-            mat['charge'] = '0'
-        if mat['name'] in ('B', 'Lambda', 'Sigma', 'Omega', 'Xi'):
-            if mat['family'] is not None:
-                if mat['charge'] is None:
-                    mat['charge'] = '0'
-                    mat['family'] = mat['family'][:-1]
-        if mat['family'] is not None and mat['family'][-2:]=='10':
-            mat['family'] = mat['family'][:-1]
-            mat['charge'] = '0'
-        if mat['state'] is not None and (mat['state']=='00' or mat['state']=='10' or mat['state']=='20'):
-            mat['state'] = mat['state'][:-1]
-            mat['charge'] = '0'
-
-        try:
-            return cls._from_group_dict_list(mat)[0]
-        except IndexError:
-            raise ParticleNotFound('{0} not found from dec-style name'.format(name))
+            return cls.from_pdgid(EvtGenName2PDGIDBiMap[name])
+        except ParticleNotFound:
+            raise ParticleNotFound('Could not find particle with EvtGen name "{0}".'.format(name))
 
     @classmethod
     def from_string(cls, name):
