@@ -752,7 +752,7 @@ def test_decfile_style_names_valid():
     failures = set()
     for name in dec_names:
         try:
-            assert Particle.from_dec(name).pdgid != 0
+            assert Particle.from_evtgen_name(name).pdgid != 0
         except ParticleNotFound:
             failures.add(name)
 
