@@ -433,7 +433,6 @@ decfile_style_names = (
     ("rho+", 213),
     ("rho(2S)0", 100113),
     ("omega", 223),
-    ("omega(2S)", 1000223),
     ("omega(1650)", 30223),
     ("Delta++", 2224),
     ("Delta+", 2214),
@@ -469,4 +468,4 @@ decfile_style_names = (
 
 @pytest.mark.parametrize("name,pid", decfile_style_names)
 def test_decfile_style_names(name, pid):
-    assert Particle.from_dec(name).pdgid == pid
+    assert Particle.from_evtgen_name(name).pdgid == pid
