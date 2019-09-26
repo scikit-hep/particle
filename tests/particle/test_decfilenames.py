@@ -727,10 +727,6 @@ list_dec_specific = [
  'specflav'
  ]
 
-# Sub-list of particle names that Particle.from_dec has trouble with at present
-# Consider this as a TODO
-list_undealt_with = []
-
 for elm in list_dec_but_not_in_pdt+list_dec_specific:
     dec_names.remove(elm)
 
@@ -743,4 +739,4 @@ def test_decfile_style_names_valid():
         except ParticleNotFound:
             failures.add(name)
 
-    assert failures == set(list_undealt_with)
+    assert failures == set()
