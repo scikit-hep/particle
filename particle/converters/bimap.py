@@ -5,6 +5,8 @@
 
 from __future__ import absolute_import
 
+from collections import Mapping
+
 import csv
 
 from .. import data
@@ -53,6 +55,7 @@ class BiMap(object):
         >>> filename = data.open_text(data, 'pdgid_to_pythiaid.csv')
         >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
         """
+        
         self.class_A = class_A
         self.class_B = class_B
 
@@ -100,3 +103,97 @@ class BiMap(object):
     def __len__(self):
         """Returns the number of matches."""
         return len(self._to_map)
+
+
+def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
+        """
+        Directional map class providing a to and from mapping.
+
+        Parameters
+        ----------
+        name_A, name_B: str
+            Input names of information to be mapped.
+        converters: tuple, optional, default=(str,str)
+            Converter functions applied on each entry (row) of the file
+            providing the name_a-name_B matches.
+            The order of the list elements must agree with that of the
+            object names passed in in the constructor.
+            By default, data on the file is assumed to be strings,
+            which is the typical case for particle names.
+        filename: string or file object, optional,
+                  default='<obs_A_name>_to_<obs_B_name>.csv',
+                  where the names are taken as lowercase.
+            Specify a file from which to read all name_a-name_B matches.
+            It is assumed that the order of items in the file matches the order
+            of arguments specified in the class constructor, hence val_A,val_B.
+
+        Examples
+        --------
+
+        >>> from particle import data
+        >>> filename = data.open_text(data, 'a_to_b.csv')
+        >>> A2BMap, B2AMap = DirectionalMaps('A', 'B', filename=filename)
+        """
+
+        name_A = name_A.upper()
+        name_B = name_B.upper()
+
+        if filename is None:
+            filename = '{a}_to_{b}.csv'.format(a=name_A.lower(), b=name_B.lower())
+            filename = data.open_text(data, filename)
+        elif not hasattr(filename, 'read'):
+            # Conversion to handle pathlib on Python < 3.6:
+            filename = str(filename)
+            filename = open(filename)
+
+        with filename as _f:
+            to_map = {converters[1](v[name_B]):converters[0](v[name_A])
+                      for v in csv.DictReader(_f)}
+            _f.seek(0)
+            from_map = {converters[0](v[name_A]):converters[1](v[name_B])
+                        for v in csv.DictReader(_f)}
+
+        return DirectionalMap(name_A, name_B, from_map), DirectionalMap(name_B, name_A, to_map)
+
+
+class DirectionalMap(Mapping):
+
+    def __init__(self, name_A, name_B, map):
+        """
+        Directional map class providing a A -> B mapping.
+
+        Parameters
+        ----------
+        name_A, name_B: str
+            Input names of information to be mapped.
+        map: dict
+            Input mapping as a dictionary.
+        """
+
+        self.name_A = name_A.upper()
+        self.name_B = name_B.upper()
+
+        self._map = map
+
+    def __getitem__(self, value):
+        try:
+            return self._map[value]
+        except KeyError:
+            msg = "Matching {a}->{b} for input {v} not found !".format(
+                  a=self.name_A, b=self.name_B, v=value)
+            raise MatchingIDNotFound(msg)
+
+    def __iter__(self):
+        return iter(self._map)
+
+    def __repr__(self):
+        return "<{self.__class__.__name__}({a}->{b}): {n} matches>".format(
+                self=self,
+                a=self.name_A, b=self.name_B, n=self.__len__())
+
+    def __str__(self):
+        return repr(self)
+
+    def __len__(self):
+        """Returns the number of matches."""
+        return len(self._map)
