@@ -9,7 +9,7 @@ from .. import data
 
 from ..pdgid import PDGID
 
-from .bimap import BiMap
+from .bimap import BiMap, DirectionalMaps
 
 
 EvtGenName2PDGIDBiMap = BiMap(PDGID, str,
@@ -28,3 +28,30 @@ Examples
 >>> pdgid
 <PDGID: 22>
 """
+
+
+PDG2EvtGenNameMap, EvtGen2PDGNameMap = DirectionalMaps('PDGName', 'EvtGenName',
+                                                       filename=data.open_text(data, 'pdgname_to_evtgenname.csv')
+                                                       )
+
+PDG2EvtGenNameMap.__doc__ = """
+Directional map between PDG and EvtGen names.
+
+Examples
+--------
+>>> PDG2EvtGenNameMap['J/psi(1S)']
+'J/psi'
+"""
+
+
+EvtGen2PDGNameMap.__doc__ = """
+Directional map between EvtGen and names.
+
+Examples
+--------
+>>> EvtGen2PDGNameMap['J/psi']
+>>> 'J/psi(1S)'
+"""
+
+del BiMap
+del DirectionalMaps
