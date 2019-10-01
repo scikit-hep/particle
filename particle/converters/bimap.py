@@ -55,7 +55,7 @@ class BiMap(object):
         >>> filename = data.open_text(data, 'pdgid_to_pythiaid.csv')
         >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
         """
-        
+
         self.class_A = class_A
         self.class_B = class_B
 
@@ -130,9 +130,9 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
         Examples
         --------
 
-        >>> from particle import data
-        >>> filename = data.open_text(data, 'a_to_b.csv')
-        >>> A2BMap, B2AMap = DirectionalMaps('A', 'B', filename=filename)
+        >>> from particle import data  # doctest: +SKIP
+        >>> filename = data.open_text(data, 'a_to_b.csv')  # doctest: +SKIP
+        >>> A2BMap, B2AMap = DirectionalMaps('A', 'B', filename=filename)  # doctest: +SKIP
         """
 
         name_A = name_A.upper()
