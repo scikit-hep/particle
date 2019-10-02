@@ -239,6 +239,28 @@ the particle:
         Quarks: dS
         Antiparticle name: K~0 (antiparticle status: Barred)
 
+
+Getting started: Converters
+---------------------------
+
+You can use mapping classes to convert between particle MC identification codes
+and particle names. See the ``particle.converters`` modules for the available
+mapping classes. For example:
+
+.. code-block:: python
+
+    >>> from particle.converters import Pythia2PDGIDBiMap
+    >>> from particle import PDGID, PythiaID
+    >>>
+    >>> pyid = Pythia2PDGIDBiMap[PDGID(9010221)]
+    >>> pyid
+    <PythiaID: 10221>
+
+    >>> pdgid = Pythia2PDGIDBiMap[PythiaID(10221)]
+    >>> pdgid
+    <PDGID: 9010221>
+
+
 Advanced: Loading custom tables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
