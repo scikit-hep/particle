@@ -130,6 +130,11 @@ You can quickly display PDGID info from the command line with:
     has_bottom     False
     ...
 
+
+Similarly, classes exist to express identification codes used by MC programs,
+see information on converters below.
+
+
 Getting started: Particles
 --------------------------
 
@@ -240,27 +245,6 @@ the particle:
         Antiparticle name: K~0 (antiparticle status: Barred)
 
 
-Getting started: Converters
----------------------------
-
-You can use mapping classes to convert between particle MC identification codes
-and particle names. See the ``particle.converters`` modules for the available
-mapping classes. For example:
-
-.. code-block:: python
-
-    >>> from particle.converters import Pythia2PDGIDBiMap
-    >>> from particle import PDGID, PythiaID
-    >>>
-    >>> pyid = Pythia2PDGIDBiMap[PDGID(9010221)]
-    >>> pyid
-    <PythiaID: 10221>
-
-    >>> pdgid = Pythia2PDGIDBiMap[PythiaID(10221)]
-    >>> pdgid
-    <PDGID: 9010221>
-
-
 Advanced: Loading custom tables
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -283,3 +267,47 @@ You can convert and update the particle tables with the utilities in ``particle.
 .. code-block:: bash
 
     $ python3 -m particle.particle.convert --help
+
+
+    Getting started: Converters
+    ---------------------------
+
+    You can use mapping classes to convert between particle MC identification codes
+    and particle names. See the ``particle.converters`` modules for the available
+    mapping classes. For example:
+
+    .. code-block:: python
+
+        >>> from particle.converters import Pythia2PDGIDBiMap
+        >>> from particle import PDGID, PythiaID
+        >>>
+        >>> pyid = Pythia2PDGIDBiMap[PDGID(9010221)]
+        >>> pyid
+        <PythiaID: 10221>
+
+        >>> pdgid = Pythia2PDGIDBiMap[PythiaID(10221)]
+        >>> pdgid
+        <PDGID: 9010221>
+
+This code makes use of classes similar to ``PDGID``, which hold
+particle identification codes used by MC programs.
+Possible use cases are the following:
+
+.. code-block:: python
+
+    >>> from particle import Particle
+    >>> from particle import GeantID, PythiaID
+    >>>
+    >>> geantid = GeantID(8)
+    >>> p = Particle.from_pdgid(geantid.to_pdgid())
+    >>>
+    >>> p = Particle.find(pdgid=geantid.to_pdgid())
+    >>> p.name
+    'pi+'
+
+    >>> pythiaid = PythiaID(211)
+    >>> p = Particle.from_pdgid(pythiaid.to_pdgid())
+
+    >>> p = Particle.find(pdgid=pythiaid.to_pdgid())
+    >>> p.name
+    'pi+'
