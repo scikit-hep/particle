@@ -269,25 +269,25 @@ You can convert and update the particle tables with the utilities in ``particle.
     $ python3 -m particle.particle.convert --help
 
 
-    Getting started: Converters
-    ---------------------------
+Getting started: Converters
+---------------------------
 
-    You can use mapping classes to convert between particle MC identification codes
-    and particle names. See the ``particle.converters`` modules for the available
-    mapping classes. For example:
+You can use mapping classes to convert between particle MC identification codes
+and particle names. See the ``particle.converters`` modules for the available
+mapping classes. For example:
 
-    .. code-block:: python
+.. code-block:: python
 
-        >>> from particle.converters import Pythia2PDGIDBiMap
-        >>> from particle import PDGID, PythiaID
-        >>>
-        >>> pyid = Pythia2PDGIDBiMap[PDGID(9010221)]
-        >>> pyid
-        <PythiaID: 10221>
+    >>> from particle.converters import Pythia2PDGIDBiMap
+    >>> from particle import PDGID, PythiaID
+    >>>
+    >>> pyid = Pythia2PDGIDBiMap[PDGID(9010221)]
+    >>> pyid
+    <PythiaID: 10221>
 
-        >>> pdgid = Pythia2PDGIDBiMap[PythiaID(10221)]
-        >>> pdgid
-        <PDGID: 9010221>
+    >>> pdgid = Pythia2PDGIDBiMap[PythiaID(10221)]
+    >>> pdgid
+    <PDGID: 9010221>
 
 This code makes use of classes similar to ``PDGID``, which hold
 particle identification codes used by MC programs.
