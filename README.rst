@@ -311,3 +311,12 @@ Possible use cases are the following:
     >>> p = Particle.find(pdgid=pythiaid.to_pdgid())
     >>> p.name
     'pi+'
+
+
+Acknowledgements
+----------------
+
+Support for this work was provided by the National Science Foundation
+cooperative agreement OAC-1450377 (DIANA/HEP) and OAC-1836650 (IRIS-HEP).
+Any opinions, findings, conclusions or recommendations expressed in this material
+are those of the authors and do not necessarily reflect the views of the National Science Foundation.
