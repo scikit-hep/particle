@@ -5,7 +5,8 @@
 
 from __future__ import absolute_import
 
-from .particle import Particle, ParticleNotFound
+from .particle import Particle
+from .particle import ParticleNotFound, InvalidParticle
 from .enums import SpinType, Parity, Charge, Inv, Status
 from .kinematics import width_to_lifetime, lifetime_to_width
 from .utilities import latex_to_html_name
