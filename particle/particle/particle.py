@@ -542,7 +542,6 @@ class Particle(object):
 
     def _repr_latex_(self):
         name = self.latex_name
-        # name += "^{" +  Parity_undo[self.three_charge] + '}'
         return ("$" + name + '$') if self.latex_name else '?'
 
     def _width_or_lifetime(self):
@@ -551,7 +550,7 @@ class Particle(object):
 
         Note
         ----
-        Width errors equal to -1 flag an experimental upper limit on the width.
+        Width errors equal to None flag an experimental upper limit on the width.
         """
         if self.width is None:
             return 'Width = ?'
@@ -697,6 +696,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
                     try:
                         if not filter_fn(item):
                             continue
+                    except NameError as err:  # catch what is undefined, e.g. a unit!
+                        raise NameError(err)
+                        break
                     except:
                         continue
                 else:
