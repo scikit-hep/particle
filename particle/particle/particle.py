@@ -675,11 +675,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         # Note that particle can be called by position to keep compatibility with Python 2, but that behavior should
         # not be used and will be removed when support for Python 2.7 is dropped.
 
-        # Remove any None values (makes programmatic access easier)
-        for term in list(search_terms):
-            if search_terms[term] is None:
-                del search_terms[term]
-
         results = set()
 
         # Filter out values
@@ -830,7 +825,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if mat['star']:
             name += '*'
 
-        kw['J'] = float(mat['state']) if mat['state'] is not None else None
+        if mat['state'] is not None:
+            kw['J'] = float(mat['state'])
 
         if mat['mass']:
             maxname = name + '({mat[mass]})'.format(mat=mat)
