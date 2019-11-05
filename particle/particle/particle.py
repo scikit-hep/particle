@@ -698,7 +698,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
                             continue
                     except NameError as err:  # catch what is undefined, e.g. a unit!
                         raise NameError(err)
-                        break
                     except:
                         continue
                 else:
