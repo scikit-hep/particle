@@ -152,17 +152,17 @@ class Particle(object):
     mass = attr.ib()
     mass_upper = attr.ib(0.0)
     mass_lower = attr.ib(0.0)
-    width = attr.ib(-1.0)
-    width_upper = attr.ib(-1.0)
-    width_lower = attr.ib(-1.0)
+    width = attr.ib(-1, converter=lambda v: None if v < 0 else v)
+    width_upper = attr.ib(-1, converter=lambda v: None if v < 0 else v)
+    width_lower = attr.ib(-1, converter=lambda v: None if v < 0 else v)
     _three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    I = attr.ib(None)  # noqa: E741
+    I = attr.ib(None)
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity
     C = attr.ib(Parity.u, converter=Parity)  # Charge conjugation parity
     anti_flag = attr.ib(0, converter=Inv)  # Info about particle name for anti-particles
-    rank = attr.ib(0)  # Next line is Isospin
+    rank = attr.ib(0)
     status = attr.ib(Status.Nonexistent, converter=Status)
     quarks = attr.ib('', converter=str)
     latex_name = attr.ib('Unknown')
@@ -444,13 +444,21 @@ class Particle(object):
 
     @property
     def lifetime(self):
-        'The particle lifetime, in nanoseconds.'
-        return width_to_lifetime(self.width)
+        """
+        The particle lifetime, in nanoseconds.
+
+        None is returned if the particle width (stored in the DB) is unknown.
+        """
+        return width_to_lifetime(self.width) if self.width is not None else None
 
     @property
     def ctau(self):
-        'The particle c*tau, in millimeters.'
-        return c_light*self.lifetime
+        """
+        The particle c*tau, in millimeters.
+
+        None is returned if the particle width (stored in the DB) is unknown.
+        """
+        return c_light*self.lifetime if self.width is not None else None
 
     @property
     def is_name_barred(self):
@@ -534,7 +542,6 @@ class Particle(object):
 
     def _repr_latex_(self):
         name = self.latex_name
-        # name += "^{" +  Parity_undo[self.three_charge] + '}'
         return ("$" + name + '$') if self.latex_name else '?'
 
     def _width_or_lifetime(self):
@@ -543,13 +550,13 @@ class Particle(object):
 
         Note
         ----
-        Width errors equal to -1 flag an experimental upper limit on the width.
+        Width errors equal to None flag an experimental upper limit on the width.
         """
-        if self.width < 0:
+        if self.width is None:
             return 'Width = ?'
         elif self.width == 0:
             return 'Width = 0.0 MeV'
-        elif  self.width_lower == -1 and self.width_upper == -1:
+        elif self.width_lower is None and self.width_upper is None:
             return 'Width < {width} MeV'.format(width=self.width)
         elif self.width < 0.05:  # corresponds to a lifetime of approximately 1.3e-20 seconds
             if self.width_lower == self.width_upper:
@@ -641,7 +648,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         If this is not callable, it will do a "fuzzy" search on the name. So this is identical:
 
             >>> Particle.findall('p')    # doctest: +SKIP
-            # Returns list of all particles with p somewhere in name
+            # Returns list of all particles with p somewhere in name (same as example above)
 
         You can also pass keyword arguments, which are either called with the
         matching property if they are callable, or are compared if they are not.
@@ -667,11 +674,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         # Note that particle can be called by position to keep compatibility with Python 2, but that behavior should
         # not be used and will be removed when support for Python 2.7 is dropped.
 
-        # Remove any None values (makes programmatic access easier)
-        for term in list(search_terms):
-            if search_terms[term] is None:
-                del search_terms[term]
-
         results = set()
 
         # Filter out values
@@ -694,8 +696,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
                     try:
                         if not filter_fn(item):
                             continue
-                    except:
-                        continue
+                    except TypeError:  # skip checks such as 'lambda p: p.width > 0',
+                        continue       # which fail when width=None
                 else:
                     if not(filter_fn in item.name):
                         continue
@@ -711,7 +713,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
                 # Callables are supported
                 if callable(value):
-                    if not value(pvalue):
+                    try:
+                        if not value(pvalue):
+                            break
+                    except TypeError:  # catch issues with None values
                         break
                 # And, finally, just compare if nothing else matched
                 elif pvalue != value:
@@ -774,14 +779,20 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             short_name = name.replace('~','')
             particle = False
 
-        mat = getname.match(short_name)
-        if mat is None:
-            list_can = cls.findall(name=name, particle=particle)
+        # Try the simplest searches first
+        list_can = cls.findall(name=name, particle=particle)
+        if list_can:
+            return list_can
+        else:
+            list_can = cls.findall(pdg_name=short_name, particle=particle)
             if list_can:
                 return list_can
-            # If you don't have any matches there, try a fuzzier search that will capture antiparticles too
-            else:
-                return cls.findall(pdg_name=short_name, particle=particle)
+
+        mat = getname.match(short_name)
+
+        if mat is None:
+            return []
+
         mat = mat.groupdict()
 
         if particle is False:
@@ -813,7 +824,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if mat['star']:
             name += '*'
 
-        kw['J'] = float(mat['state']) if mat['state'] is not None else None
+        if mat['state'] is not None:
+            kw['J'] = float(mat['state'])
 
         if mat['mass']:
             maxname = name + '({mat[mass]})'.format(mat=mat)
