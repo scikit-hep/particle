@@ -698,8 +698,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
                             continue
                     except NameError as err:  # catch what is undefined, e.g. a unit!
                         raise NameError(err)
-                    except:
-                        continue
+                    except TypeError:  # skip checks such as 'lambda p: p.width > 0',
+                        continue       # which fail when width=None
                 else:
                     if not(filter_fn in item.name):
                         continue
