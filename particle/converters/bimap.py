@@ -120,9 +120,7 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
             object names passed in in the constructor.
             By default, data on the file is assumed to be strings,
             which is the typical case for particle names.
-        filename: string or file object, optional,
-                  default='<obs_A_name>_to_<obs_B_name>.csv',
-                  where the names are taken as lowercase.
+        filename: string or file object, optional, default='particle/data/conversions.csv'.
             Specify a file from which to read all name_a-name_B matches.
             It is assumed that the order of items in the file matches the order
             of arguments specified in the class constructor, hence val_A,val_B.
@@ -142,7 +140,6 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
         skipinitialspace = False
 
         if filename is None:
-            #filename = '{a}_to_{b}.csv'.format(a=name_A.lower(), b=name_B.lower())
             filename = data.open_text(data, 'conversions.csv')
             fieldnames = ['PDGID', 'PYTHIAID', 'GEANTID', 'PDGNAME', 'EVTGENNAME', 'LATEXNAME']
             skipinitialspace = True
