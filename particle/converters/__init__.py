@@ -9,3 +9,4 @@ from .pythia import Pythia2PDGIDBiMap
 from .geant import Geant2PDGIDBiMap
 
 from .evtgen import EvtGenName2PDGIDBiMap
+from .evtgen import PDG2EvtGenNameMap, EvtGen2PDGNameMap
