@@ -30,9 +30,7 @@ Examples
 """
 
 
-PDG2EvtGenNameMap, EvtGen2PDGNameMap = DirectionalMaps('PDGName', 'EvtGenName',
-                                                       filename=data.open_text(data, 'pdgname_to_evtgenname.csv')
-                                                       )
+PDG2EvtGenNameMap, EvtGen2PDGNameMap = DirectionalMaps('PDGName', 'EvtGenName')
 
 PDG2EvtGenNameMap.__doc__ = """
 Directional map between PDG and EvtGen names.
