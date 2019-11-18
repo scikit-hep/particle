@@ -13,10 +13,13 @@ import sys
 from setuptools import setup
 from setuptools import find_packages
 
+
+PYTHON_REQUIRES = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
 needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
 pytest_runner = ['pytest-runner'] if needs_pytest else []
 
-install_deps = [
+INSTALL_REQUIRES = [
     'enum34>=1.1; python_version<"3.4"',
     'importlib_resources>=1.0; python_version<"3.7"',
     'attrs>=17.4.0',
@@ -46,7 +49,8 @@ setup(
     license='BSD 3-Clause License',
     packages = find_packages(),
     package_data={'': ['data/*.*']},
-    install_requires = install_deps,
+    python_requires=PYTHON_REQUIRES,
+    install_requires = INSTALL_REQUIRES,
     setup_requires = [] + pytest_runner,
     tests_require = extras['test'],
     extras_require = extras,
@@ -64,7 +68,6 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
