@@ -351,7 +351,7 @@ class Particle(object):
             cls._table_names.append('{0!r} {1}'.format(filename, len(cls._table_names)))
 
         with filename as f:
-            r = csv.DictReader(f)
+            r = csv.DictReader(l for l in f if not l.startswith('#'))
 
             for v in r:
                 value = int(v['ID'])
