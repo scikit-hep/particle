@@ -137,12 +137,10 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
         name_B = name_B.upper()
 
         fieldnames = None
-        skipinitialspace = False
+        skipinitialspace = True
 
         if filename is None:
             filename = data.open_text(data, 'conversions.csv')
-            fieldnames = ['PDGID', 'PYTHIAID', 'GEANTID', 'PDGNAME', 'EVTGENNAME', 'LATEXNAME']
-            skipinitialspace = True
         elif not hasattr(filename, 'read'):
             # Conversion to handle pathlib on Python < 3.6:
             filename = str(filename)
@@ -150,10 +148,14 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
 
         with filename as _f:
             to_map = {converters[1](v[name_B]):converters[0](v[name_A])
-                      for v in csv.DictReader(_f, fieldnames=fieldnames, skipinitialspace=skipinitialspace)}
+                      for v in csv.DictReader(_f,
+                                              fieldnames=fieldnames,
+                                              skipinitialspace=skipinitialspace)}
             _f.seek(0)
             from_map = {converters[0](v[name_A]):converters[1](v[name_B])
-                        for v in csv.DictReader(_f, fieldnames=fieldnames, skipinitialspace=skipinitialspace)}
+                        for v in csv.DictReader(_f,
+                                                fieldnames=fieldnames,
+                                                skipinitialspace=skipinitialspace)}
 
         return DirectionalMap(name_A, name_B, from_map), DirectionalMap(name_B, name_A, to_map)
 
