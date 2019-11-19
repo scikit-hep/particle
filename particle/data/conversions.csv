@@ -1,4 +1,4 @@
-    PDGID    PYTHIAID     GEANTID             PDGNAME             EVTGENNAME                      LATEXNAME
+    PDGID,   PYTHIAID,    GEANTID,            PDGNAME,            EVTGENNAME,                     LATEXNAME
         1,          1,        303,                  d,                     d,                             d
        -1,         -1,        304,                 d~,                anti-d,                       \bar{d}
         2,          2,        305,                  u,                     u,                             u
