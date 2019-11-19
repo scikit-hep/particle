@@ -1,6 +1,26 @@
 Changelog
 =========
 
+Version 0.7.0
+-------------
+November 19th, 2019
+
+* Enhancements to ``Particle`` class:
+  - Dummy/unknown particle width and lifetime errors stored as ``None``.
+  - More particle name and ``PDGID`` literals for b-baryons.
+  - Fix for the ``D(s2)*(2573)`` LaTeX name.
+  - ``InvalidParticle`` made available at top-level import.
+* Changes in API:
+  - ``Particle.from_dec...()`` renamed to ``Particle.from_evtgen_name(...)``.
+* MC particle identification code converters:
+  - Introduced directional maps ``PDG2EvtGenNameMap`` and ``EvtGen2PDGNameMap`` between PDG and EvtGen names.
+  - Conversions master file ``data/conversions.csv`` added.
+  - Content of converters CSV files are now ordered.
+* Documentation:
+  - README updated with new package functionality.
+* Support for Python 3.4 removed and support for Python 3.8 added.
+
+
 Version 0.6.2
 -------------
 September 19th, 2019
@@ -64,7 +84,7 @@ June 14th, 2019
     were previously erroneously made available. They have now been removed.
 * Changes in API:
     - ``Particle.table()`` renamed to ``Particle.all()``.
-* Enhancements to  ``Particle`` class:
+* Enhancements to ``Particle`` class:
   - Numerous LaTeX particle names updated.
   - Correctly deal with experimental width upper limits.
   - Better display of lifetimes and widths.
