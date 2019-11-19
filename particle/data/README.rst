@@ -46,6 +46,15 @@ This file was created from ``pdgid_to_latex.csv``, ``mass_width_2008.fwf``,
 The 2008 version of the file was created with only the first two.
 
 
+``conversions.csv``
+===================
+
+Master conversions file containing all matching MC IDs and names.
+This is the file internally used to produce all other ``x_to_y.csv`` files.
+Updates to converters data should be made to this file and subsequently
+propagated to the ``x_to_y.csv`` files.
+
+
 ``pdgid_to_latex.csv``
 ======================
 
@@ -57,25 +66,20 @@ but if you have a special case, you can set a negative value as well and it will
 ``pdgid_to_pythiaid.csv``
 =========================
 
-A list of matching particle PDG IDs and LaTeX names.
+A list of matching particle PDG and Pythia identification codes.
+Note that this file contains entries for particles not in the PDG data file,
+for completeness (e.g., non-yet-observed baryons, leptoquarks).
 
 
 ``pdgid_to_geantid.csv``
 ========================
 
 A list of matching particle PDG and Geant identification codes.
+Note that this file contains entries for particles not in the PDG data file,
+for completeness (e.g., non-yet-observed baryons, leptoquarks).
 
 
 ``pdgid_to_evtgenname.csv``
 ===========================
 
 A list of matching particle PDG IDs and particle names used by EvtGen.
-
-
-``conversions.csv``
-===================
-
-Master conversions file containing all matching MC IDs and names.
-This is the file internally used to produce all other ``x_to_y.csv`` files.
-Updates to converters data should be made to this file and subsequently
-propagated to the ``x_to_y.csv`` files.
