@@ -378,6 +378,36 @@ def test_spin_type(pid, stype):
     assert particle.spin_type == stype
 
 
+checklist_isospin = (
+    # Quarks
+    (1, 0.5),        # d
+    # Gauge bosons
+    (22, None),      # photon
+    (23, None),      # Z0
+    # Leptons
+    (11, None),      # e-
+    (-12, None),     # nu(e)_bar
+    # Mesons
+    (211, 1.0),      # pi+
+    (310, 0.5),      # K_S
+    (-421, 0.5),     # D0_bar
+    (333, 0.0),      # phi(1020)
+    (443, 0.0),      # J/psi
+    (521, 0.5),      # B+
+    (531, 0.0),      # Bs
+    # Baryons
+    (2212, 0.5),     # proton
+    (2214, 1.5),     # Delta+
+)
+
+
+@pytest.mark.parametrize("pid,isospin", checklist_isospin)
+def test_isospin(pid, isospin):
+    particle = Particle.from_pdgid(pid)
+
+    assert particle.I == isospin
+
+
 def test_default_particle():
     p = Particle.empty()
 
