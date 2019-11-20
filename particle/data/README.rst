@@ -41,7 +41,7 @@ If you'd like to append to this file, write a similar file with the same header,
 
 to read in the original table and then the new file you've written.
 
-This file was created from ``pdgid_to_latex.csv``, ``mass_width_2008.fwf``,
+This file was created from ``pdgid_to_latexname.csv``, ``mass_width_2008.fwf``,
 ``mass_width_2008_ext.fwf`` and ``mass_width_2019.mcd``.
 The 2008 version of the file was created with only the first two.
 
@@ -54,9 +54,11 @@ This is the file internally used to produce all other ``x_to_y.csv`` files.
 Updates to converters data should be made to this file and subsequently
 propagated to the ``x_to_y.csv`` files.
 
+This file and all ``x_to_y.csv`` files are versioned, see the first-line comments.
 
-``pdgid_to_latex.csv``
-======================
+
+``pdgid_to_latexname.csv``
+==========================
 
 A list of matching particle PDG identification codes and LaTeX names.
 The negative values are normally generated based on the ``Inv`` rule,
