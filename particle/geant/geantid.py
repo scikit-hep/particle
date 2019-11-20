@@ -17,7 +17,8 @@ from ..exceptions import MatchingIDNotFound
 
 
 with data.open_text(data, 'pdgid_to_geantid.csv') as _f:
-    _bimap = {int(v['GEANTID']):int(v['PDGID']) for v in csv.DictReader(_f)}
+    _bimap = {int(v['GEANTID']):int(v['PDGID']) for v in csv.DictReader(
+        l for l in _f if not l.startswith('#'))}
 
 
 class GeantID(int):

@@ -72,10 +72,12 @@ class BiMap(object):
 
         with filename as _f:
             self._to_map = {converters[1](v[name_B]):converters[0](v[name_A])
-                            for v in csv.DictReader(_f)}
+                            for v in csv.DictReader(l for l in _f
+                                                    if not l.startswith('#'))}
             _f.seek(0)
             self._from_map = {converters[0](v[name_A]):converters[1](v[name_B])
-                              for v in csv.DictReader(_f)}
+                              for v in csv.DictReader(l for l in _f
+                                                    if not l.startswith('#'))}
 
     def __getitem__(self, value):
         if isinstance(value, self.class_B):
@@ -148,12 +150,12 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
 
         with filename as _f:
             to_map = {converters[1](v[name_B]):converters[0](v[name_A])
-                      for v in csv.DictReader(_f,
+                      for v in csv.DictReader((l for l in _f if not l.startswith('#')),
                                               fieldnames=fieldnames,
                                               skipinitialspace=skipinitialspace)}
             _f.seek(0)
             from_map = {converters[0](v[name_A]):converters[1](v[name_B])
-                        for v in csv.DictReader(_f,
+                        for v in csv.DictReader((l for l in _f if not l.startswith('#')),
                                                 fieldnames=fieldnames,
                                                 skipinitialspace=skipinitialspace)}
 
