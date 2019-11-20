@@ -1,6 +1,18 @@
 Changelog
 =========
 
+Version 0.7.1
+-------------
+In preparation.
+
+* Data CSV files:
+  - Versioning introduced, see comment on first line of files.
+  - File ``data/pdgid_to_evtgenname.csv`` extended with extra information.
+  - More documentation.
+* MC particle identification code converters:
+  - Core ``BiMap`` class simplified.
+
+
 Version 0.7.0
 -------------
 November 19th, 2019
