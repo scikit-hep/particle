@@ -411,17 +411,32 @@ class Particle(object):
 
     @property
     def J(self):
-        'The total spin J quantum number.'
+        """
+        The total spin J quantum number.
+
+        Note that the returned value corresponds to that effectively encoded
+        in the particle PDG ID.
+        """
         return self.pdgid.J
 
     @property
     def L(self):
-        'The orbital angular momentum L quantum number (None if not a meson).'
+        """
+        The orbital angular momentum L quantum number (None if not a meson).
+
+        Note that the returned value corresponds to that effectively encoded
+        in the particle PDG ID.
+        """
         return self.pdgid.L
 
     @property
     def S(self):
-        'The spin S quantum number (None if not a meson).'
+        """
+        The spin S quantum number (None if not a meson).
+
+        Note that the returned value corresponds to that effectively encoded
+        in the particle PDG ID.
+        """
         return self.pdgid.S
 
     @property
