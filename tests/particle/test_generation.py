@@ -37,7 +37,7 @@ def test_generate(tmp_path):
 @pytest.mark.parametrize('filename', FILES)
 def test_file_dup(filename):
     particle_data = data.open_text(data, filename)
-    p = pd.read_csv(particle_data)
+    p = pd.read_csv(particle_data, comment='#')
 
     duplicates = {item for item, count in Counter(p.ID).items() if count > 1}
     assert duplicates == set()
@@ -46,6 +46,6 @@ def test_file_dup(filename):
 @pytest.mark.parametrize('filename', FILES)
 def test_file_has_latex(filename):
     particle_data = data.open_text(data, filename)
-    p = pd.read_csv(particle_data)
+    p = pd.read_csv(particle_data, comment='#')
 
     assert p[p.Latex == ''].empty

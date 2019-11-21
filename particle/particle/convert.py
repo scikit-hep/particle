@@ -29,7 +29,7 @@ You can load a table from a classic "extended style" PDG table (only produced in
 combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
 
     >>> full_table = get_from_pdg_extended('particle/data/mass_width_2008.fwf',
-    ...                                    ['particle/data/pdgid_to_latex.csv'])
+    ...                                    ['particle/data/pdgid_to_latexname.csv'])
 
 You can also read in a modern "standard" file (this will produce fewer columns):
 
@@ -74,7 +74,7 @@ def get_from_latex(filename):
     Produce a pandas series from a file with LaTeX mappings in itself.
     The CVS file format is the following: PDGID, ParticleLatexName.
     """
-    latex_table = pd.read_csv(filename, index_col=0)
+    latex_table = pd.read_csv(filename, index_col=0, comment='#')
     return latex_table.particle
 
 
@@ -111,7 +111,7 @@ def get_from_pdg_extended(filename, latexes=None):
     Example
     -------
     >>> full_table = get_from_pdg_extended('particle/data/mass_width_2008.fwf',
-    ...                                    ['particle/data/pdgid_to_latex.csv'])
+    ...                                    ['particle/data/pdgid_to_latexname.csv'])
     """
     'Read a file, plus a list of LaTeX files, to produce a pandas DataFrame with particle information'
 
@@ -139,7 +139,8 @@ def get_from_pdg_extended(filename, latexes=None):
     # Read in the table, apply the converters, add names, ignore comments
     pdg_table = pd.read_csv(filename, names='Mass,MassUpper,MassLower,Width,WidthUpper,WidthLower,I,G,J,P,C,Anti,'
                             'ID,Charge,Rank,Status,Name,Quarks'.split(','),
-                            converters=PDG_converters
+                            converters=PDG_converters,
+                            comment='#'
                             )
 
     # Read the LaTeX
@@ -295,7 +296,7 @@ def produce_files(particle2008, particle2019, year):
 
 
     full_table = get_from_pdg_extended(data.open_text(data, 'mass_width_2008.fwf'),
-                                       [data.open_text(data, 'pdgid_to_latex.csv')])
+                                       [data.open_text(data, 'pdgid_to_latexname.csv')])
 
     # Entries to remove, see comments in file mass_width_2008_ext.fwf:
     # 30221 - the f(0)(1370) since it was renumbered
@@ -307,7 +308,7 @@ def produce_files(particle2008, particle2019, year):
     full_table.to_csv(particle2008, float_format='%.12g')
 
     addons = get_from_pdg_extended(data.open_text(data, 'mass_width_2008_ext.fwf'),
-                                   [data.open_text(data, 'pdgid_to_latex.csv')])
+                                   [data.open_text(data, 'pdgid_to_latexname.csv')])
 
     full_table = pd.concat([full_table, addons])
 
@@ -333,7 +334,7 @@ def main(year):
 
 
 def convert(output, fwf, latex=None):
-    latexes = [data.open_text(data, 'pdgid_to_latex.csv')]
+    latexes = [data.open_text(data, 'pdgid_to_latexname.csv')]
     if latex:
         latexes.append(latex)
     table = get_from_pdg_extended(fwf, latexes)
