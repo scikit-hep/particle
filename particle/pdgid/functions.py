@@ -448,43 +448,6 @@ def l_spin(pdgid):
     return (2*value+1) if value is not None else value
 
 
-def P(pdgid):
-    """
-    Returns the parity quantum number P = (-1)^(L+1).
-
-    Notes
-    -----
-    - This is valid for mesons only. None is returned otherwise.
-    - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
-      and None is returned too.
-    """
-    if not is_meson(pdgid): return None
-    if not is_valid(pdgid): return None
-
-    # At this stage it is guaranteed that L != None
-    return (-1)**(L(pdgid)+1) if L(pdgid) is not None else None
-
-
-def C(pdgid):
-    """
-    Returns the charge conjugation quantum number C = (-1)^(L+S).
-
-    Notes
-    -----
-    - This is valid for mesons only. None is returned otherwise.
-    - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
-      and None is returned too.
-    """
-    if not is_meson(pdgid) or not three_charge(pdgid) == 0: return None
-    if not is_valid(pdgid): return None
-
-    if L(pdgid) is None or S(pdgid) is None:
-        return None
-
-    # At this stage it is guaranteed that L and S != None
-    return (-1)**(L(pdgid)+S(pdgid))
-
-
 def A(pdgid):
     """Returns the atomic number A if the PDG ID corresponds to a nucleus. Else it returns None."""
     # A proton can also be a Hydrogen nucleus
@@ -532,7 +495,11 @@ def _fundamental_id(pdgid):
 
 
 def _has_quark_q(pdgid, q):
-    """Helper function - does this particle contain a quark q?"""
+    """
+    Helper function - does this particle contain a quark q?
+
+    Note that q is always positive, so [1, 6] for Standard Model quarks.
+    """
     if _extra_bits(pdgid) > 0 : return False
     if _fundamental_id(pdgid) > 0 : return False
     if is_dyon(pdgid): return False
