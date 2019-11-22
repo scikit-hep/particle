@@ -3,7 +3,7 @@ Changelog
 
 Version 0.7.1
 -------------
-In preparation.
+November 22nd, 2019
 
 * ``Particle`` class:
   - Isospin property returns a float.

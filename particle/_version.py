@@ -3,7 +3,7 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-__version__ = '0.7.0'
+__version__ = '0.7.1'
 
 version = __version__
 version_info = __version__.split('.')
