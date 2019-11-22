@@ -17,10 +17,11 @@ except ImportError:
 import pytest
 from pytest import approx
 
-from particle.particle.enums import Charge, SpinType, Status
+from particle.particle.enums import Charge, Parity, SpinType, Status
 from particle.particle import Particle
 from particle.particle.particle import ParticleNotFound, InvalidParticle
 from particle.pdgid import PDGID
+from particle.pdgid.functions import _digit, Location
 
 from hepunits import second
 
@@ -195,6 +196,48 @@ def test_charge_consistency():
     """
     for p in Particle.all():
         assert p.three_charge == p.pdgid.three_charge
+
+
+def test_P_consistency():
+    """
+    The parity quantum number is stored in the (curated) data CSV files.
+    For unflavoured mesons it can be calculated as P = (-1)^(L+1),
+    and this relation can be checked against the CSV data.
+
+    Note: mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally
+    well-known particles and P is undefined.
+    """
+    for p in Particle.all():
+        if not p.is_unflavoured_meson:
+            continue
+        elif _digit(p.pdgid, Location.N) == 9:
+            continue
+        elif p.pdgid == 22:  # Special case of the photon
+            assert p.P == -1
+        else:
+            assert p.P == (-1)**(p.L+1)
+
+
+def test_C_consistency():
+    """
+    The charge conjugation parity is stored in the (curated) data CSV files.
+    For unflavoured mesons it can be calculated as C = (-1)^(L+S),
+    and this relation can be checked against the CSV data.
+
+    Note: mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally
+    well-known particles and C is undefined.
+    """
+    for p in Particle.all():
+        if not p.is_unflavoured_meson:
+            continue
+        elif _digit(p.pdgid, Location.N) == 9:
+            continue
+        elif p.pdgid == 22:          # Special case of the photon
+            assert p.C == -1
+        elif p.pdgid in [130, 310]:  # Special case of the KS and KL
+            assert p.C == Parity.u
+        else:
+            assert p.C == (-1)**(p.L+p.S)
 
 
 checklist_describe = (
