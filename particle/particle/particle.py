@@ -48,6 +48,16 @@ class InvalidParticle(RuntimeError):
     pass
 
 
+def _isospin_converter(isospin):
+    vals = {
+        "0": 0.,
+        "1/2": 0.5,
+        "1": 1.0,
+        "3/2": 1.5
+    }
+    return vals.get(isospin, None)
+
+
 @total_ordering
 @attr.s(slots=True, cmp=False, repr=False)
 class Particle(object):
@@ -156,7 +166,7 @@ class Particle(object):
     width_upper = attr.ib(-1, converter=lambda v: None if v < 0 else v)
     width_lower = attr.ib(-1, converter=lambda v: None if v < 0 else v)
     _three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    I = attr.ib(None)
+    I = attr.ib(None, converter=_isospin_converter)
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity
@@ -537,7 +547,7 @@ class Particle(object):
         if self.pdgid in (9000113, 9010113): return True  # special particles not yet well-known in the 2018 table
         # Lambda baryons
         if (self.pdgid.is_baryon
-            and _digit(self.pdgid, Location.Nq2) == 1 and self.I == '0'  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
+            and _digit(self.pdgid, Location.Nq2) == 1 and self.I == 0.  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
             and self.pdgid.has_strange
             and not (self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top)
            ):
