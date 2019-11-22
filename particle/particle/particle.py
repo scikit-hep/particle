@@ -68,6 +68,9 @@ class Particle(object):
 
     C
         The charge conjugation parity quantum number, if relevant.
+        It is C = (-1)^(L+S) for self-conjugate mesons.
+        Mesons with PDG IDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
+        and None is returned.
 
     G
         The G-parity quantum number, if relevant.
@@ -77,6 +80,9 @@ class Particle(object):
 
     P
         The parity quantum number, if relevant.
+        It is P = (-1)^(L+1) for self-conjugate mesons and -1 for the photon.
+        Mesons with PDG IDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
+        and None is returned.
 
     anti_flag
         The particle-antiparticle flag.
@@ -524,6 +530,17 @@ class Particle(object):
         Is the particle self-conjugate, i.e. its own antiparticle?
         """
         return self.anti_flag == Inv.Same
+
+    @property
+    def is_unflavoured_meson(self):
+        """
+        Unflavoured mesons are self-conjugate (hence zero-charge) mesons
+        with all their flavour (strange, charm, bottom and top) quantum numbers equal to zero.
+        """
+        if self.is_self_conjugate and self.three_charge == 0 and self.pdgid.is_meson:
+            return True
+        else:
+            return False
 
     def invert(self):
         "Get the antiparticle."

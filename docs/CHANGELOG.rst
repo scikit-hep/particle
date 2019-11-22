@@ -5,6 +5,12 @@ Version 0.7.1
 -------------
 In preparation.
 
+* ``Particle`` class:
+  - Isospin property returns a float.
+  - New property ``is_unflavoured_meson``.
+  - More tests for P and C quantum numbers.
+* ``PDGID`` class:
+  - Non-robust P and C properties removed.
 * Data CSV files:
   - Versioning introduced, see comment on first line of files.
   - File ``data/pdgid_to_evtgenname.csv`` extended with extra information.
