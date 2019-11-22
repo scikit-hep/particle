@@ -32,6 +32,11 @@ def test_from_pdgid():
     assert GeantID.from_pdgid(PDGID(211)) == GeantID(8)
 
 
+def test_from_pdgid_non_matching():
+    with pytest.raises(MatchingIDNotFound):
+        gid = GeantID.from_pdgid(55)
+
+
 def test_to_pdgid():
     geantid = GeantID(8)
     assert geantid.to_pdgid() == 211
