@@ -560,8 +560,21 @@ class Particle(object):
         if self.anti_flag == Inv.ChargeInv: return True   # antiparticle flips sign of particle
         if self.pdgid in (23, 25, 111, 130, 310, 311, -311): return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
         if abs(self.pdgid) in (2212, 2112): return False   # proton and neutron
-        if self.three_charge == 0 and self.anti_flag == Inv.Same: return False   # all quarkonia and the photon
-        if self.pdgid in (9000113, 9010113): return True  # special particles not yet well-known in the 2018 table
+        if abs(self.pdgid) < 19: return False   # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
+        if self.three_charge is None: return False  # deal with corner cases ;-)
+        if self.is_self_conjugate:
+            pid = self.pdgid
+            if pid < 25:
+                return False  # Gauge bosons
+            # Quarkonia never exhibit the 0 charge
+            # All eta, eta', h, h', omega, phi, f, f' light mesons are supposed to have an s-sbar component (see PDG site),
+            # but some particles have pdgid.has_strange==False :S! Play it safe ...
+            elif any([chr in self.pdg_name for chr in ('eta', 'h(', "h'(", 'omega', 'phi', 'f', "f'")]):
+                return False
+            elif (pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top):
+                return False
+            else:  # Light unflavoured mesons
+                return True
         # Lambda baryons
         if (self.pdgid.is_baryon
             and _digit(self.pdgid, Location.Nq2) == 1 and self.I == 0.  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
@@ -569,8 +582,6 @@ class Particle(object):
             and not (self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top)
            ):
            return False
-        if abs(self.pdgid) < 19: return False   # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
-        if self.three_charge is None: return False  # deal with corner cases ;-)
         return True
 
     # Pretty descriptions

@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - pdgid_to_latexname.csv - version 1 - 2019-11-19
+# (c) Scikit-HEP project - Particle package data file - pdgid_to_latexname.csv - version 2 - 2019-11-25
 pdgid,particle
 1,d
 2,u
@@ -297,11 +297,11 @@ pdgid,particle
 1000223,\omega(1420)
 9000111,a_{0}(980)^{0}
 9000113,\pi_{1}(1400)^{0}
-9000115,\pi_{2}(2100)^{0}
+9000115,a_{2}(1700)^{0}
 9000117,\rho_{3}(1990)^{0}
 9000211,a_{0}(980)^{+}
 9000213,\pi_{1}(1400)^{+}
-9000215,\pi_{2}(2100)^{+}
+9000215,a_{2}(1700)^{+}
 9000217,\rho_{3}(1990)^{+}
 9000221,f_{0}(500)
 9000223,f_{1}(1510)

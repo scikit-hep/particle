@@ -17,7 +17,7 @@ except ImportError:
 import pytest
 from pytest import approx
 
-from particle.particle.enums import Charge, Parity, SpinType, Status
+from particle.particle.enums import Charge, Parity, SpinType, Status, Inv
 from particle.particle import Particle
 from particle.particle.particle import ParticleNotFound, InvalidParticle
 from particle.pdgid import PDGID
@@ -352,6 +352,23 @@ def test_is_self_conjugate(pid, is_self_conjugate):
     particle = Particle.from_pdgid(pid)
 
     assert particle.is_self_conjugate == is_self_conjugate
+
+
+def test_self_conjugation_consistenty():
+    """
+    The logic implemented in ``Particle.invert()`` and ``Particle.is_self_conjugate``
+    should be consistent. In other words, the inverse of
+    ``self.anti_flag == Inv.ChargeInv and self.three_charge != Charge.o``
+    in ``Particle.invert()`` should match ``Particle.is_self_conjugate``.
+    """
+    n_inconsistencies = 0
+
+    for p in Particle.all():
+         if (p.anti_flag == Inv.ChargeInv and p.three_charge == Charge.o)\
+            and not p.is_self_conjugate:
+            n_inconsistencies += 1
+
+    assert n_inconsistencies == 0
 
 
 checklist_is_name_barred = (
