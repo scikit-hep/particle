@@ -17,8 +17,12 @@ from inspect import isfunction
 
 
 # Collect all the user defined, non-hidden functions in the pdgid.functions module
-_fnames = [ fname for fname in dir(_functions) if not fname.startswith('_')
-                                                 and isfunction(getattr(_functions, fname))]
+_fnames = [
+    fname
+    for fname in dir(_functions)
+    if not fname.startswith("_") and isfunction(getattr(_functions, fname))
+]
+
 
 class PDGID(int):
     """
@@ -29,10 +33,13 @@ class PDGID(int):
     >>> PDGID(11).is_lepton
     True
     """
-    __slots__ = () # Keep PDGID a slots based class
+
+    __slots__ = ()  # Keep PDGID a slots based class
 
     def __repr__(self):
-        return "<PDGID: {:d}{:s}>".format(int(self),'' if self.is_valid else ' (is_valid==False)')
+        return "<PDGID: {:d}{:s}>".format(
+            int(self), "" if self.is_valid else " (is_valid==False)"
+        )
 
     def __str__(self):
         return repr(self)
@@ -46,7 +53,7 @@ class PDGID(int):
         """
         Print all PDGID properties one per line, for easy inspection.
         """
-        val = ''
+        val = ""
         for item in _fnames:
             val += "{item:14} {value}\n".format(item=item, value=getattr(self, item))
         return val

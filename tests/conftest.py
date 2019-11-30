@@ -11,6 +11,7 @@ from enum import IntEnum
 
 class PDGIDsEnum(IntEnum):
     """Sample of PDGIDs on which to run tests."""
+
     # Gauge and Higgs bosons
     Gluon = 21
     Photon = 22
@@ -45,8 +46,8 @@ class PDGIDsEnum(IntEnum):
     # Light hadrons
     Pi0 = 111
     PiPlus = 211
-    eta=221
-    eta_prime=331
+    eta = 221
+    eta_prime = 331
     a_0_1450_plus = 10211
     KL = 130
     KS = 310
@@ -110,13 +111,15 @@ class PDGIDsEnum(IntEnum):
     HydrogenNucleus = 1000010010
     Carbon12 = 1000060120
     # Pentaquarks
-    UCbarCUDPentaquark = 9422144  # example of spin 3/2 u-cbar-c-u-d pentaquark decaying to J/psi proton
+    UCbarCUDPentaquark = (
+        9422144
+    )  # example of spin 3/2 u-cbar-c-u-d pentaquark decaying to J/psi proton
     AntiUCbarCUDPentaquark = -9422144
     # Invalid ID
     Invalid1 = 0  # illegal ID
     Invalid2 = 99999999  # general form is a 7-digit number
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def PDGIDs():
     return PDGIDsEnum

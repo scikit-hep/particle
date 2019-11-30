@@ -21,7 +21,6 @@ common_particles = dict(
     Z_0=23,
     W_plus=24,
     W_minus=-24,
-
     # Leptons
     e_minus=11,
     e_plus=-11,
@@ -35,7 +34,6 @@ common_particles = dict(
     nu_mu_bar=-14,
     nu_tau=16,
     nu_tau_bar=-16,
-
     # Quarkonia
     Jpsi_1S=443,
     psi_2S=100443,
@@ -53,7 +51,6 @@ common_particles = dict(
     chi_b0_1P=10551,
     chi_b1_1P=20553,
     chi_b2_1P=555,
-
     # Light mesons
     pi_0=111,
     pi_plus=211,
@@ -83,7 +80,6 @@ common_particles = dict(
     K_0st_1430_0_bar=-10311,
     K_0st_1430_plus=10321,
     K_0st_1430_minus=-10321,
-
     # Charm mesons
     D_0=421,
     D_0_bar=-421,
@@ -103,7 +99,6 @@ common_particles = dict(
     D_s1_2460_minus=-20433,
     D_s1_2536_plus=10433,
     D_s1_2536_minus=-10433,
-
     # Beauty mesons
     B_0=511,
     B_0_bar=-511,
@@ -111,11 +106,9 @@ common_particles = dict(
     B_minus=-521,
     B_s_0=531,
     B_s_0_bar=-531,
-
     # Beauty, charmed mesons
     B_c_plus=541,
     B_c_minus=-541,
-
     # Light baryons
     p=2212,
     proton=2212,
@@ -149,11 +142,9 @@ common_particles = dict(
     Delta_1232_mm_bar=-2224,
     Lambda_1520=3124,
     Lambda_1520_bar=-3124,
-
     # Charm baryons
     Lambda_c_plus=4122,
     Lambda_c_minus_bar=-4122,
-
     # Beauty baryons
     Lambda_b_0=5122,
     Lambda_b_0_bar=-5122,

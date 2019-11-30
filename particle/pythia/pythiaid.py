@@ -16,9 +16,11 @@ from ..pdgid import PDGID
 from ..exceptions import MatchingIDNotFound
 
 
-with data.open_text(data, 'pdgid_to_pythiaid.csv') as _f:
-    _bimap = {int(v['PYTHIAID']):int(v['PDGID']) for v in csv.DictReader(
-        l for l in _f if not l.startswith('#'))}
+with data.open_text(data, "pdgid_to_pythiaid.csv") as _f:
+    _bimap = {
+        int(v["PYTHIAID"]): int(v["PDGID"])
+        for v in csv.DictReader(l for l in _f if not l.startswith("#"))
+    }
 
 
 class PythiaID(int):
@@ -47,7 +49,9 @@ class PythiaID(int):
         for k, v in _bimap.items():
             if v == pdgid:
                 return cls(k)
-        raise MatchingIDNotFound("Non-existent PythiaID for input PDGID {0} !".format(pdgid))
+        raise MatchingIDNotFound(
+            "Non-existent PythiaID for input PDGID {0} !".format(pdgid)
+        )
 
     def to_pdgid(self):
         return PDGID(_bimap[self])

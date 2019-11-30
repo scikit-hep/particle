@@ -14,8 +14,7 @@ from ..exceptions import MatchingIDNotFound
 
 
 class BiMap(object):
-
-    def __init__(self, class_A, class_B, converters=(int,int), filename=None):
+    def __init__(self, class_A, class_B, converters=(int, int), filename=None):
         """
         Bi-bidirectional map class.
 
@@ -63,21 +62,23 @@ class BiMap(object):
         name_B = self.class_B.__name__.upper()
 
         if filename is None:
-            filename = '{a}_to_{b}.csv'.format(a=name_A.lower(), b=name_B.lower())
+            filename = "{a}_to_{b}.csv".format(a=name_A.lower(), b=name_B.lower())
             filename = data.open_text(data, filename)
-        elif not hasattr(filename, 'read'):
+        elif not hasattr(filename, "read"):
             # Conversion to handle pathlib on Python < 3.6:
             filename = str(filename)
             filename = open(filename)
 
         with filename as _f:
-            self._to_map = {converters[1](v[name_B]):converters[0](v[name_A])
-                            for v in csv.DictReader(l for l in _f
-                                                    if not l.startswith('#'))}
+            self._to_map = {
+                converters[1](v[name_B]): converters[0](v[name_A])
+                for v in csv.DictReader(l for l in _f if not l.startswith("#"))
+            }
             _f.seek(0)
-            self._from_map = {converters[0](v[name_A]):converters[1](v[name_B])
-                              for v in csv.DictReader(l for l in _f
-                                                    if not l.startswith('#'))}
+            self._from_map = {
+                converters[0](v[name_A]): converters[1](v[name_B])
+                for v in csv.DictReader(l for l in _f if not l.startswith("#"))
+            }
 
     def __getitem__(self, value):
         if isinstance(value, self.class_B):
@@ -91,13 +92,17 @@ class BiMap(object):
             except KeyError:
                 pass
         msg = "Matching {a}-{b} for input {v} not found !".format(
-              a=self.class_A.__name__, b=self.class_B.__name__, v=value)
+            a=self.class_A.__name__, b=self.class_B.__name__, v=value
+        )
         raise MatchingIDNotFound(msg)
 
     def __repr__(self):
         return "<{self.__class__.__name__}({a}-{b}): {n} matches>".format(
-                self=self,
-                a=self.class_A.__name__, b=self.class_B.__name__, n=self.__len__())
+            self=self,
+            a=self.class_A.__name__,
+            b=self.class_B.__name__,
+            n=self.__len__(),
+        )
 
     def __str__(self):
         return repr(self)
@@ -108,7 +113,7 @@ class BiMap(object):
 
 
 def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
-        """
+    """
         Directional map class providing a to and from mapping.
 
         Parameters
@@ -135,35 +140,45 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
         >>> A2BMap, B2AMap = DirectionalMaps('A', 'B', filename=filename)  # doctest: +SKIP
         """
 
-        name_A = name_A.upper()
-        name_B = name_B.upper()
+    name_A = name_A.upper()
+    name_B = name_B.upper()
 
-        fieldnames = None
-        skipinitialspace = True
+    fieldnames = None
+    skipinitialspace = True
 
-        if filename is None:
-            filename = data.open_text(data, 'conversions.csv')
-        elif not hasattr(filename, 'read'):
-            # Conversion to handle pathlib on Python < 3.6:
-            filename = str(filename)
-            filename = open(filename)
+    if filename is None:
+        filename = data.open_text(data, "conversions.csv")
+    elif not hasattr(filename, "read"):
+        # Conversion to handle pathlib on Python < 3.6:
+        filename = str(filename)
+        filename = open(filename)
 
-        with filename as _f:
-            to_map = {converters[1](v[name_B]):converters[0](v[name_A])
-                      for v in csv.DictReader((l for l in _f if not l.startswith('#')),
-                                              fieldnames=fieldnames,
-                                              skipinitialspace=skipinitialspace)}
-            _f.seek(0)
-            from_map = {converters[0](v[name_A]):converters[1](v[name_B])
-                        for v in csv.DictReader((l for l in _f if not l.startswith('#')),
-                                                fieldnames=fieldnames,
-                                                skipinitialspace=skipinitialspace)}
+    with filename as _f:
+        to_map = {
+            converters[1](v[name_B]): converters[0](v[name_A])
+            for v in csv.DictReader(
+                (l for l in _f if not l.startswith("#")),
+                fieldnames=fieldnames,
+                skipinitialspace=skipinitialspace,
+            )
+        }
+        _f.seek(0)
+        from_map = {
+            converters[0](v[name_A]): converters[1](v[name_B])
+            for v in csv.DictReader(
+                (l for l in _f if not l.startswith("#")),
+                fieldnames=fieldnames,
+                skipinitialspace=skipinitialspace,
+            )
+        }
 
-        return DirectionalMap(name_A, name_B, from_map), DirectionalMap(name_B, name_A, to_map)
+    return (
+        DirectionalMap(name_A, name_B, from_map),
+        DirectionalMap(name_B, name_A, to_map),
+    )
 
 
 class DirectionalMap(Mapping):
-
     def __init__(self, name_A, name_B, map):
         """
         Directional map class providing a A -> B mapping.
@@ -186,7 +201,8 @@ class DirectionalMap(Mapping):
             return self._map[value]
         except KeyError:
             msg = "Matching {a}->{b} for input {v} not found !".format(
-                  a=self.name_A, b=self.name_B, v=value)
+                a=self.name_A, b=self.name_B, v=value
+            )
             raise MatchingIDNotFound(msg)
 
     def __iter__(self):
@@ -194,8 +210,8 @@ class DirectionalMap(Mapping):
 
     def __repr__(self):
         return "<{self.__class__.__name__}({a}->{b}): {n} matches>".format(
-                self=self,
-                a=self.name_A, b=self.name_B, n=self.__len__())
+            self=self, a=self.name_A, b=self.name_B, n=self.__len__()
+        )
 
     def __str__(self):
         return repr(self)

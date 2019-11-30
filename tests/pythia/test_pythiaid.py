@@ -13,7 +13,7 @@ from particle.exceptions import MatchingIDNotFound
 def test_class_string_representations():
     pid = PythiaID(211)
     assert pid == 211
-    assert pid.__str__() == '<PythiaID: 211>'
+    assert pid.__str__() == "<PythiaID: 211>"
 
 
 def test_class_return_type():

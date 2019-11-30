@@ -13,17 +13,17 @@ from particle.pdgid import functions as _functions
 def test_class_string_representations():
     pid = PDGID(11)
     assert pid == 11
-    assert pid.__str__() == '<PDGID: 11>'
+    assert pid.__str__() == "<PDGID: 11>"
     pid = PDGID(-99999999)
-    assert pid.__str__() == '<PDGID: -99999999 (is_valid==False)>'
+    assert pid.__str__() == "<PDGID: -99999999 (is_valid==False)>"
 
 
 def test_class_operations(PDGIDs):
     id_electron = PDGID(PDGIDs.Electron)
     id_positron = PDGID(PDGIDs.Positron)
     assert PDGIDs.Electron == id_electron
-    assert id_positron == - id_electron
-    assert PDGIDs.Positron == - id_electron
+    assert id_positron == -id_electron
+    assert PDGIDs.Positron == -id_electron
 
 
 def test_class_return_type():
@@ -37,8 +37,12 @@ def test_class_inversion():
 
 def test_nonphysical_pdgids():
     # The negative PDGID of a self-conjugate meson makes no sense
-    assert PDGID(-111).is_meson == False  # the "anti-pi0" with opposite PDGID of a pi0 does not exist
-    assert PDGID(-443).is_meson == False  # the "anti-J/psi" with opposite PDGID of a J/psi does not exist
+    assert (
+        PDGID(-111).is_meson == False
+    )  # the "anti-pi0" with opposite PDGID of a pi0 does not exist
+    assert (
+        PDGID(-443).is_meson == False
+    )  # the "anti-J/psi" with opposite PDGID of a J/psi does not exist
 
 
 def test_info():
