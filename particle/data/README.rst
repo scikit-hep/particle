@@ -73,8 +73,8 @@ Note that this file contains entries for particles not in the PDG data file,
 for completeness (e.g., non-yet-observed baryons, leptoquarks).
 
 
-``pdgid_to_geantid.csv``
-========================
+``pdgid_to_Geant3ID.csv``
+=========================
 
 A list of matching particle PDG and Geant identification codes.
 Note that this file contains entries for particles not in the PDG data file,
