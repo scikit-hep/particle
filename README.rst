@@ -300,12 +300,12 @@ Possible use cases are the following:
 .. code-block:: python
 
     >>> from particle import Particle
-    >>> from particle import GeantID, PythiaID
+    >>> from particle import Geant3ID, PythiaID
     >>>
-    >>> geantid = GeantID(8)
-    >>> p = Particle.from_pdgid(geantid.to_pdgid())
+    >>> g3id = Geant3ID(8)
+    >>> p = Particle.from_pdgid(g3id.to_pdgid())
     >>>
-    >>> p = Particle.find(pdgid=geantid.to_pdgid())
+    >>> p = Particle.find(pdgid=g3id.to_pdgid())
     >>> p.name
     'pi+'
 

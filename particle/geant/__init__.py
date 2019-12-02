@@ -5,4 +5,4 @@
 
 from __future__ import absolute_import
 
-from .geantid import GeantID
+from .geant3id import Geant3ID

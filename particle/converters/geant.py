@@ -6,22 +6,22 @@
 from __future__ import absolute_import
 
 from ..pdgid import PDGID
-from ..geant import GeantID
+from ..geant import Geant3ID
 
 from .bimap import BiMap
 
 
-Geant2PDGIDBiMap = BiMap(PDGID, GeantID)
+Geant2PDGIDBiMap = BiMap(PDGID, Geant3ID)
 Geant2PDGIDBiMap.__doc__ = """
-Bi-bidirectional map between PDG and Geant IDs.
+Bi-bidirectional map between PDG and Geant3 IDs.
 
 Examples
 --------
 >>> gid = Geant2PDGIDBiMap[PDGID(211)]
 >>> gid
-<GeantID: 8>
+<Geant3ID: 8>
 
->>> pdgid = Geant2PDGIDBiMap[GeantID(8)]
+>>> pdgid = Geant2PDGIDBiMap[Geant3ID(8)]
 >>> pdgid
 <PDGID: 211>
 """

@@ -10,7 +10,7 @@ from ._version import __version__
 from .pdgid import PDGID
 
 # Direct access to other ID classes
-from .geant import GeantID
+from .geant import Geant3ID
 from .pythia import PythiaID
 
 # Direct access to Particle (the CSV file is not read until a particle is accessed)
