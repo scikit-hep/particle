@@ -1,5 +1,5 @@
-# (c) Scikit-HEP project - Particle package data file - conversions.csv - version 2 - 2019-11-25
-      PDGID,   PYTHIAID,    GEANTID,            PDGNAME,            EVTGENNAME,                     LATEXNAME
+# (c) Scikit-HEP project - Particle package data file - conversions.csv - version 3 - 2019-12-02
+      PDGID,   PYTHIAID,   Geant3ID,            PDGNAME,            EVTGENNAME,                     LATEXNAME
           1,          1,        303,                  d,                     d,                             d
          -1,         -1,        304,                 d~,                anti-d,                       \bar{d}
           2,          2,        305,                  u,                     u,                             u
