@@ -3,12 +3,13 @@ Changelog
 
 Version 0.8.0
 -------------
-In preparation.
-
+December 3rd, 2019
++
 * Changes in API:
   - ``GeantID`` class renamed to ``Geant3ID``.
 * Data CSV files:
-  - Version 3 (and 2) of package data files.
+  - Version 3 (and 2) of package data files,
+    which contain new entries and fixes for certain information in 2008 PDG extended data file.
   - File ``data/pdgid_to_geantid.csv`` renamed to ``data/pdgid_to_geant3id.csv``.
   - 2016 and 2017 PDG data files ``mass_width_2016.mcd`` and ``mass_width_2017.mcd`` removed.
 * Tests:
