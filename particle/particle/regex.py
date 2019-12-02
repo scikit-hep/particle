@@ -10,7 +10,8 @@ Collection of regular expression helper utilities for the ``Particle`` class.
 import re
 
 
-getname = re.compile(r'''
+getname = re.compile(
+    r"""
 ^                                           # Beginning of string
       (?P<name>       \w+?        )         # One or more characters, non-greedy
 (?:\( (?P<family>    [udsctb][\w]*) \) )?   # Optional family like (s)
@@ -21,11 +22,14 @@ getname = re.compile(r'''
       (?P<bar>        (bar|~)     )?        # Optional bar
       (?P<charge>     [0\+\-][+-]?)         # Required 0, -, --, or +, ++
 $                                           # End of string
-''', re.VERBOSE)
+""",
+    re.VERBOSE,
+)
 
 
 # Help manipulating .dec DecFile style names
-getdec = re.compile(r'''
+getdec = re.compile(
+    r"""
 ^                                           # Beginning of string
       (?P<bar>        (anti-)     )?        # Optional anti-
       (?P<name>       [a-zA-Z]+?  )         # One or more characters, non-greedy
@@ -36,4 +40,6 @@ getdec = re.compile(r'''
       (?P<star>       \*?         )         # Optional star
       (?P<charge>     [0\+\-][+-]?)?        # Optional 0, -, --, or +, ++
 $                                           # End of string
-''', re.VERBOSE)
+""",
+    re.VERBOSE,
+)

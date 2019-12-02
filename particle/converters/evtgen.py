@@ -12,9 +12,12 @@ from ..pdgid import PDGID
 from .bimap import BiMap, DirectionalMaps
 
 
-EvtGenName2PDGIDBiMap = BiMap(PDGID, str,
-                              converters=(int,str),
-                              filename=data.open_text(data, 'pdgid_to_evtgenname.csv'))
+EvtGenName2PDGIDBiMap = BiMap(
+    PDGID,
+    str,
+    converters=(int, str),
+    filename=data.open_text(data, "pdgid_to_evtgenname.csv"),
+)
 EvtGenName2PDGIDBiMap.__doc__ = """
 Bi-bidirectional map between PDG IDs and EvtGen names.
 
@@ -30,7 +33,7 @@ Examples
 """
 
 
-PDG2EvtGenNameMap, EvtGen2PDGNameMap = DirectionalMaps('PDGName', 'EvtGenName')
+PDG2EvtGenNameMap, EvtGen2PDGNameMap = DirectionalMaps("PDGName", "EvtGenName")
 
 PDG2EvtGenNameMap.__doc__ = """
 Directional map between PDG and EvtGen names.

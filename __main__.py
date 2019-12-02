@@ -1,2 +1,3 @@
 import runpy
-runpy.run_module('particle')
+
+runpy.run_module("particle")

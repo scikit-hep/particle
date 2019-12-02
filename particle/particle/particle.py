@@ -28,12 +28,20 @@ from ..pdgid.functions import _digit
 from ..pdgid.functions import Location
 from .regex import getname, getdec
 
-from .enums import (SpinType, Parity, Charge, Inv, Status,
-                    Parity_undo, Parity_prog,
-                    Charge_undo, Charge_prog, Charge_mapping)
+from .enums import (
+    SpinType,
+    Parity,
+    Charge,
+    Inv,
+    Status,
+    Parity_undo,
+    Parity_prog,
+    Charge_undo,
+    Charge_prog,
+    Charge_mapping,
+)
 
-from .utilities import (programmatic_name, str_with_unc,
-                        latex_to_html_name)
+from .utilities import programmatic_name, str_with_unc, latex_to_html_name
 
 from .kinematics import width_to_lifetime
 
@@ -49,12 +57,7 @@ class InvalidParticle(RuntimeError):
 
 
 def _isospin_converter(isospin):
-    vals = {
-        "0": 0.,
-        "1/2": 0.5,
-        "1": 1.0,
-        "3/2": 1.5
-    }
+    vals = {"0": 0.0, "1/2": 0.5, "1": 1.0, "3/2": 1.5}
     return vals.get(isospin, None)
 
 
@@ -163,6 +166,7 @@ class Particle(object):
     width_upper
         The upper uncertainty on the particle decay width, in MeV.
     """
+
     pdgid = attr.ib(converter=PDGID)
     pdg_name = attr.ib()
     mass = attr.ib()
@@ -180,16 +184,18 @@ class Particle(object):
     anti_flag = attr.ib(0, converter=Inv)  # Info about particle name for anti-particles
     rank = attr.ib(0)
     status = attr.ib(Status.Nonexistent, converter=Status)
-    quarks = attr.ib('', converter=str)
-    latex_name = attr.ib('Unknown')
+    quarks = attr.ib("", converter=str)
+    latex_name = attr.ib("Unknown")
 
     def __repr__(self):
         return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass} MeV>'.format(
-            self=self, pdgid=int(self.pdgid),
-            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower))
+            self=self,
+            pdgid=int(self.pdgid),
+            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
+        )
 
-    _table = None # Loaded table of entries
-    _table_names = None # Names of loaded tables
+    _table = None  # Loaded table of entries
+    _table_names = None  # Names of loaded tables
 
     @classmethod
     def table_names(cls):
@@ -200,7 +206,7 @@ class Particle(object):
         if cls._table_names is None:
             cls.load_table()
 
-        return tuple(cls._table_names) # make a copy to avoid user manipulation
+        return tuple(cls._table_names)  # make a copy to avoid user manipulation
 
     @classmethod
     def table_loaded(cls):
@@ -222,15 +228,17 @@ class Particle(object):
         return cls._table
 
     @classmethod
-    def dump_table(cls,
-                   exclusive_fields=[],
-                   exclude_fields=[],
-                   n_rows=-1,
-                   filter_fn=None,
-                   filename=None,
-                   tablefmt='simple',
-                   floatfmt='.12g',
-                   numalign='decimal'):
+    def dump_table(
+        cls,
+        exclusive_fields=[],
+        exclude_fields=[],
+        n_rows=-1,
+        filter_fn=None,
+        filename=None,
+        tablefmt="simple",
+        floatfmt=".12g",
+        numalign="decimal",
+    ):
         """
         Dump the internal particle data CSV table,
         loading it from the default location if no table has yet been loaded.
@@ -305,7 +313,7 @@ class Particle(object):
         # Get all table headers from the class attributes
         tbl_names = [a.name for a in Particle.__attrs_attrs__]
         # ... and replace '_three_charge' with the better, public property
-        tbl_names[tbl_names.index('_three_charge')] = 'three_charge'
+        tbl_names[tbl_names.index("_three_charge")] = "three_charge"
 
         if exclusive_fields:
             tbl_names = exclusive_fields
@@ -334,13 +342,27 @@ class Particle(object):
 
         if filename:
             filename = str(filename)  # Conversion to handle pathlib on Python < 3.6
-            with open(filename, 'w') as outfile:
-                print(tabulate(tbl, headers=tbl_names, tablefmt=tablefmt,
-                               floatfmt=floatfmt, numalign=numalign),
-                      file=outfile)
+            with open(filename, "w") as outfile:
+                print(
+                    tabulate(
+                        tbl,
+                        headers=tbl_names,
+                        tablefmt=tablefmt,
+                        floatfmt=floatfmt,
+                        numalign=numalign,
+                    ),
+                    file=outfile,
+                )
         else:
-            print(tabulate(tbl, headers=tbl_names, tablefmt=tablefmt,
-                           floatfmt=floatfmt, numalign=numalign))
+            print(
+                tabulate(
+                    tbl,
+                    headers=tbl_names,
+                    tablefmt=tablefmt,
+                    floatfmt=floatfmt,
+                    numalign=numalign,
+                )
+            )
 
     @classmethod
     def load_table(cls, filename=None, append=False):
@@ -350,52 +372,55 @@ class Particle(object):
         be loaded first before appending (set append=False if you don't want this behavior).
         """
         if append and not cls.table_loaded():
-            cls.load_table(append=False) # default load
+            cls.load_table(append=False)  # default load
         elif not append:
             cls._table = []
             cls._table_names = []
 
         if filename is None:
-            filename = data.open_text(data, 'particle2019.csv')
-            cls._table_names.append('particle2019.csv')
-        elif not hasattr(filename, 'read'):
+            filename = data.open_text(data, "particle2019.csv")
+            cls._table_names.append("particle2019.csv")
+        elif not hasattr(filename, "read"):
             # Conversion to handle pathlib on Python < 3.6:
             filename = str(filename)
             cls._table_names.append(filename)
             filename = open(filename)
         else:
-            cls._table_names.append('{0!r} {1}'.format(filename, len(cls._table_names)))
+            cls._table_names.append("{0!r} {1}".format(filename, len(cls._table_names)))
 
         with filename as f:
-            r = csv.DictReader(l for l in f if not l.startswith('#'))
+            r = csv.DictReader(l for l in f if not l.startswith("#"))
 
             for v in r:
-                value = int(v['ID'])
-                pdg_name = v['Name']
+                value = int(v["ID"])
+                pdg_name = v["Name"]
 
                 # Replace the previous value if appending
                 if value in cls._table:
                     cls._table.remove(value)
 
-                cls._table.append(cls(
-                    pdgid=value,
-                    mass=float(v['Mass']),
-                    mass_upper=float(v['MassUpper']),
-                    mass_lower=float(v['MassLower']),
-                    width=float(v['Width']),
-                    width_upper=float(v['WidthUpper']),
-                    width_lower=float(v['WidthLower']),
-                    I=v['I'],
-                    G=int(v['G']),
-                    P=int(v['P']),
-                    C=int(v['C']),
-                    anti_flag=int(v['Anti']),
-                    three_charge=int(v['Charge']),
-                    rank=int(v['Rank']),
-                    status=int(v['Status']),
-                    pdg_name=v['Name'],
-                    quarks=v['Quarks'],
-                    latex_name=v['Latex']))
+                cls._table.append(
+                    cls(
+                        pdgid=value,
+                        mass=float(v["Mass"]),
+                        mass_upper=float(v["MassUpper"]),
+                        mass_lower=float(v["MassLower"]),
+                        width=float(v["Width"]),
+                        width_upper=float(v["WidthUpper"]),
+                        width_lower=float(v["WidthLower"]),
+                        I=v["I"],
+                        G=int(v["G"]),
+                        P=int(v["P"]),
+                        C=int(v["C"]),
+                        anti_flag=int(v["Anti"]),
+                        three_charge=int(v["Charge"]),
+                        rank=int(v["Rank"]),
+                        status=int(v["Status"]),
+                        pdg_name=v["Name"],
+                        quarks=v["Quarks"],
+                        latex_name=v["Latex"],
+                    )
+                )
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
@@ -403,7 +428,7 @@ class Particle(object):
         # Sort by absolute particle numbers
         # The positive one should come first
         if type(self) == type(other):
-            return abs(int(self) - .25) < abs(int(other) - .25)
+            return abs(int(self) - 0.25) < abs(int(other) - 0.25)
 
         # Comparison with anything else should produce normal comparisons.
         else:
@@ -470,8 +495,8 @@ class Particle(object):
 
     @property
     def three_charge(self):
-        'Three times the particle charge (charge * 3), in units of the positron charge.'
-        return int(self._three_charge) if self._three_charge!=Charge.u else None
+        "Three times the particle charge (charge * 3), in units of the positron charge."
+        return int(self._three_charge) if self._three_charge != Charge.u else None
 
     @property
     def lifetime(self):
@@ -489,7 +514,7 @@ class Particle(object):
 
         None is returned if the particle width (stored in the DB) is unknown.
         """
-        return c_light*self.lifetime if self.width is not None else None
+        return c_light * self.lifetime if self.width is not None else None
 
     @property
     def is_name_barred(self):
@@ -520,7 +545,9 @@ class Particle(object):
             if self.P == Parity.p:
                 return (SpinType.Scalar, SpinType.Axial, SpinType.Tensor)[J]
             elif self.P == Parity.m:
-                return (SpinType.PseudoScalar, SpinType.Vector, SpinType.PseudoTensor)[J]
+                return (SpinType.PseudoScalar, SpinType.Vector, SpinType.PseudoTensor)[
+                    J
+                ]
 
         return SpinType.Unknown
 
@@ -544,7 +571,9 @@ class Particle(object):
 
     def invert(self):
         "Get the antiparticle."
-        if self.anti_flag == Inv.Barred or (self.anti_flag == Inv.ChargeInv and self.three_charge != Charge.o):
+        if self.anti_flag == Inv.Barred or (
+            self.anti_flag == Inv.ChargeInv and self.three_charge != Charge.o
+        ):
             return self.from_pdgid(-self.pdgid)
         else:
             return copy(self)
@@ -557,11 +586,18 @@ class Particle(object):
 
         Internally used when creating the name.
         """
-        if self.anti_flag == Inv.ChargeInv: return True   # antiparticle flips sign of particle
-        if self.pdgid in (23, 25, 111, 130, 310, 311, -311): return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
-        if abs(self.pdgid) in (2212, 2112): return False   # proton and neutron
-        if abs(self.pdgid) < 19: return False   # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
-        if self.three_charge is None: return False  # deal with corner cases ;-)
+        if self.anti_flag == Inv.ChargeInv:
+            return True  # antiparticle flips sign of particle
+        if self.pdgid in (23, 25, 111, 130, 310, 311, -311):
+            return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
+        if abs(self.pdgid) in (2212, 2112):
+            return False  # proton and neutron
+        if abs(self.pdgid) < 19:
+            return (
+                False
+            )  # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
+        if self.three_charge is None:
+            return False  # deal with corner cases ;-)
         if self.is_self_conjugate:
             pid = self.pdgid
             if pid < 25:
@@ -569,33 +605,46 @@ class Particle(object):
             # Quarkonia never exhibit the 0 charge
             # All eta, eta', h, h', omega, phi, f, f' light mesons are supposed to have an s-sbar component (see PDG site),
             # but some particles have pdgid.has_strange==False :S! Play it safe ...
-            elif any([chr in self.pdg_name for chr in ('eta', 'h(', "h'(", 'omega', 'phi', 'f', "f'")]):
+            elif any(
+                [
+                    chr in self.pdg_name
+                    for chr in ("eta", "h(", "h'(", "omega", "phi", "f", "f'")
+                ]
+            ):
                 return False
-            elif (pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top):
+            elif pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top:
                 return False
             else:  # Light unflavoured mesons
                 return True
         # Lambda baryons
-        if (self.pdgid.is_baryon
-            and _digit(self.pdgid, Location.Nq2) == 1 and self.I == 0.  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
+        if (
+            self.pdgid.is_baryon
+            and _digit(self.pdgid, Location.Nq2) == 1
+            and self.I
+            == 0.0  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
             and self.pdgid.has_strange
-            and not (self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top)
-           ):
-           return False
+            and not (
+                self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top
+            )
+        ):
+            return False
         return True
 
     # Pretty descriptions
 
     def __str__(self):
-        _tilde = '~' if self.anti_flag == Inv.Barred and self.pdgid < 0 else ''
-        _charge = Charge_undo[self.three_charge] if self._charge_in_name() else ''
+        _tilde = "~" if self.anti_flag == Inv.Barred and self.pdgid < 0 else ""
+        _charge = Charge_undo[self.three_charge] if self._charge_in_name() else ""
         return self.pdg_name + _tilde + _charge
 
-    name = property(__str__, doc='The nice name, with charge added, and a tilde for an antiparticle, if relevant.')
+    name = property(
+        __str__,
+        doc="The nice name, with charge added, and a tilde for an antiparticle, if relevant.",
+    )
 
     def _repr_latex_(self):
         name = self.latex_name
-        return ("$" + name + '$') if self.latex_name else '?'
+        return ("$" + name + "$") if self.latex_name else "?"
 
     def _width_or_lifetime(self):
         """Display either the particle width or the lifetime.
@@ -606,27 +655,37 @@ class Particle(object):
         Width errors equal to None flag an experimental upper limit on the width.
         """
         if self.width is None:
-            return 'Width = ?'
+            return "Width = ?"
         elif self.width == 0:
-            return 'Width = 0.0 MeV'
+            return "Width = 0.0 MeV"
         elif self.width_lower is None and self.width_upper is None:
-            return 'Width < {width} MeV'.format(width=self.width)
-        elif self.width < 0.05:  # corresponds to a lifetime of approximately 1.3e-20 seconds
+            return "Width < {width} MeV".format(width=self.width)
+        elif (
+            self.width < 0.05
+        ):  # corresponds to a lifetime of approximately 1.3e-20 seconds
             if self.width_lower == self.width_upper:
-                e = width_to_lifetime(self.width-self.width_lower)-self.lifetime
-                s = 'Lifetime = {lifetime} ns'.format(lifetime=str_with_unc(self.lifetime,e,e))
+                e = width_to_lifetime(self.width - self.width_lower) - self.lifetime
+                s = "Lifetime = {lifetime} ns".format(
+                    lifetime=str_with_unc(self.lifetime, e, e)
+                )
             else:
-                s = 'Lifetime = {lifetime} ns'.\
-                    format(lifetime=str_with_unc(self.lifetime,\
-                                                 width_to_lifetime(self.width-self.width_lower)-self.lifetime,
-                                                 self.lifetime-width_to_lifetime(self.width+self.width_upper)
-                                                 ))
+                s = "Lifetime = {lifetime} ns".format(
+                    lifetime=str_with_unc(
+                        self.lifetime,
+                        width_to_lifetime(self.width - self.width_lower)
+                        - self.lifetime,
+                        self.lifetime
+                        - width_to_lifetime(self.width + self.width_upper),
+                    )
+                )
             return s
         else:
-            return 'Width = {width} MeV'.format(width=str_with_unc(self.width, self.width_upper, self.width_lower))
+            return "Width = {width} MeV".format(
+                width=str_with_unc(self.width, self.width_upper, self.width_lower)
+            )
 
     def describe(self):
-        'Make a nice high-density string for a particle\'s properties.'
+        "Make a nice high-density string for a particle's properties."
         if self.pdgid == 0:
             return "Name: Unknown"
 
@@ -635,41 +694,45 @@ Mass  = {mass} MeV
 {width_or_lifetime}
 Q (charge)        = {Q:<6}  J (total angular) = {self.J!s:<7}  P (space parity) = {P}
 C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     = {G}
-""".format(self=self,
-           G=Parity_undo[self.G],
-           C=Parity_undo[self.C],
-           Q=Charge_undo[self.three_charge],
-           P=Parity_undo[self.P],
-           mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
-           width_or_lifetime=self._width_or_lifetime(),
-           latex_name = self._repr_latex_())
+""".format(
+            self=self,
+            G=Parity_undo[self.G],
+            C=Parity_undo[self.C],
+            Q=Charge_undo[self.three_charge],
+            P=Parity_undo[self.P],
+            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
+            width_or_lifetime=self._width_or_lifetime(),
+            latex_name=self._repr_latex_(),
+        )
 
         if self.spin_type != SpinType.Unknown:
             val += "    SpinType: {self.spin_type!s}\n".format(self=self)
         if self.quarks:
             val += "    Quarks: {self.quarks}\n".format(self=self)
-        val += "    Antiparticle name: {iself.name} (antiparticle status: {self.anti_flag.name})".format(iself=self.invert(), self=self)
+        val += "    Antiparticle name: {iself.name} (antiparticle status: {self.anti_flag.name})".format(
+            iself=self.invert(), self=self
+        )
         return val
 
     @property
     def evtgen_name(self):
-        'This is the name used in EvtGen.'
+        "This is the name used in EvtGen."
         return EvtGenName2PDGIDBiMap[self.pdgid]
 
     @property
     def programmatic_name(self):
-        'This name could be used for a variable name.'
+        "This name could be used for a variable name."
         return programmatic_name(self.name)
 
     @property
     def html_name(self):
-        'This is the name using HTML instead of LaTeX.'
+        "This is the name using HTML instead of LaTeX."
         return latex_to_html_name(self.latex_name)
 
     @classmethod
     def empty(cls):
-        'Make a new empty particle.'
-        return cls(0, 'Unknown', 0., 0., 0, Inv.Same)
+        "Make a new empty particle."
+        return cls(0, "Unknown", 0.0, 0.0, 0, Inv.Same)
 
     @classmethod
     def from_pdgid(cls, value):
@@ -684,11 +747,11 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if value in table:
             return table[table.index(value)]
         else:
-            raise ParticleNotFound('Could not find PDGID {0}'.format(value))
+            raise ParticleNotFound("Could not find PDGID {0}".format(value))
 
     @classmethod
     def findall(cls, filter_fn=None, particle=None, **search_terms):
-        '''
+        """
         Search for a particle, returning a list of candidates.
 
         The first and only positional argument is given each particle
@@ -722,7 +785,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_charm and p.spin_type==SpinType.PseudoScalar)  # doctest: +SKIP
 
         See also ``find``, which throws an exception if the particle is not found or too many are found.
-        '''
+        """
 
         # Note that particle can be called by position to keep compatibility with Python 2, but that behavior should
         # not be used and will be removed when support for Python 2.7 is dropped.
@@ -750,9 +813,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
                         if not filter_fn(item):
                             continue
                     except TypeError:  # skip checks such as 'lambda p: p.width > 0',
-                        continue       # which fail when width=None
+                        continue  # which fail when width=None
                 else:
-                    if not(filter_fn in item.name):
+                    if not (filter_fn in item.name):
                         continue
 
             # At this point, if you break, you will not add a match
@@ -784,19 +847,21 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def find(cls, *args, **search_terms):
-        '''
+        """
         Require that your search returns one and only one result.
         The method otherwise raises a ParticleNotFound or RuntimeError exception.
 
         See findall for full listing of parameters.
-        '''
+        """
 
         results = cls.findall(*args, **search_terms)
 
         if len(results) == 1:
             return results[0]
         elif len(results) == 0:
-            raise ParticleNotFound('Did not find particle matching query: {}'.format(search_terms))
+            raise ParticleNotFound(
+                "Did not find particle matching query: {}".format(search_terms)
+            )
         else:
             raise RuntimeError("Found too many particles")
 
@@ -809,27 +874,29 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         try:
             return cls.from_pdgid(EvtGenName2PDGIDBiMap[name])
         except ParticleNotFound:
-            raise ParticleNotFound('Could not find particle with EvtGen name "{0}".'.format(name))
+            raise ParticleNotFound(
+                'Could not find particle with EvtGen name "{0}".'.format(name)
+            )
 
     @classmethod
     def from_string(cls, name):
-        'Get a particle from a PDG style name - returns the best match.'
-        matches =  cls.from_string_list(name)
+        "Get a particle from a PDG style name - returns the best match."
+        matches = cls.from_string_list(name)
         if matches:
             return matches[0]
         else:
-            raise ParticleNotFound('{0} not found in particle table'.format(name))
+            raise ParticleNotFound("{0} not found in particle table".format(name))
 
     @classmethod
     def from_string_list(cls, name):
-        'Get a list of particles from a PDG style name.'
+        "Get a list of particles from a PDG style name."
 
         # Forcible override
         particle = None
 
         short_name = name
-        if '~' in name:
-            short_name = name.replace('~','')
+        if "~" in name:
+            short_name = name.replace("~", "")
             particle = False
 
         # Try the simplest searches first
@@ -849,7 +916,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         mat = mat.groupdict()
 
         if particle is False:
-            mat['bar'] = 'bar'
+            mat["bar"] = "bar"
 
         try:
             return cls._from_group_dict_list(mat)
@@ -860,43 +927,49 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def _from_group_dict_list(cls, mat):
 
         kw = dict()
-        kw['particle'] = False if mat['bar'] is not None else (True if mat['charge'] == '0' else None)
+        kw["particle"] = (
+            False
+            if mat["bar"] is not None
+            else (True if mat["charge"] == "0" else None)
+        )
 
-        name = mat['name']
+        name = mat["name"]
 
-        if mat['family']:
-            if '_' in mat['family']:
-                mat['family'] = mat['family'].strip('_')
-            name += '({mat[family]})'.format(mat=mat)
-        if mat['state']:
-            name += '({mat[state]})'.format(mat=mat)
+        if mat["family"]:
+            if "_" in mat["family"]:
+                mat["family"] = mat["family"].strip("_")
+            name += "({mat[family]})".format(mat=mat)
+        if mat["state"]:
+            name += "({mat[state]})".format(mat=mat)
 
-        if 'prime' in mat and mat['prime']:
+        if "prime" in mat and mat["prime"]:
             name += "'"
 
-        if mat['star']:
-            name += '*'
+        if mat["star"]:
+            name += "*"
 
-        if mat['state'] is not None:
-            kw['J'] = float(mat['state'])
+        if mat["state"] is not None:
+            kw["J"] = float(mat["state"])
 
-        if mat['mass']:
-            maxname = name + '({mat[mass]})'.format(mat=mat)
+        if mat["mass"]:
+            maxname = name + "({mat[mass]})".format(mat=mat)
         else:
             maxname = name
 
-        if 'charge' in mat and mat['charge'] is not None:
-            kw['three_charge'] = Charge_mapping[mat['charge']]
+        if "charge" in mat and mat["charge"] is not None:
+            kw["three_charge"] = Charge_mapping[mat["charge"]]
 
-        vals = cls.findall(name = lambda x: maxname in x, **kw)
+        vals = cls.findall(name=lambda x: maxname in x, **kw)
         if not vals:
-            vals = cls.findall(name = lambda x: name in x, **kw)
+            vals = cls.findall(name=lambda x: name in x, **kw)
 
         if not vals:
-            raise ParticleNotFound("Could not find particle {0} or {1}".format(maxname, name))
+            raise ParticleNotFound(
+                "Could not find particle {0} or {1}".format(maxname, name)
+            )
 
-        if len(vals) > 1 and mat['mass'] is not None:
-            vals = [val for val in vals if mat['mass'] in val.latex_name]
+        if len(vals) > 1 and mat["mass"] is not None:
+            vals = [val for val in vals if mat["mass"] in val.latex_name]
 
         if len(vals) > 1:
             vals = sorted(vals)

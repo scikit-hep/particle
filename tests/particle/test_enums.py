@@ -14,6 +14,6 @@ def test_enums_Charge():
 
 
 def test_enums_SpinType():
-    assert SpinType.PseudoScalar == - SpinType.Scalar
-    assert SpinType.Axial == - SpinType.Vector
-    assert SpinType.PseudoTensor == - SpinType.Tensor
+    assert SpinType.PseudoScalar == -SpinType.Scalar
+    assert SpinType.Axial == -SpinType.Vector
+    assert SpinType.PseudoTensor == -SpinType.Tensor

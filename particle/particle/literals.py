@@ -40,7 +40,10 @@ for item in common_particles:
 
 
 __doc = ""
-for item in common_particles: __doc += "  {item!s} = Particle.from_pdgid({part})\n".format(item=item, part=common_particles[item])
+for item in common_particles:
+    __doc += "  {item!s} = Particle.from_pdgid({part})\n".format(
+        item=item, part=common_particles[item]
+    )
 
 __doc__ = __doc__.format(__doc)
 

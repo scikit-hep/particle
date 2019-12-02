@@ -56,8 +56,8 @@ def test_charge(PDGIDs):
     assert charge(PDGIDs.Proton) == +1
     assert charge(PDGIDs.LcPlus) == +1
     assert charge(PDGIDs.Lb) == 0
-    assert charge(PDGIDs.DD1) == -2/3
-    assert charge(PDGIDs.SD0) == -2/3
+    assert charge(PDGIDs.DD1) == -2 / 3
+    assert charge(PDGIDs.SD0) == -2 / 3
     assert charge(PDGIDs.Invalid1) == None
     assert charge(PDGIDs.Invalid2) == None
 
@@ -103,41 +103,90 @@ def test_is_valid(PDGIDs):
 
 
 def test_is_lepton(PDGIDs):
-    _leptons = (PDGIDs.Electron, PDGIDs.Positron, PDGIDs.Muon, PDGIDs.AntiMuon, PDGIDs.Tau, PDGIDs.TauPrime, PDGIDs.Nu_e, PDGIDs.NuBar_tau)
+    _leptons = (
+        PDGIDs.Electron,
+        PDGIDs.Positron,
+        PDGIDs.Muon,
+        PDGIDs.AntiMuon,
+        PDGIDs.Tau,
+        PDGIDs.TauPrime,
+        PDGIDs.Nu_e,
+        PDGIDs.NuBar_tau,
+    )
     _non_leptons = [id for id in PDGIDs if id not in _leptons]
-    for id in _leptons: assert is_lepton(id) == True
-    for id in _non_leptons: assert is_lepton(id) == False
+    for id in _leptons:
+        assert is_lepton(id) == True
+    for id in _non_leptons:
+        assert is_lepton(id) == False
 
 
 def test_is_meson(PDGIDs):
-    _mesons = (PDGIDs.jpsi, PDGIDs.psi_2S, PDGIDs.Upsilon_1S, PDGIDs.Upsilon_4S,
-               PDGIDs.Pi0, PDGIDs.PiPlus, PDGIDs.eta, PDGIDs.eta_prime,
-               PDGIDs.a_0_1450_plus, PDGIDs.KL, PDGIDs.KS, PDGIDs.KMinus, PDGIDs.phi, PDGIDs.Omega,
-               PDGIDs.rho_770_minus,PDGIDs.K1_1270_0, PDGIDs.K1_1400_0,
-               PDGIDs.rho_1700_0,
-               PDGIDs.a2_1320_minus,
-               PDGIDs.omega_3_1670,
-               PDGIDs.f_4_2300,
-               PDGIDs.D0, PDGIDs.DPlus, PDGIDs.DsPlus,
-               PDGIDs.B0, PDGIDs.BPlus, PDGIDs.Bs, PDGIDs.BcPlus,
-               PDGIDs.T0,
-               PDGIDs.Reggeon, PDGIDs.Pomeron, PDGIDs.Odderon,
-               PDGIDs.RPlus_TTildeDbar, PDGIDs.R0_GTildeG)
+    _mesons = (
+        PDGIDs.jpsi,
+        PDGIDs.psi_2S,
+        PDGIDs.Upsilon_1S,
+        PDGIDs.Upsilon_4S,
+        PDGIDs.Pi0,
+        PDGIDs.PiPlus,
+        PDGIDs.eta,
+        PDGIDs.eta_prime,
+        PDGIDs.a_0_1450_plus,
+        PDGIDs.KL,
+        PDGIDs.KS,
+        PDGIDs.KMinus,
+        PDGIDs.phi,
+        PDGIDs.Omega,
+        PDGIDs.rho_770_minus,
+        PDGIDs.K1_1270_0,
+        PDGIDs.K1_1400_0,
+        PDGIDs.rho_1700_0,
+        PDGIDs.a2_1320_minus,
+        PDGIDs.omega_3_1670,
+        PDGIDs.f_4_2300,
+        PDGIDs.D0,
+        PDGIDs.DPlus,
+        PDGIDs.DsPlus,
+        PDGIDs.B0,
+        PDGIDs.BPlus,
+        PDGIDs.Bs,
+        PDGIDs.BcPlus,
+        PDGIDs.T0,
+        PDGIDs.Reggeon,
+        PDGIDs.Pomeron,
+        PDGIDs.Odderon,
+        PDGIDs.RPlus_TTildeDbar,
+        PDGIDs.R0_GTildeG,
+    )
     _non_mesons = [id for id in PDGIDs if id not in _mesons]
-    for id in _mesons: assert is_meson(id) == True
-    for id in _non_mesons: assert is_meson(id) == False
+    for id in _mesons:
+        assert is_meson(id) == True
+    for id in _non_mesons:
+        assert is_meson(id) == False
 
 
 def test_is_baryon(PDGIDs):
-    _baryons = (PDGIDs.Proton, PDGIDs.AntiNeutron, PDGIDs.Lambda, PDGIDs.Sigma0, PDGIDs.SigmaPlus, PDGIDs.SigmaMinus, PDGIDs.Xi0,  PDGIDs.AntiXiMinus,PDGIDs.OmegaMinus,
-                PDGIDs.LcPlus,
-                PDGIDs.Lb,
-                PDGIDs.LtPlus,
-                PDGIDs.RPlusPlus_GTildeUUU,
-                PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
+    _baryons = (
+        PDGIDs.Proton,
+        PDGIDs.AntiNeutron,
+        PDGIDs.Lambda,
+        PDGIDs.Sigma0,
+        PDGIDs.SigmaPlus,
+        PDGIDs.SigmaMinus,
+        PDGIDs.Xi0,
+        PDGIDs.AntiXiMinus,
+        PDGIDs.OmegaMinus,
+        PDGIDs.LcPlus,
+        PDGIDs.Lb,
+        PDGIDs.LtPlus,
+        PDGIDs.RPlusPlus_GTildeUUU,
+        PDGIDs.UCbarCUDPentaquark,
+        PDGIDs.AntiUCbarCUDPentaquark,
+    )
     _non_baryons = [id for id in PDGIDs if id not in _baryons]
-    for id in _baryons: assert is_baryon(id) == True
-    for id in _non_baryons: assert is_baryon(id) == False
+    for id in _baryons:
+        assert is_baryon(id) == True
+    for id in _non_baryons:
+        assert is_baryon(id) == False
 
 
 def test_is_hadron(PDGIDs):
@@ -148,8 +197,10 @@ def test_is_hadron(PDGIDs):
 def test_is_diquark(PDGIDs):
     _diquarks = (PDGIDs.DD1, PDGIDs.SD0)
     _non_diquarks = [id for id in PDGIDs if id not in _diquarks]
-    for id in _diquarks: assert is_diquark(id) == True
-    for id in _non_diquarks: assert is_diquark(id) == False
+    for id in _diquarks:
+        assert is_diquark(id) == True
+    for id in _non_diquarks:
+        assert is_diquark(id) == False
 
 
 def test_is_pentaquark(PDGIDs):
@@ -157,42 +208,53 @@ def test_is_pentaquark(PDGIDs):
     _non_pentaquarks = [id for id in PDGIDs if id not in _pentaquarks]
     assert is_pentaquark(PDGIDs.UCbarCUDPentaquark) == True
     assert is_pentaquark(PDGIDs.AntiUCbarCUDPentaquark) == True
-    for id in _non_pentaquarks: assert is_pentaquark(id) == False
+    for id in _non_pentaquarks:
+        assert is_pentaquark(id) == False
 
 
 def test_is_nucleus(PDGIDs):
     _nuclei = (PDGIDs.Proton, PDGIDs.HydrogenNucleus, PDGIDs.Carbon12)
     _non_nuclei = [id for id in PDGIDs if id not in _nuclei]
-    for id in _nuclei: assert is_nucleus(id) == True
-    for id in _non_nuclei: assert is_nucleus(id) == False
+    for id in _nuclei:
+        assert is_nucleus(id) == True
+    for id in _non_nuclei:
+        assert is_nucleus(id) == False
 
 
 def test_is_Rhadron(PDGIDs):
     _Rhadrons = (PDGIDs.RPlus_TTildeDbar, PDGIDs.R0_GTildeG, PDGIDs.RPlusPlus_GTildeUUU)
     _non_Rhadrons = [id for id in PDGIDs if id not in _Rhadrons]
-    for id in _Rhadrons: assert is_Rhadron(id) == True
-    for id in _non_Rhadrons: assert is_Rhadron(id) == False
+    for id in _Rhadrons:
+        assert is_Rhadron(id) == True
+    for id in _non_Rhadrons:
+        assert is_Rhadron(id) == False
 
 
 def test_is_Qball(PDGIDs):
     _Qballs = (PDGIDs.QBall1, PDGIDs.QBall2)
     _non_Qballs = [id for id in PDGIDs if id not in _Qballs]
-    for id in _Qballs: assert is_Qball(id) == True
-    for id in _non_Qballs: assert is_Qball(id) == False
+    for id in _Qballs:
+        assert is_Qball(id) == True
+    for id in _non_Qballs:
+        assert is_Qball(id) == False
 
 
 def test_is_dyon(PDGIDs):
     _dyons = (PDGIDs.DyonSameMagElecChargeSign, PDGIDs.DyonOppositeMagElecChargeSign)
     _non_dyons = [id for id in PDGIDs if id not in _dyons]
-    for id in _dyons: assert is_dyon(id) == True
-    for id in _non_dyons: assert is_dyon(id) == False
+    for id in _dyons:
+        assert is_dyon(id) == True
+    for id in _non_dyons:
+        assert is_dyon(id) == False
 
 
 def test_is_SUSY(PDGIDs):
     _susy = (PDGIDs.Gluino, PDGIDs.Gravitino, PDGIDs.STildeL, PDGIDs.CTildeR)
     _non_susy = [id for id in PDGIDs if id not in _susy]
-    for id in _susy: assert is_SUSY(id) == True
-    for id in _non_susy: assert is_SUSY(id) == False
+    for id in _susy:
+        assert is_SUSY(id) == True
+    for id in _non_susy:
+        assert is_SUSY(id) == False
 
 
 def test_has_down(PDGIDs):
@@ -268,80 +330,132 @@ def test_has_strange(PDGIDs):
 
 
 def test_has_charm(PDGIDs):
-    _with_charm_content = (PDGIDs.jpsi, PDGIDs.psi_2S,
-                           PDGIDs.D0, PDGIDs.DPlus, PDGIDs.DsPlus,
-                           PDGIDs.BcPlus,
-                           PDGIDs.LcPlus,
-                           PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
+    _with_charm_content = (
+        PDGIDs.jpsi,
+        PDGIDs.psi_2S,
+        PDGIDs.D0,
+        PDGIDs.DPlus,
+        PDGIDs.DsPlus,
+        PDGIDs.BcPlus,
+        PDGIDs.LcPlus,
+        PDGIDs.UCbarCUDPentaquark,
+        PDGIDs.AntiUCbarCUDPentaquark,
+    )
     _without_charm_content = [id for id in PDGIDs if id not in _with_charm_content]
-    for id in _with_charm_content: assert has_charm(id) == True
-    for id in _without_charm_content: assert has_charm(id) == False
+    for id in _with_charm_content:
+        assert has_charm(id) == True
+    for id in _without_charm_content:
+        assert has_charm(id) == False
 
 
 def test_has_bottom(PDGIDs):
-    _with_bottom_content = (PDGIDs.Upsilon_1S, PDGIDs.Upsilon_4S,
-                            PDGIDs.B0, PDGIDs.BPlus, PDGIDs.Bs, PDGIDs.BcPlus,
-                            PDGIDs.Lb)
+    _with_bottom_content = (
+        PDGIDs.Upsilon_1S,
+        PDGIDs.Upsilon_4S,
+        PDGIDs.B0,
+        PDGIDs.BPlus,
+        PDGIDs.Bs,
+        PDGIDs.BcPlus,
+        PDGIDs.Lb,
+    )
     _without_bottom_content = [id for id in PDGIDs if id not in _with_bottom_content]
-    for id in _with_bottom_content: assert has_bottom(id) == True
-    for id in _without_bottom_content: assert has_bottom(id) == False
+    for id in _with_bottom_content:
+        assert has_bottom(id) == True
+    for id in _without_bottom_content:
+        assert has_bottom(id) == False
 
 
 def test_has_top(PDGIDs):
     assert has_top(PDGIDs.T0) == True
     assert has_top(PDGIDs.LtPlus) == True
-    _no_top = [id for id in PDGIDs if id not in (PDGIDs.T0, PDGIDs.LtPlus)]  # top quark should also return has_top(6)==False !
-    for id in _no_top: assert has_top(id) == False
+    _no_top = [
+        id for id in PDGIDs if id not in (PDGIDs.T0, PDGIDs.LtPlus)
+    ]  # top quark should also return has_top(6)==False !
+    for id in _no_top:
+        assert has_top(id) == False
 
 
 def test_has_fundamental_anti(PDGIDs):
     # Particles that are "fundamental" and not their own antiparticle
-    _yep = (PDGIDs.WMinus,
-            PDGIDs.Electron, PDGIDs.Positron, PDGIDs.Muon, PDGIDs.AntiMuon, PDGIDs.Tau, PDGIDs.TauPrime,
-            PDGIDs.Nu_e, PDGIDs.NuBar_tau,
-            PDGIDs.DQuark, PDGIDs.UQuark, PDGIDs.SQuark, PDGIDs.CQuark, PDGIDs.BQuark, PDGIDs.TQuark, PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark,
-            PDGIDs.STildeL, PDGIDs.CTildeR,
-            PDGIDs.DyonSameMagElecChargeSign, PDGIDs.DyonOppositeMagElecChargeSign)
+    _yep = (
+        PDGIDs.WMinus,
+        PDGIDs.Electron,
+        PDGIDs.Positron,
+        PDGIDs.Muon,
+        PDGIDs.AntiMuon,
+        PDGIDs.Tau,
+        PDGIDs.TauPrime,
+        PDGIDs.Nu_e,
+        PDGIDs.NuBar_tau,
+        PDGIDs.DQuark,
+        PDGIDs.UQuark,
+        PDGIDs.SQuark,
+        PDGIDs.CQuark,
+        PDGIDs.BQuark,
+        PDGIDs.TQuark,
+        PDGIDs.BPrimeQuark,
+        PDGIDs.TPrimeQuark,
+        PDGIDs.STildeL,
+        PDGIDs.CTildeR,
+        PDGIDs.DyonSameMagElecChargeSign,
+        PDGIDs.DyonOppositeMagElecChargeSign,
+    )
     _nope = [id for id in PDGIDs if id not in _yep]
-    for id in _yep: assert has_fundamental_anti(id) == True
-    for id in _nope: assert has_fundamental_anti(id) == False
+    for id in _yep:
+        assert has_fundamental_anti(id) == True
+    for id in _nope:
+        assert has_fundamental_anti(id) == False
 
 
 def mesons_JSL_states_list(PDGIDs, jsl):
-        _states = { '000': (PDGIDs.Pi0, PDGIDs.PiPlus, PDGIDs.eta, PDGIDs.eta_prime, PDGIDs.KL, PDGIDs.KS, PDGIDs.KMinus,
-                            PDGIDs.D0, PDGIDs.DPlus, PDGIDs.DsPlus,
-                            PDGIDs.B0, PDGIDs.BPlus, PDGIDs.Bs, PDGIDs.BcPlus,
-                            PDGIDs.T0),
-                    '011': (PDGIDs.a_0_1450_plus,),
-                    '101': (PDGIDs.K1_1270_0,),
-                    '110': (PDGIDs.rho_770_minus,),
-                    '111': (PDGIDs.K1_1400_0,),
-                    '112': (PDGIDs.rho_1700_0,),
-                    #'202': (),
-                    '211': (PDGIDs.a2_1320_minus,),
-                    #'212': (),
-                    #'213': (),
-                    #'303': (),
-                    '312': (PDGIDs.omega_3_1670,),
-                    #'313': (),
-                    #'314': (),
-                    #'404': (),
-                    #'413': (),
-                    #'414': (),
-                    #'415': ()
-                            }
-        return _states[jsl]
+    _states = {
+        "000": (
+            PDGIDs.Pi0,
+            PDGIDs.PiPlus,
+            PDGIDs.eta,
+            PDGIDs.eta_prime,
+            PDGIDs.KL,
+            PDGIDs.KS,
+            PDGIDs.KMinus,
+            PDGIDs.D0,
+            PDGIDs.DPlus,
+            PDGIDs.DsPlus,
+            PDGIDs.B0,
+            PDGIDs.BPlus,
+            PDGIDs.Bs,
+            PDGIDs.BcPlus,
+            PDGIDs.T0,
+        ),
+        "011": (PDGIDs.a_0_1450_plus,),
+        "101": (PDGIDs.K1_1270_0,),
+        "110": (PDGIDs.rho_770_minus,),
+        "111": (PDGIDs.K1_1400_0,),
+        "112": (PDGIDs.rho_1700_0,),
+        #'202': (),
+        "211": (PDGIDs.a2_1320_minus,),
+        #'212': (),
+        #'213': (),
+        #'303': (),
+        "312": (PDGIDs.omega_3_1670,),
+        #'313': (),
+        #'314': (),
+        #'404': (),
+        #'413': (),
+        #'414': (),
+        #'415': ()
+    }
+    return _states[jsl]
 
 
 def test_JSL_mesons(PDGIDs):
-    _JSL_eq_000 = mesons_JSL_states_list(PDGIDs, '000')
-    _JSL_eq_011 = mesons_JSL_states_list(PDGIDs, '011')
-    _JSL_eq_101 = mesons_JSL_states_list(PDGIDs, '101')
-    _JSL_eq_110 = mesons_JSL_states_list(PDGIDs, '110')
-    _JSL_eq_111 = mesons_JSL_states_list(PDGIDs, '111')
-    _JSL_eq_112 = mesons_JSL_states_list(PDGIDs, '112')
-    _JSL_eq_211 = mesons_JSL_states_list(PDGIDs, '211')
-    _JSL_eq_312 = mesons_JSL_states_list(PDGIDs, '312')
+    _JSL_eq_000 = mesons_JSL_states_list(PDGIDs, "000")
+    _JSL_eq_011 = mesons_JSL_states_list(PDGIDs, "011")
+    _JSL_eq_101 = mesons_JSL_states_list(PDGIDs, "101")
+    _JSL_eq_110 = mesons_JSL_states_list(PDGIDs, "110")
+    _JSL_eq_111 = mesons_JSL_states_list(PDGIDs, "111")
+    _JSL_eq_112 = mesons_JSL_states_list(PDGIDs, "112")
+    _JSL_eq_211 = mesons_JSL_states_list(PDGIDs, "211")
+    _JSL_eq_312 = mesons_JSL_states_list(PDGIDs, "312")
 
     for id in _JSL_eq_000:
         assert J(id) == 0
@@ -386,56 +500,88 @@ def test_JSL_badly_known_mesons(PDGIDs):
 def test_J_non_mesons(PDGIDs):
     # TODO:  test special particles, supersymmetric particles, R-hadrons, di-quarks, nuclei and pentaquarks
     _J_eq_0 = ()
-    _J_eq_1 = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0,
-               PDGIDs.jpsi, PDGIDs.psi_2S, PDGIDs.Upsilon_1S, PDGIDs.Upsilon_4S,
-               PDGIDs.K1_1270_0)
-    _J_eq_1over2 = (PDGIDs.Electron, PDGIDs.Positron, PDGIDs.Muon, PDGIDs.AntiMuon, PDGIDs.Tau,
-                    PDGIDs.Nu_e, PDGIDs.NuBar_tau,
-                    PDGIDs.DQuark, PDGIDs.UQuark, PDGIDs.SQuark, PDGIDs.CQuark, PDGIDs.BQuark, PDGIDs.TQuark,
-                    PDGIDs.Proton, PDGIDs.AntiNeutron, PDGIDs.Lambda, PDGIDs.Sigma0, PDGIDs.SigmaPlus, PDGIDs.SigmaMinus, PDGIDs.Xi0, PDGIDs.AntiXiMinus,
-                    PDGIDs.LcPlus,
-                    PDGIDs.Lb,
-                    PDGIDs.LtPlus,
-                    PDGIDs.STildeL, PDGIDs.CTildeR)
+    _J_eq_1 = (
+        PDGIDs.Gluon,
+        PDGIDs.Photon,
+        PDGIDs.Z0,
+        PDGIDs.jpsi,
+        PDGIDs.psi_2S,
+        PDGIDs.Upsilon_1S,
+        PDGIDs.Upsilon_4S,
+        PDGIDs.K1_1270_0,
+    )
+    _J_eq_1over2 = (
+        PDGIDs.Electron,
+        PDGIDs.Positron,
+        PDGIDs.Muon,
+        PDGIDs.AntiMuon,
+        PDGIDs.Tau,
+        PDGIDs.Nu_e,
+        PDGIDs.NuBar_tau,
+        PDGIDs.DQuark,
+        PDGIDs.UQuark,
+        PDGIDs.SQuark,
+        PDGIDs.CQuark,
+        PDGIDs.BQuark,
+        PDGIDs.TQuark,
+        PDGIDs.Proton,
+        PDGIDs.AntiNeutron,
+        PDGIDs.Lambda,
+        PDGIDs.Sigma0,
+        PDGIDs.SigmaPlus,
+        PDGIDs.SigmaMinus,
+        PDGIDs.Xi0,
+        PDGIDs.AntiXiMinus,
+        PDGIDs.LcPlus,
+        PDGIDs.Lb,
+        PDGIDs.LtPlus,
+        PDGIDs.STildeL,
+        PDGIDs.CTildeR,
+    )
     _J_eq_3over2 = (PDGIDs.OmegaMinus,)
     _invalid_pdgids = (PDGIDs.Invalid1, PDGIDs.Invalid2)
     # cases not dealt with in the code, where None is returned
-    _J_eq_None= (PDGIDs.TauPrime,
-                 PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark)
+    _J_eq_None = (PDGIDs.TauPrime, PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark)
 
-    for id in _J_eq_0: assert j_spin(id) == 1
-    for id in _J_eq_1: assert j_spin(id) == 3
-    for id in _J_eq_1over2: assert j_spin(id) == 2
-    for id in _J_eq_3over2: assert j_spin(id) == 4
-    for id in _invalid_pdgids: assert j_spin(id) == None
-    for id in _J_eq_None: assert j_spin(id) == None
+    for id in _J_eq_0:
+        assert j_spin(id) == 1
+    for id in _J_eq_1:
+        assert j_spin(id) == 3
+    for id in _J_eq_1over2:
+        assert j_spin(id) == 2
+    for id in _J_eq_3over2:
+        assert j_spin(id) == 4
+    for id in _invalid_pdgids:
+        assert j_spin(id) == None
+    for id in _J_eq_None:
+        assert j_spin(id) == None
 
 
 def test_S_non_mesons(PDGIDs):
-    _S_eq_None= (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
-    for id in _S_eq_None: assert S(id) == None
+    _S_eq_None = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
+    for id in _S_eq_None:
+        assert S(id) == None
 
 
 def test_L_non_mesons(PDGIDs):
-    _L_eq_None= (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
-    for id in _L_eq_None: assert L(id) == None
+    _L_eq_None = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
+    for id in _L_eq_None:
+        assert L(id) == None
 
-    
+
 def test_A(PDGIDs):
-    _nuclei = { PDGIDs.Proton: 1,
-                PDGIDs.HydrogenNucleus: 1,
-                PDGIDs.Carbon12: 12
-                }
-    _non_nuclei = [ id for id in PDGIDs if id not in _nuclei.keys() ]
-    for id, a in _nuclei.items(): assert A(id) == a
-    for id in _non_nuclei: assert A(id) == None
+    _nuclei = {PDGIDs.Proton: 1, PDGIDs.HydrogenNucleus: 1, PDGIDs.Carbon12: 12}
+    _non_nuclei = [id for id in PDGIDs if id not in _nuclei.keys()]
+    for id, a in _nuclei.items():
+        assert A(id) == a
+    for id in _non_nuclei:
+        assert A(id) == None
 
 
 def test_Z(PDGIDs):
-    _nuclei = { PDGIDs.Proton: 1,
-                PDGIDs.HydrogenNucleus: 1,
-                PDGIDs.Carbon12: 6
-                }
-    _non_nuclei = [ id for id in PDGIDs if id not in _nuclei.keys() ]
-    for id, z in _nuclei.items(): assert Z(id) == z
-    for id in _non_nuclei: assert Z(id) == None
+    _nuclei = {PDGIDs.Proton: 1, PDGIDs.HydrogenNucleus: 1, PDGIDs.Carbon12: 6}
+    _non_nuclei = [id for id in PDGIDs if id not in _nuclei.keys()]
+    for id, z in _nuclei.items():
+        assert Z(id) == z
+    for id in _non_nuclei:
+        assert Z(id) == None

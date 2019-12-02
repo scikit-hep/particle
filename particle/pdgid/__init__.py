@@ -101,37 +101,38 @@ from .functions import Z
 from .pdgid import PDGID
 
 
-__all__ = ('is_valid',
-           'abspid',
-           #
-           'is_lepton',
-           'is_hadron',
-           'is_meson',
-           'is_baryon',
-           'is_diquark',
-           'is_nucleus',
-           'is_pentaquark',
-           'is_Rhadron',
-           'is_Qball',
-           'is_dyon',
-           'is_SUSY',
-           #
-           'has_down',
-           'has_up',
-           'has_strange',
-           'has_charm',
-           'has_bottom',
-           'has_top',
-           'has_fundamental_anti',
-           #
-           'charge',
-           'three_charge',
-           'j_spin',
-           'J',
-           's_spin',
-           'S',
-           'l_spin',
-           'L',
-           'A',
-           'Z'
-           )
+__all__ = (
+    "is_valid",
+    "abspid",
+    #
+    "is_lepton",
+    "is_hadron",
+    "is_meson",
+    "is_baryon",
+    "is_diquark",
+    "is_nucleus",
+    "is_pentaquark",
+    "is_Rhadron",
+    "is_Qball",
+    "is_dyon",
+    "is_SUSY",
+    #
+    "has_down",
+    "has_up",
+    "has_strange",
+    "has_charm",
+    "has_bottom",
+    "has_top",
+    "has_fundamental_anti",
+    #
+    "charge",
+    "three_charge",
+    "j_spin",
+    "J",
+    "s_spin",
+    "S",
+    "l_spin",
+    "L",
+    "A",
+    "Z",
+)
