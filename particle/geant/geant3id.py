@@ -4,7 +4,7 @@
 # or https://github.com/scikit-hep/particle for details.
 
 """
-Class representing a Geant ID.
+Class representing a Geant3 ID.
 """
 
 from __future__ import absolute_import
@@ -16,25 +16,25 @@ from ..pdgid import PDGID
 from ..exceptions import MatchingIDNotFound
 
 
-with data.open_text(data, "pdgid_to_geantid.csv") as _f:
+with data.open_text(data, "pdgid_to_geant3id.csv") as _f:
     _bimap = {
-        int(v["GEANTID"]): int(v["PDGID"])
+        int(v["GEANT3ID"]): int(v["PDGID"])
         for v in csv.DictReader(l for l in _f if not l.startswith("#"))
     }
 
 
-class GeantID(int):
+class Geant3ID(int):
     """
-    Holds a Geant ID.
+    Holds a Geant3 ID.
 
     Examples
     --------
-    >>> geantid = GeantID(8)
+    >>> gid = Geant3ID(8)
 
     >>> from particle import Particle
-    >>> p = Particle.from_pdgid(geantid.to_pdgid())
+    >>> p = Particle.from_pdgid(gid.to_pdgid())
 
-    >>> p = Particle.find(pdgid=geantid.to_pdgid())
+    >>> p = Particle.find(pdgid=gid.to_pdgid())
     >>> p.name
     'pi+'
     """
@@ -50,14 +50,14 @@ class GeantID(int):
             if v == pdgid:
                 return cls(k)
         raise MatchingIDNotFound(
-            "Non-existent GeantID for input PDGID {0} !".format(pdgid)
+            "Non-existent Geant3ID for input PDGID {0} !".format(pdgid)
         )
 
     def to_pdgid(self):
         return PDGID(_bimap[self])
 
     def __repr__(self):
-        return "<GeantID: {:d}>".format(int(self))
+        return "<Geant3ID: {:d}>".format(int(self))
 
     def __str__(self):
         return repr(self)
@@ -65,7 +65,7 @@ class GeantID(int):
     def __neg__(self):
         """
         Note:
-        Allowed operation though ALL Geant identification codes are positive!
+        Allowed operation though ALL Geant3 identification codes are positive!
         """
         return self.__class__(-int(self))
 
