@@ -1,10 +1,17 @@
 Changelog
 =========
 
+Version 0.8.1
+-------------
+In preparation.
+
+* Documentation updates.
+
+
 Version 0.8.0
 -------------
 December 3rd, 2019
-+
+
 * Changes in API:
   - ``GeantID`` class renamed to ``Geant3ID``.
 * Data CSV files:

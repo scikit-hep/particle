@@ -5,6 +5,11 @@
 
 """
 Class representing a Geant3 ID.
+
+Note
+----
+No equivalent Geant4 ID class is available/necessary given that Geant4
+follows the PDG rules, hence uses the standard PDG IDs.
 """
 
 from __future__ import absolute_import
