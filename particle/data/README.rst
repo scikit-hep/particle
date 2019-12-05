@@ -76,7 +76,8 @@ for completeness (e.g., non-yet-observed baryons, leptoquarks).
 ``pdgid_to_Geant3ID.csv``
 =========================
 
-A list of matching particle PDG and Geant identification codes.
+A list of matching particle PDG and Geant3 identification codes;
+Geant4 follows the PDG rules, hence uses the standard PDG IDs.
 Note that this file contains entries for particles not in the PDG data file,
 for completeness (e.g., non-yet-observed baryons, leptoquarks).
 
