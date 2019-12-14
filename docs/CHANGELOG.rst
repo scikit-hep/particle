@@ -3,8 +3,9 @@ Changelog
 
 Version 0.8.1
 -------------
-In preparation.
+December 14th, 2019
 
+* Fix of lifetimes/widths (unknown) for corner cases.
 * Documentation updates.
 
 
