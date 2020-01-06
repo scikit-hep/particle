@@ -85,7 +85,7 @@ def get_from_latex(filename):
     The CVS file format is the following: PDGID, ParticleLatexName.
     """
     latex_table = pd.read_csv(filename, index_col=0, comment="#")
-    return latex_table.particle
+    return latex_table.LATEXNAME
 
 
 def filter_file(fileobject):
