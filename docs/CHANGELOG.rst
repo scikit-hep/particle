@@ -1,6 +1,18 @@
 Changelog
 =========
 
+Version 0.9.0
+-------------
+January 7th, 2020
+
+* ``Particle`` class:
+  - Robust handling of missing mass info.
+* Data CSV files:
+  - Version 4 of package data files,
+    with more particles added (mostly badly-known particles relevant for MC).
+  - Version header now also present in the `particleXXXX.csv` files.
+
+
 Version 0.8.1
 -------------
 December 14th, 2019
