@@ -23,15 +23,19 @@ def test_generate(tmp_path):
     particle2008 = tmp_path / "particle2008.csv"
     particle2019 = tmp_path / "particle2019.csv"
 
-    produce_files(particle2008, particle2019, "2019")
+    produce_files(particle2008, particle2019, "DUMMY", "2019")
 
     particle2008_data = data.open_text(data, "particle2008.csv")
     with particle2008.open() as src, particle2008_data as res:
-        assert src.read() == res.read()
+        src = [l for l in src.readlines() if not l.startswith("#")]
+        res = [l for l in res.readlines() if not l.startswith("#")]
+        assert src == res
 
     particle2019_data = data.open_text(data, "particle2019.csv")
     with particle2019.open() as src, particle2019_data as res:
-        assert src.read() == res.read()
+        src = [l for l in src.readlines() if not l.startswith("#")]
+        res = [l for l in res.readlines() if not l.startswith("#")]
+        assert src == res
 
 
 @pytest.mark.parametrize("filename", FILES)
