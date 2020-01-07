@@ -51,9 +51,7 @@ When you are done, you can save one or more of the tables:
 """
 
 import os
-
-FILE_DIR = os.path.dirname(os.path.realpath(__file__))
-
+from datetime import date
 import pandas as pd
 
 try:
@@ -77,6 +75,9 @@ from .enums import (
 )
 
 from .. import data
+
+
+FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 def get_from_latex(filename):
@@ -332,7 +333,7 @@ def update_from_mcd(full_table, update_table):
     return full_table
 
 
-def produce_files(particle2008, particle2019, year):
+def produce_files(particle2008, particle2019, version, year):
     "This produces listed output files from all input files."
 
     full_table = get_from_pdg_extended(
@@ -347,7 +348,10 @@ def produce_files(particle2008, particle2019, year):
     # 30553 - the Upsilon(2)(1D) was wrongly assigned its ID, and has been renumbered
     full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
 
-    full_table.to_csv(particle2008, float_format="%.12g")
+    with open(particle2008, 'w', newline='\n') as f:
+        f.write(version_header(particle2008))
+        full_table.to_csv(f, float_format="%.12g")
+    f.close()
 
     addons = get_from_pdg_extended(
         data.open_text(data, "mass_width_2008_ext.fwf"),
@@ -364,34 +368,48 @@ def produce_files(particle2008, particle2019, year):
     ext_table = get_from_pdg_mcd(data.open_text(data, "mass_width_" + year + ".mcd"))
     new_table = update_from_mcd(full_table, ext_table)
 
-    new_table.to_csv(particle2019, float_format="%.12g")
+    with open(particle2019, 'w', newline='\n') as f:
+        f.write(version_header(particle2019))
+        new_table.to_csv(f, float_format="%.12g")
+    f.close()
 
 
-def main(year):
+def version_header(filename):
+    filename = os.path.basename(filename)
+    VERSION = 4  # version of CSV files
+    DATE = date.isoformat(date.today())
+    return '# (c) Scikit-HEP project - Particle package data file - {fname} - version {version} - {date}\n'.format(fname=filename, version=VERSION, date=DATE)
+
+
+def main(version, year):
     "Regenerate output files - run directly inside the package"
     master_dir = os.path.dirname(FILE_DIR)
     data_dir = os.path.join(master_dir, "data")
     particle2008 = os.path.join(data_dir, "particle2008.csv")
     particlenew = os.path.join(data_dir, "particle" + year + ".csv")
 
-    produce_files(particle2008, particlenew, year)
+    produce_files(particle2008, particlenew, version, year)
 
 
-def convert(output, fwf, latex=None):
+def convert(version, output, fwf, latex=None):
     latexes = [data.open_text(data, "pdgid_to_latexname.csv")]
     if latex:
         latexes.append(latex)
     table = get_from_pdg_extended(fwf, latexes)
 
-    table.to_csv(output, float_format="%.12g")
+    with open(output, 'w', newline='\n') as f:
+        f.write(version_header(output))
+        table.to_csv(f, float_format="%.12g")
+    f.close()
+    #table.to_csv(output, float_format="%.12g")
 
 
 def run_regen(args):
-    main(args.year)
+    main(args.version, args.year)
 
 
 def run_convert(args):
-    convert(args.output, args.fwf, args.latex)
+    convert(args.version, args.output, args.fwf, args.latex)
 
 
 if __name__ == "__main__":
@@ -408,6 +426,9 @@ if __name__ == "__main__":
     parser_regen.add_argument(
         "year", help="Year of file to read in/produce (2008 is always read/produced)"
     )
+    parser_regen.add_argument(
+        "version", help="Version of package CSV data files to be written in headers"
+    )
     parser_regen.set_defaults(func=run_regen)
 
     parser_convert = subparsers.add_parser(
@@ -423,6 +444,9 @@ if __name__ == "__main__":
         help="Optional Latex file with names",
         nargs="?",
         default=None,
+    )
+    parser_convert.add_argument(
+        "version", help="Version of package CSV data files to be written in headers"
     )
     parser_convert.set_defaults(func=run_convert)
 
