@@ -348,7 +348,7 @@ def produce_files(particle2008, particle2019, version, year):
     # 30553 - the Upsilon(2)(1D) was wrongly assigned its ID, and has been renumbered
     full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
 
-    with open(particle2008, 'w', newline='\n') as f:
+    with open(particle2008, "w", newline="\n") as f:
         f.write(version_header(particle2008))
         full_table.to_csv(f, float_format="%.12g")
     f.close()
@@ -368,7 +368,7 @@ def produce_files(particle2008, particle2019, version, year):
     ext_table = get_from_pdg_mcd(data.open_text(data, "mass_width_" + year + ".mcd"))
     new_table = update_from_mcd(full_table, ext_table)
 
-    with open(particle2019, 'w', newline='\n') as f:
+    with open(particle2019, "w", newline="\n") as f:
         f.write(version_header(particle2019))
         new_table.to_csv(f, float_format="%.12g")
     f.close()
@@ -378,7 +378,9 @@ def version_header(filename):
     filename = os.path.basename(filename)
     VERSION = 4  # version of CSV files
     DATE = date.isoformat(date.today())
-    return '# (c) Scikit-HEP project - Particle package data file - {fname} - version {version} - {date}\n'.format(fname=filename, version=VERSION, date=DATE)
+    return "# (c) Scikit-HEP project - Particle package data file - {fname} - version {version} - {date}\n".format(
+        fname=filename, version=VERSION, date=DATE
+    )
 
 
 def main(version, year):
@@ -397,11 +399,11 @@ def convert(version, output, fwf, latex=None):
         latexes.append(latex)
     table = get_from_pdg_extended(fwf, latexes)
 
-    with open(output, 'w', newline='\n') as f:
+    with open(output, "w", newline="\n") as f:
         f.write(version_header(output))
         table.to_csv(f, float_format="%.12g")
     f.close()
-    #table.to_csv(output, float_format="%.12g")
+    # table.to_csv(output, float_format="%.12g")
 
 
 def run_regen(args):

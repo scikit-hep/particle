@@ -27,14 +27,14 @@ def test_generate(tmp_path):
 
     particle2008_data = data.open_text(data, "particle2008.csv")
     with particle2008.open() as src, particle2008_data as res:
-        src = [l for l in src.readlines() if not l.startswith('#')]
-        res = [l for l in res.readlines() if not l.startswith('#')]
+        src = [l for l in src.readlines() if not l.startswith("#")]
+        res = [l for l in res.readlines() if not l.startswith("#")]
         assert src == res
 
     particle2019_data = data.open_text(data, "particle2019.csv")
     with particle2019.open() as src, particle2019_data as res:
-        src = [l for l in src.readlines() if not l.startswith('#')]
-        res = [l for l in res.readlines() if not l.startswith('#')]
+        src = [l for l in src.readlines() if not l.startswith("#")]
+        res = [l for l in res.readlines() if not l.startswith("#")]
         assert src == res
 
 
