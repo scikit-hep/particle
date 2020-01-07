@@ -348,6 +348,7 @@ def produce_files(particle2008, particle2019, version, year):
     # 30553 - the Upsilon(2)(1D) was wrongly assigned its ID, and has been renumbered
     full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
 
+    particle2008 = str(particle2008)  # Conversion to handle pathlib on Python < 3.6
     with open(particle2008, "w", newline="\n") as f:
         f.write(version_header(particle2008))
         full_table.to_csv(f, float_format="%.12g")
@@ -368,6 +369,7 @@ def produce_files(particle2008, particle2019, version, year):
     ext_table = get_from_pdg_mcd(data.open_text(data, "mass_width_" + year + ".mcd"))
     new_table = update_from_mcd(full_table, ext_table)
 
+    particle2019 = str(particle2019)  # Conversion to handle pathlib on Python < 3.6
     with open(particle2019, "w", newline="\n") as f:
         f.write(version_header(particle2019))
         new_table.to_csv(f, float_format="%.12g")
