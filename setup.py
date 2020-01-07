@@ -23,7 +23,7 @@ INSTALL_REQUIRES = [
     'enum34>=1.1; python_version<"3.4"',
     'importlib_resources>=1.0; python_version<"3.7"',
     "attrs>=17.4.0",
-    "hepunits>=1.0.0",
+    "hepunits>=1.1.0",
 ]
 
 extras = {"test": ["pytest", "pandas"], "convert": ["pandas"]}
