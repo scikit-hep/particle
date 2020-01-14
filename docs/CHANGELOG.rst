@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version 0.9.1
+-------------
+Under development
+
+* ``Particle`` class:
+  - Documentation added to various methods.
+  - Minor fix to class method ``from_evtgen_name(...)``.
+
+
 Version 0.9.0
 -------------
 January 7th, 2020
@@ -10,7 +19,7 @@ January 7th, 2020
 * Data CSV files:
   - Version 4 of package data files,
     with more particles added (mostly badly-known particles relevant for MC).
-  - Version header now also present in the `particleXXXX.csv` files.
+  - Version header now also present in the ``particleXXXX.csv`` files.
 
 
 Version 0.8.1
