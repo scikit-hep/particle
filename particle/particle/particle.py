@@ -45,7 +45,6 @@ from .utilities import programmatic_name, str_with_unc, latex_to_html_name
 
 from .kinematics import width_to_lifetime
 
-from ..exceptions import MatchingIDNotFound
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
 
 
