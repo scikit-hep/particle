@@ -737,9 +737,15 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @classmethod
     def from_pdgid(cls, value):
         """
-        Get a particle from a PDGID. Uses PDG data table.
+        Get a particle from a PDGID. Uses by default the package
+        extended PDG data table.
 
-        An exception is thrown if the input PDGID is invalid or if no matching PDGID is found.
+        Raises
+        ------
+        InvalidParticle
+            If the input PDG ID is an invalid identification code.
+        ParticleNotFound
+            If no matching PDG ID is found in the loaded data table(s).
         """
         if not is_valid(value):
             raise InvalidParticle("Input PDGID {0} is invalid!".format(value))
@@ -848,10 +854,17 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @classmethod
     def find(cls, *args, **search_terms):
         """
-        Require that your search returns one and only one result.
+        Require that the search returns one and only one result.
         The method otherwise raises a ParticleNotFound or RuntimeError exception.
 
-        See findall for full listing of parameters.
+        See `findall` for full listing of parameters.
+
+        Raises
+        ------
+        ParticleNotFound
+            If no matching particle is found in the loaded data table(s).
+        RuntimeError
+            If too many particles match the search criteria.
         """
 
         results = cls.findall(*args, **search_terms)
@@ -868,15 +881,16 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @classmethod
     def from_evtgen_name(cls, name):
         """
-        Get a particle from a .dec decay file (DecFile) style name,
-        i.e. an EvtGen name.
+        Get a particle from an EvtGen particle name, as in .dec decay files.
+
+        Raises
+        ------
+        ParticleNotFound
+            If `from_pdgid` returns no match.
+        MatchingIDNotFound
+            If the matching EvtGen name - PDG ID done internally is unsuccessful.
         """
-        try:
-            return cls.from_pdgid(EvtGenName2PDGIDBiMap[name])
-        except ParticleNotFound:
-            raise ParticleNotFound(
-                'Could not find particle with EvtGen name "{0}".'.format(name)
-            )
+        return cls.from_pdgid(EvtGenName2PDGIDBiMap[name])
 
     @classmethod
     def from_string(cls, name):
