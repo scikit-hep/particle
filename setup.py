@@ -53,7 +53,15 @@ setup(
     setup_requires=[] + pytest_runner,
     tests_require=extras["test"],
     extras_require=extras,
-    keywords=["HEP", "PDG", "PDGID", "particle", "particle data table"],
+    keywords=[
+        "HEP",
+        "PDG",
+        "PDGID",
+        "particle",
+        "particle properties",
+        "particle data table",
+        "MC identification codes",
+    ],
     classifiers=[
         # complete classifier list: http://pypi.python.org/pypi?%3Aaction=list_classifiers
         "Topic :: Scientific/Engineering",

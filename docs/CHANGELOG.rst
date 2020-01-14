@@ -3,7 +3,7 @@ Changelog
 
 Version 0.9.1
 -------------
-Under development
+January 14th, 2020
 
 * ``Particle`` class:
   - Documentation added to various methods.
