@@ -33,6 +33,9 @@ Particle: PDG particle data and identification codes
    :alt: Code styled with Black
    :target: https://github.com/psf/black
 
+.. image:: https://scikit-hep.org/assets/images/Scikit--HEP-Project-blue.svg
+   :alt: Scikit-HEP project package
+   :target: https://scikit-hep.org
 
 Particle provides a pythonic interface to the `Particle Data Group <http://pdg.lbl.gov/>`_ (PDG)
 particle data tables and particle identification codes.
