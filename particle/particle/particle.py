@@ -353,7 +353,7 @@ class Particle(object):
                         headers=tbl_names,
                         tablefmt=tablefmt,
                         floatfmt=floatfmt,
-                        numalign=numalign
+                        numalign=numalign,
                     ),
                     file=outfile,
                 )
@@ -363,7 +363,7 @@ class Particle(object):
                 headers=tbl_names,
                 tablefmt=tablefmt,
                 floatfmt=floatfmt,
-                numalign=numalign
+                numalign=numalign,
             )
 
     @classmethod
