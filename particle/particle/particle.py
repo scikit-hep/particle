@@ -293,16 +293,20 @@ class Particle(object):
             Column alignment for numbers, see the tabulate's package
             tabulate function for a description of available options.
 
+        Returns
+        -------
+        str or None if filename is None or not, respectively.
+
         Note
         ----
         Uses the `tabulate` package.
 
         Examples
         --------
-        Particle.dump_table()
-        Particle.dump_table(n_rows=5)
-        Particle.dump_table(exclusive_fields=['pdgid', 'pdg_name'])
-        Particle.dump_table(filter_fn=lambda p: p.pdgid.has_bottom)
+        print(Particle.dump_table())
+        print(Particle.dump_table(n_rows=5))
+        print(Particle.dump_table(exclusive_fields=['pdgid', 'pdg_name']))
+        print(Particle.dump_table(filter_fn=lambda p: p.pdgid.has_bottom))
         Particle.dump_table(filename='output.txt', tablefmt='rst')
         """
         from tabulate import tabulate
@@ -349,19 +353,17 @@ class Particle(object):
                         headers=tbl_names,
                         tablefmt=tablefmt,
                         floatfmt=floatfmt,
-                        numalign=numalign,
+                        numalign=numalign
                     ),
                     file=outfile,
                 )
         else:
-            print(
-                tabulate(
-                    tbl,
-                    headers=tbl_names,
-                    tablefmt=tablefmt,
-                    floatfmt=floatfmt,
-                    numalign=numalign,
-                )
+            return tabulate(
+                tbl,
+                headers=tbl_names,
+                tablefmt=tablefmt,
+                floatfmt=floatfmt,
+                numalign=numalign
             )
 
     @classmethod
