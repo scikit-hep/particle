@@ -189,9 +189,7 @@ class Particle(object):
 
     def __repr__(self):
         return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass}>'.format(
-            self=self,
-            pdgid=int(self.pdgid),
-            mass=self._safe_mass(),
+            self=self, pdgid=int(self.pdgid), mass=self._safe_mass()
         )
 
     _table = None  # Loaded table of entries
@@ -696,7 +694,9 @@ class Particle(object):
         if self.mass is None:
             return "?"
         else:
-            return "{0} MeV".format(str_with_unc(self.mass, self.mass_upper, self.mass_lower))
+            return "{0} MeV".format(
+                str_with_unc(self.mass, self.mass_upper, self.mass_lower)
+            )
 
     def describe(self):
         "Make a nice high-density string for a particle's properties."
