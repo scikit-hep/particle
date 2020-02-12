@@ -169,7 +169,7 @@ class Particle(object):
 
     pdgid = attr.ib(converter=PDGID)
     pdg_name = attr.ib()
-    mass = attr.ib()
+    mass = attr.ib(-1, converter=lambda v: None if v < 0 else v)
     mass_upper = attr.ib(-1, converter=lambda v: None if v < 0 else v)
     mass_lower = attr.ib(-1, converter=lambda v: None if v < 0 else v)
     width = attr.ib(-1, converter=lambda v: None if v < 0 else v)
@@ -188,10 +188,10 @@ class Particle(object):
     latex_name = attr.ib("Unknown")
 
     def __repr__(self):
-        return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass} MeV>'.format(
+        return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass}>'.format(
             self=self,
             pdgid=int(self.pdgid),
-            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
+            mass=self._safe_mass(),
         )
 
     _table = None  # Loaded table of entries
@@ -649,7 +649,8 @@ class Particle(object):
         return ("$" + name + "$") if self.latex_name else "?"
 
     def _width_or_lifetime(self):
-        """Display either the particle width or the lifetime.
+        """
+        Display either the particle width or the lifetime.
         Internally used by the describe() method.
 
         Note
@@ -686,13 +687,24 @@ class Particle(object):
                 width=str_with_unc(self.width, self.width_upper, self.width_lower)
             )
 
+    def _safe_mass(self):
+        """
+        Display a reasonable particle mass printout
+        even when no mass value is available.
+        Internally used by the describe() method.
+        """
+        if self.mass is None:
+            return "?"
+        else:
+            return "{0} MeV".format(str_with_unc(self.mass, self.mass_upper, self.mass_lower))
+
     def describe(self):
         "Make a nice high-density string for a particle's properties."
         if self.pdgid == 0:
             return "Name: Unknown"
 
         val = """Name: {self!s:<14} ID: {self.pdgid:<12} Latex: {latex_name}
-Mass  = {mass} MeV
+Mass  = {mass}
 {width_or_lifetime}
 Q (charge)        = {Q:<6}  J (total angular) = {self.J!s:<7}  P (space parity) = {P}
 C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     = {G}
@@ -702,7 +714,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             C=Parity_undo[self.C],
             Q=Charge_undo[self.three_charge],
             P=Parity_undo[self.P],
-            mass=str_with_unc(self.mass, self.mass_upper, self.mass_lower),
+            mass=self._safe_mass(),
             width_or_lifetime=self._width_or_lifetime(),
             latex_name=self._repr_latex_(),
         )
@@ -734,7 +746,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @classmethod
     def empty(cls):
         "Make a new empty particle."
-        return cls(0, "Unknown", 0.0, 0.0, 0, Inv.Same)
+        return cls(0, "Unknown", anti_flag=Inv.Same)
 
     @classmethod
     def from_pdgid(cls, value):
