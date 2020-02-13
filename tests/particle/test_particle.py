@@ -483,8 +483,10 @@ def test_isospin(pid, isospin):
 def test_default_particle():
     p = Particle.empty()
 
-    assert repr(p) == '<Particle: name="Unknown", pdgid=0, mass=0.0 MeV>'
+    assert repr(p) == '<Particle: name="Unknown", pdgid=0, mass=?>'
     assert "Name: Unknown" in p.describe()
+    assert p.mass == None
+    assert p.width == None
     assert p.spin_type == SpinType.NonDefined
     assert p.programmatic_name == "Unknown"
     assert p.status == Status.Nonexistent
