@@ -189,7 +189,7 @@ class Particle(object):
 
     def __repr__(self):
         return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass}>'.format(
-            self=self, pdgid=int(self.pdgid), mass=self._safe_mass()
+            self=self, pdgid=int(self.pdgid), mass=self._str_mass()
         )
 
     _table = None  # Loaded table of entries
@@ -685,7 +685,7 @@ class Particle(object):
                 width=str_with_unc(self.width, self.width_upper, self.width_lower)
             )
 
-    def _safe_mass(self):
+    def _str_mass(self):
         """
         Display a reasonable particle mass printout
         even when no mass value is available.
@@ -714,7 +714,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             C=Parity_undo[self.C],
             Q=Charge_undo[self.three_charge],
             P=Parity_undo[self.P],
-            mass=self._safe_mass(),
+            mass=self._str_mass(),
             width_or_lifetime=self._width_or_lifetime(),
             latex_name=self._repr_latex_(),
         )
