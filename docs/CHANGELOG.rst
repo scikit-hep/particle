@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version 0.9.2
+-------------
+February 14th, 2020
+
+* ``Particle`` class:
+  - Deal with particles with no mass info.
+  - Make ``Particle.dump_table()`` work better in notebooks.
+
+
 Version 0.9.1
 -------------
 January 14th, 2020
