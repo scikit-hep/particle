@@ -26,7 +26,7 @@ INSTALL_REQUIRES = [
     "hepunits>=1.1.0",
 ]
 
-extras = {"test": ["pytest", "pandas"], "convert": ["pandas"]}
+extras = {"test": ["pytest", "pandas", "tabulate"], "convert": ["pandas"]}
 
 
 def get_version():

@@ -11,6 +11,10 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
+    python -m pip install tabulate
+  displayName: 'Install tabulate'
+
+- script: |
     python -m pip install numpy pandas
   displayName: 'Install Pandas'
   condition: and(succeeded(), ne(variables['python.version'], '2.7'))
