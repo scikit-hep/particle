@@ -23,7 +23,7 @@ from particle.particle.particle import ParticleNotFound, InvalidParticle
 from particle.pdgid import PDGID
 from particle.pdgid.functions import _digit, Location
 
-from hepunits import second
+from hepunits import second, meter
 
 
 DIR = Path(__file__).parent.resolve()
@@ -490,6 +490,31 @@ def test_default_particle():
     assert p.spin_type == SpinType.NonDefined
     assert p.programmatic_name == "Unknown"
     assert p.status == Status.Nonexistent
+
+
+def test_dump_table():
+    tbl = Particle.dump_table(
+        filter_fn=lambda p: p.pdgid.is_meson
+        and p.pdgid.has_strange
+        and p.ctau > 1 * meter,
+        exclusive_fields=["pdgid", "name"],
+    )
+    assert (
+        tbl
+        == "  pdgid  name\n-------  ------\n    130  K(L)0\n    321  K+\n   -321  K-"
+    )
+
+    tbl = Particle.dump_table(
+        filter_fn=lambda p: p.pdgid > 0
+        and p.pdgid.is_meson
+        and p.pdgid.has_strange
+        and p.pdgid.has_charm,
+        exclusive_fields=["name"],
+        n_rows=2,
+        tablefmt="html",
+    )
+
+    assert "<td>D(s)+ </td></tr>\n<tr><td>D(s)*+</td>" in tbl
 
 
 ampgen_style_names = (
