@@ -47,6 +47,7 @@ class Charge(IntEnum):
     """Enum representing the particle charge * 3."""
 
     pp = 6
+    p43 = 4  # 4/3
     p = 3
     p23 = 2  # 2/3
     p13 = 1  # 1/3
@@ -54,6 +55,7 @@ class Charge(IntEnum):
     m13 = -1  # -1/3
     m23 = -2  # -2/3
     m = -3
+    m43 = -4  # -4/3
     mm = -6
     u = 50
 
@@ -75,12 +77,36 @@ class Inv(IntEnum):
 
 
 class Status(IntEnum):
-    "The status of the particle."
+    """
+    The status of the particle, a one-letter code used by the PDG
+    e.g. in the extended particle data table (PDT), see our .fwf files.
+    The meanings are reproduced here for completeness,
+    see also the Status_mapping dictionary in this module.
+    RPP stands for the (PDG) Review of Particle Properties.
+
+    Possible Values
+    ---------------
+        Common   : extended PDT code "R" - established particle
+                   in RPP Summary Table in Particle Physics Booklet
+                   (established quarks, gauge bosons, leptons, mesons and baryons,
+                   except those in D below).
+        Rare     : extended PDT code "D" - the particle is omitted from the
+                   Summary Tables in Particle Physics Booklet, but not from the Review.
+                   These entries are omitted only to save space even though they are well established.
+        Unsure   : extended PDT code "S" - the particle is omitted from the
+                   particle properties Summary Tables because it is not well established.
+        Further  : extended PDT code "F" - special case "Further mesons", see RPP.
+                   These states are in the RPP database but are poorly established
+                   or observed by a single group and thus need confirmation.
+        NotInPDT : an extra code (empty string "") we here use for non-standard
+                   and exotic particles not in the PDT.
+    """
+
     Common = 0
     Rare = 1
     Unsure = 2
     Further = 3
-    Nonexistent = 4
+    NotInPDT = 4
 
 
 # Mappings that allow the above classes to be produced from text mappings
@@ -93,6 +119,7 @@ Parity_mapping = {
 }
 Charge_mapping = {
     "++": Charge.pp,
+    "+4/3": Charge.p43,
     "+": Charge.p,
     "+2/3": Charge.p23,
     "+1/3": Charge.p13,
@@ -100,6 +127,7 @@ Charge_mapping = {
     "-1/3": Charge.m13,
     "-2/3": Charge.m23,
     "-": Charge.m,
+    "-4/3": Charge.m43,
     "--": Charge.mm,
     "?": Charge.u,
     "": Charge.u,
@@ -111,6 +139,7 @@ Status_mapping = {
     "D": Status.Rare,
     "S": Status.Unsure,
     "F": Status.Further,
+    "": Status.NotInPDT,
 }
 
 # Mappings that allow the above classes to be turned into text mappings
@@ -119,18 +148,21 @@ Parity_prog = {Parity.p: "p", Parity.o: "0", Parity.m: "m", Parity.u: "u"}
 
 Charge_undo = {
     Charge.pp: "++",
+    Charge.p43: "+4/3",
     Charge.p: "+",
     Charge.p23: "+2/3",
     Charge.p13: "+1/3",
     Charge.o: "0",
     Charge.m13: "-1/3",
-    Charge.m23: "+2/3",
+    Charge.m23: "-2/3",
     Charge.m: "-",
+    Charge.m43: "-4/3",
     Charge.mm: "--",
     Charge.u: "?",
 }
 Charge_prog = {
     Charge.pp: "pp",
+    Charge.p43: "p43",
     Charge.p: "p",
     Charge.p23: "p23",
     Charge.p13: "p13",
@@ -138,6 +170,7 @@ Charge_prog = {
     Charge.m13: "m13",
     Charge.m23: "m23",
     Charge.m: "m",
+    Charge.m43: "m43",
     Charge.mm: "mm",
     Charge.u: "u",
 }
