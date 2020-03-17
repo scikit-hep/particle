@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - pdgid_to_evtgenname.csv - version 4 - 2020-01-07
+# (c) Scikit-HEP project - Particle package data file - pdgid_to_evtgenname.csv - version 5 - 2020-03-17
 PDGID,STR
 1,d
 -1,anti-d
@@ -692,14 +692,10 @@ PDGID,STR
 -100311,anti-K(1460)0
 100313,K'*0
 -100313,anti-K'*0
-100315,K_2*(1980)0
--100315,anti-K_2*(1980)0
 100321,K(1460)+
 -100321,K(1460)-
 100323,K'*+
 -100323,K'*-
-100325,K_2*(1980)+
--100325,K_2*(1980)-
 100331,eta(1475)
 100333,phi(1680)
 100411,D(2S)+
@@ -782,6 +778,10 @@ PDGID,STR
 9010213,pi_1(1600)+
 -9010213,pi_1(1600)-
 9010221,f_0
+9010315,K_2*(1980)0
+-9010315,anti-K_2*(1980)0
+9010325,K_2*(1980)+
+-9010325,K_2*(1980)-
 9010443,psi(4160)
 9010553,Upsilon(11020)
 9020221,eta(1405)
