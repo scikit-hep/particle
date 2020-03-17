@@ -183,7 +183,7 @@ class Particle(object):
     C = attr.ib(Parity.u, converter=Parity)  # Charge conjugation parity
     anti_flag = attr.ib(0, converter=Inv)  # Info about particle name for anti-particles
     rank = attr.ib(0)
-    status = attr.ib(Status.Nonexistent, converter=Status)
+    status = attr.ib(Status.NotInPDT, converter=Status)
     quarks = attr.ib("", converter=str)
     latex_name = attr.ib("Unknown")
 
@@ -590,6 +590,8 @@ class Particle(object):
             return True  # antiparticle flips sign of particle
         if self.pdgid in (23, 25, 111, 130, 310, 311, -311):
             return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
+        if self.pdgid.is_diquark:
+            return False
         if abs(self.pdgid) in (2212, 2112):
             return False  # proton and neutron
         if abs(self.pdgid) < 19:
