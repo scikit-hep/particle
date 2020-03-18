@@ -36,7 +36,7 @@ def test_find():
 
     # No match found
     with pytest.raises(ParticleNotFound):
-        Particle.find(name="NonExistent")
+        Particle.find(name="NotInPDT")
 
     # Multiple matches found
     with pytest.raises(RuntimeError):
@@ -489,7 +489,7 @@ def test_default_particle():
     assert p.width == None
     assert p.spin_type == SpinType.NonDefined
     assert p.programmatic_name == "Unknown"
-    assert p.status == Status.Nonexistent
+    assert p.status == Status.NotInPDT
 
 
 def test_dump_table():

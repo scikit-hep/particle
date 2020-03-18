@@ -8,15 +8,15 @@ This is a conversion file, not part of the public API.
 
 The default CSV files can be updated directly using the command:
 
-    >>> python -m particle.particle.convert regenerate 2019    # doctest: +SKIP
+    >>> python -m particle.particle.convert regenerate 2019 <version_number>    # doctest: +SKIP
 
 A custom fwf file and LaTeX file can be converted into the CSV format using:
 
-    >>> python -m particle.particle.convert extended output.csv file.fwf latex.csv    # doctest: +SKIP
+    >>> python -m particle.particle.convert extended output.csv file.fwf <version_number> latex.csv    # doctest: +SKIP
 
 The command is typically
 
-    >>> python -m particle.particle.convert extended output.csv particle/data/mass_width_2008.fwf    # doctest: +SKIP
+    >>> python -m particle.particle.convert extended output.csv particle/data/mass_width_2008.fwf <version_number>    # doctest: +SKIP
 
 This file requires pandas. But most users will not need this file, as it only
 converts PDG data files into the CSV file(s) the public API tools use. The tests
@@ -96,7 +96,7 @@ def filter_file(fileobject):
     """
 
     if not hasattr(fileobject, "read"):
-        fileobject = open(fileobject)
+        fileobject = open(fileobject, encoding="utf-8")
 
     stream = StringIO()
     for line in fileobject:
@@ -310,8 +310,6 @@ def update_from_mcd(full_table, update_table):
     """
     Update the full table (aka the PDG extended-style table) with the
     up-to-date information from the PDG .mcd file.
-    Only the particles in the latter are kept when performing the update,
-    i.e. entries only in the extended file are removed in this update process.
 
     Example
     -------
@@ -323,12 +321,6 @@ def update_from_mcd(full_table, update_table):
     update_table_neg = update_table.copy()
     update_table_neg.index = -update_table_neg.index
     full_table.update(update_table_neg)
-
-    # Only keep rows present in the update table, i.e. the .mcd file
-    full_table = full_table[
-        full_table.index.isin(update_table.index)
-        | full_table.index.isin(update_table_neg.index)
-    ]
 
     return full_table
 
@@ -349,15 +341,22 @@ def produce_files(particle2008, particle2019, version, year):
     full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
 
     particle2008 = str(particle2008)  # Conversion to handle pathlib on Python < 3.6
-    with open(particle2008, "w", newline="\n") as f:
-        f.write(version_header(particle2008))
+    with open(particle2008, "w", newline="\n", encoding="utf-8") as f:
+        f.write(version_header(particle2008, version))
         full_table.to_csv(f, float_format="%.12g")
     f.close()
+
+    ext_table = get_from_pdg_mcd(data.open_text(data, "mass_width_" + year + ".mcd"))
 
     addons = get_from_pdg_extended(
         data.open_text(data, "mass_width_2008_ext.fwf"),
         [data.open_text(data, "pdgid_to_latexname.csv")],
     )
+
+    # Only keep rows present in the .mcd file specified by year
+    full_table = full_table[
+        full_table.index.isin(ext_table.index) | full_table.index.isin(-ext_table.index)
+    ]
 
     full_table = pd.concat([full_table, addons])
 
@@ -366,19 +365,18 @@ def produce_files(particle2008, particle2019, version, year):
 
     sort_particles(full_table)
 
-    ext_table = get_from_pdg_mcd(data.open_text(data, "mass_width_" + year + ".mcd"))
     new_table = update_from_mcd(full_table, ext_table)
 
     particle2019 = str(particle2019)  # Conversion to handle pathlib on Python < 3.6
-    with open(particle2019, "w", newline="\n") as f:
-        f.write(version_header(particle2019))
+    with open(particle2019, "w", newline="\n", encoding="utf-8") as f:
+        f.write(version_header(particle2019, version))
         new_table.to_csv(f, float_format="%.12g")
     f.close()
 
 
-def version_header(filename):
+def version_header(filename, version_number):
     filename = os.path.basename(filename)
-    VERSION = 4  # version of CSV files
+    VERSION = version_number  # version of CSV files
     DATE = date.isoformat(date.today())
     return "# (c) Scikit-HEP project - Particle package data file - {fname} - version {version} - {date}\n".format(
         fname=filename, version=VERSION, date=DATE
@@ -401,11 +399,10 @@ def convert(version, output, fwf, latex=None):
         latexes.append(latex)
     table = get_from_pdg_extended(fwf, latexes)
 
-    with open(output, "w", newline="\n") as f:
-        f.write(version_header(output))
+    with open(output, "w", newline="\n", encoding="utf-8") as f:
+        f.write(version_header(output, version))
         table.to_csv(f, float_format="%.12g")
     f.close()
-    # table.to_csv(output, float_format="%.12g")
 
 
 def run_regen(args):
@@ -438,9 +435,10 @@ if __name__ == "__main__":
     parser_convert = subparsers.add_parser(
         "extended", help="Make a new file from extended inputs"
     )
-    parser_convert.add_argument("output", type=FileType("w"), help="Output file name")
+    parser_convert.add_argument("output", help="Output file name")
+    parser_convert.add_argument("fwf", help="Fixed width format extended file")
     parser_convert.add_argument(
-        "fwf", type=FileType("r"), help="Fixed width format extended file"
+        "version", help="Version of package CSV data files to be written in headers"
     )
     parser_convert.add_argument(
         "latex",
@@ -448,9 +446,6 @@ if __name__ == "__main__":
         help="Optional Latex file with names",
         nargs="?",
         default=None,
-    )
-    parser_convert.add_argument(
-        "version", help="Version of package CSV data files to be written in headers"
     )
     parser_convert.set_defaults(func=run_convert)
 
