@@ -5,7 +5,12 @@
 
 from __future__ import absolute_import
 
-from collections import Mapping
+try:
+    # for Python 3
+    from collections.abc import Mapping
+except ImportError:
+    # for Python 2.7
+    from collections import Mapping
 
 import csv
 
