@@ -22,7 +22,7 @@ pytest_runner = ["pytest-runner"] if needs_pytest else []
 INSTALL_REQUIRES = [
     'enum34>=1.1; python_version<"3.4"',
     'importlib_resources>=1.0; python_version<"3.7"',
-    "attrs>=17.4.0",
+    "attrs>=19.2",
     "hepunits>=1.1.0",
 ]
 
