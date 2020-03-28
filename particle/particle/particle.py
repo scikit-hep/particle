@@ -62,7 +62,7 @@ def _isospin_converter(isospin):
 
 
 @total_ordering
-@attr.s(slots=True, cmp=False, repr=False)
+@attr.s(slots=True, eq=False, order=False, repr=False)
 class Particle(object):
     """
     The Particle object class. Hold a series of properties for a particle.
