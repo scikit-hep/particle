@@ -198,7 +198,14 @@ class Particle(object):
     @classmethod
     def table_names(cls):
         """
-        Return the list of names loaded (will load the table, check with table_loaded() first if you don't want to load).
+        Return the list of names loaded.
+
+        Note
+        ----
+        Calling this class method will load the default table,
+        if no table has so far been loaded.
+        Check with table_loaded() first if you don't want this loading
+        to be triggered by the call.
         """
 
         if cls._table_names is None:
@@ -393,7 +400,6 @@ class Particle(object):
 
             for v in r:
                 value = int(v["ID"])
-                pdg_name = v["Name"]
 
                 # Replace the previous value if appending
                 if value in cls._table:
@@ -496,7 +502,10 @@ class Particle(object):
     @property
     def three_charge(self):
         "Three times the particle charge (charge * 3), in units of the positron charge."
-        return int(self._three_charge) if self._three_charge != Charge.u else None
+        if not self.pdgid.is_nucleus:
+            return int(self._three_charge) if self._three_charge != Charge.u else None
+        else:
+            return self.pdgid.three_charge
 
     @property
     def lifetime(self):
@@ -581,62 +590,11 @@ class Particle(object):
     __neg__ = invert
     __invert__ = invert
 
-    def _charge_in_name(self):
-        """Assess whether the particle charge is part of the particle name.
-
-        Internally used when creating the name.
-        """
-        if self.anti_flag == Inv.ChargeInv:
-            return True  # antiparticle flips sign of particle
-        if self.pdgid in (23, 25, 111, 130, 310, 311, -311):
-            return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
-        if self.pdgid.is_diquark:
-            return False
-        if abs(self.pdgid) in (2212, 2112):
-            return False  # proton and neutron
-        if abs(self.pdgid) < 19:
-            return (
-                False
-            )  # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
-        if self.three_charge is None:
-            return False  # deal with corner cases ;-)
-        if self.is_self_conjugate:
-            pid = self.pdgid
-            if pid < 25:
-                return False  # Gauge bosons
-            # Quarkonia never exhibit the 0 charge
-            # All eta, eta', h, h', omega, phi, f, f' light mesons are supposed to have an s-sbar component (see PDG site),
-            # but some particles have pdgid.has_strange==False :S! Play it safe ...
-            elif any(
-                [
-                    chr in self.pdg_name
-                    for chr in ("eta", "h(", "h'(", "omega", "phi", "f", "f'")
-                ]
-            ):
-                return False
-            elif pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top:
-                return False
-            else:  # Light unflavoured mesons
-                return True
-        # Lambda baryons
-        if (
-            self.pdgid.is_baryon
-            and _digit(self.pdgid, Location.Nq2) == 1
-            and self.I
-            == 0.0  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
-            and self.pdgid.has_strange
-            and not (
-                self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top
-            )
-        ):
-            return False
-        return True
-
     # Pretty descriptions
 
     def __str__(self):
         _tilde = "~" if self.anti_flag == Inv.Barred and self.pdgid < 0 else ""
-        _charge = Charge_undo[self.three_charge] if self._charge_in_name() else ""
+        _charge = self._str_charge() if self._charge_in_name() else ""
         return self.pdg_name + _tilde + _charge
 
     name = property(
@@ -687,6 +645,69 @@ class Particle(object):
                 width=str_with_unc(self.width, self.width_upper, self.width_lower)
             )
 
+    def _charge_in_name(self):
+        """Assess whether the particle charge is part of the particle name.
+
+        Internally used when creating the name.
+        """
+        if self.anti_flag == Inv.ChargeInv:
+            return True  # antiparticle flips sign of particle
+        if self.pdgid in (23, 25, 111, 130, 310, 311, -311):
+            return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
+        if self.pdgid.is_diquark:
+            return False
+        if abs(self.pdgid) in (2212, 2112):
+            return False  # proton and neutron
+        if abs(self.pdgid) < 19:
+            return (
+                False
+            )  # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
+        if self.three_charge is None:
+            return False  # deal with corner cases ;-)
+        if self.is_self_conjugate:
+            pid = self.pdgid
+            if pid < 25:
+                return False  # Gauge bosons
+            # Quarkonia never exhibit the 0 charge
+            # All eta, eta', h, h', omega, phi, f, f' light mesons are supposed to have an s-sbar component (see PDG site),
+            # but some particles have pdgid.has_strange==False :S! Play it safe ...
+            elif any(
+                [
+                    chr in self.pdg_name
+                    for chr in ("eta", "h(", "h'(", "omega", "phi", "f", "f'")
+                ]
+            ):
+                return False
+            elif pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top:
+                return False
+            else:  # Light unflavoured mesons
+                return True
+        # Lambda baryons
+        if (
+            self.pdgid.is_baryon
+            and _digit(self.pdgid, Location.Nq2) == 1
+            and self.I
+            == 0.0  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
+            and self.pdgid.has_strange
+            and not (
+                self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top
+            )
+        ):
+            return False
+        if self.pdgid.is_nucleus:
+            return False
+        return True
+
+    def _str_charge(self):
+        """
+        Display a reasonable particle charge printout.
+        Internally used by the describe() and __str__ methods.
+        """
+        if not self.pdgid.is_nucleus:
+            return Charge_undo[self.three_charge]
+        else:
+            return str(self.pdgid.charge)
+
     def _str_mass(self):
         """
         Display a reasonable particle mass printout
@@ -714,7 +735,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             self=self,
             G=Parity_undo[self.G],
             C=Parity_undo[self.C],
-            Q=Charge_undo[self.three_charge],
+            Q=self._str_charge(),
             P=Parity_undo[self.P],
             mass=self._str_mass(),
             width_or_lifetime=self._width_or_lifetime(),
