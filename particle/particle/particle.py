@@ -402,7 +402,7 @@ class Particle(object):
                 value = int(v["ID"])
 
                 # Replace the previous value if appending
-                if value in cls._table:
+                if append and value in cls._table:
                     cls._table.remove(value)
 
                 cls._table.append(
