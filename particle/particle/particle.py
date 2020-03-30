@@ -821,11 +821,17 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         matching property if they are callable, or are compared if they are not.
         This would do an exact search on the name, instead of a fuzzy search:
 
-           >>> Particle.findall(pdg_name='p')  # Returns proton and antiproton only
-           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>, <Particle: name="p~", pdgid=-2212, mass=938.272081 ± 0.000006 MeV>]
+           >>> # Returns proton and antiproton only
+           >>> Particle.findall(pdg_name='p')    # doctest: +NORMALIZE_WHITESPACE
+           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
+            <Particle: name="p~", pdgid=-2212, mass=938.272081 ± 0.000006 MeV>,
+            <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>,
+            <Particle: name="p~", pdgid=-1000010010, mass=938.272081 ± 0.000006 MeV>]
 
-           >>> Particle.findall(pdg_name='p', particle=True)  # Returns proton only
-           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>]
+           >>> # Returns proton only
+           >>> Particle.findall(pdg_name='p', particle=True)    # doctest: +NORMALIZE_WHITESPACE
+           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
+           <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>]
 
         Versatile searches require a (lambda) function as argument:
 
