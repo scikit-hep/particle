@@ -10,6 +10,8 @@ In preparation.
   - Speed of table loading improved.
   - Particle enums extended for diquarks.
   - New tests added.
+* ``PDGID`` class:
+  - PDG ID functions extended to correctly and consistently deal with nuclei.
 * Data CSV files:
   - Version 5 of package data files, with
     - Diquarks added.

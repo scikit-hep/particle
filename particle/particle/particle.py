@@ -386,7 +386,6 @@ class Particle(object):
 
         if filename is None:
             import fileinput
-            import contextlib
 
             filename1 = data.open_text(data, "particle2019.csv").name
             filename2 = data.open_text(data, "nuclei2020.csv").name
