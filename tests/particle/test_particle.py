@@ -45,12 +45,19 @@ def test_find():
 
 def test_lambda_style_search():
     particles = Particle.findall(lambda p: p.pdg_name == "p")
-    assert len(particles) == 2
+    assert len(particles) == 3
     assert 2212 in particles
     assert -2212 in particles
+    assert 1000010010 in particles
 
-    assert Particle.find(lambda p: p.pdg_name == "p" and p > 0) == 2212
-    assert Particle.find(lambda p: p.pdg_name == "p" and p < 0) == -2212
+    [p.pdgid for p in Particle.findall(lambda p: p.pdg_name == "p" and p > 0)] == [
+        2212,
+        1000010010,
+    ]
+    [p.pdgid for p in Particle.findall(lambda p: p.pdg_name == "p" and p < 0)] == [
+        -2212,
+        -1000010010,
+    ]
 
 
 def test_fuzzy_name_search():
@@ -61,9 +68,10 @@ def test_fuzzy_name_search():
 
 def test_keyword_style_search():
     particles = Particle.findall(pdg_name="p")
-    assert len(particles) == 2
+    assert len(particles) == 3
     assert 2212 in particles
     assert -2212 in particles
+    assert 1000010010 in particles
 
 
 def test_keyword_style_search_with_except_catch():
@@ -71,21 +79,32 @@ def test_keyword_style_search_with_except_catch():
     assert 11 in particles
 
     particles = Particle.findall(name="p")
-    assert len(particles) == 1
+    assert len(particles) == 2
     assert 2212 in particles
+    assert 1000010010 in particles
 
-    assert Particle.find(pdg_name="p", particle=True) == 2212
-    assert Particle.find(pdg_name="p", particle=False) == -2212
+    [p.pdgid for p in Particle.findall(pdg_name="p", particle=True)] == [
+        2212,
+        1000010010,
+    ]
+    [p.pdgid for p in Particle.findall(pdg_name="p", particle=False)] == [
+        -2212,
+        -1000010010,
+    ]
 
-    assert Particle.find(name="p", particle=True) == 2212
-    assert Particle.find(name="p~", particle=False) == -2212
+    [p.pdgid for p in Particle.findall(name="p", particle=True)] == [2212, 1000010010]
+    [p.pdgid for p in Particle.findall(name="p~", particle=False)] == [
+        -2212,
+        -1000010010,
+    ]
 
 
 def test_keyword_lambda_style_search():
     particles = Particle.findall(pdg_name=lambda x: "p" == x)
-    assert len(particles) == 2
+    assert len(particles) == 3
     assert 2212 in particles
     assert -2212 in particles
+    assert 1000010010 in particles
 
     # Fuzzy name
     particles = Particle.findall(name=lambda x: "p" in x)
@@ -94,7 +113,7 @@ def test_keyword_lambda_style_search():
     assert -2212 in particles
 
     # Name and particle
-    assert Particle.find(name=lambda x: x == "p", particle=True) == 2212
+    assert len(Particle.findall(name=lambda x: x == "p", particle=True)) == 2
 
     # Unit based comparison
     assert 2212 in Particle.findall(lifetime=lambda x: x > 1 * second)
@@ -286,14 +305,14 @@ def test_describe(pid, description):
 
 
 def test_default_table_loading():
-    assert Particle.table_names() == ("particle2019.csv",)
+    assert Particle.table_names() == ("particle2019.csv", "nuclei2020.csv")
 
 
 def test_default_table_loading_bis():
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
-    assert p.table_names() == ("particle2019.csv",)
+    assert p.table_names() == ("particle2019.csv", "nuclei2020.csv")
 
 
 def test_explicit_table_loading():

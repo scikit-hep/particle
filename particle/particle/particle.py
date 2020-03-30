@@ -385,8 +385,12 @@ class Particle(object):
             cls._table_names = []
 
         if filename is None:
-            filename = data.open_text(data, "particle2019.csv")
-            cls._table_names.append("particle2019.csv")
+            import fileinput
+
+            filename1 = data.open_text(data, "particle2019.csv").name
+            filename2 = data.open_text(data, "nuclei2020.csv").name
+            filename = fileinput.input(files=(filename1, filename2))
+            cls._table_names.extend(["particle2019.csv", "nuclei2020.csv"])
         elif not hasattr(filename, "read"):
             # Conversion to handle pathlib on Python < 3.6:
             filename = str(filename)
@@ -399,34 +403,37 @@ class Particle(object):
             r = csv.DictReader(l for l in f if not l.startswith("#"))
 
             for v in r:
-                value = int(v["ID"])
+                try:
+                    value = int(v["ID"])
 
-                # Replace the previous value if appending
-                if append and value in cls._table:
-                    cls._table.remove(value)
+                    # Replace the previous value if appending
+                    if append and value in cls._table:
+                        cls._table.remove(value)
 
-                cls._table.append(
-                    cls(
-                        pdgid=value,
-                        mass=float(v["Mass"]),
-                        mass_upper=float(v["MassUpper"]),
-                        mass_lower=float(v["MassLower"]),
-                        width=float(v["Width"]),
-                        width_upper=float(v["WidthUpper"]),
-                        width_lower=float(v["WidthLower"]),
-                        I=v["I"],
-                        G=int(v["G"]),
-                        P=int(v["P"]),
-                        C=int(v["C"]),
-                        anti_flag=int(v["Anti"]),
-                        three_charge=int(v["Charge"]),
-                        rank=int(v["Rank"]),
-                        status=int(v["Status"]),
-                        pdg_name=v["Name"],
-                        quarks=v["Quarks"],
-                        latex_name=v["Latex"],
+                    cls._table.append(
+                        cls(
+                            pdgid=value,
+                            mass=float(v["Mass"]),
+                            mass_upper=float(v["MassUpper"]),
+                            mass_lower=float(v["MassLower"]),
+                            width=float(v["Width"]),
+                            width_upper=float(v["WidthUpper"]),
+                            width_lower=float(v["WidthLower"]),
+                            I=v["I"],
+                            G=int(v["G"]),
+                            P=int(v["P"]),
+                            C=int(v["C"]),
+                            anti_flag=int(v["Anti"]),
+                            three_charge=int(v["Charge"]),
+                            rank=int(v["Rank"]),
+                            status=int(v["Status"]),
+                            pdg_name=v["Name"],
+                            quarks=v["Quarks"],
+                            latex_name=v["Latex"],
+                        )
                     )
-                )
+                except ValueError:
+                    pass
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
@@ -707,7 +714,7 @@ class Particle(object):
         if not self.pdgid.is_nucleus:
             return Charge_undo[self.three_charge]
         else:
-            return str(self.pdgid.charge)
+            return int(self.pdgid.charge)
 
     def _str_mass(self):
         """
