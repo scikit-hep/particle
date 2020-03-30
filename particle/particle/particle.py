@@ -503,6 +503,7 @@ class Particle(object):
     def three_charge(self):
         "Three times the particle charge (charge * 3), in units of the positron charge."
         if not self.pdgid.is_nucleus:
+            # Return int(...) not to return the actual enum Charge
             return int(self._three_charge) if self._three_charge != Charge.u else None
         else:
             return self.pdgid.three_charge
