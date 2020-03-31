@@ -16,6 +16,9 @@ from copy import copy
 from fractions import Fraction
 from functools import reduce, total_ordering
 
+import fileinput
+from contextlib import closing
+
 # External dependencies
 import attr
 
@@ -385,8 +388,6 @@ class Particle(object):
             cls._table_names = []
 
         if filename is None:
-            import fileinput
-
             filename1 = data.open_text(data, "particle2019.csv").name
             filename2 = data.open_text(data, "nuclei2020.csv").name
             filename = fileinput.input(files=(filename1, filename2))
@@ -399,11 +400,9 @@ class Particle(object):
         else:
             cls._table_names.append("{0!r} {1}".format(filename, len(cls._table_names)))
 
-        # The following 2 files are necessary for Python 2, otherwise simply
+        # The following line is necessary for Python 2, otherwise simply
         # with filename as f:
         # works just fine in Python 3 !
-        from contextlib import closing
-
         with closing(filename) as f:
             r = csv.DictReader(l for l in f if not l.startswith("#"))
 
