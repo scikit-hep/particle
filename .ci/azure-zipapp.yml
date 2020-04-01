@@ -6,16 +6,15 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    python -m pip install enum34 importlib_resources attrs hepunits tabulate --target .
+    python -m pip install enum34 importlib_resources attrs hepunits tabulate --target src
   displayName: 'Install dependencies'
 
 - script: |
-     rm -r *.dist-info tests notebooks docs
-     mv enum enum34
+     mv src/enum src/enum34
   displayName: 'Adjustments to prepare a universal ZipApp'
 
 - script: |
-    python -m zipapp -p "/usr/bin/env python" -o particle.pyz $(Build.SourcesDirectory)
+    python -m zipapp -p "/usr/bin/env python" -o particle.pyz $(Build.SourcesDirectory)/src
   workingDirectory: $(Build.BinariesDirectory)
   displayName: 'Make ZipApp'
 

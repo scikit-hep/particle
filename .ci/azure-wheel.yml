@@ -14,7 +14,7 @@ steps:
   displayName: 'Make sdist'
 
 - script: |
-    python setup.py bdist_wheel
+    python -m pip wheel .
   displayName: 'Make wheel'
 
 - task: PublishPipelineArtifact@0

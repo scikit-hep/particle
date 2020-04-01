@@ -24,12 +24,13 @@ steps:
   displayName: 'Install package'
 
 - script: |
-    python -m pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=particle --cov-report=xml --cov-report=html
+    python -m pytest tests --junitxml=junit/test-results.xml --cov=particle --cov-report=xml --cov-report=html
   displayName: 'Test with pytest and collect coverage metrics'
 
 - script: |
-    python -m pytest --doctest-modules --ignore-glob="*__main__.py" --ignore-glob="test*"
+    python -m pytest particle --doctest-modules --ignore-glob="*__main__.py"
   displayName: 'Run doctests'
+  workingDirectory: $(Build.SourcesDirectory)/src
   condition: and(succeeded(), ne(variables['python.version'], '2.7'))
 
 - task: PublishTestResults@2

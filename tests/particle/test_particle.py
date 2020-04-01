@@ -8,12 +8,6 @@ from __future__ import absolute_import, division, print_function
 
 import sys
 
-
-try:
-    from pathlib2 import Path
-except ImportError:
-    from pathlib import Path
-
 import pytest
 from pytest import approx
 
@@ -22,11 +16,9 @@ from particle.particle import Particle
 from particle.particle.particle import ParticleNotFound, InvalidParticle
 from particle.pdgid import PDGID
 from particle.pdgid.functions import _digit, Location
+from particle import data
 
 from hepunits import second, meter
-
-
-DIR = Path(__file__).parent.resolve()
 
 
 def test_find():
@@ -320,7 +312,7 @@ def test_default_table_loading_bis():
 
 
 def test_explicit_table_loading():
-    Particle.load_table(DIR / "../../particle/data/particle2019.csv")
+    Particle.load_table(data.open_text(data, "particle2019.csv"))
     assert Particle.table_loaded() == True
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
