@@ -4,7 +4,7 @@
 # or https://github.com/scikit-hep/particle for details.
 
 # Convenient access to the version number
-from ._version import __version__
+from .version import version as __version__
 
 # Direct access to PDGID
 from .pdgid import PDGID
