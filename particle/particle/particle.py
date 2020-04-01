@@ -628,7 +628,7 @@ class Particle(object):
         Width errors equal to None flag an experimental upper limit on the width.
         """
         if self.width is None:
-            return "Width = ?"
+            return "Width = None"
         elif self.width == 0:
             return "Width = 0.0 MeV"
         elif self.width_lower is None and self.width_upper is None:
@@ -727,7 +727,7 @@ class Particle(object):
         Internally used by the describe() method.
         """
         if self.mass is None:
-            return "?"
+            return "None"
         else:
             return "{0} MeV".format(
                 str_with_unc(self.mass, self.mass_upper, self.mass_lower)
