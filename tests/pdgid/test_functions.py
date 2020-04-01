@@ -168,6 +168,7 @@ def test_is_baryon(PDGIDs):
     _baryons = (
         PDGIDs.Proton,
         PDGIDs.AntiNeutron,
+        PDGIDs.HydrogenNucleus,
         PDGIDs.Lambda,
         PDGIDs.Sigma0,
         PDGIDs.SigmaPlus,
@@ -213,7 +214,12 @@ def test_is_pentaquark(PDGIDs):
 
 
 def test_is_nucleus(PDGIDs):
-    _nuclei = (PDGIDs.Proton, PDGIDs.HydrogenNucleus, PDGIDs.Carbon12)
+    _nuclei = (
+        PDGIDs.Proton,
+        PDGIDs.AntiNeutron,
+        PDGIDs.HydrogenNucleus,
+        PDGIDs.Carbon12,
+    )
     _non_nuclei = [id for id in PDGIDs if id not in _nuclei]
     for id in _nuclei:
         assert is_nucleus(id) == True
@@ -570,7 +576,12 @@ def test_L_non_mesons(PDGIDs):
 
 
 def test_A(PDGIDs):
-    _nuclei = {PDGIDs.Proton: 1, PDGIDs.HydrogenNucleus: 1, PDGIDs.Carbon12: 12}
+    _nuclei = {
+        PDGIDs.Proton: 1,
+        PDGIDs.AntiNeutron: 1,
+        PDGIDs.HydrogenNucleus: 1,
+        PDGIDs.Carbon12: 12,
+    }
     _non_nuclei = [id for id in PDGIDs if id not in _nuclei.keys()]
     for id, a in _nuclei.items():
         assert A(id) == a
@@ -579,7 +590,12 @@ def test_A(PDGIDs):
 
 
 def test_Z(PDGIDs):
-    _nuclei = {PDGIDs.Proton: 1, PDGIDs.HydrogenNucleus: 1, PDGIDs.Carbon12: 6}
+    _nuclei = {
+        PDGIDs.Proton: 1,
+        PDGIDs.AntiNeutron: 0,
+        PDGIDs.HydrogenNucleus: 1,
+        PDGIDs.Carbon12: 6,
+    }
     _non_nuclei = [id for id in PDGIDs if id not in _nuclei.keys()]
     for id, z in _nuclei.items():
         assert Z(id) == z

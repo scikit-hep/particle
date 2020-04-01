@@ -16,6 +16,9 @@ from copy import copy
 from fractions import Fraction
 from functools import reduce, total_ordering
 
+import fileinput
+from contextlib import closing
+
 # External dependencies
 import attr
 
@@ -198,7 +201,14 @@ class Particle(object):
     @classmethod
     def table_names(cls):
         """
-        Return the list of names loaded (will load the table, check with table_loaded() first if you don't want to load).
+        Return the list of names loaded.
+
+        Note
+        ----
+        Calling this class method will load the default table,
+        if no table has so far been loaded.
+        Check with table_loaded() first if you don't want this loading
+        to be triggered by the call.
         """
 
         if cls._table_names is None:
@@ -378,8 +388,10 @@ class Particle(object):
             cls._table_names = []
 
         if filename is None:
-            filename = data.open_text(data, "particle2019.csv")
-            cls._table_names.append("particle2019.csv")
+            filename1 = data.open_text(data, "particle2019.csv").name
+            filename2 = data.open_text(data, "nuclei2020.csv").name
+            filename = fileinput.input(files=(filename1, filename2))
+            cls._table_names.extend(["particle2019.csv", "nuclei2020.csv"])
         elif not hasattr(filename, "read"):
             # Conversion to handle pathlib on Python < 3.6:
             filename = str(filename)
@@ -388,39 +400,44 @@ class Particle(object):
         else:
             cls._table_names.append("{0!r} {1}".format(filename, len(cls._table_names)))
 
-        with filename as f:
+        # The following line is necessary for Python 2, otherwise simply
+        # with filename as f:
+        # works just fine in Python 3 !
+        with closing(filename) as f:
             r = csv.DictReader(l for l in f if not l.startswith("#"))
 
             for v in r:
-                value = int(v["ID"])
-                pdg_name = v["Name"]
+                try:
+                    value = int(v["ID"])
 
-                # Replace the previous value if appending
-                if value in cls._table:
-                    cls._table.remove(value)
+                    # Replace the previous value if appending
+                    if append and value in cls._table:
+                        cls._table.remove(value)
 
-                cls._table.append(
-                    cls(
-                        pdgid=value,
-                        mass=float(v["Mass"]),
-                        mass_upper=float(v["MassUpper"]),
-                        mass_lower=float(v["MassLower"]),
-                        width=float(v["Width"]),
-                        width_upper=float(v["WidthUpper"]),
-                        width_lower=float(v["WidthLower"]),
-                        I=v["I"],
-                        G=int(v["G"]),
-                        P=int(v["P"]),
-                        C=int(v["C"]),
-                        anti_flag=int(v["Anti"]),
-                        three_charge=int(v["Charge"]),
-                        rank=int(v["Rank"]),
-                        status=int(v["Status"]),
-                        pdg_name=v["Name"],
-                        quarks=v["Quarks"],
-                        latex_name=v["Latex"],
+                    cls._table.append(
+                        cls(
+                            pdgid=value,
+                            mass=float(v["Mass"]),
+                            mass_upper=float(v["MassUpper"]),
+                            mass_lower=float(v["MassLower"]),
+                            width=float(v["Width"]),
+                            width_upper=float(v["WidthUpper"]),
+                            width_lower=float(v["WidthLower"]),
+                            I=v["I"],
+                            G=int(v["G"]),
+                            P=int(v["P"]),
+                            C=int(v["C"]),
+                            anti_flag=int(v["Anti"]),
+                            three_charge=int(v["Charge"]),
+                            rank=int(v["Rank"]),
+                            status=int(v["Status"]),
+                            pdg_name=v["Name"],
+                            quarks=v["Quarks"],
+                            latex_name=v["Latex"],
+                        )
                     )
-                )
+                except ValueError:
+                    pass
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
@@ -496,7 +513,11 @@ class Particle(object):
     @property
     def three_charge(self):
         "Three times the particle charge (charge * 3), in units of the positron charge."
-        return int(self._three_charge) if self._three_charge != Charge.u else None
+        if not self.pdgid.is_nucleus:
+            # Return int(...) not to return the actual enum Charge
+            return int(self._three_charge) if self._three_charge != Charge.u else None
+        else:
+            return self.pdgid.three_charge
 
     @property
     def lifetime(self):
@@ -581,62 +602,11 @@ class Particle(object):
     __neg__ = invert
     __invert__ = invert
 
-    def _charge_in_name(self):
-        """Assess whether the particle charge is part of the particle name.
-
-        Internally used when creating the name.
-        """
-        if self.anti_flag == Inv.ChargeInv:
-            return True  # antiparticle flips sign of particle
-        if self.pdgid in (23, 25, 111, 130, 310, 311, -311):
-            return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
-        if self.pdgid.is_diquark:
-            return False
-        if abs(self.pdgid) in (2212, 2112):
-            return False  # proton and neutron
-        if abs(self.pdgid) < 19:
-            return (
-                False
-            )  # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
-        if self.three_charge is None:
-            return False  # deal with corner cases ;-)
-        if self.is_self_conjugate:
-            pid = self.pdgid
-            if pid < 25:
-                return False  # Gauge bosons
-            # Quarkonia never exhibit the 0 charge
-            # All eta, eta', h, h', omega, phi, f, f' light mesons are supposed to have an s-sbar component (see PDG site),
-            # but some particles have pdgid.has_strange==False :S! Play it safe ...
-            elif any(
-                [
-                    chr in self.pdg_name
-                    for chr in ("eta", "h(", "h'(", "omega", "phi", "f", "f'")
-                ]
-            ):
-                return False
-            elif pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top:
-                return False
-            else:  # Light unflavoured mesons
-                return True
-        # Lambda baryons
-        if (
-            self.pdgid.is_baryon
-            and _digit(self.pdgid, Location.Nq2) == 1
-            and self.I
-            == 0.0  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
-            and self.pdgid.has_strange
-            and not (
-                self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top
-            )
-        ):
-            return False
-        return True
-
     # Pretty descriptions
 
     def __str__(self):
         _tilde = "~" if self.anti_flag == Inv.Barred and self.pdgid < 0 else ""
-        _charge = Charge_undo[self.three_charge] if self._charge_in_name() else ""
+        _charge = self._str_charge() if self._charge_in_name() else ""
         return self.pdg_name + _tilde + _charge
 
     name = property(
@@ -687,6 +657,69 @@ class Particle(object):
                 width=str_with_unc(self.width, self.width_upper, self.width_lower)
             )
 
+    def _charge_in_name(self):
+        """Assess whether the particle charge is part of the particle name.
+
+        Internally used when creating the name.
+        """
+        if self.anti_flag == Inv.ChargeInv:
+            return True  # antiparticle flips sign of particle
+        if self.pdgid in (23, 25, 111, 130, 310, 311, -311):
+            return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
+        if self.pdgid.is_diquark:
+            return False
+        if abs(self.pdgid) in (2212, 2112):
+            return False  # proton and neutron
+        if abs(self.pdgid) < 19:
+            return (
+                False
+            )  # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
+        if self.three_charge is None:
+            return False  # deal with corner cases ;-)
+        if self.is_self_conjugate:
+            pid = self.pdgid
+            if pid < 25:
+                return False  # Gauge bosons
+            # Quarkonia never exhibit the 0 charge
+            # All eta, eta', h, h', omega, phi, f, f' light mesons are supposed to have an s-sbar component (see PDG site),
+            # but some particles have pdgid.has_strange==False :S! Play it safe ...
+            elif any(
+                [
+                    chr in self.pdg_name
+                    for chr in ("eta", "h(", "h'(", "omega", "phi", "f", "f'")
+                ]
+            ):
+                return False
+            elif pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top:
+                return False
+            else:  # Light unflavoured mesons
+                return True
+        # Lambda baryons
+        if (
+            self.pdgid.is_baryon
+            and _digit(self.pdgid, Location.Nq2) == 1
+            and self.I
+            == 0.0  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
+            and self.pdgid.has_strange
+            and not (
+                self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top
+            )
+        ):
+            return False
+        if self.pdgid.is_nucleus:
+            return False
+        return True
+
+    def _str_charge(self):
+        """
+        Display a reasonable particle charge printout.
+        Internally used by the describe() and __str__ methods.
+        """
+        if not self.pdgid.is_nucleus:
+            return Charge_undo[self.three_charge]
+        else:
+            return int(self.pdgid.charge)
+
     def _str_mass(self):
         """
         Display a reasonable particle mass printout
@@ -714,7 +747,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             self=self,
             G=Parity_undo[self.G],
             C=Parity_undo[self.C],
-            Q=Charge_undo[self.three_charge],
+            Q=self._str_charge(),
             P=Parity_undo[self.P],
             mass=self._str_mass(),
             width_or_lifetime=self._width_or_lifetime(),
@@ -792,11 +825,17 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         matching property if they are callable, or are compared if they are not.
         This would do an exact search on the name, instead of a fuzzy search:
 
-           >>> Particle.findall(pdg_name='p')  # Returns proton and antiproton only
-           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>, <Particle: name="p~", pdgid=-2212, mass=938.272081 ± 0.000006 MeV>]
+           >>> # Returns proton and antiproton only
+           >>> Particle.findall(pdg_name='p')    # doctest: +NORMALIZE_WHITESPACE
+           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
+            <Particle: name="p~", pdgid=-2212, mass=938.272081 ± 0.000006 MeV>,
+            <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>,
+            <Particle: name="p~", pdgid=-1000010010, mass=938.272081 ± 0.000006 MeV>]
 
-           >>> Particle.findall(pdg_name='p', particle=True)  # Returns proton only
-           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>]
+           >>> # Returns proton only
+           >>> Particle.findall(pdg_name='p', particle=True)    # doctest: +NORMALIZE_WHITESPACE
+           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
+           <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>]
 
         Versatile searches require a (lambda) function as argument:
 

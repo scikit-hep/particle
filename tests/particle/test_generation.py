@@ -14,22 +14,25 @@ from particle import data
 from particle.particle.convert import produce_files
 
 
-FILES = ["particle2008.csv", "particle2019.csv"]
+FILES = ["particle2018.csv", "particle2019.csv"]
 
 
 def test_generate(tmp_path):
     "This verifies that the input and output files match."
 
-    particle2008 = tmp_path / "particle2008.csv"
+    particle2018 = tmp_path / "particle2018.csv"
     particle2019 = tmp_path / "particle2019.csv"
 
-    produce_files(particle2008, particle2019, "DUMMY", "2019")
+    produce_files(particle2018, particle2019, "DUMMY", "2019")
 
-    particle2008_data = data.open_text(data, "particle2008.csv")
-    with particle2008.open() as src, particle2008_data as res:
+    """
+    # No longer test this file, which eventually will be removed
+    particle2018_data = data.open_text(data, "particle2018.csv")
+    with particle2018.open() as src, particle2018_data as res:
         src = [l for l in src.readlines() if not l.startswith("#")]
         res = [l for l in res.readlines() if not l.startswith("#")]
         assert src == res
+    """
 
     particle2019_data = data.open_text(data, "particle2019.csv")
     with particle2019.open() as src, particle2019_data as res:

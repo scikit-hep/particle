@@ -140,4 +140,5 @@ def latex_to_html_name(name):
     for gl in _list_name_greek_letters:
         name = name.replace(r"\%s" % gl, "&%s;" % gl)
     name = re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)
+    name = re.sub(r"\\overline\{(.*?)\}", r"\1&#773;", name)
     return name

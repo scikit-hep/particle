@@ -1,6 +1,31 @@
 Changelog
 =========
 
+Version 0.10.0
+--------------
+In preparation.
+
+* ``Particle`` class:
+  - Several improvements, in particular to better deal with nuclei and diquarks.
+  - Speed of table loading improved.
+  - Particle enums extended for diquarks.
+  - New tests added.
+* ``PDGID`` class:
+  - PDG ID functions extended to correctly and consistently deal with nuclei.
+* Data CSV files:
+  - Version 5 of package data files, with
+    - Diquarks added.
+    - Information in nuclei added! List and masses taken from package ``periodictable`` version 1.5.2.
+    - A couple of PDG ID numbers corrected (they had evolved in time).
+  - Converter script adapted to add to the produced data files
+    particles not in the PDG data table, such as diquarks.
+* Miscellaneous:
+  - File ``requirements.txt`` removed from package.
+  - Warning from ``collections.abc`` fixed, keeping compatibility with Python 2.
+  - Deprecation warning in ``attr.s`` fixed,
+    requirement on minimal version of ``attr`` added.
+
+
 Version 0.9.2
 -------------
 February 14th, 2020
