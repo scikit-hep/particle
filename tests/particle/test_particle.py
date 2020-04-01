@@ -276,7 +276,7 @@ def test_C_consistency():
 
 checklist_describe = (
     # Test undefined width value
-    [1, "Width = ?"],  # d quark
+    [1, "Width = None"],  # d quark
     # Test print-out of zero width values
     [22, "Width = 0.0 MeV"],  # photon
     # Test print-out of symmetric width errors
@@ -506,7 +506,7 @@ def test_isospin(pid, isospin):
 def test_default_particle():
     p = Particle.empty()
 
-    assert repr(p) == '<Particle: name="Unknown", pdgid=0, mass=?>'
+    assert repr(p) == '<Particle: name="Unknown", pdgid=0, mass=None>'
     assert "Name: Unknown" in p.describe()
     assert p.mass == None
     assert p.width == None
