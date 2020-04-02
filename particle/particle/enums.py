@@ -143,7 +143,7 @@ Status_mapping = {
 }
 
 # Mappings that allow the above classes to be turned into text mappings
-Parity_undo = {Parity.p: "+", Parity.o: "0", Parity.m: "-", Parity.u: "?"}
+Parity_undo = {Parity.p: "+", Parity.o: "0", Parity.m: "-", Parity.u: "None"}
 Parity_prog = {Parity.p: "p", Parity.o: "0", Parity.m: "m", Parity.u: "u"}
 
 Charge_undo = {
@@ -158,7 +158,7 @@ Charge_undo = {
     Charge.m: "-",
     Charge.m43: "-4/3",
     Charge.mm: "--",
-    Charge.u: "?",
+    Charge.u: "None",
 }
 Charge_prog = {
     Charge.pp: "pp",

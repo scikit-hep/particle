@@ -9,6 +9,7 @@ In preparation.
   - Several improvements, in particular to better deal with nuclei and diquarks.
   - Speed of table loading improved.
   - Particle enums extended for diquarks.
+  - Print-outs made more consistent for missing and non-relevant particle properties.
   - New tests added.
 * ``PDGID`` class:
   - PDG ID functions extended to correctly and consistently deal with nuclei.
