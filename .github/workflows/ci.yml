@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: master
+    tags:
+    - 'v*'
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+        - 2.7
+        - 3.6
+        - 3.8
+    name: Check Python ${{ matrix.python-version }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install package
+      run: python -m pip install -e .[test]
+
+    - name: Requirements check
+      run: python -m pip list
+
+    - name: Test package
+      run: python -m pytest
+
+
+  dist:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    - name: Install wheel and sdist requirements
+      run: python -m pip install "setuptools>=42.0" "setuptools_scm[toml]>=3.4" "wheel"
+
+    - name: Build sdist
+      run: python setup.py sdist
+
+    - name: Build wheel
+      run: >
+        python -m pip wheel . -w wheels &&
+        ls -lh wheels &&
+        mkdir -p dist &&
+        cp wheels/particle*any.whl dist/
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: DistPackage
+        path: dist
+
+    - uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.pypi_password }}
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+
+  zipapp:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    - name: Install wheel and sdist requirements
+      run: python -m pip install "setuptools>=42.0" "setuptools_scm[toml]>=3.4" "wheel"
+
+    - name: Add version
+      run: python setup.py sdist
+
+    - name: Install requirements
+      run: python -m pip install enum34 pathlib2 importlib_resources attrs hepunits tabulate --target src
+
+    - name: Move enum to prevent name clash
+      run: mv src/enum src/enum34
+
+    - name: Make ZipApp
+      run: python -m zipapp -p "/usr/bin/env python" -o ../particle.pyz .
+      working-directory: src
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ZipApp
+        path: particle.pyz

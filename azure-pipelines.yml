@@ -23,10 +23,6 @@ jobs:
         python.version: '2.7'
       Python35:
         python.version: '3.5'
-      Python36:
-        python.version: '3.6'
-      Python37:
-        python.version: '3.7'
       Python38:
         python.version: '3.8'
 
@@ -58,15 +54,3 @@ jobs:
 
   steps:
     - template: .ci/azure-steps.yml
-
-- job: 'Package'
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-    - template: .ci/azure-wheel.yml
-
-- job: 'ZipApp'
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-    - template: .ci/azure-zipapp.yml
