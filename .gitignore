@@ -68,3 +68,4 @@ docs/_build
 .pytest_cache
 /docs/html
 *.gv*
+/src/particle/version.py

@@ -1,0 +1,19 @@
+graft src
+
+global-exclude .env*
+global-exclude .git*
+global-exclude .pytest_cache
+global-exclude .DS_Store
+global-exclude .ipynb_checkpoints
+global-exclude *.py[co]
+global-exclude __pycache__
+
+prune docs
+prune notebooks
+prune tests
+prune .ci
+prune .github
+exclude .coveragerc .pre-commit-config.yaml azure-pipelines.yml environment.yml
+
+include src/particle/version.py
+include LICENSE README.rst pyproject.toml setup.py setup.cfg

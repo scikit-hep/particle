@@ -20,8 +20,9 @@ In preparation.
     - A couple of PDG ID numbers corrected (they had evolved in time).
   - Converter script adapted to add to the produced data files
     particles not in the PDG data table, such as diquarks.
+* Redesigned packaging system
 * Miscellaneous:
-  - File ``requirements.txt`` removed from package.
+  - Files ``*requirements.txt`` removed from package - use ``pip install .[dev]`` instead
   - Warning from ``collections.abc`` fixed, keeping compatibility with Python 2.
   - Deprecation warning in ``attr.s`` fixed,
     requirement on minimal version of ``attr`` added.

@@ -15,3 +15,7 @@ repos:
   - id: check-case-conflict
   - id: check-symlinks
   - id: check-yaml
+- repo: https://github.com/mgedmin/check-manifest
+  rev: "0.39"
+  hooks:
+  - id: check-manifest

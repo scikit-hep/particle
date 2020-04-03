@@ -25,7 +25,11 @@ HepPDT and HepPID versions 3.04.01: http://lcgapp.cern.ch/project/simu/HepPDT/
 from __future__ import print_function, division, absolute_import
 
 # Backport needed if Python 2 is used
-from enum import IntEnum
+# Try only needed due to zipapp install
+try:
+    from enum import IntEnum
+except ImportError:
+    from enum34 import IntEnum
 
 
 class Location(IntEnum):
