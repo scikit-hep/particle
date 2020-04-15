@@ -21,7 +21,8 @@ from .particle import ParticleNotFound, InvalidParticle
 
 # Direct access to Particle literals
 from .particle import literals
-sys.modules['particle.literals'] = literals
+
+sys.modules["particle.literals"] = literals
 
 # Direct access to kinematics functions
 from .particle import width_to_lifetime, lifetime_to_width
