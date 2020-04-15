@@ -3,6 +3,8 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
+import sys
+
 # Convenient access to the version number
 from .version import version as __version__
 
@@ -16,7 +18,10 @@ from .pythia import PythiaID
 # Direct access to Particle (the CSV file is not read until a particle is accessed)
 from .particle import Particle, SpinType, Parity, Charge, Inv, Status
 from .particle import ParticleNotFound, InvalidParticle
+
+# Direct access to Particle literals
 from .particle import literals
+sys.modules['particle.literals'] = literals
 
 # Direct access to kinematics functions
 from .particle import width_to_lifetime, lifetime_to_width
