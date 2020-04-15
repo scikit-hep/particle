@@ -16,6 +16,7 @@ from .pythia import PythiaID
 # Direct access to Particle (the CSV file is not read until a particle is accessed)
 from .particle import Particle, SpinType, Parity, Charge, Inv, Status
 from .particle import ParticleNotFound, InvalidParticle
+from .particle import literals
 
 # Direct access to kinematics functions
 from .particle import width_to_lifetime, lifetime_to_width
