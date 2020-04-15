@@ -9,6 +9,7 @@ In preparation.
   - Several improvements, in particular to better deal with nuclei and diquarks.
   - Speed of table loading improved.
   - Particle enums extended for diquarks.
+  - Make particle literals available from top-level import.
   - Print-outs made more consistent for missing and non-relevant particle properties.
   - New tests added.
 * ``PDGID`` class:
@@ -20,7 +21,7 @@ In preparation.
     - A couple of PDG ID numbers corrected (they had evolved in time).
   - Converter script adapted to add to the produced data files
     particles not in the PDG data table, such as diquarks.
-* Redesigned packaging system
+* Redesigned packaging system.
 * Miscellaneous:
   - Files ``*requirements.txt`` removed from package - use ``pip install .[dev]`` instead
   - Warning from ``collections.abc`` fixed, keeping compatibility with Python 2.
