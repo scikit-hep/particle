@@ -217,11 +217,11 @@ with easily recognisable names. For example:
 
 .. code-block:: python
 
-    >>> from particle.particle import literals as lp
+    >>> from particle import literals as lp
     >>> lp.pi_plus
     <Particle: name="pi+", pdgid=211, mass=139.57061 ± 0.00024 MeV>
     >>>
-    >>> from particle.particle.literals import Lambda_b_0
+    >>> from particle.literals import Lambda_b_0
     >>> Lambda_b_0
     <Particle: name="Lambda(b)0", pdgid=5122, mass=5619.60 ± 0.17 MeV>
     >>> Lambda_b_0.J
