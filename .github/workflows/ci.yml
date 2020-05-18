@@ -20,6 +20,8 @@ jobs:
     name: Check Python ${{ matrix.python-version }}
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
@@ -38,6 +40,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - uses: actions/setup-python@v1
       with:
         python-version: 3.8
@@ -70,6 +74,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - uses: actions/setup-python@v1
       with:
         python-version: 3.8
