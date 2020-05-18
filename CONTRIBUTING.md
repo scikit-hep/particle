@@ -33,3 +33,9 @@ Use PyTest to run the unit checks:
 ```bash
 pytest
 ```
+
+# Developers: making a new release
+
+* Make sure the changelog is up to date.
+* Copy the contents of the changelog entry for that version
+* Make a new release on the GitHub Releases page, using the tag name `v#.#.#` (will be created)
