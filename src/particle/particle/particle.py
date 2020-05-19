@@ -388,22 +388,23 @@ class Particle(object):
             cls._table_names = []
 
         if filename is None:
-            filename1 = data.open_text(data, "particle2019.csv").name
-            filename2 = data.open_text(data, "nuclei2020.csv").name
-            filename = fileinput.input(files=(filename1, filename2))
+            with data.open_text(data, "particle2019.csv") as f:
+                filename1 = f.name
+            with data.open_text(data, "nuclei2020.csv") as f:
+                filename2 = f.name
+
+            # This only needs "closing" for Python 2 support
+            open_file = closing(fileinput.input(files=(filename1, filename2)))
             cls._table_names.extend(["particle2019.csv", "nuclei2020.csv"])
         elif not hasattr(filename, "read"):
+            cls._table_names.append(str(filename))
             # Conversion to handle pathlib on Python < 3.6:
-            filename = str(filename)
-            cls._table_names.append(filename)
-            filename = open(filename)
+            open_file = open(str(filename))
         else:
             cls._table_names.append("{0!r} {1}".format(filename, len(cls._table_names)))
+            open_file = filename
 
-        # The following line is necessary for Python 2, otherwise simply
-        # with filename as f:
-        # works just fine in Python 3 !
-        with closing(filename) as f:
+        with open_file as f:
             r = csv.DictReader(l for l in f if not l.startswith("#"))
 
             for v in r:
@@ -671,7 +672,9 @@ class Particle(object):
         if abs(self.pdgid) in (2212, 2112):
             return False  # proton and neutron
         if abs(self.pdgid) < 19:
-            return False  # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
+            return (
+                False
+            )  # all quarks and neutrinos (charged leptons dealt with in 1st line of if statements ;-))
         if self.three_charge is None:
             return False  # deal with corner cases ;-)
         if self.is_self_conjugate:
