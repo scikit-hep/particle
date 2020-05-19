@@ -58,9 +58,9 @@ try:
     from io import StringIO
 except ImportError:  # Python2 workaround, could also use six
     try:
-        from cStringIO import StringIO
+        from cStringIO import StringIO  # type: ignore
     except ImportError:
-        from StringIO import StringIO
+        from StringIO import StringIO  # type: ignore
 
 from .enums import (
     SpinType,

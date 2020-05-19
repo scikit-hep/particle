@@ -6,4 +6,4 @@
 try:
     from importlib.resources import open_text
 except ImportError:
-    from importlib_resources import open_text
+    from importlib_resources import open_text  # type: ignore
