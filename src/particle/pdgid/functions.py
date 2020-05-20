@@ -140,7 +140,7 @@ def is_meson(pdgid):
         and _digit(pdgid, Location.Nq1) == 0
     ):
         # check for illegal antiparticles
-        if _digit(pdgid, Location.Nq3) == _digit(pdgid, Location.Nq2) and pdgid < 0:
+        if _digit(pdgid, Location.Nq3) == _digit(pdgid, Location.Nq2) and int(pdgid) < 0:
             return False
         else:
             return True
@@ -154,7 +154,7 @@ def is_baryon(pdgid):
         return False
     # Special case of proton and neutron:
     # needs to be checked first since _extra_bits(pdgid) > 0 for nuclei
-    if abs(pdgid) in (1000000010, 1000010010):
+    if abs(int(pdgid)) in (1000000010, 1000010010):
         return True
     if _extra_bits(pdgid) > 0:
         return False
@@ -211,7 +211,12 @@ def is_nucleus(pdgid):
         return True
     if _digit(pdgid, Location.N10) == 1 and _digit(pdgid, Location.N9) == 0:
         # Charge should always be less than or equal to the baryon number
-        if A(pdgid) >= abs(Z(pdgid)):
+        A_pdgid = A(pdgid)
+        Z_pdgid = Z(pdgid)
+
+        if A_pdgid is None or Z_pdgid is None:
+            return False
+        elif A_pdgid >= abs(Z_pdgid):
             return True
     return False
 
@@ -387,7 +392,7 @@ def has_fundamental_anti(pdgid):
         return True
     # Check PDGIDs from 1 to 79
     _cp_conjugates = (21, 22, 23, 25, 32, 33, 35, 36, 39, 41)
-    if fid in range(1, 80) and fid not in _cp_conjugates and is_valid(abs(pdgid)):
+    if fid in range(1, 80) and fid not in _cp_conjugates and is_valid(abs(int(pdgid))):
         return True
     return False
 
@@ -395,12 +400,14 @@ def has_fundamental_anti(pdgid):
 def charge(pdgid):
     # type: (PDGID_TYPE) -> Optional[float]
     """Returns the charge."""
-    if not is_valid(pdgid):
+
+    three_charge_pdgid = three_charge(pdgid)
+    if three_charge_pdgid is None:
         return None
-    if not is_Qball(pdgid):
-        return three_charge(pdgid) / 3.0
+    elif not is_Qball(pdgid):
+        return three_charge_pdgid / 3.0
     else:
-        return three_charge(pdgid) / 30.0
+        return three_charge_pdgid / 30.0
 
 
 def three_charge(pdgid):
@@ -524,7 +531,11 @@ def three_charge(pdgid):
 
     if _extra_bits(pdgid) > 0:
         if is_nucleus(pdgid):  # ion
-            return 3 * Z(pdgid)
+            Z_pdgid = Z(pdgid)
+            if Z_pdgid is None:
+                return None
+            else:
+                return 3 * Z_pdgid
         elif is_Qball(pdgid):  # Qball
             charge = 3 * ((aid // 10) % 10000)
         else:  # this should never be reached in the present numbering scheme
@@ -554,9 +565,8 @@ def three_charge(pdgid):
         is_Rhadron(pdgid) and _digit(pdgid, Location.Nl) == 9
     ):  # baryons
         charge = ch100[q3 - 1] + ch100[q2 - 1] + ch100[q1 - 1]
-    if charge == 0:
-        return 0
-    elif int(pdgid) < 0:
+
+    if charge is not None and int(pdgid) < 0:
         charge = -charge
     return charge
 
@@ -577,7 +587,7 @@ def j_spin(pdgid):
         if fund > 20 and fund < 25:
             return 3
         return None
-    elif abs(pdgid) in (1000000010, 1000010010):  # neutron, proton
+    elif abs(int(pdgid)) in (1000000010, 1000010010):  # neutron, proton
         return 2
     elif _extra_bits(pdgid) > 0:
         return None
@@ -738,14 +748,14 @@ def Z(pdgid):
     """Returns the charge Z if the PDG ID corresponds to a nucleus. Else it returns None."""
     # A proton can be a Hydrogen nucleus
     if abspid(pdgid) == 2212:
-        return pdgid // 2212
+        return int(pdgid) // 2212
     # A neutron can be considered as a nucleus when given the PDG ID 1000000010,
     # hence consistency demands that Z(neutron) = 0
     if abspid(pdgid) == 2112:
         return 0
     if _digit(pdgid, Location.N10) != 1 or _digit(pdgid, Location.N9) != 0:
         return None
-    return ((abspid(pdgid) // 10000) % 1000) * (pdgid // abs(pdgid))
+    return ((abspid(pdgid) // 10000) % 1000) * (int(pdgid) // abs(int(pdgid)))
 
 
 def _digit(pdgid, loc):
