@@ -890,7 +890,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         cls,
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
         particle=None,  # type: Optional[bool]
-        **search_terms,  # type: Any
+        **search_terms  # type: Any
     ):
         # type: (...) -> List[Particle]
         """
