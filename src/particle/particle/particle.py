@@ -12,9 +12,6 @@ from copy import copy
 
 from functools import total_ordering
 
-import fileinput
-from contextlib import closing
-
 # External dependencies
 import attr
 
@@ -29,6 +26,7 @@ from typing import (
     Iterable,
     SupportsInt,
     Union,
+    TextIO,
 )
 
 from hepunits.constants import c_light
@@ -231,8 +229,11 @@ class Particle(object):
             self=self, pdgid=int(self.pdgid), mass=self._str_mass()
         )
 
-    _table = None  # Loaded table of entries
-    _table_names = None  # Names of loaded tables
+    # Loaded table of entries
+    _table = None  # type: Optional[List[Particle]]
+
+    # Names of loaded tables
+    _table_names = None  # type: Optional[List[str]]
 
     @classmethod
     def table_names(cls):
@@ -419,8 +420,8 @@ class Particle(object):
             )
 
     @classmethod
-    def load_table(cls, filename=None, append=False):
-        # (Optional[str], bool) -> None
+    def load_table(cls, filename=None, append=False, _name=None):
+        # type: (Union[None, str, TextIO], bool, Optional[str]) -> None
         """
         Load a particle data CSV table. Optionally append to the existing data already loaded if append=True.
         As a special case, if this is called with append=True and the table is not loaded, the default will
@@ -432,21 +433,26 @@ class Particle(object):
             cls._table = []
             cls._table_names = []
 
+        # Tell MyPy that this is true
+        assert cls._table is not None
+        assert cls._table_names is not None
+
         if filename is None:
             with data.open_text(data, "particle2019.csv") as f:
-                filename1 = f.name
+                cls.load_table(f, append=append, _name="particle2019.csv")
             with data.open_text(data, "nuclei2020.csv") as f:
-                filename2 = f.name
-
-            # This only needs "closing" for Python 2 support
-            open_file = closing(fileinput.input(files=(filename1, filename2)))
-            cls._table_names.extend(["particle2019.csv", "nuclei2020.csv"])
+                cls.load_table(f, append=True, _name="nuclei2020.csv")
+            return
         elif not hasattr(filename, "read"):
             cls._table_names.append(str(filename))
             # Conversion to handle pathlib on Python < 3.6:
             open_file = open(str(filename))
         else:
-            cls._table_names.append("{0!r} {1}".format(filename, len(cls._table_names)))
+            assert not isinstance(filename, str)  # Tell typing that this is true
+            tmp_name = _name or getattr(filename, "name")
+            cls._table_names.append(
+                tmp_name or "{0!r} {1}".format(filename, len(cls._table_names))
+            )
             open_file = filename
 
         with open_file as f:
@@ -457,8 +463,9 @@ class Particle(object):
                     value = int(v["ID"])
 
                     # Replace the previous value if appending
+                    # We can remove an int; ignore typing thinking we need a particle
                     if append and value in cls._table:
-                        cls._table.remove(value)
+                        cls._table.remove(value)  # type: ignore
 
                     cls._table.append(
                         cls(
