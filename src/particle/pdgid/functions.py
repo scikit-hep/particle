@@ -24,6 +24,11 @@ HepPDT and HepPID versions 3.04.01: http://lcgapp.cern.ch/project/simu/HepPDT/
 
 from __future__ import print_function, division, absolute_import
 
+from typing import SupportsInt, Optional
+
+PDGID_TYPE = SupportsInt
+
+
 # Backport needed if Python 2 is used
 # Try only needed due to zipapp install
 try:
@@ -50,6 +55,7 @@ class Location(IntEnum):
 
 
 def is_valid(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Is it a valid PDG ID?"""
     if _fundamental_id(pdgid) > 0:
         return True
@@ -79,11 +85,13 @@ def is_valid(pdgid):
 
 
 def abspid(pdgid):
+    # type: (PDGID_TYPE) -> int
     """Returns the absolute value of the PDG ID."""
-    return abs(pdgid)
+    return abs(int(pdgid))
 
 
 def is_lepton(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this PDG ID correspond to a lepton?"""
     if _extra_bits(pdgid) > 0:
         return False
@@ -93,10 +101,11 @@ def is_lepton(pdgid):
 
 
 def is_hadron(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this PDG ID correspond to a hadron?"""
     # Special case of proton and neutron:
     # needs to be checked first since _extra_bits(pdgid) > 0 for nuclei
-    if abs(pdgid) in (1000000010, 1000010010):
+    if abs(int(pdgid)) in (1000000010, 1000010010):
         return True
     if _extra_bits(pdgid) > 0:
         return False
@@ -110,6 +119,7 @@ def is_hadron(pdgid):
 
 
 def is_meson(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this PDG ID correspond to a meson?"""
     if _extra_bits(pdgid) > 0:
         return False
@@ -121,7 +131,7 @@ def is_meson(pdgid):
         return True
     if abspid(pdgid) in (150, 350, 510, 530):
         return True
-    if pdgid in (110, 990, 9990):
+    if int(pdgid) in (110, 990, 9990):
         return True
     if (
         _digit(pdgid, Location.Nj) > 0
@@ -138,6 +148,7 @@ def is_meson(pdgid):
 
 
 def is_baryon(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this PDG ID correspond to a baryon?"""
     if abspid(pdgid) <= 100:
         return False
@@ -164,6 +175,7 @@ def is_baryon(pdgid):
 
 
 def is_diquark(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this PDG ID correspond to a diquark?"""
     if _extra_bits(pdgid) > 0:
         return False
@@ -182,6 +194,7 @@ def is_diquark(pdgid):
 
 
 def is_nucleus(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """
     Does this PDG ID correspond to a nucleus?
 
@@ -204,6 +217,7 @@ def is_nucleus(pdgid):
 
 
 def is_pentaquark(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """
     Does the PDG ID correspond to a pentaquark?
 
@@ -237,6 +251,7 @@ def is_pentaquark(pdgid):
 
 
 def is_Rhadron(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this PDG ID correspond to an R-hadron?
 
     An R-hadron is of the form 10abcdj, 100abcj, or 1000abj,
@@ -262,6 +277,7 @@ def is_Rhadron(pdgid):
 
 
 def is_Qball(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """
     Does this PDG ID correspond to a Q-ball or any exotic particle with electric charge beyond the qqq scheme?
 
@@ -281,6 +297,7 @@ def is_Qball(pdgid):
 
 
 def is_dyon(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """
     Does this PDG ID correspond to a Dyon, a magnetic monopole?
 
@@ -308,6 +325,7 @@ def is_dyon(pdgid):
 
 
 def is_SUSY(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """
     Does this PDG ID correspond to a SUSY particle?
 
@@ -325,36 +343,43 @@ def is_SUSY(pdgid):
 
 
 def has_down(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this particle contain a down quark?"""
     return _has_quark_q(pdgid, 1)
 
 
 def has_up(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this particle contain an up quark?"""
     return _has_quark_q(pdgid, 2)
 
 
 def has_strange(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this particle contain a strange quark?"""
     return _has_quark_q(pdgid, 3)
 
 
 def has_charm(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this particle contain a charm quark?"""
     return _has_quark_q(pdgid, 4)
 
 
 def has_bottom(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this particle contain a bottom quark?"""
     return _has_quark_q(pdgid, 5)
 
 
 def has_top(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """Does this particle contain a top quark?"""
     return _has_quark_q(pdgid, 6)
 
 
 def has_fundamental_anti(pdgid):
+    # type: (PDGID_TYPE) -> bool
     """If this is a fundamental particle, does it have a valid antiparticle?"""
     # These are defined by the generator and therefore are always valid
     fid = _fundamental_id(pdgid)
@@ -368,6 +393,7 @@ def has_fundamental_anti(pdgid):
 
 
 def charge(pdgid):
+    # type: (PDGID_TYPE) -> Optional[float]
     """Returns the charge."""
     if not is_valid(pdgid):
         return None
@@ -378,6 +404,7 @@ def charge(pdgid):
 
 
 def three_charge(pdgid):
+    # type: (PDGID_TYPE) -> Optional[int]
     """
     Returns 3 times the charge.
 
@@ -529,12 +556,13 @@ def three_charge(pdgid):
         charge = ch100[q3 - 1] + ch100[q2 - 1] + ch100[q1 - 1]
     if charge == 0:
         return 0
-    elif pdgid < 0:
+    elif int(pdgid) < 0:
         charge = -charge
     return charge
 
 
 def j_spin(pdgid):
+    # type: (PDGID_TYPE) -> Optional[int]
     """Returns the total spin as 2J+1."""
     if not is_valid(pdgid):
         return None
@@ -559,6 +587,7 @@ def j_spin(pdgid):
 
 
 def J(pdgid):
+    # type: (PDGID_TYPE) -> Optional[float]
     """Returns the total spin J."""
     value = j_spin(pdgid)
     return (
@@ -567,6 +596,7 @@ def J(pdgid):
 
 
 def S(pdgid):
+    # type: (PDGID_TYPE) -> Optional[int]
     """
     Returns the spin S.
 
@@ -601,6 +631,7 @@ def S(pdgid):
 
 
 def s_spin(pdgid):
+    # type: (PDGID_TYPE) -> Optional[int]
     """
     Returns the spin S as 2S+1.
 
@@ -615,6 +646,7 @@ def s_spin(pdgid):
 
 
 def L(pdgid):
+    # type: (PDGID_TYPE) -> Optional[int]
     """
     Returns the orbital angular momentum L.
 
@@ -674,6 +706,7 @@ def L(pdgid):
 
 
 def l_spin(pdgid):
+    # type: (PDGID_TYPE) -> Optional[int]
     """
     Returns the orbital angular momentum L as 2L+1.
 
@@ -688,6 +721,7 @@ def l_spin(pdgid):
 
 
 def A(pdgid):
+    # type: (PDGID_TYPE) -> Optional[int]
     """Returns the atomic number A if the PDG ID corresponds to a nucleus. Else it returns None."""
     # A proton can be a Hydrogen nucleus
     # A neutron can be considered as a nucleus when given the PDG ID 1000000010,
@@ -700,6 +734,7 @@ def A(pdgid):
 
 
 def Z(pdgid):
+    # type: (PDGID_TYPE) -> Optional[int]
     """Returns the charge Z if the PDG ID corresponds to a nucleus. Else it returns None."""
     # A proton can be a Hydrogen nucleus
     if abspid(pdgid) == 2212:
@@ -714,6 +749,7 @@ def Z(pdgid):
 
 
 def _digit(pdgid, loc):
+    # type: (PDGID_TYPE, int) -> int
     """
     Provides a convenient index into the PDGID number, whose format is in base 10.
 
@@ -724,6 +760,7 @@ def _digit(pdgid, loc):
 
 
 def _extra_bits(pdgid):
+    # type: (PDGID_TYPE) -> int
     """
     Returns everything beyond the 7th digit, so anything outside the PDG numbering scheme.
     """
@@ -731,6 +768,7 @@ def _extra_bits(pdgid):
 
 
 def _fundamental_id(pdgid):
+    # type: (PDGID_TYPE) -> int
     """
     Returns the first 2 digits if this is a "fundamental" particle.
     Returns 0 if the particle is not fundamental or not standard (PDG ID with more than 7 digits).
@@ -748,6 +786,7 @@ def _fundamental_id(pdgid):
 
 
 def _has_quark_q(pdgid, q):
+    # type: (PDGID_TYPE, int) -> bool
     """
     Helper function - does this particle contain a quark q?
 

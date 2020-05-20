@@ -7,14 +7,10 @@
 from __future__ import absolute_import, division, print_function
 
 # Python standard library
-import operator
-import os
-import re
 import csv
 from copy import copy
 
-from fractions import Fraction
-from functools import reduce, total_ordering
+from functools import total_ordering
 
 import fileinput
 from contextlib import closing
@@ -23,7 +19,7 @@ from contextlib import closing
 import attr
 
 # Backport for Python < 3.5:
-from typing import Optional, Any
+from typing import Optional, Any, Dict
 
 from hepunits.constants import c_light
 
@@ -33,7 +29,6 @@ from ..pdgid import is_valid
 from ..pdgid.functions import _digit
 from ..pdgid.functions import Location
 from .regex import getname, getdec
-
 from .enums import (
     SpinType,
     Parity,
@@ -46,11 +41,8 @@ from .enums import (
     Charge_prog,
     Charge_mapping,
 )
-
 from .utilities import programmatic_name, str_with_unc, latex_to_html_name
-
 from .kinematics import width_to_lifetime
-
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
 
 
@@ -62,18 +54,20 @@ class InvalidParticle(RuntimeError):
     pass
 
 
-# The following converter functions have to lie to get MyPy's Attrs support to work
-
 def _isospin_converter(isospin):
-    # type: (Any) -> float
-    vals = {"0": 0.0, "1/2": 0.5, "1": 1.0, "3/2": 1.5}
-    return vals.get(isospin, None)  # type: ignore
+    # type: (Any) -> Optional[float]
+    vals = {"0": 0.0, "1/2": 0.5, "1": 1.0, "3/2": 1.5}  # type: Dict[Optional[str], Optional[float]]
+    return vals.get(isospin, None)
 
 
 def _none_or_positive_converter(value):
-    # type: (Any) -> float
-    return None if value < 0 else value  # type: ignore
+    # type: (Any) -> Optional[float]
+    return None if value < 0 else value
 
+
+# These are needed to trick attrs typing
+minus_one = -1.0  # type: Optional[float]
+none_float = None # type: Optional[float]
 
 @total_ordering
 @attr.s(slots=True, eq=False, order=False, repr=False)
@@ -183,14 +177,14 @@ class Particle(object):
 
     pdgid = attr.ib(converter=PDGID)
     pdg_name = attr.ib()
-    mass = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
-    mass_upper = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
-    mass_lower = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
-    width = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
-    width_upper = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
-    width_lower = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
+    mass = attr.ib(minus_one, converter=_none_or_positive_converter)  # type: Optional[float]
+    mass_upper = attr.ib(minus_one, converter=_none_or_positive_converter)  # type: Optional[float]
+    mass_lower = attr.ib(minus_one, converter=_none_or_positive_converter)  # type: Optional[float]
+    width = attr.ib(minus_one, converter=_none_or_positive_converter)  # type: Optional[float]
+    width_upper = attr.ib(minus_one, converter=_none_or_positive_converter)  # type: Optional[float]
+    width_lower = attr.ib(minus_one, converter=_none_or_positive_converter)  # type: Optional[float]
     _three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    I = attr.ib(None, converter=_isospin_converter)  # type: Optional[float]
+    I = attr.ib(none_float, converter=_isospin_converter)  # type: Optional[float]
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity
@@ -201,7 +195,7 @@ class Particle(object):
     quarks = attr.ib("", converter=str)
     latex_name = attr.ib("Unknown")
 
-    def __repr__(self):
+    def __repr__(self):  # type: () -> str
         return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass}>'.format(
             self=self, pdgid=int(self.pdgid), mass=self._str_mass()
         )
