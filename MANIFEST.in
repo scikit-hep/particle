@@ -1,4 +1,4 @@
-graft src
+graft src/particle
 
 global-exclude .env*
 global-exclude .git*

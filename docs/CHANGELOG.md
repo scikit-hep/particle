@@ -4,7 +4,7 @@ Changelog
 Version 0.10.0
 --------------
 
-May 20th, 2020
+May 21th, 2020
 
 - `Particle` class:
     - Several improvements, in particular to better deal with nuclei
