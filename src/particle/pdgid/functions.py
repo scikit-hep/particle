@@ -29,7 +29,7 @@ from __future__ import print_function, division, absolute_import
 try:
     from enum import IntEnum
 except ImportError:
-    from enum34 import IntEnum
+    from enum34 import IntEnum  # type: ignore
 
 
 class Location(IntEnum):

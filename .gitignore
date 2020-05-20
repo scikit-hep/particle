@@ -69,3 +69,6 @@ docs/_build
 /docs/html
 *.gv*
 /src/particle/version.py
+/.mypy_cache/*
+/pip-wheel-metadata
+

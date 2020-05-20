@@ -58,9 +58,9 @@ try:
     from io import StringIO
 except ImportError:  # Python2 workaround, could also use six
     try:
-        from cStringIO import StringIO
+        from cStringIO import StringIO  # type: ignore
     except ImportError:
-        from StringIO import StringIO
+        from StringIO import StringIO  # type: ignore
 
 from .enums import (
     SpinType,
@@ -328,10 +328,9 @@ def update_from_mcd(full_table, update_table):
 def produce_files(particle2008, particle2019, version, year):
     "This produces listed output files from all input files."
 
-    full_table = get_from_pdg_extended(
-        data.open_text(data, "mass_width_2008.fwf"),
-        [data.open_text(data, "pdgid_to_latexname.csv")],
-    )
+    with data.open_text(data, "mass_width_2008.fwf") as fwf_f:
+        with data.open_text(data, "pdgid_to_latexname.csv") as csv_f:
+            full_table = get_from_pdg_extended(fwf_f, [csv_f])
 
     # Entries to remove, see comments in file mass_width_2008_ext.fwf:
     # 30221 - the f(0)(1370) since it was renumbered
@@ -344,14 +343,13 @@ def produce_files(particle2008, particle2019, version, year):
     with open(particle2008, "w", newline="\n", encoding="utf-8") as f:
         f.write(version_header(particle2008, version))
         full_table.to_csv(f, float_format="%.12g")
-    f.close()
 
-    ext_table = get_from_pdg_mcd(data.open_text(data, "mass_width_" + year + ".mcd"))
+    with data.open_text(data, "mass_width_" + year + ".mcd") as mcd_f:
+        ext_table = get_from_pdg_mcd(mcd_f)
 
-    addons = get_from_pdg_extended(
-        data.open_text(data, "mass_width_2008_ext.fwf"),
-        [data.open_text(data, "pdgid_to_latexname.csv")],
-    )
+    with data.open_text(data, "mass_width_2008_ext.fwf") as fwf_f:
+        with data.open_text(data, "pdgid_to_latexname.csv") as csv_f:
+            addons = get_from_pdg_extended(fwf_f, [csv_f])
 
     # Only keep rows present in the .mcd file specified by year
     full_table = full_table[

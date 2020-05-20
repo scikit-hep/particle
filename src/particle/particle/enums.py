@@ -9,10 +9,11 @@ Examples are charge, spin and parity.
 """
 
 # Backport needed if Python 2 is used
+# Rename used in ZipApp
 try:
     from enum import IntEnum
 except ImportError:
-    from enum34 import IntEnum  # Used in ZipApp
+    from enum34 import IntEnum  # type: ignore
 
 
 class SpinType(IntEnum):
