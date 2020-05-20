@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2020, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -140,7 +141,10 @@ def is_meson(pdgid):
         and _digit(pdgid, Location.Nq1) == 0
     ):
         # check for illegal antiparticles
-        if _digit(pdgid, Location.Nq3) == _digit(pdgid, Location.Nq2) and int(pdgid) < 0:
+        if (
+            _digit(pdgid, Location.Nq3) == _digit(pdgid, Location.Nq2)
+            and int(pdgid) < 0
+        ):
             return False
         else:
             return True
