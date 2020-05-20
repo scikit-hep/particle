@@ -4,7 +4,7 @@ Changelog
 Version 0.10.0
 --------------
 
-May 18th, 2020
+May 20th, 2020
 
 - `Particle` class:
     - Several improvements, in particular to better deal with nuclei
@@ -27,7 +27,7 @@ May 18th, 2020
             time).
     - Converter script adapted to add to the produced data files
         particles not in the PDG data table, such as diquarks.
-- Redesigned packaging system.
+- Redesigned packaging system, GHA deployment
 - Miscellaneous:
     - Files `*requirements.txt` removed from package - use
         `pip install .[dev]` instead
@@ -36,6 +36,7 @@ May 18th, 2020
     - Deprecation warning in `attr.s` fixed, requirement on minimal
         version of `attr` added.
     - Version tags now follow standard `v#.#.#` format.
+    - Some Python warnings fixed
 
 Version 0.9.2
 -------------

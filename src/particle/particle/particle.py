@@ -22,6 +22,9 @@ from contextlib import closing
 # External dependencies
 import attr
 
+# Backport for Python < 3.5:
+from typing import Optional, Any
+
 from hepunits.constants import c_light
 
 from .. import data
@@ -59,9 +62,17 @@ class InvalidParticle(RuntimeError):
     pass
 
 
+# The following converter functions have to lie to get MyPy's Attrs support to work
+
 def _isospin_converter(isospin):
+    # type: (Any) -> float
     vals = {"0": 0.0, "1/2": 0.5, "1": 1.0, "3/2": 1.5}
-    return vals.get(isospin, None)
+    return vals.get(isospin, None)  # type: ignore
+
+
+def _none_or_positive_converter(value):
+    # type: (Any) -> float
+    return None if value < 0 else value  # type: ignore
 
 
 @total_ordering
@@ -172,14 +183,14 @@ class Particle(object):
 
     pdgid = attr.ib(converter=PDGID)
     pdg_name = attr.ib()
-    mass = attr.ib(-1, converter=lambda v: None if v < 0 else v)
-    mass_upper = attr.ib(-1, converter=lambda v: None if v < 0 else v)
-    mass_lower = attr.ib(-1, converter=lambda v: None if v < 0 else v)
-    width = attr.ib(-1, converter=lambda v: None if v < 0 else v)
-    width_upper = attr.ib(-1, converter=lambda v: None if v < 0 else v)
-    width_lower = attr.ib(-1, converter=lambda v: None if v < 0 else v)
+    mass = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
+    mass_upper = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
+    mass_lower = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
+    width = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
+    width_upper = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
+    width_lower = attr.ib(-1., converter=_none_or_positive_converter)  # type: Optional[float]
     _three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    I = attr.ib(None, converter=_isospin_converter)
+    I = attr.ib(None, converter=_isospin_converter)  # type: Optional[float]
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity

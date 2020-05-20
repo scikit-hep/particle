@@ -52,7 +52,7 @@ When you are done, you can save one or more of the tables:
 
 import os
 from datetime import date
-import pandas as pd
+import pandas as pd  # type: ignore
 
 try:
     from io import StringIO
