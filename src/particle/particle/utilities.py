@@ -8,10 +8,7 @@ import re
 import math
 import unicodedata
 
-try:
-    from typing import Optional
-except ImportError:
-    pass
+from typing import Optional
 
 
 def programmatic_name(name):

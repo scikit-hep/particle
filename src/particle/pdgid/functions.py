@@ -25,21 +25,10 @@ HepPDT and HepPID versions 3.04.01: http://lcgapp.cern.ch/project/simu/HepPDT/
 
 from __future__ import print_function, division, absolute_import
 
-# Optional to allow ZipApp to be simpler
-try:
-    from typing import SupportsInt, Optional
+from enum import IntEnum
+from typing import SupportsInt, Optional
 
-    PDGID_TYPE = SupportsInt
-except ImportError:
-    pass
-
-
-# Backport needed if Python 2 is used
-# Try only needed due to zipapp install
-try:
-    from enum import IntEnum
-except ImportError:
-    from enum34 import IntEnum  # type: ignore
+PDGID_TYPE = SupportsInt
 
 
 class Location(IntEnum):

@@ -100,13 +100,10 @@ jobs:
       run: python setup.py sdist
 
     - name: Install requirements
-      run: python -m pip install enum34 pathlib2 importlib_resources attrs hepunits tabulate --target src
-
-    - name: Move enum to prevent name clash
-      run: mv src/enum src/enum34
+      run: python -m pip install attrs hepunits tabulate --target src
 
     - name: Make ZipApp
-      run: python -m zipapp -p "/usr/bin/env python" -o ../particle.pyz .
+      run: python -m zipapp -p "/usr/bin/env python3" -o ../particle.pyz .
       working-directory: src
 
     - uses: actions/upload-artifact@v1
