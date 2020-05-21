@@ -18,7 +18,7 @@ May 21th, 2020
 - `PDGID` class:
     - PDG ID functions extended to correctly and consistently deal
         with nuclei.
-    - Functions now accept any int-like, including Particle objects
+    - Functions now accept any int-like, including Particle objects.
 - Data CSV files:
     - Version 5 of package data files, with
         - Diquarks added.
