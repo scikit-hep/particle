@@ -37,7 +37,7 @@ May 21th, 2020
     - Deprecation warning in `attr.s` fixed, requirement on minimal
         version of `attr` added.
     - Version tags now follow standard `v#.#.#` format.
-    - Some Python warnings fixed
+    - Some Python warnings fixed.
     - Some initial work on static type hints
 
 Version 0.9.2
