@@ -426,7 +426,11 @@ class Particle(object):
         Load a particle data CSV table. Optionally append to the existing data already loaded if append=True.
         As a special case, if this is called with append=True and the table is not loaded, the default will
         be loaded first before appending (set append=False if you don't want this behavior).
+
+        A parameter is also included that should be considered private for now. It is _name, which
+        will override the filename for the stored filename in _table_names.
         """
+
         if append and not cls.table_loaded():
             cls.load_table(append=False)  # default load
         elif not append:
@@ -462,9 +466,9 @@ class Particle(object):
                 try:
                     value = int(v["ID"])
 
-                    # Replace the previous value if appending
+                    # Replace the previous value if it exists
                     # We can remove an int; ignore typing thinking we need a particle
-                    if append and value in cls._table:
+                    if value in cls._table:
                         cls._table.remove(value)  # type: ignore
 
                     cls._table.add(
