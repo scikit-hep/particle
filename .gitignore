@@ -57,7 +57,7 @@ docs/_build
 .*.sw[po]
 .build
 .ve
-.env
+.env*
 .cache
 .pytest
 .bootstrap
