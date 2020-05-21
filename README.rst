@@ -17,6 +17,10 @@
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.2552429.svg
   :target: https://doi.org/10.5281/zenodo.2552429
 
+.. image:: https://github.com/scikit-hep/particle/workflows/CI/badge.svg
+   :alt: GitHub Actions status
+   :target: https://github.com/scikit-hep/particle/workflows/CI
+
 .. image:: https://dev.azure.com/scikit-hep/particle/_apis/build/status/scikit-hep.particle?branchName=master
   :alt: Build Status
   :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
@@ -97,7 +101,7 @@ Getting started: PDGIDs
     >>> pid
     <PDGID: 99999999 (is_valid==False)>
 
-For convenience, all properties of the ``PDGID`` class are available as standalone functions:
+For convenience, all properties of the ``PDGID`` class are available as standalone functions that work on any SupportsInt (including ``Particle``):
 
 .. code-block:: python
 

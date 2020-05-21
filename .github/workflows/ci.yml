@@ -8,6 +8,19 @@ on:
     - 'v*'
 
 jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v1
+    - name: set PY
+      run: echo "::set-env name=PY::$(python --version --version | sha256sum | cut -d' ' -f1)"
+    - uses: actions/cache@v1
+      with:
+        path: ~/.cache/pre-commit
+        key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
+    - uses: pre-commit/action@v1.0.0
+
   checks:
     runs-on: ubuntu-latest
     strategy:
@@ -15,7 +28,7 @@ jobs:
       matrix:
         python-version:
         - 2.7
-        - 3.6
+        - 3.5
         - 3.8
     name: Check Python ${{ matrix.python-version }}
     steps:
@@ -88,12 +101,10 @@ jobs:
   zipapp:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+    - uses: actions/checkout@v1
     - uses: actions/setup-python@v1
       with:
-        python-version: 3.8
+        python-version: 3.7
 
     - name: Install wheel and sdist requirements
       run: python -m pip install "setuptools>=42.0" "setuptools_scm[toml]>=3.4" "wheel"
@@ -102,16 +113,36 @@ jobs:
       run: python setup.py sdist
 
     - name: Install requirements
-      run: python -m pip install enum34 pathlib2 importlib_resources attrs hepunits tabulate --target src
-
-    - name: Move enum to prevent name clash
-      run: mv src/enum src/enum34
+      run: python -m pip install attrs hepunits tabulate importlib_resources --target src
 
     - name: Make ZipApp
-      run: python -m zipapp -p "/usr/bin/env python" -o ../particle.pyz .
+      run: python -m zipapp -c -p "/usr/bin/env python3" -m "particle.__main__:main" -o ../particle.pyz .
       working-directory: src
 
     - uses: actions/upload-artifact@v1
       with:
         name: ZipApp
         path: particle.pyz
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./particle.pyz
+        asset_name: particle.pyz
+        asset_content_type: application/zip

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2020, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -52,7 +53,7 @@ When you are done, you can save one or more of the tables:
 
 import os
 from datetime import date
-import pandas as pd
+import pandas as pd  # type: ignore
 
 try:
     from io import StringIO

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2020, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -8,12 +9,7 @@ Collection of enums to help characterising particle properties
 Examples are charge, spin and parity.
 """
 
-# Backport needed if Python 2 is used
-# Rename used in ZipApp
-try:
-    from enum import IntEnum
-except ImportError:
-    from enum34 import IntEnum  # type: ignore
+from enum import IntEnum
 
 
 class SpinType(IntEnum):

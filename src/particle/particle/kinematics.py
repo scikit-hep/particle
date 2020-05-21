@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2020, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -14,6 +15,7 @@ from hepunits.constants import hbar
 
 
 def width_to_lifetime(Gamma):
+    # type: (float) -> float
     """
     Convert from a particle decay width to a lifetime.
 
@@ -59,6 +61,7 @@ def width_to_lifetime(Gamma):
 
 
 def lifetime_to_width(tau):
+    # type: (float) -> float
     """
     Convert from a particle lifetime to a decay width.
 

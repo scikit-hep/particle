@@ -8,8 +8,11 @@ import re
 import math
 import unicodedata
 
+from typing import Optional
+
 
 def programmatic_name(name):
+    # type: (str) -> str
     "Return a name safe to use as a variable name."
     name = re.sub("0$", "_0", name)
     name = name if "~" not in name else "".join(name.split("~")) + "_bar"
@@ -29,6 +32,7 @@ def programmatic_name(name):
 
 
 def str_with_unc(value, upper, lower=None):
+    # type: (float, Optional[float], Optional[float]) -> str
     """
     Utility to print out an uncertainty with different or
     identical upper/lower bounds. Nicely formats numbers using PDG rule.
@@ -115,6 +119,7 @@ _list_name_greek_letters += [l.lower() for l in _list_name_greek_letters]
 
 
 def greek_letter_name_to_unicode(letter):
+    # type: (str) -> str
     """
     Return a greek letter name as a Unicode character.
 
@@ -132,6 +137,7 @@ def greek_letter_name_to_unicode(letter):
 
 
 def latex_to_html_name(name):
+    # type:(str) -> str
     """Conversion of particle names from LaTeX to HTML."""
     name = re.sub(r"\^\{(.*?)\}", r"<SUP>\1</SUP>", name)
     name = re.sub(r"\_\{(.*?)\}", r"<SUB>\1</SUB>", name)

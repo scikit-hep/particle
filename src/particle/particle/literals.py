@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2020, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -32,18 +32,13 @@ List of available/defined particle literals:
 from ..shared_literals import common_particles
 from .particle import Particle, ParticleNotFound
 
-for item in common_particles:
+__doc = ""
+for k, v in common_particles.items():
     try:
-        locals()[item] = Particle.from_pdgid(common_particles[item])
+        locals()[k] = Particle.from_pdgid(v)
+        __doc += "  {item!s} = Particle.from_pdgid({part})\n".format(item=k, part=v)
     except ParticleNotFound:
         pass
-
-
-__doc = ""
-for item in common_particles:
-    __doc += "  {item!s} = Particle.from_pdgid({part})\n".format(
-        item=item, part=common_particles[item]
-    )
 
 __doc__ = __doc__.format(__doc)
 

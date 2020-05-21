@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2020, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -37,19 +38,23 @@ class PDGID(int):
     __slots__ = ()  # Keep PDGID a slots based class
 
     def __repr__(self):
+        # type: () -> str
         return "<PDGID: {:d}{:s}>".format(
-            int(self), "" if self.is_valid else " (is_valid==False)"
+            int(self), "" if _functions.is_valid(self) else " (is_valid==False)"
         )
 
     def __str__(self):
+        # type: () -> str
         return repr(self)
 
     def __neg__(self):
+        # type: () -> PDGID
         return self.__class__(-int(self))
 
     __invert__ = __neg__
 
     def info(self):
+        # type: () -> str
         """
         Print all PDGID properties one per line, for easy inspection.
         """
