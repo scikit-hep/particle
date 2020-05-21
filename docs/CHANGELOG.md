@@ -7,20 +7,20 @@ Version 0.10.0
 May 21th, 2020
 
 - `Particle` class:
-    - Several improvements, in particular to better deal with nuclei.
+    - Several improvements, in particular to better deal with nuclei
         and diquarks.
     - Speed of table loading improved.
     - Particle enums extended for diquarks.
     - Make particle literals available from top-level import.
     - Print-outs made more consistent for missing and non-relevant
         particle properties.
-    - New tests added.
+    - New tests added, some static type checking.
 - `PDGID` class:
     - PDG ID functions extended to correctly and consistently deal
         with nuclei.
-    - Functions now accept any int-like, including Particle objects.
+    - Functions now accept any SupportsInt, including Particle objects.
 - Data CSV files:
-    - Version 5 of package data files, with
+    - Version 5 of package data files:
         - Diquarks added.
         - Information in nuclei added! List and masses taken from
             package `periodictable` version 1.5.2.
@@ -37,8 +37,10 @@ May 21th, 2020
     - Deprecation warning in `attr.s` fixed, requirement on minimal
         version of `attr` added.
     - Version tags now follow standard `v#.#.#` format.
-    - Some Python warnings fixed.
+    - Some Python warnings fixed, warnings enabled on testing
     - Some initial work on static type hints.
+    - ZipApp fixes, simplifications and size reduction; ZipApp now
+        requires `python3` to be available
 
 Version 0.9.2
 -------------
