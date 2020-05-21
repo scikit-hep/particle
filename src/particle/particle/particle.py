@@ -15,19 +15,22 @@ from functools import total_ordering
 # External dependencies
 import attr
 
-# Backport for Python < 3.5:
-from typing import (
-    Optional,
-    Any,
-    Dict,
-    Tuple,
-    List,
-    Callable,
-    Iterable,
-    SupportsInt,
-    Union,
-    TextIO,
-)
+# Backport for Python < 3.5 recommended, but not required
+try:
+    from typing import (
+        Optional,
+        Any,
+        Dict,
+        Tuple,
+        List,
+        Callable,
+        Iterable,
+        SupportsInt,
+        Union,
+        TextIO,
+    )
+except ImportError:
+    pass
 
 from hepunits.constants import c_light
 

@@ -7,7 +7,11 @@
 import re
 import math
 import unicodedata
-from typing import Optional
+
+try:
+    from typing import Optional
+except ImportError:
+    pass
 
 
 def programmatic_name(name):

@@ -25,9 +25,13 @@ HepPDT and HepPID versions 3.04.01: http://lcgapp.cern.ch/project/simu/HepPDT/
 
 from __future__ import print_function, division, absolute_import
 
-from typing import SupportsInt, Optional
+# Optional to allow ZipApp to be simpler
+try:
+    from typing import SupportsInt, Optional
 
-PDGID_TYPE = SupportsInt
+    PDGID_TYPE = SupportsInt
+except ImportError:
+    pass
 
 
 # Backport needed if Python 2 is used
