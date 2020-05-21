@@ -124,17 +124,11 @@ jobs:
         name: ZipApp
         path: particle.pyz
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
+    - name: "Get upload_url"
+      run: echo "::set-output name=upload_url::https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$(jq --raw-output '.release.id' $GITHUB_EVENT_PATH)/assets{?name,label}"  
+      id: release
       if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: false
-        prerelease: false
+      # Tag *must* be made from the GitHub release interface at the moment
 
     - name: Upload Release Asset
       if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
@@ -142,7 +136,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        upload_url: ${{ steps.release.outputs.upload_url }}
         asset_path: ./particle.pyz
         asset_name: particle.pyz
         asset_content_type: application/zip
