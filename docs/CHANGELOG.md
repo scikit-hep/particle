@@ -38,7 +38,7 @@ May 21th, 2020
         version of `attr` added.
     - Version tags now follow standard `v#.#.#` format.
     - Some Python warnings fixed.
-    - Some initial work on static type hints
+    - Some initial work on static type hints.
 
 Version 0.9.2
 -------------
