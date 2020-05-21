@@ -101,7 +101,7 @@ Getting started: PDGIDs
     >>> pid
     <PDGID: 99999999 (is_valid==False)>
 
-For convenience, all properties of the ``PDGID`` class are available as standalone functions:
+For convenience, all properties of the ``PDGID`` class are available as standalone functions that work on any SupportsInt (including ``Particle``):
 
 .. code-block:: python
 
