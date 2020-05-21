@@ -28,7 +28,7 @@ May 21th, 2020
             time).
     - Converter script adapted to add to the produced data files
         particles not in the PDG data table, such as diquarks.
-- Redesigned packaging system, GHA deployment
+- Redesigned packaging system, GHA deployment.
 - Miscellaneous:
     - Files `*requirements.txt` removed from package - use
         `pip install .[dev]` instead
