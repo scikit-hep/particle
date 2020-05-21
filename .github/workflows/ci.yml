@@ -28,7 +28,7 @@ jobs:
       matrix:
         python-version:
         - 2.7
-        - 3.6
+        - 3.5
         - 3.8
     name: Check Python ${{ matrix.python-version }}
     steps:
@@ -86,12 +86,10 @@ jobs:
   zipapp:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+    - uses: actions/checkout@v1
     - uses: actions/setup-python@v1
       with:
-        python-version: 3.8
+        python-version: 3.7
 
     - name: Install wheel and sdist requirements
       run: python -m pip install "setuptools>=42.0" "setuptools_scm[toml]>=3.4" "wheel"
@@ -100,10 +98,10 @@ jobs:
       run: python setup.py sdist
 
     - name: Install requirements
-      run: python -m pip install attrs hepunits tabulate --target src
+      run: python -m pip install attrs hepunits tabulate importlib_resources --target src
 
     - name: Make ZipApp
-      run: python -m zipapp -p "/usr/bin/env python3" -o ../particle.pyz .
+      run: python -m zipapp -c -p "/usr/bin/env python3" -m "particle.__main__:main" -o ../particle.pyz .
       working-directory: src
 
     - uses: actions/upload-artifact@v1

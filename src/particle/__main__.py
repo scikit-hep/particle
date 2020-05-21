@@ -14,59 +14,66 @@ from .pdgid import PDGID
 import argparse
 import sys
 
-parser = argparse.ArgumentParser(
-    prog="particle", description="Particle command line display utility. Has two modes."
-)
 
-parser.add_argument(
-    "--version",
-    action="version",
-    version="%(prog)s {version}".format(version=__version__),
-)
+def main():
+    parser = argparse.ArgumentParser(
+        prog="particle",
+        description="Particle command line display utility. Has two modes.",
+    )
 
-subparsers = parser.add_subparsers(help="Subcommands")
+    parser.add_argument(
+        "--version",
+        action="version",
+        version="%(prog)s {version}".format(version=__version__),
+    )
 
-search = subparsers.add_parser(
-    "search",
-    help="Look up particles by PID or name (Ex.: python -m particle search D+ D-)",
-)
-search.add_argument("particle", nargs="+", help="Name(s) or ID(s)")
+    subparsers = parser.add_subparsers(help="Subcommands")
 
-pdgid = subparsers.add_parser(
-    "pdgid", help="Print info from PID (Ex.: python -m particle pdgid 11 13)"
-)
-pdgid.add_argument("pdgid", nargs="+", help="ID(s)")
+    search = subparsers.add_parser(
+        "search",
+        help="Look up particles by PID or name (Ex.: python -m particle search D+ D-)",
+    )
+    search.add_argument("particle", nargs="+", help="Name(s) or ID(s)")
 
-opts = parser.parse_args()
+    pdgid = subparsers.add_parser(
+        "pdgid", help="Print info from PID (Ex.: python -m particle pdgid 11 13)"
+    )
+    pdgid.add_argument("pdgid", nargs="+", help="ID(s)")
 
-if "particle" in opts:
-    for cand in opts.particle:
-        if hasattr(cand, "decode"):
-            cand = cand.decode("utf-8")
+    opts = parser.parse_args()
 
-        try:
-            value = int(cand)
-        except ValueError:
-            value = 0
+    if "particle" in opts:
+        for cand in opts.particle:
+            if hasattr(cand, "decode"):
+                cand = cand.decode("utf-8")
 
-        if value:
-            particles = [Particle.from_pdgid(value)]
-        else:
-            particles = Particle.from_string_list(cand)
+            try:
+                value = int(cand)
+            except ValueError:
+                value = 0
 
-        if len(particles) == 0:
-            print("Particle", cand, "not found.")
-            sys.exit(1)
-        elif len(particles) == 1:
-            print(particles[0].describe())
-        else:
-            for particle in particles:
-                print(repr(particle))
+            if value:
+                particles = [Particle.from_pdgid(value)]
+            else:
+                particles = Particle.from_string_list(cand)
 
-        print()
+            if len(particles) == 0:
+                print("Particle", cand, "not found.")
+                sys.exit(1)
+            elif len(particles) == 1:
+                print(particles[0].describe())
+            else:
+                for particle in particles:
+                    print(repr(particle))
 
-if "pdgid" in opts:
-    for value in opts.pdgid:
-        p = PDGID(value)
-        print(p)
-        print(PDGID(value).info())
+            print()
+
+    if "pdgid" in opts:
+        for value in opts.pdgid:
+            p = PDGID(value)
+            print(p)
+            print(PDGID(value).info())
+
+
+if __name__ == "__main__":
+    main()
