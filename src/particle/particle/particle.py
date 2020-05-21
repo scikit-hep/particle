@@ -26,6 +26,7 @@ from typing import (
     SupportsInt,
     Union,
     TextIO,
+    Set,
 )
 
 from hepunits.constants import c_light
@@ -229,7 +230,7 @@ class Particle(object):
         )
 
     # Loaded table of entries
-    _table = None  # type: Optional[List[Particle]]
+    _table = None  # type: Optional[Set[Particle]]
 
     # Names of loaded tables
     _table_names = None  # type: Optional[List[str]]
@@ -266,7 +267,7 @@ class Particle(object):
 
     @classmethod
     def all(cls):
-        # type: () -> List[Particle]
+        # type: () -> Set[Particle]
         """
         Access, hence get hold of, the internal particle data CSV table,
         loading it from the default location if no table has yet been loaded.
@@ -275,7 +276,7 @@ class Particle(object):
         if not cls.table_loaded():
             cls.load_table()
 
-        return cls._table if cls._table is not None else []
+        return cls._table if cls._table is not None else set()
 
     @classmethod
     def dump_table(
@@ -380,7 +381,7 @@ class Particle(object):
                     pass
 
         # Start with the full table
-        tbl_all = cls.all()
+        tbl_all = sorted(cls.all())
 
         # Apply a filter, if specified
         if filter_fn is not None:
@@ -429,7 +430,7 @@ class Particle(object):
         if append and not cls.table_loaded():
             cls.load_table(append=False)  # default load
         elif not append:
-            cls._table = []
+            cls._table = set()
             cls._table_names = []
 
         # Tell MyPy that this is true
@@ -466,7 +467,7 @@ class Particle(object):
                     if append and value in cls._table:
                         cls._table.remove(value)  # type: ignore
 
-                    cls._table.append(
+                    cls._table.add(
                         cls(
                             pdgid=value,
                             mass=float(v["Mass"]),
