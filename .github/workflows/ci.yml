@@ -8,6 +8,19 @@ on:
     - 'v*'
 
 jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v1
+    - name: set PY
+      run: echo "::set-env name=PY::$(python --version --version | sha256sum | cut -d' ' -f1)"
+    - uses: actions/cache@v1
+      with:
+        path: ~/.cache/pre-commit
+        key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
+    - uses: pre-commit/action@v1.0.0
+
   checks:
     runs-on: ubuntu-latest
     strategy:
@@ -100,3 +113,26 @@ jobs:
       with:
         name: ZipApp
         path: particle.pyz
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./particle.pyz
+        asset_name: particle.pyz
+        asset_content_type: application/zip
