@@ -883,11 +883,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         """
         if not is_valid(value):
             raise InvalidParticle("Input PDGID {0} is invalid!".format(value))
-        table = cls.all()
-        if value in table:
-            # Ignoring type here since you can actually find a particle in a list
-            # via index.
-            return table[table.index(value)]  # type: ignore
+
+        for item in cls.all():
+            if item.pdgid == value:
+                return item
         else:
             raise ParticleNotFound("Could not find PDGID {0}".format(value))
 
