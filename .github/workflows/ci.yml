@@ -125,7 +125,7 @@ jobs:
         path: particle.pyz
 
     - name: "Get upload_url"
-      run: echo "::set-output name=upload_url::https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$(jq --raw-output '.release.id' $GITHUB_EVENT_PATH)/assets{?name,label}"  
+      run: echo "::set-output name=upload_url::https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$(jq --raw-output '.release.id' $GITHUB_EVENT_PATH)/assets{?name,label}"
       id: release
       if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
       # Tag *must* be made from the GitHub release interface at the moment
