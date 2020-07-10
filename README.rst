@@ -82,7 +82,7 @@ Strict dependencies
 Changelog
 ---------
 
-See the `changelog <https://github.com/scikit-hep/particle/blob/master/docs/CHANGELOG.rst>`__ for a history of notable changes.
+See the `changelog <https://github.com/scikit-hep/particle/blob/master/docs/CHANGELOG.md>`__ for a history of notable changes.
 
 
 Getting started: PDGIDs
@@ -167,7 +167,7 @@ You can search for the properties using keyword arguments, which include
 ``I``, ``J``, ``G``, ``P``, ``quarks``, ``status``,
 ``mass_upper``, ``mass_lower``, ``width_upper``, and ``width_lower``.
 You can pass a callable or an exact match for any property.
-The argument `particle` can be set to ``True``/``False``, as well,
+The argument ``particle`` can be set to ``True``/``False``, as well,
 to limit the search to particles or antiparticles.
 You can also build the search yourself with the first positional
 argument, which accepts a callable that is given the particle object itself.
