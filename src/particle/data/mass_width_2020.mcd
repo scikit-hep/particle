@@ -15,7 +15,7 @@
 *       1 -  8 \ Monte Carlo particle numbers as described in the "Review of
 *       9 - 16 | Particle Physics". Charge states appear, as appropriate,
 *      17 - 24 | from left-to-right in the order -, 0, +, ++.
-*      25 - 32 / 
+*      25 - 32 /
 *           33   blank
 *      34 - 51   central value of the mass (double precision)
 *           52   blank
@@ -44,7 +44,7 @@
       11                          5.109989461E-04   +3.1E-12 -3.1E-12  0.E+00            +0.0E+00 -0.0E+00 e                   -
       12                                                                                                   nu(e)               0
       13                          1.056583745E-01   +2.4E-09 -2.4E-09  2.9959837E-19     +3.0E-25 -3.0E-25 mu                  -
-      14                                                                                                   nu(mu)              0   
+      14                                                                                                   nu(mu)              0
       15                          1.77686E+00       +1.2E-04 -1.2E-04  2.267E-12         +4.0E-15 -4.0E-15 tau                 -
       16                                                                                                   nu(tau)             0
        1                          4.67E-03          +0.5E-03 -0.2E-03                                      d                -1/3
