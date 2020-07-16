@@ -269,6 +269,15 @@ You can control the particle data tables if you so desire. You can append a new 
 
 You can also replace the particle table entirely with ``append=False`` (the default).
 
+If you want a non-default data file distributed with the package just proceed as follows:
+
+.. code-block:: python
+
+    >>> from particle import data
+    >>> Particle.load_table(data.open_text(data, 'particle2018.csv'))
+    >>> Particle.load_table(data.open_text(data, "nuclei2020.csv"), append=True)  # I still want nuclei info
+    >>> Particle.table_names()  # list the loaded tables
+
 
 Advanced: Conversion
 ^^^^^^^^^^^^^^^^^^^^
