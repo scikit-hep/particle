@@ -329,18 +329,18 @@ def test_describe(pid, description):
 
 
 def test_default_table_loading():
-    assert Particle.table_names() == ("particle2019.csv", "nuclei2020.csv")
+    assert Particle.table_names() == ("particle2020.csv", "nuclei2020.csv")
 
 
 def test_default_table_loading_bis():
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
-    assert p.table_names() == ("particle2019.csv", "nuclei2020.csv")
+    assert p.table_names() == ("particle2020.csv", "nuclei2020.csv")
 
 
 def test_explicit_table_loading():
-    Particle.load_table(data.open_text(data, "particle2019.csv"))
+    Particle.load_table(data.open_text(data, "particle2020.csv"))
     assert Particle.table_loaded() == True
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None

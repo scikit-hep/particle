@@ -9,7 +9,7 @@ This is a conversion file, not part of the public API.
 
 The default CSV files can be updated directly using the command:
 
-    >>> python -m particle.particle.convert regenerate 2019 <version_number>    # doctest: +SKIP
+    >>> python -m particle.particle.convert regenerate 2020 <version_number>    # doctest: +SKIP
 
 A custom fwf file and LaTeX file can be converted into the CSV format using:
 
@@ -34,7 +34,7 @@ combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
 
 You can also read in a modern "standard" file (this will produce fewer columns):
 
-    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2019.mcd')
+    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2020.mcd')
 
 A utility is even provided to use the modern table to update the full table:
 
@@ -249,11 +249,11 @@ def sort_particles(table):
 
 def get_from_pdg_mcd(filename):
     """
-    Reads in a current-style PDG .mcd file (mass_width_2019.mcd file tested).
+    Reads in a current-style PDG .mcd file (mass_width_2020.mcd file tested).
 
     Example
     -------
-    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2019.mcd')
+    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2020.mcd')
     """
 
     # The format here includes the space before a column
@@ -325,7 +325,7 @@ def update_from_mcd(full_table, update_table):
 
     Example
     -------
-    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2019.mcd')    # doctest: +SKIP
+    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2020.mcd')    # doctest: +SKIP
     """
 
     full_table = full_table.copy()
@@ -337,7 +337,7 @@ def update_from_mcd(full_table, update_table):
     return full_table
 
 
-def produce_files(particle2008, particle2019, version, year):
+def produce_files(particle2008, particle2020, version, year):
     "This produces listed output files from all input files."
 
     with data.open_text(data, "mass_width_2008.fwf") as fwf_f:
@@ -377,9 +377,9 @@ def produce_files(particle2008, particle2019, version, year):
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    particle2019 = str(particle2019)  # Conversion to handle pathlib on Python < 3.6
-    with open(particle2019, "w", newline="\n", encoding="utf-8") as f:
-        f.write(version_header(particle2019, version))
+    particle2020 = str(particle2020)  # Conversion to handle pathlib on Python < 3.6
+    with open(particle2020, "w", newline="\n", encoding="utf-8") as f:
+        f.write(version_header(particle2020, version))
         new_table.to_csv(f, float_format="%.12g")
     f.close()
 
