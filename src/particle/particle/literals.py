@@ -15,7 +15,7 @@ Typical use cases::
 
     >>> from particle import literals as lp
     >>> lp.pi_plus
-    <Particle: name="pi+", pdgid=211, mass=139.57061 ± 0.00024 MeV>
+    <Particle: name="pi+", pdgid=211, mass=139.57039 ± 0.00018 MeV>
     >>> lp.pi_plus.name
     'pi+'
     >>> from particle.literals import Lambda_b_0
