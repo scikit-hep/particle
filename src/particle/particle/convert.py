@@ -53,6 +53,7 @@ When you are done, you can save one or more of the tables:
 
 import os
 from datetime import date
+import numpy as np  # type: ignore
 import pandas as pd  # type: ignore
 
 try:
@@ -62,6 +63,9 @@ except ImportError:  # Python2 workaround, could also use six
         from cStringIO import StringIO  # type: ignore
     except ImportError:
         from StringIO import StringIO  # type: ignore
+
+from ..pdgid import PDGID
+from ..pdgid import is_baryon
 
 from .enums import (
     SpinType,
@@ -190,6 +194,13 @@ def get_from_pdg_extended(filename, latexes=None):
         .str.replace("mAYBE NON", "Maybe non")
         .str.replace("X", "x")
         .str.replace("Y", "y")
+    )
+
+    # Parity flips for baryons
+    pdg_table_inv["P"] = np.where(
+        pdg_table_inv.reset_index()["ID"].map(lambda x: is_baryon(x)),
+        -pdg_table_inv["P"],
+        pdg_table_inv["P"],
     )
 
     full_inversion = pdg_table_inv.Anti == Inv.Barred
