@@ -252,10 +252,16 @@ def test_P_consistency_baryons():
     pdgid = lambda p: p.pdgid
 
     pdgids_baryons = [
-        pdgid(b) for b in Particle.findall(lambda p: p.P != Parity.u and p.pdgid.is_baryon and p.pdgid > 0)
+        pdgid(b)
+        for b in Particle.findall(
+            lambda p: p.P != Parity.u and p.pdgid.is_baryon and p.pdgid > 0
+        )
     ]
     pdgids_antibaryons = [
-        pdgid(b) for b in Particle.findall(lambda p: p.P != Parity.u and p.pdgid.is_baryon and p.pdgid < 0)
+        pdgid(b)
+        for b in Particle.findall(
+            lambda p: p.P != Parity.u and p.pdgid.is_baryon and p.pdgid < 0
+        )
     ]
 
     for pdgid in pdgids_baryons:
