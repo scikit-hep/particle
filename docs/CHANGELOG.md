@@ -1,6 +1,22 @@
 Changelog
 =========
 
+Version 0.11.0
+--------------
+
+August 13th, 2020
+
+- Data files:
+    - Added the 2020 PDG data table .mcd file, now default.
+    - Version 6 of package CSV data files:
+        - Since PDG 2020 information now the default.
+        - Bug fix in parity of antibaryons.
+- Documentation:
+    - README updated and expanded with info on custom data loading.
+- Miscellaneous:
+    - ZipApp fix for releasing from web interface.
+
+
 Version 0.10.0
 --------------
 
@@ -211,11 +227,8 @@ June 14th, 2019
         files were previously erroneously made available. They have now
         been removed.
 
--
-
-    Changes in API:
-
-    :   - `Particle.table()` renamed to `Particle.all()`.
+- Changes in API:
+    - `Particle.table()` renamed to `Particle.all()`.
 
 - Enhancements to `Particle` class:
     - Numerous LaTeX particle names updated.
@@ -281,15 +294,11 @@ Version 0.4.0
 
 March 20th, 2019
 
--
-
-    Changes in API:
-
-    :   - Rename `Particle.from_search/from_search_list` to
-            `Particle.find/findall`.
-        - Rename `Particle.fullname/name` to `Particle.name/pdg_name`.
-        - Rename `Particle.bar` to `Particle.is_name_barred`.
-        - Rename `Particle.latex` to `Particle.latex_name`.
+- Changes in API:
+    - Rename `Particle.from_search/from_search_list` to `Particle.find/findall`.
+    - Rename `Particle.fullname/name` to `Particle.name/pdg_name`.
+    - Rename `Particle.bar` to `Particle.is_name_barred`.
+    - Rename `Particle.latex` to `Particle.latex_name`.
 
 - Neutrinos added to the 2018 data files.
 
@@ -299,8 +308,7 @@ March 20th, 2019
 
 - Better handling of `Particle.empty()`.
 
-- Test suite of `particle` and `pdgid` submodules improved and
-    extended.
+- Test suite of `particle` and `pdgid` submodules improved and extended.
 
 - Comprehensive package documentation (data files, `particle` and
     `pdgid` submodules).
