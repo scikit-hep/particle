@@ -6,10 +6,6 @@ Version 0.11.0
 
 August 13th, 2020
 
-- `Particle` class:
-    -
-- `PDGID` class:
-    -
 - Data files:
     - Added the 2020 PDG data table .mcd file, now default.
     - Version 6 of package CSV data files:
