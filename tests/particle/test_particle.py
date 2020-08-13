@@ -224,7 +224,7 @@ def test_charge_consistency():
         assert p.three_charge == p.pdgid.three_charge
 
 
-def test_P_consistency():
+def test_P_consistency_mesons():
     """
     The parity quantum number is stored in the (curated) data CSV files.
     For unflavoured mesons it can be calculated as P = (-1)^(L+1),
@@ -242,6 +242,28 @@ def test_P_consistency():
             assert p.P == -1
         else:
             assert p.P == (-1) ** (p.L + 1)
+
+
+def test_P_consistency_baryons():
+    """
+    The parity quantum number is stored in the (curated) data CSV files.
+    For baryons the (intrinsic) parity flips sign for the antiparticle.
+    """
+    pdgid = lambda p: p.pdgid
+
+    pdgids_baryons = [
+        pdgid(b) for b in Particle.findall(lambda p: p.P != Parity.u and p.pdgid.is_baryon and p.pdgid > 0)
+    ]
+    pdgids_antibaryons = [
+        pdgid(b) for b in Particle.findall(lambda p: p.P != Parity.u and p.pdgid.is_baryon and p.pdgid < 0)
+    ]
+
+    for pdgid in pdgids_baryons:
+        # Only consider checks on existing baryon-antibaryon pairs in the "DB"
+        if not (-pdgid in pdgids_antibaryons):
+            continue
+
+        assert Particle.from_pdgid(pdgid).P == -Particle.from_pdgid(-pdgid).P
 
 
 def test_C_consistency():
