@@ -1,7 +1,7 @@
 Particle Data folder contents
 -----------------------------
 
-You can ``import particle.data``, then use ``particle.data.open_text(particle.data, 'particle2019.csv')``
+You can ``import particle.data``, then use ``particle.data.open_text(particle.data, 'particle2020.csv')``
 to access data reliably regardless of how you have installed or are running the package (even from a zip file!).
 
 
@@ -20,7 +20,7 @@ An extension file for the extended PDG data file, prepared by this package's mai
 It contains entries necessary to provide extended information for the particles in the standard .mcd file.
 
 
-``mass_width_2019.mcd``
+``mass_width_2020.mcd``
 =======================
 
 The current style PDG data file, with much less information,
@@ -28,7 +28,7 @@ but with more particles and more up to date.
 A few older years are included, too.
 
 
-``particle2019.csv``
+``particle2020.csv``
 ====================
 
 The combined data file, in a format that is easy for the ``Particle`` class to read and easy for physicists to extend or edit.
@@ -42,7 +42,7 @@ If you'd like to append to this file, write a similar file with the same header,
 to read in the original table and then the new file you've written.
 
 This file was created from ``pdgid_to_latexname.csv``, ``mass_width_2008.fwf``,
-``mass_width_2008_ext.fwf`` and ``mass_width_2019.mcd``.
+``mass_width_2008_ext.fwf`` and ``mass_width_2020.mcd``.
 The 2008 version of the file was created with only the first two.
 
 
