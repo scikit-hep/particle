@@ -12,10 +12,10 @@
          -5,         -5,        312,                 b~,                anti-b,                       \bar{b}
           6,          6,        313,                  t,                     t,                             t
          -6,         -6,        314,                 t~,                anti-t,                       \bar{t}
-          7,          7,        315,                 b',                    b',                      b^\prime
-         -7,         -7,        316,            anti-b',               anti-b',                \bar{b}^\prime
-          8,          8,        317,                 t',                    t',                      t^\prime
-         -8,         -8,        318,            anti-t',               anti-t',                \bar{t}^\prime
+          7,          7,        315,                 b',                    b',                    b^{\prime}
+         -7,         -7,        316,            anti-b',               anti-b',              \bar{b}^{\prime}
+          8,          8,        317,                 t',                    t',                    t^{\prime}
+         -8,         -8,        318,            anti-t',               anti-t',              \bar{t}^{\prime}
          11,         11,          3,                 e-,                    e-,                         e^{-}
         -11,        -11,          2,                 e+,                    e+,                         e^{+}
          12,         12,          4,              nu(e),                  nu_e,                       \nu_{e}
@@ -28,20 +28,20 @@
         -15,        -15,         51,               tau+,                  tau+,                      \tau^{+}
          16,         16,        319,            nu(tau),                nu_tau,                    \nu_{\tau}
         -16,        -16,        320,           nu(tau)~,           anti-nu_tau,              \bar{\nu}_{\tau}
-         17,         17,        321,              tau'-,                    L-,               \tau^{\prime -}
-        -17,        -17,        322,              tau'+,                    L+,               \tau^{\prime +}
-         18,         18,        323,           nu(tau'),                  nu_L,             \nu_{\tau^\prime}
-        -18,        -18,        324,          nu(tau')~,             anti-nu_L,       \bar{\nu}_{\tau^\prime}
+         17,         17,        321,              tau'-,                    L-,                \tau^{\prime-}
+        -17,        -17,        322,              tau'+,                    L+,                \tau^{\prime+}
+         18,         18,        323,           nu(tau'),                  nu_L,           \nu_{\tau^{\prime}}
+        -18,        -18,        324,          nu(tau')~,             anti-nu_L,     \bar{\nu}_{\tau^{\prime}}
          21,         21,        325,                  g,                     g,                             g
          22,         22,          1,              gamma,                 gamma,                        \gamma
          23,         23,         55,                 Z0,                    Z0,                         Z^{0}
          24,         24,         53,                 W+,                    W+,                         W^{+}
         -24,        -24,         54,                 W-,                    W-,                         W^{-}
          25,         25,         87,                 H0,                Higgs0,                         H^{0}
-         32,         32,        326,                Z'0,                   Z'0,                  Z^{\prime 0}
-         33,         33,        327,               Z''0,                  Z''0,            Z^{\prime\prime 0}
-         34,         34,        328,                W'+,                   W'+,                  W^{\prime +}
-        -34,        -34,        329,                W'-,                   W'-,                  W^{\prime -}
+         32,         32,        326,                Z'0,                   Z'0,                   Z^{\prime0}
+         33,         33,        327,               Z''0,                  Z''0,             Z^{\prime\prime0}
+         34,         34,        328,                W'+,                   W'+,                   W^{\prime+}
+        -34,        -34,        329,                W'-,                   W'-,                   W^{\prime-}
          35,         35,         88,              H(2)0,               Higgs'0,                     H_{2}^{0}
          36,         36,         89,              H(3)0,                    A0,                     H_{3}^{0}
          37,         37,         90,                 H+,                Higgs+,                         H^{+}
@@ -64,8 +64,8 @@
         -85,        -85,        345,          b-hadron~,         anti-b-hadron,                \bar{b}-hadron
          86,          0,        346,           t-hadron,              t-hadron,                      t-hadron
         -86,          0,        347,          t-hadron~,         anti-t-hadron,                \bar{t}-hadron
-         87,          0,        348,          b'-hadron,             b'-hadron,               b^\prime-hadron
-        -87,          0,        349,         b'-hadron~,        anti-b'-hadron,         \bar{b}^\prime-hadron
+         87,          0,        348,          b'-hadron,             b'-hadron,             b^{\prime}-hadron
+        -87,          0,        349,         b'-hadron~,        anti-b'-hadron,       \bar{b}^{\prime}-hadron
          88,         88,        350,           junction,              junction,                      junction
          90,         90,        351,             system,                system,                        system
          91,         91,        352,            cluster,               cluster,                       cluster
@@ -120,9 +120,9 @@
        -327,          0,        377,       K(3)*(1780)-,                 K_3*-,           K_{3}^{*}(1780)^{-}
         329,          0,        378,       K(4)*(2045)+,                 K_4*+,           K_{4}^{*}(2045)^{+}
        -329,          0,        379,       K(4)*(2045)-,                 K_4*-,           K_{4}^{*}(2045)^{-}
-        331,        331,        127,          eta'(958),                  eta',              \eta^\prime(958)
+        331,        331,        127,          eta'(958),                  eta',            \eta^{\prime}(958)
         333,        333,         37,          phi(1020),                   phi,                    \phi(1020)
-        335,        335,        380,        f(2)'(1525),                  f'_2,            f_{2}^\prime(1525)
+        335,        335,        380,        f(2)'(1525),                  f'_2,          f_{2}^{\prime}(1525)
         337,          0,        381,       phi(3)(1850),           phi_3(1850),                \phi_{3}(1850)
         350,          0,      99997,             B(sL)0,                 B_s0L,                    B_{sL}^{0}
         411,        411,         56,                 D+,                    D+,                         D^{+}
@@ -314,12 +314,12 @@
       -4301,      -4301,        491,           (cs)(0)~,             anti-cs_0,                (\bar{cs})_{0}
        4303,       4303,        492,            (cs)(1),                  cs_1,                      (cs)_{1}
       -4303,      -4303,        493,           (cs)(1)~,             anti-cs_1,                (\bar{cs})_{1}
-       4312,       4312,        100,            Xi(c)'0,                Xi'_c0,            \Xi_{c}^{\prime 0}
-      -4312,      -4312,        101,           Xi(c)'~0,           anti-Xi'_c0,      \bar{\Xi}_{c}^{\prime 0}
+       4312,       4312,        100,            Xi(c)'0,                Xi'_c0,             \Xi_{c}^{\prime0}
+      -4312,      -4312,        101,           Xi(c)'~0,           anti-Xi'_c0,       \bar{\Xi}_{c}^{\prime0}
        4314,       4314,        494,       Xi(c)(2645)0,                Xi_c*0,             \Xi_{c}(2645)^{0}
       -4314,      -4314,        495,      Xi(c)(2645)~0,           anti-Xi_c*0,       \bar{\Xi}_{c}(2645)^{0}
-       4322,       4322,        102,            Xi(c)'+,                Xi'_c+,            \Xi_{c}^{\prime +}
-      -4322,      -4322,        103,           Xi(c)'~-,           anti-Xi'_c-,      \bar{\Xi}_{c}^{\prime -}
+       4322,       4322,        102,            Xi(c)'+,                Xi'_c+,             \Xi_{c}^{\prime+}
+      -4322,      -4322,        103,           Xi(c)'~-,           anti-Xi'_c-,       \bar{\Xi}_{c}^{\prime-}
        4324,       4324,        496,       Xi(c)(2645)+,                Xi_c*+,             \Xi_{c}(2645)^{+}
       -4324,      -4324,        497,      Xi(c)(2645)~-,           anti-Xi_c*-,       \bar{\Xi}_{c}(2645)^{-}
        4332,       4332,        104,          Omega(c)0,              Omega_c0,                \Omega_{c}^{0}
@@ -378,12 +378,12 @@
       -5301,      -5301,        535,           (bs)(0)~,             anti-bs_0,                (\bar{bs})_{0}
        5303,       5303,        536,            (bs)(1),                  bs_1,                      (bs)_{1}
       -5303,      -5303,        537,           (bs)(1)~,             anti-bs_1,                (\bar{bs})_{1}
-       5312,       5312,        116,            Xi(b)'-,                Xi'_b-,            \Xi_{b}^{\prime -}
-      -5312,      -5312,        117,           Xi(b)'~+,           anti-Xi'_b+,      \bar{\Xi}_{b}^{\prime +}
+       5312,       5312,        116,            Xi(b)'-,                Xi'_b-,             \Xi_{b}^{\prime-}
+      -5312,      -5312,        117,           Xi(b)'~+,           anti-Xi'_b+,       \bar{\Xi}_{b}^{\prime+}
        5314,       5314,        538,            Xi(b)*-,                Xi_b*-,                  \Xi_{b}^{*-}
       -5314,      -5314,        539,           Xi(b)*~+,           anti-Xi_b*+,            \bar{\Xi}_{b}^{*+}
-       5322,       5322,        118,            Xi(b)'0,                Xi'_b0,            \Xi_{b}^{\prime 0}
-      -5322,      -5322,        119,           Xi(b)'~0,           anti-Xi'_b0,      \bar{\Xi}_{b}^{\prime 0}
+       5322,       5322,        118,            Xi(b)'0,                Xi'_b0,             \Xi_{b}^{\prime0}
+      -5322,      -5322,        119,           Xi(b)'~0,           anti-Xi'_b0,       \bar{\Xi}_{b}^{\prime0}
        5324,       5324,        540,            Xi(b)*0,                Xi_b*0,                  \Xi_{b}^{*0}
       -5324,      -5324,        541,           Xi(b)*~0,           anti-Xi_b*0,            \bar{\Xi}_{b}^{*0}
        5332,       5332,        120,          Omega(b)-,              Omega_b-,                \Omega_{b}^{-}
@@ -396,16 +396,16 @@
       -5401,      -5401,        547,           (bc)(0)~,             anti-bc_0,                (\bar{bc})_{0}
        5403,       5403,        548,            (bc)(1),                  bc_1,                      (bc)_{1}
       -5403,      -5403,        549,           (bc)(1)~,             anti-bc_1,                (\bar{bc})_{1}
-       5412,       5412,        550,           Xi(bc)'0,               Xi'_bc0,           \Xi_{bc}^{\prime 0}
-      -5412,      -5412,        551,          Xi(bc)'~0,          anti-Xi'_bc0,     \bar{\Xi}_{bc}^{\prime 0}
+       5412,       5412,        550,           Xi(bc)'0,               Xi'_bc0,            \Xi_{bc}^{\prime0}
+      -5412,      -5412,        551,          Xi(bc)'~0,          anti-Xi'_bc0,      \bar{\Xi}_{bc}^{\prime0}
        5414,       5414,        552,           Xi(bc)*0,               Xi_bc*0,                 \Xi_{bc}^{*0}
       -5414,      -5414,        553,          Xi(bc)*~0,          anti-Xi_bc*0,           \bar{\Xi}_{bc}^{*0}
-       5422,       5422,        554,           Xi(bc)'+,               Xi'_bc+,           \Xi_{bc}^{\prime +}
-      -5422,      -5422,        555,          Xi(bc)'~-,          anti-Xi'_bc-,     \bar{\Xi}_{bc}^{\prime -}
+       5422,       5422,        554,           Xi(bc)'+,               Xi'_bc+,            \Xi_{bc}^{\prime+}
+      -5422,      -5422,        555,          Xi(bc)'~-,          anti-Xi'_bc-,      \bar{\Xi}_{bc}^{\prime-}
        5424,       5424,        556,           Xi(bc)*+,               Xi_bc*+,                 \Xi_{bc}^{*+}
       -5424,      -5424,        557,          Xi(bc)*~-,          anti-Xi_bc*-,           \bar{\Xi}_{bc}^{*-}
-       5432,       5432,        558,        Omega(bc)'0,            Omega'_bc0,        \Omega_{bc}^{\prime 0}
-      -5432,      -5432,        559,       Omega(bc)'~0,       anti-Omega'_bc0,  \bar{\Omega}_{bc}^{\prime 0}
+       5432,       5432,        558,        Omega(bc)'0,            Omega'_bc0,         \Omega_{bc}^{\prime0}
+      -5432,      -5432,        559,       Omega(bc)'~0,       anti-Omega'_bc0,   \bar{\Omega}_{bc}^{\prime0}
        5434,       5434,        560,        Omega(bc)*0,            Omega_bc*0,              \Omega_{bc}^{*0}
       -5434,      -5434,        561,       Omega(bc)*~0,       anti-Omega_bc*0,        \bar{\Omega}_{bc}^{*0}
        5442,       5442,        562,        Omega(bcc)+,            Omega_bcc+,              \Omega_{bcc}^{+}
@@ -804,7 +804,7 @@
    -2000003,   -2000003,        898,             ~s(R)~,               unknown,           \bar{\tilde{s}}_{R}
     2000004,    2000004,        899,              ~c(R),               unknown,                 \tilde{c}_{R}
    -2000004,   -2000004,        900,             ~c(R)~,               unknown,           \bar{\tilde{c}}_{R}
-   2000005,    2000005,        901,              ~b(2),               unknown,                 \tilde{b}_{2}
+    2000005,    2000005,        901,              ~b(2),               unknown,                 \tilde{b}_{2}
    -2000005,   -2000005,        902,             ~b(2)~,               unknown,           \bar{\tilde{b}}_{2}
     2000006,    2000006,        903,              ~t(2),               unknown,                 \tilde{t}_{2}
    -2000006,   -2000006,        904,             ~t(2)~,               unknown,           \bar{\tilde{t}}_{2}
@@ -826,7 +826,7 @@
    -3000211,   -3000211,        920,            pi(tc)-,               unknown,                  \pi_{tc}^{-}
     3000213,    3000213,        921,           rho(tc)+,               unknown,                 \rho_{tc}^{+}
    -3000213,   -3000213,        922,           rho(tc)-,               unknown,                 \rho_{tc}^{-}
-    3000221,    3000221,        923,           pi(tc)'0,               unknown,           \pi_{tc}^{\prime 0}
+    3000221,    3000221,        923,           pi(tc)'0,               unknown,            \pi_{tc}^{\prime0}
     3000223,    3000223,        924,          omega(tc),               unknown,                   \omega_{tc}
     3000331,    3000331,        925,             eta_tc,               unknown,                     \eta_{tc}
     3100021,    3100021,        926,              V8_tc,               unknown,                         V_{8}
