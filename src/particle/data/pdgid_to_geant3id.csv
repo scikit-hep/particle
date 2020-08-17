@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - pdgid_to_geant3id.csv - version 6 - 2020-08-13
+# (c) Scikit-HEP project - Particle package data file - pdgid_to_geant3id.csv - version 7 - 2020-08-17
 PDGID,GEANT3ID
 1,303
 -1,304

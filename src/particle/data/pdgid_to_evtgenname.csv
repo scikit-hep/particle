@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - pdgid_to_evtgenname.csv - version 6 - 2020-08-13
+# (c) Scikit-HEP project - Particle package data file - pdgid_to_evtgenname.csv - version 7 - 2020-08-17
 PDGID,STR
 1,d
 -1,anti-d
