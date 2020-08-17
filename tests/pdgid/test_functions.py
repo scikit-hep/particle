@@ -215,7 +215,7 @@ def test_is_sm_gauge_boson_or_higgs(PDGIDs):
         PDGIDs.Photon,
         PDGIDs.Z0,
         PDGIDs.WMinus,
-        PDGIDs.HiggsBoson
+        PDGIDs.HiggsBoson,
     )
     _non_sm_gb_and_higgs = [id for id in PDGIDs if id not in _sm_gb_and_higgs]
     for id in _sm_gb_and_higgs:
@@ -225,7 +225,7 @@ def test_is_sm_gauge_boson_or_higgs(PDGIDs):
 
 
 def test_is_generator_specific(PDGIDs):
-    _generator_specific = (PDGIDs.AntiCHadron)
+    _generator_specific = PDGIDs.AntiCHadron
     _non_generator_specific = [id for id in PDGIDs if id not in _generator_specific]
     for id in _generator_specific:
         assert is_generator_specific(id) == True
@@ -303,7 +303,9 @@ def test_is_technicolor(PDGIDs):
 
 def test_is_composite_quark_or_lepton(PDGIDs):
     _composite_quark_or_lepton = (PDGIDs.UQuarkStar, PDGIDs.AntiElectronStar)
-    _non_composite_quark_or_lepton = [id for id in PDGIDs if id not in _composite_quark_or_lepton]
+    _non_composite_quark_or_lepton = [
+        id for id in PDGIDs if id not in _composite_quark_or_lepton
+    ]
     for id in _composite_quark_or_lepton:
         assert is_composite_quark_or_lepton(id) == True
     for id in _non_composite_quark_or_lepton:
