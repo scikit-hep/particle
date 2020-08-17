@@ -13,13 +13,17 @@ from particle.pdgid import is_lepton
 from particle.pdgid import is_hadron
 from particle.pdgid import is_meson
 from particle.pdgid import is_baryon
-from particle.pdgid import is_diquark
-from particle.pdgid import is_nucleus
 from particle.pdgid import is_pentaquark
+from particle.pdgid import is_sm_gauge_boson_or_higgs
+from particle.pdgid import is_generator_specific
+from particle.pdgid import is_nucleus
+from particle.pdgid import is_diquark
 from particle.pdgid import is_Rhadron
 from particle.pdgid import is_Qball
 from particle.pdgid import is_dyon
 from particle.pdgid import is_SUSY
+from particle.pdgid import is_technicolor
+from particle.pdgid import is_composite_quark_or_lepton
 from particle.pdgid import has_down
 from particle.pdgid import has_up
 from particle.pdgid import has_strange
@@ -113,6 +117,7 @@ def test_is_lepton(PDGIDs):
         PDGIDs.TauPrime,
         PDGIDs.Nu_e,
         PDGIDs.NuBar_tau,
+        PDGIDs.AntiElectronStar,
     )
     _non_leptons = [id for id in PDGIDs if id not in _leptons]
     for id in _leptons:
@@ -151,6 +156,8 @@ def test_is_meson(PDGIDs):
         PDGIDs.BPlus,
         PDGIDs.Bs,
         PDGIDs.BcPlus,
+        PDGIDs.Pi0TC,
+        PDGIDs.PiMinusTC,
         PDGIDs.T0,
         PDGIDs.Reggeon,
         PDGIDs.Pomeron,
@@ -196,15 +203,6 @@ def test_is_hadron(PDGIDs):
         assert is_hadron(id) == (is_meson(id) or is_baryon(id))
 
 
-def test_is_diquark(PDGIDs):
-    _diquarks = (PDGIDs.DD1, PDGIDs.SD0)
-    _non_diquarks = [id for id in PDGIDs if id not in _diquarks]
-    for id in _diquarks:
-        assert is_diquark(id) == True
-    for id in _non_diquarks:
-        assert is_diquark(id) == False
-
-
 def test_is_pentaquark(PDGIDs):
     _pentaquarks = (PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
     _non_pentaquarks = [id for id in PDGIDs if id not in _pentaquarks]
@@ -212,6 +210,30 @@ def test_is_pentaquark(PDGIDs):
     assert is_pentaquark(PDGIDs.AntiUCbarCUDPentaquark) == True
     for id in _non_pentaquarks:
         assert is_pentaquark(id) == False
+
+
+def test_is_sm_gauge_boson_or_higgs(PDGIDs):
+    _sm_gb_and_higgs = (
+        PDGIDs.Gluon,
+        PDGIDs.Photon,
+        PDGIDs.Z0,
+        PDGIDs.WMinus,
+        PDGIDs.HiggsBoson,
+    )
+    _non_sm_gb_and_higgs = [id for id in PDGIDs if id not in _sm_gb_and_higgs]
+    for id in _sm_gb_and_higgs:
+        assert is_sm_gauge_boson_or_higgs(id) == True
+    for id in _non_sm_gb_and_higgs:
+        assert is_sm_gauge_boson_or_higgs(id) == False
+
+
+def test_is_generator_specific(PDGIDs):
+    _generator_specific = (PDGIDs.AntiCHadron,)
+    _non_generator_specific = [id for id in PDGIDs if id not in _generator_specific]
+    for id in _generator_specific:
+        assert is_generator_specific(id) == True
+    for id in _non_generator_specific:
+        assert is_generator_specific(id) == False
 
 
 def test_is_nucleus(PDGIDs):
@@ -226,6 +248,15 @@ def test_is_nucleus(PDGIDs):
         assert is_nucleus(id) == True
     for id in _non_nuclei:
         assert is_nucleus(id) == False
+
+
+def test_is_diquark(PDGIDs):
+    _diquarks = (PDGIDs.DD1, PDGIDs.SD0)
+    _non_diquarks = [id for id in PDGIDs if id not in _diquarks]
+    for id in _diquarks:
+        assert is_diquark(id) == True
+    for id in _non_diquarks:
+        assert is_diquark(id) == False
 
 
 def test_is_Rhadron(PDGIDs):
@@ -262,6 +293,26 @@ def test_is_SUSY(PDGIDs):
         assert is_SUSY(id) == True
     for id in _non_susy:
         assert is_SUSY(id) == False
+
+
+def test_is_technicolor(PDGIDs):
+    _technicolor = (PDGIDs.Pi0TC, PDGIDs.PiMinusTC)
+    _non_technicolor = [id for id in PDGIDs if id not in _technicolor]
+    for id in _technicolor:
+        assert is_technicolor(id) == True
+    for id in _non_technicolor:
+        assert is_technicolor(id) == False
+
+
+def test_is_composite_quark_or_lepton(PDGIDs):
+    _composite_quark_or_lepton = (PDGIDs.UQuarkStar, PDGIDs.AntiElectronStar)
+    _non_composite_quark_or_lepton = [
+        id for id in PDGIDs if id not in _composite_quark_or_lepton
+    ]
+    for id in _composite_quark_or_lepton:
+        assert is_composite_quark_or_lepton(id) == True
+    for id in _non_composite_quark_or_lepton:
+        assert is_composite_quark_or_lepton(id) == False
 
 
 def test_has_down(PDGIDs):
@@ -402,10 +453,13 @@ def test_has_fundamental_anti(PDGIDs):
         PDGIDs.TQuark,
         PDGIDs.BPrimeQuark,
         PDGIDs.TPrimeQuark,
+        PDGIDs.UQuarkStar,
+        PDGIDs.AntiElectronStar,
         PDGIDs.STildeL,
         PDGIDs.CTildeR,
         PDGIDs.DyonSameMagElecChargeSign,
         PDGIDs.DyonOppositeMagElecChargeSign,
+        PDGIDs.AntiCHadron,
     )
     _nope = [id for id in PDGIDs if id not in _yep]
     for id in _yep:

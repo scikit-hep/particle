@@ -69,6 +69,14 @@ def is_valid(pdgid):
         return True
     if is_pentaquark(pdgid):
         return True
+    if is_sm_gauge_boson_or_higgs(pdgid):
+        return True
+    if is_generator_specific(pdgid):
+        return True
+    if is_technicolor(pdgid):
+        return True
+    if is_composite_quark_or_lepton(pdgid):
+        return True
     if _extra_bits(pdgid) > 0:
         if is_nucleus(pdgid):
             return True
@@ -252,6 +260,46 @@ def is_pentaquark(pdgid):
     return True
 
 
+def is_sm_gauge_boson_or_higgs(pdgid):
+    # type: (PDGID_TYPE) -> bool
+    """
+    Does this PDG ID correspond to a Standard Model gauge boson or Higgs?
+
+    Codes 21-30 are reserved for the Standard Model gauge bosons and the Higgs.
+    """
+    if abspid(pdgid) == 24:  # W is the only SM gauge boson not its antiparticle
+        return True
+    return True if pdgid in range(21, 31) else False
+
+
+def is_generator_specific(pdgid):
+    # type: (PDGID_TYPE) -> bool
+    """
+    Does this PDG ID correspond to generator-specific pseudoparticles or concepts?
+
+    Codes 81-100 are reserved for generator-specific pseudoparticles and concepts.
+    Codes 901-930, 1901-1930, 2901-2930, and 3901-3930 are for
+    additional components of Standard Model parton distribution functions,
+    where the latter three ranges are intended to distinguish
+    left/right/longitudinal components.
+    Codes 998 and 999 are reserved for GEANT tracking purposes.
+    """
+    aid = abspid(pdgid)
+    if aid in range(81, 101):
+        return True
+    if aid in range(901, 931):
+        return True
+    if aid in range(1901, 1931):
+        return True
+    if aid in range(2901, 2931):
+        return True
+    if aid in range(3901, 3931):
+        return True
+    if aid in (998, 999):
+        return True
+    return False
+
+
 def is_Rhadron(pdgid):
     # type: (PDGID_TYPE) -> bool
     """Does this PDG ID correspond to an R-hadron?
@@ -340,6 +388,34 @@ def is_SUSY(pdgid):
     if _digit(pdgid, Location.Nr) != 0:
         return False
     if _fundamental_id(pdgid) == 0:
+        return False
+    return True
+
+
+def is_technicolor(pdgid):
+    # type: (PDGID_TYPE) -> bool
+    """
+    Does this PDG ID correspond to a Technicolor state?
+
+    Technicolor states have N = 3.
+    """
+    if _extra_bits(pdgid) > 0:
+        return False
+    return True if _digit(pdgid, Location.N) == 3 else False
+
+
+def is_composite_quark_or_lepton(pdgid):
+    # type: (PDGID_TYPE) -> bool
+    """
+    Does this PDG ID correspond to an excited (composite) quark or lepton?
+
+    Excited (composite) quarks and leptons have N = 4 and Nr = 0.
+    """
+    if _extra_bits(pdgid) > 0:
+        return False
+    if _fundamental_id(pdgid) == 0:
+        return False
+    if not (_digit(pdgid, Location.N) == 4 and _digit(pdgid, Location.Nr) == 0):
         return False
     return True
 
