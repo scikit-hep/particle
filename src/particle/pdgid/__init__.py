@@ -72,13 +72,17 @@ from .functions import is_lepton
 from .functions import is_hadron
 from .functions import is_meson
 from .functions import is_baryon
-from .functions import is_diquark
-from .functions import is_nucleus
 from .functions import is_pentaquark
+from .functions import is_sm_gauge_boson_or_higgs
+from .functions import is_generator_specific
+from .functions import is_nucleus
+from .functions import is_diquark
 from .functions import is_Rhadron
 from .functions import is_Qball
 from .functions import is_dyon
 from .functions import is_SUSY
+from .functions import is_technicolor
+from .functions import is_composite_quark_or_lepton
 
 from .functions import has_down
 from .functions import has_up
