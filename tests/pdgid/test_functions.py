@@ -117,6 +117,7 @@ def test_is_lepton(PDGIDs):
         PDGIDs.TauPrime,
         PDGIDs.Nu_e,
         PDGIDs.NuBar_tau,
+        PDGIDs.AntiElectronStar,
     )
     _non_leptons = [id for id in PDGIDs if id not in _leptons]
     for id in _leptons:
@@ -155,6 +156,7 @@ def test_is_meson(PDGIDs):
         PDGIDs.BPlus,
         PDGIDs.Bs,
         PDGIDs.BcPlus,
+        PDGIDs.PiMinusTC,
         PDGIDs.T0,
         PDGIDs.Reggeon,
         PDGIDs.Pomeron,
@@ -225,7 +227,7 @@ def test_is_sm_gauge_boson_or_higgs(PDGIDs):
 
 
 def test_is_generator_specific(PDGIDs):
-    _generator_specific = PDGIDs.AntiCHadron
+    _generator_specific = (PDGIDs.AntiCHadron,)
     _non_generator_specific = [id for id in PDGIDs if id not in _generator_specific]
     for id in _generator_specific:
         assert is_generator_specific(id) == True
@@ -298,7 +300,7 @@ def test_is_technicolor(PDGIDs):
     for id in _technicolor:
         assert is_technicolor(id) == True
     for id in _non_technicolor:
-        assert is_SUSY(id) == False
+        assert is_technicolor(id) == False
 
 
 def test_is_composite_quark_or_lepton(PDGIDs):
@@ -450,6 +452,8 @@ def test_has_fundamental_anti(PDGIDs):
         PDGIDs.TQuark,
         PDGIDs.BPrimeQuark,
         PDGIDs.TPrimeQuark,
+        PDGIDs.UQuarkStar,
+        PDGIDs.AntiElectronStar,
         PDGIDs.STildeL,
         PDGIDs.CTildeR,
         PDGIDs.DyonSameMagElecChargeSign,
