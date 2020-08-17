@@ -863,7 +863,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @property
     def html_name(self):
         # type: () -> str
-        "This is the name using HTML instead of LaTeX."
+        "This is the name in HTML."
         return latex_to_html_name(self.latex_name)
 
     @classmethod

@@ -76,7 +76,6 @@
          96,         96,        357,           THRUaxis,              THRUaxis,                      THRUaxis
          97,         97,        358,            CLUSjet,               CLUSjet,                       CLUSjet
          98,         98,        359,            CELLjet,               CELLjet,                       CELLjet
-         99,         99,        360,              table,                 table,                         table
         111,        111,          7,                pi0,                   pi0,                       \pi^{0}
         113,        113,         33,          rho(770)0,                  rho0,                 \rho(770)^{0}
         115,        115,        136,        a(2)(1320)0,                  a_20,               a_{2}(1320)^{0}
