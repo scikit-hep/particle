@@ -279,7 +279,7 @@ def is_generator_specific(pdgid):
 
     Codes 81-100 are reserved for this purpose.
     """
-    return True if pdgid in range(81, 101) else False
+    return True if abspid(pdgid) in range(81, 101) else False
 
 
 def is_Rhadron(pdgid):

@@ -156,6 +156,7 @@ def test_is_meson(PDGIDs):
         PDGIDs.BPlus,
         PDGIDs.Bs,
         PDGIDs.BcPlus,
+        PDGIDs.Pi0TC,
         PDGIDs.PiMinusTC,
         PDGIDs.T0,
         PDGIDs.Reggeon,
@@ -458,6 +459,7 @@ def test_has_fundamental_anti(PDGIDs):
         PDGIDs.CTildeR,
         PDGIDs.DyonSameMagElecChargeSign,
         PDGIDs.DyonOppositeMagElecChargeSign,
+        PDGIDs.AntiCHadron,
     )
     _nope = [id for id in PDGIDs if id not in _yep]
     for id in _yep:
