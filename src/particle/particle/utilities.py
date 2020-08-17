@@ -141,10 +141,12 @@ def latex_to_html_name(name):
     """Conversion of particle names from LaTeX to HTML."""
     name = re.sub(r"\^\{(.*?)\}", r"<SUP>\1</SUP>", name)
     name = re.sub(r"\_\{(.*?)\}", r"<SUB>\1</SUB>", name)
+    name = re.sub(r"\\prime(.*?)", r"&#8242;", name)
     name = re.sub(r"\\mathrm\{(.*?)\}", r"\1", name)
     name = re.sub(r"\\left\[(.*?)\\right\]", r"[\1] ", name)
     for gl in _list_name_greek_letters:
         name = name.replace(r"\%s" % gl, "&%s;" % gl)
+    name = re.sub(r"\\tilde\{(.*?)\}", r"\1&#771;", name)
     name = re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)
     name = re.sub(r"\\overline\{(.*?)\}", r"\1&#773;", name)
     return name

@@ -1,6 +1,29 @@
 Changelog
 =========
 
+Version 0.12.0
+--------------
+
+In preparation.
+
+- `Particle` class:
+  - Improve LaTeX particle names with `\prime` in them,
+    to have correct HTML names for such particles.
+- `PDGID` class:
+  - New functions for qualification of PDG IDs:
+    - `is_sm_gauge_boson_or_higgs`.
+    - `is_generator_specific`.
+    - `is_technicolor`.
+    - `is_composite_quark_or_lepton`.
+- Data CSV files:
+  - Version 7 of package data files, with fixed LaTeX and HTML particle names.
+- Tests:
+  - Test suite extended to deal with new PDG ID related functions.
+- Miscellaneous:
+  - LaTeX-to-HTML particle name conversion function fixed to Correctly
+    deal with names containing `\prime` and/or `\tilde`.
+
+
 Version 0.11.0
 --------------
 
