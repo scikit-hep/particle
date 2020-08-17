@@ -69,6 +69,14 @@ def is_valid(pdgid):
         return True
     if is_pentaquark(pdgid):
         return True
+    if is_sm_gauge_boson_or_higgs(pdgid):
+        return True
+    if is_generator_specific(pdgid):
+        return True
+    if is_technicolor(pdgid):
+        return True
+    if is_composite_quark_or_lepton(pdgid):
+        return True
     if _extra_bits(pdgid) > 0:
         if is_nucleus(pdgid):
             return True
@@ -259,6 +267,8 @@ def is_sm_gauge_boson_or_higgs(pdgid):
 
     Codes 21-30 are reserved for the Standard Model gauge bosons and the Higgs.
     """
+    if abspid(pdgid) == 24:  # W is the only SM gauge boson not its antiparticle
+        return True
     return True if pdgid in range(21, 31) else False
 
 
