@@ -112,10 +112,17 @@ class PDGIDsEnum(IntEnum):
     HydrogenNucleus = 1000010010
     Carbon12 = 1000060120
     # Pentaquarks
-    UCbarCUDPentaquark = (
-        9422144  # example of spin 3/2 u-cbar-c-u-d pentaquark decaying to J/psi proton
-    )
     AntiUCbarCUDPentaquark = -9422144
+    # example of spin 3/2 u-cbar-c-u-d pentaquark decaying to J/psi proton
+    UCbarCUDPentaquark = 9422144
+    # Technicolor
+    Pi0TC = 3000111
+    PiMinusTC = -3000211
+    # Composite quarks and leptons
+    UQuarkStar = 4000002
+    AntiElectronStar = -4000011
+    # Generator specific pseudoparticles or concepts
+    AntiCHadron = -84
     # Invalid ID
     Invalid1 = 0  # illegal ID
     Invalid2 = 99999999  # general form is a 7-digit number
