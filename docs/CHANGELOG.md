@@ -17,8 +17,11 @@ In preparation.
     - `is_composite_quark_or_lepton`.
 - Data CSV files:
   - Version 7 of package data files, with fixed LaTeX and HTML particle names.
+  - Internal and user-irrelevant file `particle2008.csv` file removed.
 - Tests:
   - Test suite extended to deal with new PDG ID related functions.
+- Documentation:
+  - Demo notebook slightly extended.
 - Miscellaneous:
   - LaTeX-to-HTML particle name conversion function fixed to Correctly
     deal with names containing `\prime` and/or `\tilde`.
