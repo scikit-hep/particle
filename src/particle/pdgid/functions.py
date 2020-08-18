@@ -97,7 +97,7 @@ def is_lepton(pdgid):
     """Does this PDG ID correspond to a lepton?"""
     if _extra_bits(pdgid) > 0:
         return False
-    if _fundamental_id(pdgid) >= 11 and _fundamental_id(pdgid) <= 18:
+    if _fundamental_id(pdgid) in range(11, 19):
         return True
     return False
 
@@ -116,6 +116,8 @@ def is_hadron(pdgid):
     if is_baryon(pdgid):
         return True
     if is_pentaquark(pdgid):
+        return True
+    if is_Rhadron(pdgid):
         return True
     return False
 
