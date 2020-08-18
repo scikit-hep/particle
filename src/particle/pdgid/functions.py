@@ -297,6 +297,8 @@ def is_generator_specific(pdgid):
         return True
     if aid in (998, 999):
         return True
+    if aid in (20022, 480000000):  # Special cases of opticalphoton and geantino
+        return True
     return False
 
 
