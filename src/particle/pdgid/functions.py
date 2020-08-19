@@ -129,7 +129,7 @@ def is_meson(pdgid):
         return False
     if abspid(pdgid) <= 100:
         return False
-    if 0 < _fundamental_id(pdgid) <= 100:  # type: ignore
+    if 0 < int(_fundamental_id(pdgid)) <= 100:
         return False
     # Special IDs - K(L)0, ???, K(S)0
     if abspid(pdgid) in {130, 210, 310}:
