@@ -283,7 +283,7 @@ def is_sm_gauge_boson_or_higgs(pdgid):
     if abspid(pdgid) == 24:  # W is the only SM gauge boson not its antiparticle
         return True
 
-    return True if pdgid in range(21, 26) else False
+    return True if 22 <= pdgid <=  26 else False
 
 
 def is_generator_specific(pdgid):
