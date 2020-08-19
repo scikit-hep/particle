@@ -174,7 +174,7 @@ def is_baryon(pdgid):
         return False
 
     # Old codes for diffractive p and n (MC usage)
-    if abspid(pdgid) in (2110, 2210):
+    if abspid(pdgid) in {2110, 2210}:
         return True
 
     if (
