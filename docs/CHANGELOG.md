@@ -15,6 +15,8 @@ In preparation.
     - `is_generator_specific`.
     - `is_technicolor`.
     - `is_composite_quark_or_lepton`.
+  - Several PDG ID qualification functions improved and/or enhanced,
+    and minor bugs fixed for certain special particles.
 - Data CSV files:
   - Version 7 of package data files, with fixed LaTeX and HTML particle names.
   - Internal and user-irrelevant file `particle2008.csv` file removed.
@@ -22,6 +24,7 @@ In preparation.
   - Test suite extended to deal with new PDG ID related functions.
 - Documentation:
   - Demo notebook slightly extended.
+  - More explanations in the functions qualifying PDG IDs.
 - Miscellaneous:
   - LaTeX-to-HTML particle name conversion function fixed to Correctly
     deal with names containing `\prime` and/or `\tilde`.
