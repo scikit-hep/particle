@@ -131,10 +131,13 @@ def is_meson(pdgid):
         return False
     if _fundamental_id(pdgid) <= 100 and _fundamental_id(pdgid) > 0:
         return False
+    # Special IDs - K(L)0, ???, K(S)0
     if abspid(pdgid) in (130, 210, 310):
         return True
+    # Special IDs - B(L)0, B(sL)0, B(H)0, B(sH)0
     if abspid(pdgid) in (150, 350, 510, 530):
         return True
+    # Special particles - reggeon, pomeron, odderon
     if int(pdgid) in (110, 990, 9990):
         return True
     if (
@@ -165,9 +168,10 @@ def is_baryon(pdgid):
         return True
     if _extra_bits(pdgid) > 0:
         return False
-    if _fundamental_id(pdgid) > 0 and _fundamental_id(pdgid) <= 100:
+    if _fundamental_id(pdgid) in range(1, 101):
         return False
-    if abspid(pdgid) == 2110 or abspid(pdgid) == 2210:
+    # Old codes for diffractive p and n (MC usage)
+    if abspid(pdgid) in (2110, 2210):
         return True
     if (
         _digit(pdgid, Location.Nj) > 0
@@ -267,11 +271,13 @@ def is_sm_gauge_boson_or_higgs(pdgid):
     """
     Does this PDG ID correspond to a Standard Model gauge boson or Higgs?
 
-    Codes 21-30 are reserved for the Standard Model gauge bosons and the Higgs.
+    Codes 21-30 are reserved for the Standard Model gauge bosons and the Higgs,
+    but only the codes 21-25 actually correspond to SM particles.
     """
     if abspid(pdgid) == 24:  # W is the only SM gauge boson not its antiparticle
         return True
-    return True if pdgid in range(21, 31) else False
+
+    return True if pdgid in range(21, 26) else False
 
 
 def is_generator_specific(pdgid):
@@ -369,7 +375,7 @@ def is_dyon(pdgid):
         return False
     if _digit(pdgid, Location.Nr) != 1:
         return False
-    if _digit(pdgid, Location.Nl) != 1 and _digit(pdgid, Location.Nl) != 2:
+    if _digit(pdgid, Location.Nl) not in (1, 2):
         return False
     if _digit(pdgid, Location.Nq3) == 0:
         return False
@@ -462,15 +468,26 @@ def has_top(pdgid):
 
 def has_fundamental_anti(pdgid):
     # type: (PDGID_TYPE) -> bool
-    """If this is a fundamental particle, does it have a valid antiparticle?"""
-    # These are defined by the generator and therefore are always valid
-    fid = _fundamental_id(pdgid)
-    if fid in range(80, 101):
-        return True
+    """
+    If this is a fundamental particle, does it have a valid antiparticle?
+
+    Notes
+    -----
+    Based on the current list of defined particles/concepts
+    in the PDG Monte Carlo Particle Numbering Scheme document.
+    """
+    fid = _fundamental_id(pdgid)  # always a positive number
+
+    # Check generator-specific PDGIDs
+    if fid in range(81, 101):
+        return True if fid in (82, 84, 85, 86, 87) else False
+
     # Check PDGIDs from 1 to 79
-    _cp_conjugates = (21, 22, 23, 25, 32, 33, 35, 36, 39, 41)
-    if fid in range(1, 80) and fid not in _cp_conjugates and is_valid(abs(int(pdgid))):
-        return True
+    _cp_conjugates = (21, 22, 23, 25, 32, 33, 35, 36, 39, 40, 43)
+    _unassigned = [9, 10, 19, 20, 26] + list(range(26,32)) + list(range(45,80))  # not in conversion.csv
+    if fid in range(1, 80) and fid not in _cp_conjugates:
+        return False if fid in _unassigned else True
+
     return False
 
 
@@ -695,26 +712,27 @@ def S(pdgid):
     """
     if not is_meson(pdgid):
         return None
+
     if not is_valid(pdgid):
         return None
 
-    nl = (abspid(pdgid) // 10000) % 10
-    js = abspid(pdgid) % 10
     if (abspid(pdgid) // 1000000) % 10 == 9:
         return None  # no knowledge so far
-    if nl == 0 and js >= 3:
-        return 1
-    elif nl == 0 and js == 1:
+
+    nl = (abspid(pdgid) // 10000) % 10
+    js = abspid(pdgid) % 10
+
+    if not (js == 1 or js >= 3):
         return 0
-    elif nl == 1 and js >= 3:
+
+    if nl == 0:
+        return 0 if js == 1 else 1
+    elif nl == 1:
+        return 1 if js == 1 else 0
+    elif nl in (2, 3):
+        return 1 if js >= 3 else 0
+    else:
         return 0
-    elif nl == 2 and js >= 3:
-        return 1
-    elif nl == 1 and js == 1:
-        return 1
-    elif nl == 3 and js >= 3:
-        return 1
-    return 0
 
 
 def s_spin(pdgid):
@@ -745,13 +763,15 @@ def L(pdgid):
     """
     if not is_meson(pdgid):
         return None
+
     if not is_valid(pdgid):
         return None
 
-    nl = (abspid(pdgid) // 10000) % 10
-    js = abspid(pdgid) % 10
     if (abspid(pdgid) // 1000000) % 10 == 9:
         return None  # no knowledge so far
+
+    nl = (abspid(pdgid) // 10000) % 10
+    js = abspid(pdgid) % 10
 
     if nl == 0 and js == 3:
         return 0
@@ -789,6 +809,7 @@ def L(pdgid):
         return 4
     elif nl == 3 and js == 9:
         return 5
+
     return 0
 
 
