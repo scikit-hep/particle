@@ -97,7 +97,7 @@ def is_lepton(pdgid):
     """Does this PDG ID correspond to a lepton?"""
     if _extra_bits(pdgid) > 0:
         return False
-    if _fundamental_id(pdgid) in range(11, 19):
+    if 11 <= _fundamental_id(pdgid) <= 18:  # type: ignore
         return True
     return False
 
@@ -299,15 +299,15 @@ def is_generator_specific(pdgid):
     Codes 998 and 999 are reserved for GEANT tracking purposes.
     """
     aid = abspid(pdgid)
-    if aid in range(81, 101):
+    if 81 <= aid <= 100:  # type: ignore
         return True
-    if aid in range(901, 931):
+    if 901 <= aid <= 930:  # type: ignore
         return True
-    if aid in range(1901, 1931):
+    if 1901 <= aid <= 1930:  # type: ignore
         return True
-    if aid in range(2901, 2931):
+    if 2901 <= aid <= 2930:  # type: ignore
         return True
-    if aid in range(3901, 3931):
+    if 3901 <= aid <= 3930:  # type: ignore
         return True
     if aid in {998, 999}:
         return True
@@ -485,7 +485,7 @@ def has_fundamental_anti(pdgid):
     fid = _fundamental_id(pdgid)  # always a positive number
 
     # Check generator-specific PDGIDs
-    if fid in range(81, 101):
+    if 81 <= fid <= 100:  # type: ignore
         return True if fid in {82, 84, 85, 86, 87} else False
 
     # Check PDGIDs from 1 to 79
@@ -493,7 +493,7 @@ def has_fundamental_anti(pdgid):
     _unassigned = (
         [9, 10, 19, 20, 26] + list(range(26, 32)) + list(range(45, 80))
     )  # not in conversion.csv
-    if fid in range(1, 80) and fid not in _cp_conjugates:
+    if (1 <= fid <= 79) and fid not in _cp_conjugates:
         return False if fid in _unassigned else True
 
     return False
