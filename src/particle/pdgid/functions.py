@@ -375,7 +375,7 @@ def is_dyon(pdgid):
         return False
     if _digit(pdgid, Location.Nr) != 1:
         return False
-    if _digit(pdgid, Location.Nl) not in (1, 2):
+    if _digit(pdgid, Location.Nl) not in {1, 2}:
         return False
     if _digit(pdgid, Location.Nq3) == 0:
         return False
