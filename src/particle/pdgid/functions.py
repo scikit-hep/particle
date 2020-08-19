@@ -166,13 +166,18 @@ def is_baryon(pdgid):
     # needs to be checked first since _extra_bits(pdgid) > 0 for nuclei
     if abs(int(pdgid)) in (1000000010, 1000010010):
         return True
+
     if _extra_bits(pdgid) > 0:
         return False
-    if _fundamental_id(pdgid) in range(1, 101):
+
+    fid = _fundamental_id(pdgid)
+    if fid > 0 and fid <= 100:
         return False
+
     # Old codes for diffractive p and n (MC usage)
     if abspid(pdgid) in (2110, 2210):
         return True
+
     if (
         _digit(pdgid, Location.Nj) > 0
         and _digit(pdgid, Location.Nq3) > 0
@@ -180,8 +185,10 @@ def is_baryon(pdgid):
         and _digit(pdgid, Location.Nq1) > 0
     ):
         return True
+
     if is_Rhadron(pdgid) or is_pentaquark(pdgid):
         return False
+
     return False
 
 
@@ -484,7 +491,9 @@ def has_fundamental_anti(pdgid):
 
     # Check PDGIDs from 1 to 79
     _cp_conjugates = (21, 22, 23, 25, 32, 33, 35, 36, 39, 40, 43)
-    _unassigned = [9, 10, 19, 20, 26] + list(range(26,32)) + list(range(45,80))  # not in conversion.csv
+    _unassigned = (
+        [9, 10, 19, 20, 26] + list(range(26, 32)) + list(range(45, 80))
+    )  # not in conversion.csv
     if fid in range(1, 80) and fid not in _cp_conjugates:
         return False if fid in _unassigned else True
 

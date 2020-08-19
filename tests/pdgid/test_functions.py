@@ -457,8 +457,6 @@ def test_has_fundamental_anti(PDGIDs):
         PDGIDs.AntiElectronStar,
         PDGIDs.STildeL,
         PDGIDs.CTildeR,
-        PDGIDs.DyonSameMagElecChargeSign,
-        PDGIDs.DyonOppositeMagElecChargeSign,
         PDGIDs.AntiCHadron,
     )
     _nope = [id for id in PDGIDs if id not in _yep]
