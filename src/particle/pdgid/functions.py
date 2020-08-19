@@ -129,7 +129,7 @@ def is_meson(pdgid):
         return False
     if abspid(pdgid) <= 100:
         return False
-    if _fundamental_id(pdgid) <= 100 and _fundamental_id(pdgid) > 0:
+    if 0 < _fundamental_id(pdgid) <= 100:  # type: ignore
         return False
     # Special IDs - K(L)0, ???, K(S)0
     if abspid(pdgid) in {130, 210, 310}:
@@ -198,7 +198,7 @@ def is_diquark(pdgid):
         return False
     if abspid(pdgid) <= 100:
         return False
-    if _fundamental_id(pdgid) <= 100 and _fundamental_id(pdgid) > 0:
+    if 0 < _fundamental_id(pdgid) <= 100:  # type: ignore
         return False
     if (
         _digit(pdgid, Location.Nj) > 0
@@ -283,7 +283,7 @@ def is_sm_gauge_boson_or_higgs(pdgid):
     if abspid(pdgid) == 24:  # W is the only SM gauge boson not its antiparticle
         return True
 
-    return True if 21 <= pdgid <=  25 else False
+    return True if 21 <= pdgid <= 25 else False  # type: ignore
 
 
 def is_generator_specific(pdgid):
