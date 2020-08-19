@@ -97,7 +97,7 @@ def is_lepton(pdgid):
     """Does this PDG ID correspond to a lepton?"""
     if _extra_bits(pdgid) > 0:
         return False
-    if 11 <= _fundamental_id(pdgid) <= 18:  # type: ignore
+    if 11 <= int(_fundamental_id(pdgid)) <= 18:
         return True
     return False
 
@@ -198,7 +198,7 @@ def is_diquark(pdgid):
         return False
     if abspid(pdgid) <= 100:
         return False
-    if 0 < _fundamental_id(pdgid) <= 100:  # type: ignore
+    if 0 < int(_fundamental_id(pdgid)) <= 100:
         return False
     if (
         _digit(pdgid, Location.Nj) > 0
@@ -283,7 +283,7 @@ def is_sm_gauge_boson_or_higgs(pdgid):
     if abspid(pdgid) == 24:  # W is the only SM gauge boson not its antiparticle
         return True
 
-    return True if 21 <= pdgid <= 25 else False  # type: ignore
+    return True if 21 <= int(pdgid) <= 25 else False
 
 
 def is_generator_specific(pdgid):
@@ -299,15 +299,15 @@ def is_generator_specific(pdgid):
     Codes 998 and 999 are reserved for GEANT tracking purposes.
     """
     aid = abspid(pdgid)
-    if 81 <= aid <= 100:  # type: ignore
+    if 81 <= aid <= 100:
         return True
-    if 901 <= aid <= 930:  # type: ignore
+    if 901 <= aid <= 930:
         return True
-    if 1901 <= aid <= 1930:  # type: ignore
+    if 1901 <= aid <= 1930:
         return True
-    if 2901 <= aid <= 2930:  # type: ignore
+    if 2901 <= aid <= 2930:
         return True
-    if 3901 <= aid <= 3930:  # type: ignore
+    if 3901 <= aid <= 3930:
         return True
     if aid in {998, 999}:
         return True
@@ -482,10 +482,10 @@ def has_fundamental_anti(pdgid):
     Based on the current list of defined particles/concepts
     in the PDG Monte Carlo Particle Numbering Scheme document.
     """
-    fid = _fundamental_id(pdgid)  # always a positive number
+    fid = _fundamental_id(pdgid)  # always a positive integer
 
     # Check generator-specific PDGIDs
-    if 81 <= fid <= 100:  # type: ignore
+    if 81 <= fid <= 100:
         return True if fid in {82, 84, 85, 86, 87} else False
 
     # Check PDGIDs from 1 to 79
