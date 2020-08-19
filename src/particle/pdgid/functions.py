@@ -737,7 +737,7 @@ def S(pdgid):
         return 0 if js == 1 else 1
     elif nl == 1:
         return 1 if js == 1 else 0
-    elif nl in (2, 3):
+    elif nl in {2, 3}:
         return 1 if js >= 3 else 0
     else:
         return 0
