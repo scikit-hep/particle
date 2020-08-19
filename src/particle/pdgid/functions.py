@@ -107,7 +107,7 @@ def is_hadron(pdgid):
     """Does this PDG ID correspond to a hadron?"""
     # Special case of proton and neutron:
     # needs to be checked first since _extra_bits(pdgid) > 0 for nuclei
-    if abs(int(pdgid)) in (1000000010, 1000010010):
+    if abs(int(pdgid)) in {1000000010, 1000010010}:
         return True
     if _extra_bits(pdgid) > 0:
         return False
@@ -132,13 +132,13 @@ def is_meson(pdgid):
     if _fundamental_id(pdgid) <= 100 and _fundamental_id(pdgid) > 0:
         return False
     # Special IDs - K(L)0, ???, K(S)0
-    if abspid(pdgid) in (130, 210, 310):
+    if abspid(pdgid) in {130, 210, 310}:
         return True
     # Special IDs - B(L)0, B(sL)0, B(H)0, B(sH)0
-    if abspid(pdgid) in (150, 350, 510, 530):
+    if abspid(pdgid) in {150, 350, 510, 530}:
         return True
     # Special particles - reggeon, pomeron, odderon
-    if int(pdgid) in (110, 990, 9990):
+    if int(pdgid) in {110, 990, 9990}:
         return True
     if (
         _digit(pdgid, Location.Nj) > 0
@@ -164,7 +164,7 @@ def is_baryon(pdgid):
         return False
     # Special case of proton and neutron:
     # needs to be checked first since _extra_bits(pdgid) > 0 for nuclei
-    if abs(int(pdgid)) in (1000000010, 1000010010):
+    if abs(int(pdgid)) in {1000000010, 1000010010}:
         return True
 
     if _extra_bits(pdgid) > 0:
@@ -224,7 +224,7 @@ def is_nucleus(pdgid):
     # A proton can be a Hydrogen nucleus
     # A neutron can be considered as a nucleus when given the PDG ID 1000000010,
     # hence consistency demands that is_nucleus(neutron) is True
-    if abspid(pdgid) in (2112, 2212):
+    if abspid(pdgid) in {2112, 2212}:
         return True
     if _digit(pdgid, Location.N10) == 1 and _digit(pdgid, Location.N9) == 0:
         # Charge should always be less than or equal to the baryon number
@@ -283,7 +283,7 @@ def is_sm_gauge_boson_or_higgs(pdgid):
     if abspid(pdgid) == 24:  # W is the only SM gauge boson not its antiparticle
         return True
 
-    return True if 22 <= pdgid <=  26 else False
+    return True if 21 <= pdgid <=  25 else False
 
 
 def is_generator_specific(pdgid):
@@ -309,9 +309,9 @@ def is_generator_specific(pdgid):
         return True
     if aid in range(3901, 3931):
         return True
-    if aid in (998, 999):
+    if aid in {998, 999}:
         return True
-    if aid in (20022, 480000000):  # Special cases of opticalphoton and geantino
+    if aid in {20022, 480000000}:  # Special cases of opticalphoton and geantino
         return True
     return False
 
@@ -486,10 +486,10 @@ def has_fundamental_anti(pdgid):
 
     # Check generator-specific PDGIDs
     if fid in range(81, 101):
-        return True if fid in (82, 84, 85, 86, 87) else False
+        return True if fid in {82, 84, 85, 86, 87} else False
 
     # Check PDGIDs from 1 to 79
-    _cp_conjugates = (21, 22, 23, 25, 32, 33, 35, 36, 39, 40, 43)
+    _cp_conjugates = {21, 22, 23, 25, 32, 33, 35, 36, 39, 40, 43}
     _unassigned = (
         [9, 10, 19, 20, 26] + list(range(26, 32)) + list(range(45, 80))
     )  # not in conversion.csv
@@ -650,7 +650,7 @@ def three_charge(pdgid):
             charge = -charge
     elif sid > 0 and sid <= 100:  # use table
         charge = ch100[sid - 1]
-        if aid in (1000017, 1000018, 1000034, 1000052, 1000053, 1000054):
+        if aid in {1000017, 1000018, 1000034, 1000052, 1000053, 1000054}:
             charge = 0
         if aid == 5100061 or aid == 5100062:
             charge = 6
@@ -689,11 +689,11 @@ def j_spin(pdgid):
         if fund > 20 and fund < 25:
             return 3
         return None
-    elif abs(int(pdgid)) in (1000000010, 1000010010):  # neutron, proton
+    elif abs(int(pdgid)) in {1000000010, 1000010010}:  # neutron, proton
         return 2
     elif _extra_bits(pdgid) > 0:
         return None
-    if pdgid in (130, 310):
+    if pdgid in {130, 310}:
         return 1  # Special cases of the KS and KL !
     return abspid(pdgid) % 10
 
@@ -842,7 +842,7 @@ def A(pdgid):
     # A proton can be a Hydrogen nucleus
     # A neutron can be considered as a nucleus when given the PDG ID 1000000010,
     # hence consistency demands that A(neutron) = 1
-    if abspid(pdgid) in (2112, 2212):
+    if abspid(pdgid) in {2112, 2212}:
         return 1
     if _digit(pdgid, Location.N10) != 1 or _digit(pdgid, Location.N9) != 0:
         return None
@@ -912,9 +912,9 @@ def _has_quark_q(pdgid, q):
     # cf. the definition of a nucleus PDG ID in is_nucleus.
     # This check needs to be done first since _extra_bits(pdgid) > 0 for nuclei
     if is_nucleus(pdgid):
-        if q in (1, 2):
+        if q in {1, 2}:
             return True  # Nuclei by construction contain up and down quarks
-        elif q == 3 and pdgid not in (2112, 2212):
+        elif q == 3 and pdgid not in {2112, 2212}:
             if _digit(pdgid, Location.N8) > 0:
                 return True
             else:
