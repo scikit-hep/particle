@@ -170,8 +170,7 @@ def is_baryon(pdgid):
     if _extra_bits(pdgid) > 0:
         return False
 
-    fid = _fundamental_id(pdgid)
-    if fid > 0 and fid <= 100:
+    if 0 < fundamental_id(pdgid) <= 100:
         return False
 
     # Old codes for diffractive p and n (MC usage)
