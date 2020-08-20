@@ -19,6 +19,8 @@ In preparation.
     and minor bugs fixed for certain special particles.
 - Data CSV files:
   - Version 7 of package data files, with fixed LaTeX and HTML particle names.
+  - Added newly-ish defined particles for two-Higgs-doublet scenario
+    and additional SU(2)xU(1) groups.
   - Internal and user-irrelevant file `particle2008.csv` file removed.
 - Tests:
   - Test suite extended to deal with new PDG ID related functions.
