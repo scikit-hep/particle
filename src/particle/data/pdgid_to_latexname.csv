@@ -27,7 +27,9 @@ PDGID,LATEXNAME
 35,H_{2}^{0}
 36,H_{3}^{0}
 37,H^{+}
+38,H^{++}
 39,G
+40,H_{4}^{0}
 41,R^{0}
 42,LQ^{c}
 43,X_{u}^{0}
@@ -49,7 +51,6 @@ PDGID,LATEXNAME
 96,THRUaxis
 97,CLUSjet
 98,CELLjet
-99,table
 111,\pi^{0}
 113,\rho(770)^{0}
 115,a_{2}(1320)^{0}

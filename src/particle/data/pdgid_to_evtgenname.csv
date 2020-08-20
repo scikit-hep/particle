@@ -46,6 +46,9 @@ PDGID,STR
 36,A0
 37,Higgs+
 -37,Higgs-
+38,Higgs++
+-38,Higgs--
+40,a0
 41,R0
 -41,anti-R0
 43,Xu0
@@ -73,7 +76,6 @@ PDGID,STR
 96,THRUaxis
 97,CLUSjet
 98,CELLjet
-99,table
 111,pi0
 113,rho0
 115,a_20
