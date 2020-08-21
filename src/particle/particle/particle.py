@@ -468,20 +468,20 @@ class Particle(object):
         --------
         Reproduce the whole particle table kept internally:
 
-        >>> Particle.to_list()
+        >>> Particle.to_dict()
 
         Reduce the information on the particle table to the only fields
         ['pdgid', 'pdg_name'] and render the first 5 particles:
 
-        >>> query_as_list = Particle.to_list(exclusive_fields=['pdgid', 'pdg_name'], n_rows=5)
+        >>> query_as_dict = Particle.to_dict(exclusive_fields=['pdgid', 'pdg_name'], n_rows=5)
         >>> from tabulate import tabulate
-        >>> print(tabulate(query_as_list, headers='firstrow'))
+        >>> print(tabulate(query_as_dict, headers='keys'))
 
         Request the properties of a specific list of particles:
 
-        >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
+        >>> query_as_dict = Particle.to_dict(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
 
-        >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
+        >>> print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
         =======  ======  ===============  ========
           pdgid  name               mass    charge
         =======  ======  ===============  ========
@@ -498,11 +498,11 @@ class Particle(object):
         Save it to a file:
 
         >>> with open('particles.txt', "w") as outfile:
-        ...    print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"), file=outfile)
+        ...    print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"), file=outfile)
         """
         query_as_list = cls.to_list(*args, **kwargs)
 
-        return [dict(zip(query_as_list[0], v)) for v in query_as_list[1:]]
+        return dict(zip(query_as_list[0], zip(*query_as_list[1:])))  # dict(zip(keys, values))
 
     @classmethod
     def load_table(cls, filename=None, append=False, _name=None):
