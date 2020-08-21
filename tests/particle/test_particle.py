@@ -535,29 +535,25 @@ def test_default_particle():
     assert p.status == Status.NotInPDT
 
 
-def test_dump_table():
-    tbl = Particle.dump_table(
+def test_to_list():
+    tbl = Particle.to_list(
         filter_fn=lambda p: p.pdgid.is_meson
         and p.pdgid.has_strange
         and p.ctau > 1 * meter,
         exclusive_fields=["pdgid", "name"],
     )
-    assert (
-        tbl
-        == "  pdgid  name\n-------  ------\n    130  K(L)0\n    321  K+\n   -321  K-"
-    )
+    assert tbl == [['pdgid', 'name'], [130, 'K(L)0'], [321, 'K+'], [-321, 'K-']]
 
-    tbl = Particle.dump_table(
+    tbl = Particle.to_list(
         filter_fn=lambda p: p.pdgid > 0
         and p.pdgid.is_meson
         and p.pdgid.has_strange
         and p.pdgid.has_charm,
         exclusive_fields=["name"],
         n_rows=2,
-        tablefmt="html",
     )
-
-    assert "<td>D(s)+ </td></tr>\n<tr><td>D(s)*+</td>" in tbl
+    assert ['D(s)+'] in tbl
+    assert ['D(s)*+'] in tbl
 
 
 ampgen_style_names = (
