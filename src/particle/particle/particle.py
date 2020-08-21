@@ -355,7 +355,7 @@ class Particle(object):
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
 
-        >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
+        >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))    # doctest: +SKIP
         =======  ======  ===============  ========
           pdgid  name               mass    charge
         =======  ======  ===============  ========
@@ -371,8 +371,8 @@ class Particle(object):
 
         Save it to a file:
 
-        >>> with open('particles.txt', "w") as outfile:
-        ...    print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"), file=outfile)
+        >>> with open('particles.txt', "w") as outfile:    # doctest: +SKIP
+        ...    print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"), file=outfile)    # doctest: +SKIP
         """
         if not cls.table_loaded():
             cls.load_table()
@@ -481,7 +481,7 @@ class Particle(object):
 
         >>> query_as_dict = Particle.to_dict(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
 
-        >>> print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
+        >>> print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"))    # doctest: +SKIP
         =======  ======  ===============  ========
           pdgid  name               mass    charge
         =======  ======  ===============  ========
@@ -497,8 +497,8 @@ class Particle(object):
 
         Save it to a file:
 
-        >>> with open('particles.txt', "w") as outfile:
-        ...    print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"), file=outfile)
+        >>> with open('particles.txt', "w") as outfile:    # doctest: +SKIP
+        ...    print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"), file=outfile)    # doctest: +SKIP
         """
         query_as_list = cls.to_list(*args, **kwargs)
 
