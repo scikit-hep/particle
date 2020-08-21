@@ -542,7 +542,7 @@ def test_to_list():
         and p.ctau > 1 * meter,
         exclusive_fields=["pdgid", "name"],
     )
-    assert tbl == [['pdgid', 'name'], [130, 'K(L)0'], [321, 'K+'], [-321, 'K-']]
+    assert tbl == [["pdgid", "name"], [130, "K(L)0"], [321, "K+"], [-321, "K-"]]
 
     tbl = Particle.to_list(
         filter_fn=lambda p: p.pdgid > 0
@@ -552,8 +552,8 @@ def test_to_list():
         exclusive_fields=["name"],
         n_rows=2,
     )
-    assert ['D(s)+'] in tbl
-    assert ['D(s)*+'] in tbl
+    assert ["D(s)+"] in tbl
+    assert ["D(s)*+"] in tbl
 
 
 ampgen_style_names = (
