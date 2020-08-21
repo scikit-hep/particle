@@ -113,7 +113,7 @@ jobs:
       run: python setup.py sdist
 
     - name: Install requirements
-      run: python -m pip install attrs hepunits tabulate importlib_resources --target src
+      run: python -m pip install attrs hepunits importlib_resources --target src
 
     - name: Make ZipApp
       run: python -m zipapp -c -p "/usr/bin/env python3" -m "particle.__main__:main" -o ../particle.pyz .
