@@ -109,6 +109,9 @@ def filter_file(fileobject):
         if not line.lstrip("\ufeff").lstrip().startswith("*"):
             stream.write(line)
     stream.seek(0)
+
+    fileobject.close()
+
     return stream
 
 
@@ -160,8 +163,6 @@ def get_from_pdg_extended(filename, latexes=None):
         converters=PDG_converters,
         comment="#",
     )
-
-    filename.close()
 
     # Read the LaTeX
     latex_series = pd.concat([get_from_latex(latex) for latex in latexes])
@@ -296,8 +297,6 @@ def get_from_pdg_mcd(filename):
             "NameCharge",
         ),
     )
-
-    filename.close()
 
     ds = []
     for i in range(4):
