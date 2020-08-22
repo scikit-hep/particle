@@ -305,11 +305,12 @@ def test_is_generator_specific(PDGIDs):
 
 def test_is_special_particle(PDGIDs):
     _special_particle = (
-    PDGIDs.Graviton,
-    PDGIDs.Reggeon,
-    PDGIDs.Pomeron,
-    PDGIDs.Odderon,
-    PDGIDs.AntiCHadron,)
+        PDGIDs.Graviton,
+        PDGIDs.Reggeon,
+        PDGIDs.Pomeron,
+        PDGIDs.Odderon,
+        PDGIDs.AntiCHadron,
+    )
     _non_special_particle = [id for id in PDGIDs if id not in _special_particle]
     for id in _special_particle:
         assert is_special_particle(id) == True
