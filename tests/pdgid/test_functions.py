@@ -9,13 +9,17 @@ from __future__ import absolute_import, division, print_function
 import pytest
 
 from particle.pdgid import is_valid
+from particle.pdgid import is_quark
 from particle.pdgid import is_lepton
 from particle.pdgid import is_hadron
 from particle.pdgid import is_meson
 from particle.pdgid import is_baryon
+from particle.pdgid import is_heavy_flavor
 from particle.pdgid import is_pentaquark
+from particle.pdgid import is_gauge_boson_or_higgs
 from particle.pdgid import is_sm_gauge_boson_or_higgs
 from particle.pdgid import is_generator_specific
+from particle.pdgid import is_special_particle
 from particle.pdgid import is_nucleus
 from particle.pdgid import is_diquark
 from particle.pdgid import is_Rhadron
@@ -105,6 +109,24 @@ def test_is_valid(PDGIDs):
     assert is_valid(PDGIDs.SD0) == True
     assert is_valid(PDGIDs.Invalid1) == False
     assert is_valid(PDGIDs.Invalid2) == False
+
+
+def test_is_quark(PDGIDs):
+    _quarks = (
+        PDGIDs.DQuark,
+        PDGIDs.UQuark,
+        PDGIDs.SQuark,
+        PDGIDs.CQuark,
+        PDGIDs.BQuark,
+        PDGIDs.TQuark,
+        PDGIDs.BPrimeQuark,
+        PDGIDs.TPrimeQuark,
+    )
+    _non_quarks = [id for id in PDGIDs if id not in _quarks]
+    for id in _quarks:
+        assert is_quark(id) == True
+    for id in _non_quarks:
+        assert is_quark(id) == False
 
 
 def test_is_lepton(PDGIDs):
@@ -203,6 +225,34 @@ def test_is_hadron(PDGIDs):
         assert is_hadron(id) == (is_meson(id) or is_baryon(id))
 
 
+def test_is_heavy_flavor(PDGIDs):
+    _heavy_flavors = (
+        PDGIDs.jpsi,
+        PDGIDs.psi_2S,
+        PDGIDs.Upsilon_1S,
+        PDGIDs.Upsilon_4S,
+        PDGIDs.D0,
+        PDGIDs.DPlus,
+        PDGIDs.DsPlus,
+        PDGIDs.LcPlus,
+        PDGIDs.B0,
+        PDGIDs.BPlus,
+        PDGIDs.Bs,
+        PDGIDs.BcPlus,
+        PDGIDs.Lb,
+        PDGIDs.T0,
+        PDGIDs.LtPlus,
+        PDGIDs.AntiUCbarCUDPentaquark,
+        PDGIDs.UCbarCUDPentaquark,
+    )
+    _non_heavy_flavors = [id for id in PDGIDs if id not in _heavy_flavors]
+
+    for id in _heavy_flavors:
+        assert is_heavy_flavor(id) == True
+    for id in _non_heavy_flavors:
+        assert is_heavy_flavor(id) == False
+
+
 def test_is_pentaquark(PDGIDs):
     _pentaquarks = (PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
     _non_pentaquarks = [id for id in PDGIDs if id not in _pentaquarks]
@@ -210,6 +260,23 @@ def test_is_pentaquark(PDGIDs):
     assert is_pentaquark(PDGIDs.AntiUCbarCUDPentaquark) == True
     for id in _non_pentaquarks:
         assert is_pentaquark(id) == False
+
+
+def test_is_gauge_boson_or_higgs(PDGIDs):
+    _gb_and_higgs = (
+        PDGIDs.Gluon,
+        PDGIDs.Photon,
+        PDGIDs.Z0,
+        PDGIDs.WMinus,
+        PDGIDs.HiggsBoson,
+        PDGIDs.ZPrime,
+        PDGIDs.Graviton,
+    )
+    _non_gb_and_higgs = [id for id in PDGIDs if id not in _gb_and_higgs]
+    for id in _gb_and_higgs:
+        assert is_gauge_boson_or_higgs(id) == True
+    for id in _non_gb_and_higgs:
+        assert is_gauge_boson_or_higgs(id) == False
 
 
 def test_is_sm_gauge_boson_or_higgs(PDGIDs):
@@ -234,6 +301,20 @@ def test_is_generator_specific(PDGIDs):
         assert is_generator_specific(id) == True
     for id in _non_generator_specific:
         assert is_generator_specific(id) == False
+
+
+def test_is_special_particle(PDGIDs):
+    _special_particle = (
+    PDGIDs.Graviton,
+    PDGIDs.Reggeon,
+    PDGIDs.Pomeron,
+    PDGIDs.Odderon,
+    PDGIDs.AntiCHadron,)
+    _non_special_particle = [id for id in PDGIDs if id not in _special_particle]
+    for id in _special_particle:
+        assert is_special_particle(id) == True
+    for id in _non_special_particle:
+        assert is_special_particle(id) == False
 
 
 def test_is_nucleus(PDGIDs):

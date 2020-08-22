@@ -968,12 +968,15 @@ def _has_quark_q(pdgid, q):
                 return True
             else:
                 return False
+
     if _extra_bits(pdgid) > 0:
         return False
     if _fundamental_id(pdgid) > 0:
         return False
+
     if is_dyon(pdgid):
         return False
+
     if is_Rhadron(pdgid):
         iz = 7
         for loc in range(6, 1, -1):
@@ -986,13 +989,16 @@ def _has_quark_q(pdgid, q):
                 if _digit(pdgid, loc) == q:
                     return True
         return False
+
     if (
         _digit(pdgid, Location.Nq3) == q
         or _digit(pdgid, Location.Nq2) == q
         or _digit(pdgid, Location.Nq1) == q
     ):
         return True
+
     if is_pentaquark(pdgid):
         if _digit(pdgid, Location.Nl) == q or _digit(pdgid, Location.Nr) == q:
             return True
+
     return False
