@@ -14,7 +14,6 @@ from particle.pdgid import is_lepton
 from particle.pdgid import is_hadron
 from particle.pdgid import is_meson
 from particle.pdgid import is_baryon
-from particle.pdgid import is_heavy_flavor
 from particle.pdgid import is_pentaquark
 from particle.pdgid import is_gauge_boson_or_higgs
 from particle.pdgid import is_sm_gauge_boson_or_higgs
@@ -223,34 +222,6 @@ def test_is_baryon(PDGIDs):
 def test_is_hadron(PDGIDs):
     for id in PDGIDs:
         assert is_hadron(id) == (is_meson(id) or is_baryon(id))
-
-
-def test_is_heavy_flavor(PDGIDs):
-    _heavy_flavors = (
-        PDGIDs.jpsi,
-        PDGIDs.psi_2S,
-        PDGIDs.Upsilon_1S,
-        PDGIDs.Upsilon_4S,
-        PDGIDs.D0,
-        PDGIDs.DPlus,
-        PDGIDs.DsPlus,
-        PDGIDs.LcPlus,
-        PDGIDs.B0,
-        PDGIDs.BPlus,
-        PDGIDs.Bs,
-        PDGIDs.BcPlus,
-        PDGIDs.Lb,
-        PDGIDs.T0,
-        PDGIDs.LtPlus,
-        PDGIDs.AntiUCbarCUDPentaquark,
-        PDGIDs.UCbarCUDPentaquark,
-    )
-    _non_heavy_flavors = [id for id in PDGIDs if id not in _heavy_flavors]
-
-    for id in _heavy_flavors:
-        assert is_heavy_flavor(id) == True
-    for id in _non_heavy_flavors:
-        assert is_heavy_flavor(id) == False
 
 
 def test_is_pentaquark(PDGIDs):

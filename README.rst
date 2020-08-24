@@ -109,10 +109,11 @@ For convenience, all properties of the ``PDGID`` class are available as standalo
     True
 
 These composable functions qualifying PDG IDs make it easy to classify particles.
-For the sake of example, quarkonia can be specified with the following user-defined function:
+For the sake of example, quarkonia can be specified with the following user-defined functions:
 
 .. code-block:: python
 
+    >>> is_heavy_flavor = lambda x: has_charm(x) or has_bottom(x) or has_top(x)
     >>> is_quarkonium = lambda x: is_meson(x) and three_charge(x)==0 and is_heavy_flavor(x).
 
 PDG ID literals provide (``PDGID`` class) aliases for the most common particles, with easily recognisable names.

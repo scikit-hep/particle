@@ -73,7 +73,6 @@ from .functions import is_lepton
 from .functions import is_hadron
 from .functions import is_meson
 from .functions import is_baryon
-from .functions import is_heavy_flavor
 from .functions import is_pentaquark
 from .functions import is_gauge_boson_or_higgs
 from .functions import is_sm_gauge_boson_or_higgs

@@ -71,7 +71,6 @@ is_dyon        False
 is_gauge_boson_or_higgs True
 is_generator_specific False
 is_hadron      False
-is_heavy_flavor False
 is_lepton      False
 is_meson       False
 is_nucleus     False

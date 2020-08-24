@@ -14,7 +14,6 @@ In preparation.
     - `is_quark`.
     - `is_gauge_boson_or_higgs`.
     - `is_sm_gauge_boson_or_higgs`.
-    - `is_heavy_flavor`.
     - `is_generator_specific`.
     - `is_technicolor`.
     - `is_composite_quark_or_lepton`.

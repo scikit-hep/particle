@@ -221,16 +221,6 @@ def is_diquark(pdgid):
     return False
 
 
-def is_heavy_flavor(pdgid):
-    # type: (PDGID_TYPE) -> bool
-    """
-    Does this PDG ID correspond to a heavy flavor particle/parton?
-
-    Heavy flavor refers to content of charm, bottom or top.
-    """
-    return has_charm(pdgid) or has_bottom(pdgid) or has_top(pdgid)
-
-
 def is_nucleus(pdgid):
     # type: (PDGID_TYPE) -> bool
     """
