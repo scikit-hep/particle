@@ -344,9 +344,9 @@ def is_special_particle(pdgid):
     """
     Does this PDG ID correspond to a special particle?
 
-    Special particle in the sense of the classification in the
-    PDG MC particle numbering scheme:
-    e.g. graviton, DM particles, reggeons or generator specific.
+    Special particle in the sense of the classification in the PDG MC particle numbering scheme document,
+    hence the graviton, the DM (S = 0, 1/2, 1) particles, the reggeons (reggeon, pomeron and odderon),
+    and all generator-specific pseudo-particles and concepts, see `is_generator_specific`.
     """
     return pdgid in {39, 41, 42, 51, 52, 53, 110, 990, 9990} or is_generator_specific(
         pdgid
