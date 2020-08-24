@@ -43,19 +43,17 @@
 
 
 Particle provides a pythonic interface to the `Particle Data Group <http://pdg.lbl.gov/>`_ (PDG)
-particle data tables and particle identification codes.
+particle data tables and particle identification codes,
+with extended particle information and extra goodies.
 
 The PDG defines the standard particle identification (ID) numbering scheme.
 The package provides the ``PDGID`` class implementing queries on those PDG IDs.
-The queries are also accessible through free standing functions mimicking the
-HepPID C++ interface.
+The queries are also accessible through free standing functions mimicking,
+and expanding from, the HepPID/HepPDT C++ interface
+(see http://lcgapp.cern.ch/project/simu/HepPDT/).
 
 The ``Particle`` class wraps the information in the PDG particle data tables and
 provides an object-oriented interface and powerful search and look-up utilities.
-
-The current version of the package reflects a pythonic version of the
-utility functions defined in HepPID and HepPDT versions 3.04.01,
-see http://lcgapp.cern.ch/project/simu/HepPDT/.
 
 
 Installation
@@ -85,8 +83,8 @@ Changelog
 See the `changelog <https://github.com/scikit-hep/particle/blob/master/docs/CHANGELOG.md>`__ for a history of notable changes.
 
 
-Getting started: PDGIDs
------------------------
+Getting started: PDG IDs
+------------------------
 
 .. code-block:: python
 
@@ -110,7 +108,14 @@ For convenience, all properties of the ``PDGID`` class are available as standalo
     >>> is_meson(211)
     True
 
-PDGID literals provide (``PDGID`` class) aliases for the most common particles, with easily recognisable names.
+These composable functions qualifying PDG IDs make it easy to classify particles.
+For the sake of example, quarkonia can be specified with the following user-defined function:
+
+.. code-block:: python
+
+    >>> is_quarkonium = lambda x: is_meson(x) and three_charge(x)==0 and is_heavy_flavor(x).
+
+PDG ID literals provide (``PDGID`` class) aliases for the most common particles, with easily recognisable names.
 For example:
 
 .. code-block:: python
@@ -126,7 +131,7 @@ For example:
     >>> Lambda_b_0.has_bottom
     True
 
-You can quickly display PDGID info from the command line with:
+You can quickly display ``PDGID`` info from the command line with:
 
 .. code-block:: bash
 
@@ -150,7 +155,7 @@ see information on converters below.
 Getting started: Particles
 --------------------------
 
-You can use a variety of methods to get particles. If you know the PDGID number
+You can use a variety of methods to get particles. If you know the PDG ID number
 you can get a particle directly, or you can use a search:
 
 .. code-block:: python
@@ -213,7 +218,7 @@ There are lots of printing choices for particles:
 and of course ``repr`` and ``str`` support.
 
 You can get the ``.pdgid`` from a particle, as well.
-Sorting particles will put lowest abs(PDGID) first.
+Sorting particles will put lowest ``abs(PDGID)`` first.
 
 
 Particle literals provide (``Particle`` class) aliases for the most common particles,
@@ -241,8 +246,8 @@ You can quickly search for particles from the command line with
     <Particle: name="K*(1680)0", pdgid=30313, mass=1718 ± 18 MeV>
     <Particle: name="K*(1410)0", pdgid=100313, mass=1421 ± 9 MeV>
 
-If you only select one particle, either by a search or by giving the PDGID number, you can see more information about
-the particle:
+If you only select one particle, either by a search or by giving the PDG ID number,
+you can see more information about the particle:
 
 .. code-block:: bash
 

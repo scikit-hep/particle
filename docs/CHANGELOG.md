@@ -11,10 +11,14 @@ In preparation.
     to have correct HTML names for such particles.
 - `PDGID` class:
   - New functions for qualification of PDG IDs:
+    - `is_quark`.
+    - `is_gauge_boson_or_higgs`.
     - `is_sm_gauge_boson_or_higgs`.
+    - `is_heavy_flavor`.
     - `is_generator_specific`.
     - `is_technicolor`.
     - `is_composite_quark_or_lepton`.
+    - `is_special_particle`.
   - Several PDG ID qualification functions improved and/or enhanced,
     and minor bugs fixed for certain special particles.
 - Data CSV files:
