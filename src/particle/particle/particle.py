@@ -348,14 +348,14 @@ class Particle(object):
         ['pdgid', 'pdg_name'] and render the first 5 particles:
 
         >>> query_as_list = Particle.to_list(exclusive_fields=['pdgid', 'pdg_name'], n_rows=5)
-        >>> from tabulate import tabulate    # doctest: +SKIP
+        >>> from tabulate import tabulate
         >>> print(tabulate(query_as_list, headers='firstrow'))    # doctest: +SKIP
 
         Request the properties of a specific list of particles:
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
 
-        >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))    # doctest: +SKIP
+        >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
         =======  ======  ===============  ========
           pdgid  name               mass    charge
         =======  ======  ===============  ========

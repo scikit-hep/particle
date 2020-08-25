@@ -110,7 +110,8 @@ def filter_file(fileobject):
             stream.write(line)
     stream.seek(0)
 
-    fileobject.close()
+    if not fileobject.closed:
+        fileobject.close()
 
     return stream
 
