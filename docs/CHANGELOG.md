@@ -7,6 +7,8 @@ Version 0.12.0
 In preparation.
 
 - `Particle` class:
+  - `Particle.dump_table()` method removed and replaced with methods
+    `Particle.to_dict()` and `Particle.to_list()` (avoids strong coupling of packages).
   - Improve LaTeX particle names with `\prime` in them,
     to have correct HTML names for such particles.
 - `PDGID` class:
@@ -28,7 +30,7 @@ In preparation.
   - Demo notebook slightly extended.
   - More explanations in the functions qualifying PDG IDs.
 - Miscellaneous:
-  - LaTeX-to-HTML particle name conversion function fixed to Correctly
+  - LaTeX-to-HTML particle name conversion function fixed to correctly
     deal with names containing `\prime` and/or `\tilde`.
 
 

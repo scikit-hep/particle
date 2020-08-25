@@ -279,24 +279,20 @@ class Particle(object):
         return cls._table if cls._table is not None else set()
 
     @classmethod
-    def dump_table(
+    def to_list(
         cls,
         exclusive_fields=(),  # type: Iterable[str]
         exclude_fields=(),  # type: Iterable[str]
         n_rows=-1,
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
-        filename=None,  # type: Optional[str]
-        tablefmt="simple",
-        floatfmt=".12g",
-        numalign="decimal",
     ):
-        # type: (...) -> Optional[str]
+        # type: (...) -> List[List[Any]]
         """
-        Dump the internal particle data CSV table,
-        loading it from the default location if no table has yet been loaded.
+        Render a search (via `findall`) on the internal particle data CSV table
+        as a `list`, loading the table from the default location if no table has yet been loaded.
 
-        The table attributes are those of the class. By default all attributes
-        are used as table fields. Their complete list is:
+        The returned attributes are those of the class. By default all attributes
+        are used as fields. Their complete list is:
             pdgid
             pdg_name
             mass
@@ -316,12 +312,14 @@ class Particle(object):
             quarks
             latex_name
 
-        Optionally dump to a file.
+        It is possible to add as returned fields any `Particle` class property,
+        e.g. 'name', `J` or `ctau`, see examples below.
 
         Parameters
         ----------
         exclusive_fields: list, optional, default is []
-            Exclusive list of fields to print out.
+            Exclusive list of fields to print out,
+            which can be any `Particle` class property.
         exclude_fields: list, optional, default is []
             List of table fields to exclude in the printout.
             Relevant only when exclusive_fields is not given.
@@ -329,40 +327,53 @@ class Particle(object):
             Number of table rows to print out.
         filter_fn: function, optional, default is None
             Apply a filter to each particle.
-            See findall(...) for typical use cases.
-        filename: str, optional, default is None
-            Name of file where to dump the table.
-            By default the table is dumped to stdout.
-        tablefmt: str, optional, default is 'simple'
-            Table formatting option, see the tabulate's package
-            tabulate function for a description of available options.
-            The most common options are:
-            'plain', 'simple', 'grid', 'rst', 'html', 'latex'.
-        floatfmt: str, optional, default is '.12g'
-            Number formatting, see the tabulate's package
-            tabulate function for a description of available options.
-        numalign: str or None, oprional, default is 'decimal'
-            Column alignment for numbers, see the tabulate's package
-            tabulate function for a description of available options.
+            See `findall(...)`` for typical use cases.
 
         Returns
         -------
-        str or None if filename is None or not, respectively.
+        The particle table query as a `list`.
 
         Note
         ----
-        Uses the `tabulate` package.
+        The `tabulate` package is suggested as a means to print-out
+        the contents of the query as a nicely formatted table.
 
         Examples
         --------
-        print(Particle.dump_table())
-        print(Particle.dump_table(n_rows=5))
-        print(Particle.dump_table(exclusive_fields=['pdgid', 'pdg_name']))
-        print(Particle.dump_table(filter_fn=lambda p: p.pdgid.has_bottom))
-        Particle.dump_table(filename='output.txt', tablefmt='rst')
-        """
-        from tabulate import tabulate
+        Reproduce the whole particle table kept internally:
 
+        >>> Particle.to_list()    # doctest: +SKIP
+
+        Reduce the information on the particle table to the only fields
+        ['pdgid', 'pdg_name'] and render the first 5 particles:
+
+        >>> query_as_list = Particle.to_list(exclusive_fields=['pdgid', 'pdg_name'], n_rows=5)
+        >>> from tabulate import tabulate
+        >>> print(tabulate(query_as_list, headers='firstrow'))    # doctest: +SKIP
+
+        Request the properties of a specific list of particles:
+
+        >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
+
+        >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
+        =======  ======  ===============  ========
+          pdgid  name               mass    charge
+        =======  ======  ===============  ========
+             11  e-         0.5109989461        -1
+            -11  e+         0.5109989461         1
+             13  mu-      105.6583745           -1
+            -13  mu+      105.6583745            1
+             15  tau-    1776.86                -1
+            -15  tau+    1776.86                 1
+             17  tau'-                          -1
+            -17  tau'+                           1
+        =======  ======  ===============  ========
+
+        Save it to a file:
+
+        >>> with open('particles.txt', "w") as outfile:    # doctest: +SKIP
+        ...    print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"), file=outfile)    # doctest: +SKIP
+        """
         if not cls.table_loaded():
             cls.load_table()
 
@@ -387,37 +398,113 @@ class Particle(object):
         if filter_fn is not None:
             tbl_all = cls.findall(filter_fn)
 
-        # In any case, only dump a given number of rows?
+        # In any case, only keep a given number of rows?
         if n_rows >= 0:
             tbl_all = tbl_all[:n_rows]
 
         # Build all table rows
         tbl = []
+        tbl.append(tbl_names)
         for p in tbl_all:
             tbl.append([getattr(p, attr) for attr in tbl_names])
 
-        if filename:
-            filename = str(filename)  # Conversion to handle pathlib on Python < 3.6
-            with open(filename, "w") as outfile:
-                print(
-                    tabulate(
-                        tbl,
-                        headers=tbl_names,
-                        tablefmt=tablefmt,
-                        floatfmt=floatfmt,
-                        numalign=numalign,
-                    ),
-                    file=outfile,
-                )
-            return None
-        else:
-            return tabulate(
-                tbl,
-                headers=tbl_names,
-                tablefmt=tablefmt,
-                floatfmt=floatfmt,
-                numalign=numalign,
-            )
+        return tbl
+
+    @classmethod
+    def to_dict(cls, *args, **kwargs):
+        # type: (...) -> Dict[List[str], List[Any]]
+        """
+        Render a search (via `findall`) on the internal particle data CSV table
+        as a `dict`, loading the table from the default location if no table has yet been loaded.
+
+        The returned attributes are those of the class. By default all attributes
+        are used as fields. Their complete list is:
+            pdgid
+            pdg_name
+            mass
+            mass_upper
+            mass_lower
+            width
+            width_upper
+            width_lower
+            three_charge
+            I
+            G
+            P
+            C
+            anti_flag
+            rank
+            status
+            quarks
+            latex_name
+
+        It is possible to add as returned fields any `Particle` class property,
+        e.g. 'name', `J` or `ctau`, see examples below.
+
+        Parameters
+        ----------
+        exclusive_fields: list, optional, default is []
+            Exclusive list of fields to print out,
+            which can be any `Particle` class property.
+        exclude_fields: list, optional, default is []
+            List of table fields to exclude in the printout.
+            Relevant only when exclusive_fields is not given.
+        n_rows: int, optional, defaults to all rows
+            Number of table rows to print out.
+        filter_fn: function, optional, default is None
+            Apply a filter to each particle.
+            See `findall(...)`` for typical use cases.
+
+        Returns
+        -------
+        The particle table query as a `dict`.
+
+        Note
+        ----
+        The `tabulate` package is suggested as a means to print-out
+        the contents of the query as a nicely formatted table.
+
+        Examples
+        --------
+        Reproduce the whole particle table kept internally:
+
+        >>> Particle.to_dict()    # doctest: +SKIP
+
+        Reduce the information on the particle table to the only fields
+        ['pdgid', 'pdg_name'] and render the first 5 particles:
+
+        >>> query_as_dict = Particle.to_dict(exclusive_fields=['pdgid', 'pdg_name'], n_rows=5)
+        >>> from tabulate import tabulate    # doctest: +SKIP
+        >>> print(tabulate(query_as_dict, headers='keys'))    # doctest: +SKIP
+
+        Request the properties of a specific list of particles:
+
+        >>> query_as_dict = Particle.to_dict(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
+
+        >>> print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"))    # doctest: +SKIP
+        =======  ======  ===============  ========
+          pdgid  name               mass    charge
+        =======  ======  ===============  ========
+             11  e-         0.5109989461        -1
+            -11  e+         0.5109989461         1
+             13  mu-      105.6583745           -1
+            -13  mu+      105.6583745            1
+             15  tau-    1776.86                -1
+            -15  tau+    1776.86                 1
+             17  tau'-                          -1
+            -17  tau'+                           1
+        =======  ======  ===============  ========
+
+        Save it to a file:
+
+        >>> with open('particles.txt', "w") as outfile:    # doctest: +SKIP
+        ...    print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"), file=outfile)    # doctest: +SKIP
+        """
+        query_as_list = cls.to_list(*args, **kwargs)
+
+        return dict(
+            zip(query_as_list[0], zip(*query_as_list[1:]))
+        )  # dict(zip(keys, values))
 
     @classmethod
     def load_table(cls, filename=None, append=False, _name=None):

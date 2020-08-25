@@ -109,6 +109,10 @@ def filter_file(fileobject):
         if not line.lstrip("\ufeff").lstrip().startswith("*"):
             stream.write(line)
     stream.seek(0)
+
+    if not fileobject.closed:
+        fileobject.close()
+
     return stream
 
 
