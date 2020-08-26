@@ -68,13 +68,16 @@ from __future__ import absolute_import
 from .functions import is_valid
 from .functions import abspid
 
+from .functions import is_quark
 from .functions import is_lepton
 from .functions import is_hadron
 from .functions import is_meson
 from .functions import is_baryon
 from .functions import is_pentaquark
+from .functions import is_gauge_boson_or_higgs
 from .functions import is_sm_gauge_boson_or_higgs
 from .functions import is_generator_specific
+from .functions import is_special_particle
 from .functions import is_nucleus
 from .functions import is_diquark
 from .functions import is_Rhadron

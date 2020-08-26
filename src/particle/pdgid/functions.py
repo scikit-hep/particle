@@ -20,7 +20,8 @@ This module provides the following:
 References
 ----------
 
-HepPDT and HepPID versions 3.04.01: http://lcgapp.cern.ch/project/simu/HepPDT/
+- PDG document "Monte Carlo Particle Numbering Scheme".
+- HepPDT and HepPID versions 3.04.01: http://lcgapp.cern.ch/project/simu/HepPDT/
 """
 
 from __future__ import print_function, division, absolute_import
@@ -69,7 +70,7 @@ def is_valid(pdgid):
         return True
     if is_pentaquark(pdgid):
         return True
-    if is_sm_gauge_boson_or_higgs(pdgid):
+    if is_gauge_boson_or_higgs(pdgid):
         return True
     if is_generator_specific(pdgid):
         return True
@@ -90,6 +91,16 @@ def abspid(pdgid):
     # type: (PDGID_TYPE) -> int
     """Returns the absolute value of the PDG ID."""
     return abs(int(pdgid))
+
+
+def is_quark(pdgid):
+    # type: (PDGID_TYPE) -> bool
+    """
+    Does this PDG ID correspond to a quark?
+
+    Fourth-generation quarks are included, but not excited (composite) quarks.
+    """
+    return 1 <= abspid(pdgid) <= 8
 
 
 def is_lepton(pdgid):
@@ -272,6 +283,18 @@ def is_pentaquark(pdgid):
     return True
 
 
+def is_gauge_boson_or_higgs(pdgid):
+    # type: (PDGID_TYPE) -> bool
+    """
+    Does this PDG ID correspond to a gauge boson or a Higgs?
+
+    Codes 21-30 are reserved for the Standard Model gauge bosons and the Higgs.
+    The graviton and the boson content of a two-Higgs-doublet scenario
+    and of additional SU(2)xU(1) groups are found in the range 31-40.
+    """
+    return True if 21 <= abspid(pdgid) <= 40 else False
+
+
 def is_sm_gauge_boson_or_higgs(pdgid):
     # type: (PDGID_TYPE) -> bool
     """
@@ -316,9 +339,24 @@ def is_generator_specific(pdgid):
     return False
 
 
+def is_special_particle(pdgid):
+    # type: (PDGID_TYPE) -> bool
+    """
+    Does this PDG ID correspond to a special particle?
+
+    Special particle in the sense of the classification in the PDG MC particle numbering scheme document,
+    hence the graviton, the DM (S = 0, 1/2, 1) particles, the reggeons (reggeon, pomeron and odderon),
+    and all generator-specific pseudo-particles and concepts, see `is_generator_specific`.
+    """
+    return pdgid in {39, 41, 42, 51, 52, 53, 110, 990, 9990} or is_generator_specific(
+        pdgid
+    )
+
+
 def is_Rhadron(pdgid):
     # type: (PDGID_TYPE) -> bool
-    """Does this PDG ID correspond to an R-hadron?
+    """
+    Does this PDG ID correspond to an R-hadron?
 
     An R-hadron is of the form 10abcdj, 100abcj, or 1000abj,
     where j = 2J + 1 gives the spin; b, c, and d are quarks or gluons;
@@ -906,7 +944,8 @@ def _has_quark_q(pdgid, q):
     """
     Helper function - does this particle contain a quark q?
 
-    Note that q is always positive, so [1, 6] for Standard Model quarks.
+    Note that q is always positive, so [1, 6] for Standard Model quarks
+    and [7, 8] for fourth-generation quarks.
     """
     # Nuclei can also contain strange quarks,
     # cf. the definition of a nucleus PDG ID in is_nucleus.
@@ -919,12 +958,15 @@ def _has_quark_q(pdgid, q):
                 return True
             else:
                 return False
+
     if _extra_bits(pdgid) > 0:
         return False
     if _fundamental_id(pdgid) > 0:
         return False
+
     if is_dyon(pdgid):
         return False
+
     if is_Rhadron(pdgid):
         iz = 7
         for loc in range(6, 1, -1):
@@ -937,13 +979,16 @@ def _has_quark_q(pdgid, q):
                 if _digit(pdgid, loc) == q:
                     return True
         return False
+
     if (
         _digit(pdgid, Location.Nq3) == q
         or _digit(pdgid, Location.Nq2) == q
         or _digit(pdgid, Location.Nq1) == q
     ):
         return True
+
     if is_pentaquark(pdgid):
         if _digit(pdgid, Location.Nl) == q or _digit(pdgid, Location.Nr) == q:
             return True
+
     return False
