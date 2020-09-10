@@ -590,11 +590,11 @@ class Particle(object):
         # Sort by absolute particle numbers
         # The positive one should come first
         if type(self) == type(other):
-            return abs(int(self) - 0.25) < abs(int(other) - 0.25)
+            return abs(int(self.pdgid) - 0.25) < abs(int(other.pdgid) - 0.25)
 
         # Comparison with anything else should produce normal comparisons.
         else:
-            return int(self) < other
+            return int(self.pdgid) < other
 
     def __eq__(self, other):
         # type: (Any) -> bool
@@ -1038,9 +1038,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
             # particle=True is particle, False is antiparticle, and None is both
             if particle is not None:
-                if particle and int(item) < 0:
+                if particle and int(item.pdgid) < 0:
                     continue
-                elif (not particle) and int(item) > 0:
+                elif (not particle) and int(item.pdgid) > 0:
                     continue
 
             # If a filter function is passed, evaluate and skip if False
