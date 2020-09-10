@@ -149,8 +149,8 @@ def test_pdg():
 def test_pdg_convert():
     p = Particle.from_pdgid(211)
     assert isinstance(p.pdgid, PDGID)
-    assert int(p) == 211
-    assert PDGID(p) == 211
+    assert p.pdgid == 211
+    assert int(p.pdgid) == 211
 
 
 def test_sorting():
@@ -576,7 +576,6 @@ ampgen_style_names = (
 def test_ampgen_style_names(name, pid):
     particle = Particle.from_string(name)
 
-    assert int(particle) == pid
     assert particle.pdgid == pid
     assert particle == pid
 
