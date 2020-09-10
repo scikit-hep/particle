@@ -608,11 +608,6 @@ class Particle(object):
         # type: () -> int
         return hash(self.pdgid)
 
-    # Integer == PDGID
-    def __int__(self):
-        # type: () -> int
-        return int(self.pdgid)
-
     # Shared with PDGID
 
     @property
