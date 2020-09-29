@@ -120,31 +120,31 @@ class BiMap(object):
 
 def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
     """
-        Directional map class providing a to and from mapping.
+    Directional map class providing a to and from mapping.
 
-        Parameters
-        ----------
-        name_A, name_B: str
-            Input names of information to be mapped.
-        converters: tuple, optional, default=(str,str)
-            Converter functions applied on each entry (row) of the file
-            providing the name_a-name_B matches.
-            The order of the list elements must agree with that of the
-            object names passed in in the constructor.
-            By default, data on the file is assumed to be strings,
-            which is the typical case for particle names.
-        filename: string or file object, optional, default='particle/data/conversions.csv'.
-            Specify a file from which to read all name_a-name_B matches.
-            It is assumed that the order of items in the file matches the order
-            of arguments specified in the class constructor, hence val_A,val_B.
+    Parameters
+    ----------
+    name_A, name_B: str
+        Input names of information to be mapped.
+    converters: tuple, optional, default=(str,str)
+        Converter functions applied on each entry (row) of the file
+        providing the name_a-name_B matches.
+        The order of the list elements must agree with that of the
+        object names passed in in the constructor.
+        By default, data on the file is assumed to be strings,
+        which is the typical case for particle names.
+    filename: string or file object, optional, default='particle/data/conversions.csv'.
+        Specify a file from which to read all name_a-name_B matches.
+        It is assumed that the order of items in the file matches the order
+        of arguments specified in the class constructor, hence val_A,val_B.
 
-        Examples
-        --------
+    Examples
+    --------
 
-        >>> from particle import data  # doctest: +SKIP
-        >>> filename = data.open_text(data, 'a_to_b.csv')  # doctest: +SKIP
-        >>> A2BMap, B2AMap = DirectionalMaps('A', 'B', filename=filename)  # doctest: +SKIP
-        """
+    >>> from particle import data  # doctest: +SKIP
+    >>> filename = data.open_text(data, 'a_to_b.csv')  # doctest: +SKIP
+    >>> A2BMap, B2AMap = DirectionalMaps('A', 'B', filename=filename)  # doctest: +SKIP
+    """
 
     name_A = name_A.upper()
     name_B = name_B.upper()
