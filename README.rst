@@ -49,8 +49,7 @@ with extended particle information and extra goodies.
 The PDG defines the standard particle identification (ID) numbering scheme.
 The package provides the ``PDGID`` class implementing queries on those PDG IDs.
 The queries are also accessible through free standing functions mimicking,
-and expanding from, the HepPID/HepPDT C++ interface
-(see http://lcgapp.cern.ch/project/simu/HepPDT/).
+and expanding from, the HepPID/HepPDT C++ interface.
 
 The ``Particle`` class wraps the information in the PDG particle data tables and
 provides an object-oriented interface and powerful search and look-up utilities.
