@@ -57,10 +57,6 @@ Useful definitions:
  4    1   5   L=J+1 , S=1              4^++     \-                                        30qq9
 ==== === === ======================== ======== ================= ====================== =======================
 
-References
-----------
-
-HepPDT and HepPID versions 3.04.01: http://lcgapp.cern.ch/project/simu/HepPDT/
 """
 
 from __future__ import absolute_import

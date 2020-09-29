@@ -21,7 +21,7 @@ References
 ----------
 
 - PDG document "Monte Carlo Particle Numbering Scheme".
-- HepPDT and HepPID versions 3.04.01: http://lcgapp.cern.ch/project/simu/HepPDT/
+- HepPDT and HepPID versions 3.04.01.
 """
 
 from __future__ import print_function, division, absolute_import
