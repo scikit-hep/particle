@@ -4,13 +4,14 @@ Changelog
 Version 0.12.0
 --------------
 
-In preparation.
+September 29th, 2020
 
 - `Particle` class:
   - `Particle.dump_table()` method removed and replaced with methods
     `Particle.to_dict()` and `Particle.to_list()` (avoids strong coupling of packages).
   - Improve LaTeX particle names with `\prime` in them,
     to have correct HTML names for such particles.
+  - Misleading/awkward `Particle.__int__` method removed.
 - `PDGID` class:
   - New functions for qualification of PDG IDs:
     - `is_quark`.
