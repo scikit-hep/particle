@@ -1,27 +1,26 @@
 name: CI
 
 on:
+  workflow_dispatch:
   pull_request:
   push:
-    branches: master
-    tags:
-    - 'v*'
+    branches:
+    - master
+  release:
+    types:
+    - published
+
 
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-python@v1
-    - name: set PY
-      run: echo "::set-env name=PY::$(python --version --version | sha256sum | cut -d' ' -f1)"
-    - uses: actions/cache@v1
-      with:
-        path: ~/.cache/pre-commit
-        key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
-    - uses: pre-commit/action@v1.0.0
+    - uses: actions/setup-python@v2
+    - uses: pre-commit/action@v2.0.0
 
   checks:
+    name: Check 🐍 ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -30,19 +29,18 @@ jobs:
         - 2.7
         - 3.5
         - 3.8
-    name: Check Python ${{ matrix.python-version }}
+
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-python@v1
+    - uses: actions/checkout@v1
+
+    - uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
 
     - name: Install package
       run: python -m pip install -e .[test]
 
-    - name: Requirements check
+    - name: Requirements list
       run: python -m pip list
 
     - name: Test package
@@ -50,59 +48,55 @@ jobs:
 
   notebooks:
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v1
+
     - uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
+
     - name: Install package
       run: python -m pip install -e .[test]
+
     - name: Install notebook requirements
       run: python -m pip install nbconvert jupyter_client ipykernel
+
     - name: Run the notebooks inplace
       run: jupyter nbconvert --execute --inplace notebooks/*.ipynb
 
 
 
   dist:
+    name: SDist and Wheel
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-python@v1
-      with:
-        python-version: 3.8
+    - uses: actions/checkout@v1
+
+    - uses: actions/setup-python@v2
 
     - name: Install wheel and sdist requirements
-      run: python -m pip install "setuptools>=42.0" "setuptools_scm[toml]>=3.4" "wheel"
+      run: python -m pip install build
 
-    - name: Build sdist
-      run: python setup.py sdist
+    - name: Build SDist and wheel
+      run: python -m build
 
-    - name: Build wheel
-      run: >
-        python -m pip wheel . -w wheels &&
-        ls -lh wheels &&
-        mkdir -p dist &&
-        cp wheels/particle*any.whl dist/
-
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v2
       with:
-        name: DistPackage
         path: dist
 
-    - uses: pypa/gh-action-pypi-publish@master
+    - uses: pypa/gh-action-pypi-publish@v1.4.1
+      if: github.event_name == 'release' && github.event.action == 'published'
       with:
         user: __token__
         password: ${{ secrets.pypi_password }}
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
   zipapp:
+    name: ZipApp
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: actions/setup-python@v1
+
+    - uses: actions/setup-python@v2
       with:
         python-version: 3.7
 
@@ -119,24 +113,17 @@ jobs:
       run: python -m zipapp -c -p "/usr/bin/env python3" -m "particle.__main__:main" -o ../particle.pyz .
       working-directory: src
 
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v2
       with:
-        name: ZipApp
         path: particle.pyz
 
-    - name: "Get upload_url"
-      run: echo "::set-output name=upload_url::https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$(jq --raw-output '.release.id' $GITHUB_EVENT_PATH)/assets{?name,label}"
-      id: release
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-      # Tag *must* be made from the GitHub release interface at the moment
-
-    - name: Upload Release Asset
-      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+    - name: Upload ZipApp if release
+      if: github.event_name == 'release' && github.event.action == 'published'
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.release.outputs.upload_url }}
+        upload_url: ${{ github.event.release.upload_url }}
         asset_path: ./particle.pyz
         asset_name: particle.pyz
         asset_content_type: application/zip

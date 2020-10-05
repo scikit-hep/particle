@@ -1,11 +1,11 @@
 
 repos:
 - repo: https://github.com/psf/black
-  rev: 19.10b0
+  rev: 20.8b1
   hooks:
   - id: black
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v3.1.0
+  rev: v3.2.0
   hooks:
   - id: check-added-large-files
     args: ['--maxkb=1000']
@@ -20,11 +20,11 @@ repos:
   - id: end-of-file-fixer
   - id: fix-encoding-pragma
 - repo: https://github.com/mgedmin/check-manifest
-  rev: "0.42"
+  rev: "0.43"
   hooks:
   - id: check-manifest
 - repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v0.770
+  rev: v0.782
   hooks:
   - id: mypy
     files: src
