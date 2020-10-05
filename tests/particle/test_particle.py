@@ -306,7 +306,7 @@ checklist_describe = (
     [4222, "Width = 1.89 + 0.09 - 0.18 MeV"],  # Sigma_c(2455)++
     [23, u"Width = 2495.2 ± 2.3 MeV"],  # H0
     # Test print-out of symmetric lifetime errors
-    [5332, u"Lifetime = 1.65e-03 ± 1.8e-04 ns"],  # Omega_b-
+    [5332, u"Lifetime = 1.65e-03 + 1.8e-04 - 1.8e-04 ns"],  # Omega_b-
     [211, u"Lifetime = 26.033 ± 0.005 ns"],  # pion
     # Test print-out of asymmetric lifetime errors
     [4332, "Lifetime = 2.7e-04 + 3e-05 - 3e-05 ns"],  # Omega_c^0
