@@ -35,20 +35,20 @@ def width_to_lifetime(Gamma):
     Manipulation with no explicit usage of units:
 
     >>> width_to_lifetime(4.33e-10)   # result returned in ns
-    0.001520119980246514
+    0.0015201199929582136
 
     Manipulations with explicit units defined in the HEP system of units:
 
     >>> from hepunits.units import MeV, eV, ps   # handy module with units in the HEP system of units
     >>>
     >>> width_to_lifetime(4.33e-10*MeV)   # result returned in ns
-    0.001520119980246514
+    0.0015201199929582136
     >>>
     >>> width_to_lifetime(4.33e-4*eV)   # result again returned in ns
-    0.001520119980246514
+    0.0015201199929582136
     >>>
     >>> width_to_lifetime(4.33e-10*MeV)/ps   # result converted to ps
-    1.520119980246514
+    1.5201199929582137
     """
 
     if Gamma < 0.0:
@@ -81,20 +81,20 @@ def lifetime_to_width(tau):
     --------
     Manipulation with no explicit usage of units:
 
-    >>> lifetime_to_width(0.001520119980246514)   # result returned in MeV
+    >>> lifetime_to_width(0.0015201199929582136)   # result returned in MeV
     4.33e-10
 
     Manipulations with explicit units defined in the HEP system of units:
 
     >>> from hepunits.units import MeV, eV, ps   # handy module with units in the HEP system of units
     >>>
-    >>> lifetime_to_width(0.001520119980246514*ns)   # result returned in MeV
+    >>> lifetime_to_width(0.0015201199929582136*ns)   # result returned in MeV
     4.33e-10
     >>>
-    >>> lifetime_to_width(1.520119980246514*ps)   # result again returned in MeV
+    >>> lifetime_to_width(1.5201199929582137*ps)   # result again returned in MeV
     4.33e-10
     >>>
-    >>> lifetime_to_width(1.520119980246514*ps)/eV   # result converted to eV
+    >>> lifetime_to_width(1.5201199929582137*ps)/eV   # result converted to eV
     0.000433
     """
 
