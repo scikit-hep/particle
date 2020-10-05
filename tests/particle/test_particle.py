@@ -324,8 +324,8 @@ if sys.version_info < (3, 0):
 
 @pytest.mark.parametrize("pid,description", checklist_describe)
 def test_describe(pid, description):
-    particle = Particle.from_pdgid(pid)
-    assert description in particle.describe()
+    part = Particle.from_pdgid(pid)
+    assert description in part.describe()
 
 
 def test_default_table_loading():
