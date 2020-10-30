@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version 0.13.0
+--------------
+
+In preparation.
+
+- Miscellaneous:
+  - Support for Python 3.9 added.
+
+
 Version 0.12.0
 --------------
 
