@@ -4,8 +4,13 @@ Changelog
 Version 0.13.0
 --------------
 
-In preparation.
+October 30th, 2020
 
+- Dependencies:
+  - hepunits >= 2.0.0.
+- Tests:
+  - CI updates.
+  - Tests adapted to hepunits 2.0.0.
 - Miscellaneous:
   - Support for Python 3.9 added.
 
