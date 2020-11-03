@@ -14,6 +14,10 @@
   :alt: PyPI
   :target: https://pypi.python.org/pypi/particle
 
+.. image:: https://img.shields.io/conda/vn/conda-forge/particle.svg
+   :alt: conda-forge
+   :target: https://anaconda.org/conda-forge/particle
+
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.2552429.svg
   :target: https://doi.org/10.5281/zenodo.2552429
 
