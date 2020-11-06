@@ -816,27 +816,45 @@ def L(pdgid):
     js = abspid(pdgid) % 10
 
     if nl == 0:
-        if js == 1: return 0
-        if js == 3: return 0
-        if js == 5: return 1
-        if js == 7: return 2
-        if js == 9: return 3
+        if js == 1:
+            return 0
+        if js == 3:
+            return 0
+        if js == 5:
+            return 1
+        if js == 7:
+            return 2
+        if js == 9:
+            return 3
     elif nl == 1:
-        if js == 1: return 1
-        if js == 3: return 1
-        if js == 5: return 2
-        if js == 7: return 3
-        if js == 9: return 4
+        if js == 1:
+            return 1
+        if js == 3:
+            return 1
+        if js == 5:
+            return 2
+        if js == 7:
+            return 3
+        if js == 9:
+            return 4
     elif nl == 2:
-        if js == 3: return 1
-        if js == 5: return 2
-        if js == 7: return 3
-        if js == 9: return 4
+        if js == 3:
+            return 1
+        if js == 5:
+            return 2
+        if js == 7:
+            return 3
+        if js == 9:
+            return 4
     elif nl == 3:
-        if js == 3: return 2
-        if js == 5: return 3
-        if js == 7: return 4
-        if js == 9: return 5
+        if js == 3:
+            return 2
+        if js == 5:
+            return 3
+        if js == 7:
+            return 4
+        if js == 9:
+            return 5
 
     return 0
 
