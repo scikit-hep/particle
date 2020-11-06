@@ -79,7 +79,7 @@ def is_valid(pdgid):
     if is_composite_quark_or_lepton(pdgid):
         return True
     if _extra_bits(pdgid) > 0:
-        return is_Qball(pdgid) or is_nucleus(pdgid):
+        return is_Qball(pdgid) or is_nucleus(pdgid)
     return False
 
 
