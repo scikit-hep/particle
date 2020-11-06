@@ -52,11 +52,13 @@ class Location(IntEnum):
 def is_valid(pdgid):
     # type: (PDGID_TYPE) -> bool
     """Is it a valid PDG ID?"""
-    if _fundamental_id(pdgid) > 0:
+    if _fundamental_id(pdgid) != 0:  # function always returns a number >= 0
         return True
     if is_meson(pdgid):
         return True
     if is_baryon(pdgid):
+        return True
+    if is_gauge_boson_or_higgs(pdgid):
         return True
     if is_pentaquark(pdgid):
         return True
@@ -70,8 +72,6 @@ def is_valid(pdgid):
         return True
     if is_pentaquark(pdgid):
         return True
-    if is_gauge_boson_or_higgs(pdgid):
-        return True
     if is_generator_specific(pdgid):
         return True
     if is_technicolor(pdgid):
@@ -79,11 +79,7 @@ def is_valid(pdgid):
     if is_composite_quark_or_lepton(pdgid):
         return True
     if _extra_bits(pdgid) > 0:
-        if is_nucleus(pdgid):
-            return True
-        if is_Qball(pdgid):
-            return True
-        return False
+        return is_Qball(pdgid) or is_nucleus(pdgid)
     return False
 
 
@@ -686,7 +682,7 @@ def three_charge(pdgid):
         # the charge sign will be changed below if pid < 0
         if _digit(pdgid, Location.Nl) == 2:
             charge = -charge
-    elif sid > 0 and sid <= 100:  # use table
+    elif 0 < sid <= 100:  # use table
         charge = ch100[sid - 1]
         if aid in {1000017, 1000018, 1000034, 1000052, 1000053, 1000054}:
             charge = 0
@@ -718,13 +714,13 @@ def j_spin(pdgid):
         return None
     if _fundamental_id(pdgid) > 0:
         fund = _fundamental_id(pdgid)
-        if fund > 0 and fund < 7:
+        if 0 < fund < 7:
             return 2  # 4th generation quarks not dealt with !
         if fund == 9:
             return 3
-        if fund > 10 and fund < 17:
+        if 10 < fund < 17:
             return 2  # 4th generation leptons not dealt with !
-        if fund > 20 and fund < 25:
+        if 20 < fund < 25:
             return 3
         return None
     elif abs(int(pdgid)) in {1000000010, 1000010010}:  # neutron, proton
@@ -819,42 +815,46 @@ def L(pdgid):
     nl = (abspid(pdgid) // 10000) % 10
     js = abspid(pdgid) % 10
 
-    if nl == 0 and js == 3:
-        return 0
-    elif nl == 0 and js == 5:
-        return 1
-    elif nl == 0 and js == 7:
-        return 2
-    elif nl == 0 and js == 9:
-        return 3
-    elif nl == 0 and js == 1:
-        return 0
-    elif nl == 1 and js == 3:
-        return 1
-    elif nl == 1 and js == 5:
-        return 2
-    elif nl == 1 and js == 7:
-        return 3
-    elif nl == 1 and js == 9:
-        return 4
-    elif nl == 2 and js == 3:
-        return 1
-    elif nl == 2 and js == 5:
-        return 2
-    elif nl == 2 and js == 7:
-        return 3
-    elif nl == 2 and js == 9:
-        return 4
-    elif nl == 1 and js == 1:
-        return 1
-    elif nl == 3 and js == 3:
-        return 2
-    elif nl == 3 and js == 5:
-        return 3
-    elif nl == 3 and js == 7:
-        return 4
-    elif nl == 3 and js == 9:
-        return 5
+    if nl == 0:
+        if js == 1:
+            return 0
+        if js == 3:
+            return 0
+        if js == 5:
+            return 1
+        if js == 7:
+            return 2
+        if js == 9:
+            return 3
+    elif nl == 1:
+        if js == 1:
+            return 1
+        if js == 3:
+            return 1
+        if js == 5:
+            return 2
+        if js == 7:
+            return 3
+        if js == 9:
+            return 4
+    elif nl == 2:
+        if js == 3:
+            return 1
+        if js == 5:
+            return 2
+        if js == 7:
+            return 3
+        if js == 9:
+            return 4
+    elif nl == 3:
+        if js == 3:
+            return 2
+        if js == 5:
+            return 3
+        if js == 7:
+            return 4
+        if js == 9:
+            return 5
 
     return 0
 
@@ -928,6 +928,10 @@ def _fundamental_id(pdgid):
     Returns 0 if the particle is not fundamental or not standard (PDG ID with more than 7 digits).
 
     PDGID=100 is a special case (internal generator ID's are 81-100).
+
+    Notes
+    -----
+    Function always returns a number >= 0.
     """
     if _extra_bits(pdgid) > 0:
         return 0
