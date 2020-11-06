@@ -52,7 +52,7 @@ class Location(IntEnum):
 def is_valid(pdgid):
     # type: (PDGID_TYPE) -> bool
     """Is it a valid PDG ID?"""
-    if _fundamental_id(pdgid) > 0:  # function always returns a positive number
+    if _fundamental_id(pdgid) != 0:  # function always returns a number >= 0
         return True
     if is_meson(pdgid):
         return True
@@ -931,7 +931,7 @@ def _fundamental_id(pdgid):
 
     Notes
     -----
-    Function always returns an integer number.
+    Function always returns a number >= 0.
     """
     if _extra_bits(pdgid) > 0:
         return 0
