@@ -1,6 +1,10 @@
 Changelog
 =========
 
+IN PROGRESS
+-----------
+- Full static typing
+
 Version 0.13.0
 --------------
 

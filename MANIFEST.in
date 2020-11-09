@@ -17,3 +17,5 @@ exclude .coveragerc .pre-commit-config.yaml azure-pipelines.yml environment.yml
 
 include src/particle/version.py
 include LICENSE README.rst CONTRIBUTING.md pyproject.toml setup.py setup.cfg
+
+recursive-include src py.typed
