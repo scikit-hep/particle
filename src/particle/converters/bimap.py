@@ -110,12 +110,12 @@ class BiMap(Generic[A, B]):
     @overload
     def __getitem__(self, value):
         # type: (A) -> B
-        ...
+        pass
 
     @overload
     def __getitem__(self, value):
         # type: (B) -> A
-        ...
+        pass
 
     def __getitem__(self, value):
         # type: (Any) -> Any
