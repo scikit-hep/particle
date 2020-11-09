@@ -740,13 +740,33 @@ class Particle(object):
     def is_unflavoured_meson(self):
         # type: () -> bool
         """
-        Unflavoured mesons are self-conjugate (hence zero-charge) mesons
-        with all their flavour (strange, charm, bottom and top) quantum numbers equal to zero.
+        Is the particle a light non-strange mesons or quarkonia?
+
+        Indeed, unflavoured mesons are either:
+        all light mesons with no net flavour quantum number (S = C = B = T = 0),
+        or quarkonia, which are self-conjugate heavy flavour mesons,
+        with all their flavour quantum numbers and charge equal to zero.
         """
-        if self.is_self_conjugate and self.three_charge == 0 and self.pdgid.is_meson:  # type: ignore
-            return True
-        else:
+        pid = self.pdgid
+
+        if not pid.is_meson:
             return False
+
+        if (pid.has_charm or pid.has_bottom or pid.has_top): # Heavy flavour
+            return True if self.is_self_conjugate else False
+        else:  # Light or strange mesons at this point
+            # Special case of the KS and KL
+            if pid in {130, 310}:
+                return False
+            # I = 1 light mesons have no s-sbar component, hence has_strange == False
+            if _digit(pid, Location.Nq3) == 1 and not pid.has_strange:
+                return True
+            # I = 0 light mesons have a s-sbar component, has_strange == True,
+            # thought their net S = 0
+            elif _digit(pid, Location.Nq3) in {2,3} and self.three_charge == 0:
+                return True
+            else:  # Only K-mesons at this point
+                return False
 
     def invert(self):
         # type: () -> Particle
