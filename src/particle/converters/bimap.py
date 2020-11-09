@@ -18,9 +18,29 @@ import csv
 from .. import data
 from ..exceptions import MatchingIDNotFound
 
+from typing import (
+    Union,
+    TextIO,
+    Callable,
+    TypeVar,
+    Generic,
+    overload,
+    Type,
+    Tuple,
+    Any,
+    Dict,
+    Iterator,
+)
 
-class BiMap(object):
+A = TypeVar("A")
+B = TypeVar("B")
+A_conv = Callable[[str], Union[A, int]]
+B_conv = Callable[[str], Union[B, int]]
+
+
+class BiMap(Generic[A, B]):
     def __init__(self, class_A, class_B, converters=(int, int), filename=None):
+        # type: (Type[A], Type[B], Tuple[A_conv, B_conv], Union[str, TextIO, None]) -> None
         """
         Bi-bidirectional map class.
 
@@ -61,21 +81,22 @@ class BiMap(object):
         >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
         """
 
-        self.class_A = class_A
-        self.class_B = class_B
+        self.class_A = class_A  # type: Type[A]
+        self.class_B = class_B  # type: Type[B]
 
         name_A = self.class_A.__name__.upper()
         name_B = self.class_B.__name__.upper()
 
         if filename is None:
             filename = "{a}_to_{b}.csv".format(a=name_A.lower(), b=name_B.lower())
-            filename = data.open_text(data, filename)
-        elif not hasattr(filename, "read"):
+            file_object = data.open_text(data, filename)
+        elif hasattr(filename, "read"):
+            file_object = filename
+        else:
             # Conversion to handle pathlib on Python < 3.6:
-            filename = str(filename)
-            filename = open(filename)
+            file_object = open(str(filename))
 
-        with filename as _f:
+        with file_object as _f:
             self._to_map = {
                 converters[1](v[name_B]): converters[0](v[name_A])
                 for v in csv.DictReader(l for l in _f if not l.startswith("#"))
@@ -86,23 +107,36 @@ class BiMap(object):
                 for v in csv.DictReader(l for l in _f if not l.startswith("#"))
             }
 
+    @overload
     def __getitem__(self, value):
+        # type: (A) -> B
+        ...
+
+    @overload
+    def __getitem__(self, value):
+        # type: (B) -> A
+        ...
+
+    def __getitem__(self, value):
+        # type: (Any) -> Any
         if isinstance(value, self.class_B):
             try:
-                return self.class_A(self._to_map[value])
+                return self.class_A(self._to_map[value])  # type: ignore
             except KeyError:
                 pass
         elif isinstance(value, self.class_A):
             try:
-                return self.class_B(self._from_map[value])
+                return self.class_B(self._from_map[value])  # type: ignore
             except KeyError:
                 pass
+
         msg = "Matching {a}-{b} for input {v} not found !".format(
             a=self.class_A.__name__, b=self.class_B.__name__, v=value
         )
         raise MatchingIDNotFound(msg)
 
     def __repr__(self):
+        # type: () -> str
         return "<{self.__class__.__name__}({a}-{b}): {n} matches>".format(
             self=self,
             a=self.class_A.__name__,
@@ -110,15 +144,14 @@ class BiMap(object):
             n=self.__len__(),
         )
 
-    def __str__(self):
-        return repr(self)
-
     def __len__(self):
+        # type: () -> int
         """Returns the number of matches."""
         return len(self._to_map)
 
 
 def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
+    # type: (str, str, Tuple[Callable[[str],str], Callable[[str],str]], Union[None, str, TextIO]) -> Tuple[DirectionalMap, DirectionalMap]
     """
     Directional map class providing a to and from mapping.
 
@@ -153,13 +186,14 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
     skipinitialspace = True
 
     if filename is None:
-        filename = data.open_text(data, "conversions.csv")
-    elif not hasattr(filename, "read"):
+        file_object = data.open_text(data, "conversions.csv")
+    elif hasattr(filename, "read"):
+        file_object = filename
+    else:
         # Conversion to handle pathlib on Python < 3.6:
-        filename = str(filename)
-        filename = open(filename)
+        file_object = open(str(filename))
 
-    with filename as _f:
+    with file_object as _f:
         to_map = {
             converters[1](v[name_B]): converters[0](v[name_A])
             for v in csv.DictReader(
@@ -186,6 +220,7 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
 
 class DirectionalMap(Mapping):
     def __init__(self, name_A, name_B, map):
+        # type: (str, str, Dict[str, str]) -> None
         """
         Directional map class providing a A -> B mapping.
 
@@ -203,6 +238,7 @@ class DirectionalMap(Mapping):
         self._map = map
 
     def __getitem__(self, value):
+        # type: (str) -> str
         try:
             return self._map[value]
         except KeyError:
@@ -212,16 +248,16 @@ class DirectionalMap(Mapping):
             raise MatchingIDNotFound(msg)
 
     def __iter__(self):
+        # type: () -> Iterator[str]
         return iter(self._map)
 
     def __repr__(self):
+        # type: () -> str
         return "<{self.__class__.__name__}({a}->{b}): {n} matches>".format(
             self=self, a=self.name_A, b=self.name_B, n=self.__len__()
         )
 
-    def __str__(self):
-        return repr(self)
-
     def __len__(self):
+        # type: () -> int
         """Returns the number of matches."""
         return len(self._map)

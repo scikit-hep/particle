@@ -56,6 +56,8 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
+from typing import TextIO, List, Optional, Dict, TypeVar, Callable, Union, Iterable, Any
+
 try:
     from io import StringIO
 except ImportError:  # Python2 workaround, could also use six
@@ -86,6 +88,7 @@ FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 def get_from_latex(filename):
+    # type: (str) -> pd.Series
     """
     Produce a pandas series from a file with LaTeX mappings in itself.
     The CVS file format is the following: PDGID, ParticleLatexName.
@@ -95,13 +98,17 @@ def get_from_latex(filename):
 
 
 def filter_file(fileobject):
+    # type: (Union[str, TextIO]) -> TextIO
     """
     Open a file if not already a file-like object, and strip lines that start with *.
     Returns a new file-like object (StringIO instance).
     """
 
     if not hasattr(fileobject, "read"):
+        assert isinstance(fileobject, str)
         fileobject = open(fileobject, encoding="utf-8")
+
+    assert not isinstance(fileobject, str)
 
     stream = StringIO()
     for line in fileobject:
@@ -116,7 +123,11 @@ def filter_file(fileobject):
     return stream
 
 
-def get_from_pdg_extended(filename, latexes=None):
+T = TypeVar("T")
+
+
+def get_from_pdg_extended(filename, latexes=()):
+    # type: (str, Iterable[str]) -> pd.DataFrame
     """
     Read an "extended style" PDG data file (only produced in 2008), plus a list of LaTeX files,
     to produce a pandas DataFrame with particle information.
@@ -136,6 +147,7 @@ def get_from_pdg_extended(filename, latexes=None):
     "Read a file, plus a list of LaTeX files, to produce a pandas DataFrame with particle information"
 
     def unmap(mapping):
+        # type: (Dict[str, T]) -> Callable[[str], T]
         return lambda x: mapping[x.strip()]
 
     # Convert each column from text to appropriate data type
@@ -154,16 +166,15 @@ def get_from_pdg_extended(filename, latexes=None):
         Quarks=lambda x: x.strip(),
     )
 
-    filename = filter_file(filename)
-
-    # Read in the table, apply the converters, add names, ignore comments
-    pdg_table = pd.read_csv(
-        filename,
-        names="Mass,MassUpper,MassLower,Width,WidthUpper,WidthLower,I,G,J,P,C,Anti,"
-        "ID,Charge,Rank,Status,Name,Quarks".split(","),
-        converters=PDG_converters,
-        comment="#",
-    )
+    with filter_file(filename) as file_object:
+        # Read in the table, apply the converters, add names, ignore comments
+        pdg_table = pd.read_csv(
+            file_object,
+            names="Mass,MassUpper,MassLower,Width,WidthUpper,WidthLower,I,G,J,P,C,Anti,"
+            "ID,Charge,Rank,Status,Name,Quarks".split(","),
+            converters=PDG_converters,
+            comment="#",
+        )
 
     # Read the LaTeX
     latex_series = pd.concat([get_from_latex(latex) for latex in latexes])
@@ -245,6 +256,7 @@ def get_from_pdg_extended(filename, latexes=None):
 
 
 def sort_particles(table):
+    # type: (pd.DataFrame) -> None
     "Sort a particle list table nicely"
     table["TmpVals"] = abs(table.index - 0.25)
     table.sort_values("TmpVals", inplace=True)
@@ -267,38 +279,38 @@ def get_from_pdg_mcd(filename):
     # Also, we can't use * as a comment char, since it is valid
     # in the particle names, as well!
 
-    filename = filter_file(filename)
+    with filter_file(filename) as file_object:
 
-    nar = pd.read_fwf(
-        filename,
-        colspecs=(
-            (0, 8),
-            (8, 16),
-            (16, 24),
-            (24, 32),
-            (32, 51),
-            (51, 60),
-            (60, 69),
-            (69, 88),
-            (88, 97),
-            (97, 106),
-            (106, 128),
-        ),
-        header=None,
-        names=(
-            "ID1",
-            "ID2",
-            "ID3",
-            "ID4",
-            "Mass",
-            "MassUpper",
-            "MassLower",
-            "Width",
-            "WidthUpper",
-            "WidthLower",
-            "NameCharge",
-        ),
-    )
+        nar = pd.read_fwf(
+            file_object,
+            colspecs=(
+                (0, 8),
+                (8, 16),
+                (16, 24),
+                (24, 32),
+                (32, 51),
+                (51, 60),
+                (60, 69),
+                (69, 88),
+                (88, 97),
+                (97, 106),
+                (106, 128),
+            ),
+            header=None,
+            names=(
+                "ID1",
+                "ID2",
+                "ID3",
+                "ID4",
+                "Mass",
+                "MassUpper",
+                "MassLower",
+                "Width",
+                "WidthUpper",
+                "WidthLower",
+                "NameCharge",
+            ),
+        )
 
     ds_list = []
     for i in range(4):
@@ -312,7 +324,7 @@ def get_from_pdg_mcd(filename):
         d.set_index("ID", inplace=True)
         ds_list.append(d)
 
-    ds = pd.concat(ds)  # type: pd.DataFrame
+    ds = pd.concat(ds_list)
     del ds["NameCharge"], ds["ID1"], ds["ID2"], ds["ID3"], ds["ID4"]
     ds.sort_index(inplace=True)
 
@@ -324,6 +336,7 @@ def get_from_pdg_mcd(filename):
 
 
 def update_from_mcd(full_table, update_table):
+    # type: (pd.DataFrame, pd.DataFrame) -> pd.DataFrame
     """
     Update the full table (aka the PDG extended-style table) with the
     up-to-date information from the PDG .mcd file.
@@ -343,6 +356,7 @@ def update_from_mcd(full_table, update_table):
 
 
 def produce_files(particle2008, particle2020, version, year):
+    # type: (str, str, str, str) -> None
     "This produces listed output files from all input files."
 
     with data.open_text(data, "mass_width_2008.fwf") as fwf_f:
@@ -387,10 +401,10 @@ def produce_files(particle2008, particle2020, version, year):
     with open(particle2020, "w", newline="\n", encoding="utf-8") as f:
         f.write(version_header(particle2020, version))
         new_table.to_csv(f, float_format="%.12g")
-    f.close()
 
 
 def version_header(filename, version_number):
+    # type: (str, str) -> str
     filename = os.path.basename(filename)
     VERSION = version_number  # version of CSV files
     DATE = date.isoformat(date.today())
@@ -400,6 +414,7 @@ def version_header(filename, version_number):
 
 
 def main(version, year):
+    # type: (str, str) -> None
     "Regenerate output files - run directly inside the package"
     master_dir = os.path.dirname(FILE_DIR)
     data_dir = os.path.join(master_dir, "data")
@@ -410,6 +425,7 @@ def main(version, year):
 
 
 def convert(version, output, fwf, latex=None):
+    # type: (str, str, str, Optional[str]) -> None
     latexes = [data.open_text(data, "pdgid_to_latexname.csv")]
     if latex:
         latexes.append(latex)
@@ -418,14 +434,15 @@ def convert(version, output, fwf, latex=None):
     with open(output, "w", newline="\n", encoding="utf-8") as f:
         f.write(version_header(output, version))
         table.to_csv(f, float_format="%.12g")
-    f.close()
 
 
 def run_regen(args):
+    # type: (Any) -> None
     main(args.version, args.year)
 
 
 def run_convert(args):
+    # type: (Any) -> None
     convert(args.version, args.output, args.fwf, args.latex)
 
 

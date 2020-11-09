@@ -189,8 +189,8 @@ class Particle(object):
         The upper uncertainty on the particle decay width, in MeV.
     """
 
-    pdgid = attr.ib(converter=PDGID)
-    pdg_name = attr.ib()
+    pdgid = attr.ib(converter=PDGID)  # type: PDGID
+    pdg_name = attr.ib()  # type: str
     mass = attr.ib(
         minus_one, converter=_none_or_positive_converter
     )  # type: Optional[float]
@@ -218,10 +218,10 @@ class Particle(object):
     anti_flag = attr.ib(
         Inv.Same, converter=Inv
     )  # Info about particle name for anti-particles
-    rank = attr.ib(0)
+    rank = attr.ib(0)  # type: int
     status = attr.ib(Status.NotInPDT, converter=Status)
     quarks = attr.ib("", converter=str)
-    latex_name = attr.ib("Unknown")
+    latex_name = attr.ib("Unknown")  # type: str
 
     def __repr__(self):
         # type: () -> str
@@ -283,7 +283,7 @@ class Particle(object):
         cls,
         exclusive_fields=(),  # type: Iterable[str]
         exclude_fields=(),  # type: Iterable[str]
-        n_rows=-1,
+        n_rows=-1,  # type: int
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
     ):
         # type: (...) -> List[List[Any]]
@@ -412,7 +412,7 @@ class Particle(object):
 
     @classmethod
     def to_dict(cls, *args, **kwargs):
-        # type: (...) -> Dict[List[str], List[Any]]
+        # type: (Any, Any) -> Dict[List[str], List[Any]]
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `dict`, loading the table from the default location if no table has yet been loaded.
@@ -1109,7 +1109,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def find(cls, *args, **search_terms):
-        # type: (...) -> Particle
+        # type: (Any, Any) -> Particle
         """
         Require that the search returns one and only one result.
         The method otherwise raises a ParticleNotFound or RuntimeError exception.

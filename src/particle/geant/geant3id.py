@@ -49,6 +49,7 @@ class Geant3ID(int):
 
     @classmethod
     def from_pdgid(cls, pdgid):
+        # type: (int) -> Geant3ID
         """
         Constructor from a PDGID.
         """
@@ -60,15 +61,19 @@ class Geant3ID(int):
         )
 
     def to_pdgid(self):
+        # type: () -> PDGID
         return PDGID(_bimap[self])
 
     def __repr__(self):
+        # type: () -> str
         return "<Geant3ID: {:d}>".format(int(self))
 
     def __str__(self):
+        # type: () -> str
         return repr(self)
 
     def __neg__(self):
+        # type: () -> Geant3ID
         """
         Note:
         Allowed operation though ALL Geant3 identification codes are positive!
