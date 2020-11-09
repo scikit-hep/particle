@@ -752,7 +752,7 @@ class Particle(object):
         if not pid.is_meson:
             return False
 
-        if (pid.has_charm or pid.has_bottom or pid.has_top): # Heavy flavour
+        if pid.has_charm or pid.has_bottom or pid.has_top: # Heavy flavour
             return True if self.is_self_conjugate else False
         else:  # Light or strange mesons at this point
             # Special case of the KS and KL
@@ -763,7 +763,7 @@ class Particle(object):
                 return True
             # I = 0 light mesons have a s-sbar component, has_strange == True,
             # thought their net S = 0
-            elif _digit(pid, Location.Nq3) in {2,3} and self.three_charge == 0:
+            elif _digit(pid, Location.Nq3) in {2, 3} and self.three_charge == 0:
                 return True
             else:  # Only K-mesons at this point
                 return False
