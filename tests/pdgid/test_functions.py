@@ -162,7 +162,7 @@ def test_is_meson(PDGIDs):
         PDGIDs.KS,
         PDGIDs.KMinus,
         PDGIDs.phi,
-        PDGIDs.Omega,
+        PDGIDs.omega,
         PDGIDs.rho_770_minus,
         PDGIDs.K1_1270_0,
         PDGIDs.K1_1400_0,

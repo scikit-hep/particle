@@ -55,7 +55,7 @@ class PDGIDsEnum(IntEnum):
     KMinus = -321
     rho_770_minus = -213
     phi = 333
-    Omega = 223
+    omega = 223
     K1_1270_0 = 10313
     K1_1400_0 = 20313
     rho_1700_0 = 30113

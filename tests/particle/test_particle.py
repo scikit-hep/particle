@@ -275,14 +275,14 @@ def test_P_consistency_baryons():
 def test_C_consistency():
     """
     The charge conjugation parity is stored in the (curated) data CSV files.
-    For unflavoured mesons it can be calculated as C = (-1)^(L+S),
+    For neutral unflavoured mesons it can be calculated as C = (-1)^(L+S),
     and this relation can be checked against the CSV data.
 
     Note: mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally
     well-known particles and C is undefined.
     """
     for p in Particle.all():
-        if not p.is_unflavoured_meson:
+        if not (p.is_unflavoured_meson and p.three_charge == 0):
             continue
         elif _digit(p.pdgid, Location.N) == 9:
             continue
@@ -452,6 +452,38 @@ def test_is_name_barred(pid, has_bar):
     particle = Particle.from_pdgid(pid)
 
     assert particle.is_name_barred == has_bar
+
+
+def test_is_unflavoured_meson(PDGIDs):
+    _unflavoured_mesons = (
+        PDGIDs.Pi0,
+        PDGIDs.PiPlus,
+        PDGIDs.eta,
+        PDGIDs.eta_prime,
+        PDGIDs.a_0_1450_plus,
+        PDGIDs.rho_770_minus,
+        PDGIDs.phi,
+        PDGIDs.omega,
+        PDGIDs.rho_1700_0,
+        PDGIDs.a2_1320_minus,
+        PDGIDs.omega_3_1670,
+        PDGIDs.f_4_2300,
+        PDGIDs.jpsi,
+        PDGIDs.psi_2S,
+        PDGIDs.Upsilon_1S,
+        PDGIDs.Upsilon_4S,
+    )
+    _non_unflavoured_mesons = [pid for pid in PDGIDs if pid not in _unflavoured_mesons]
+    for pid in _unflavoured_mesons:
+        try:
+            assert Particle.from_pdgid(pid).is_unflavoured_meson == True
+        except (ParticleNotFound, InvalidParticle):
+            pass
+    for pid in _non_unflavoured_mesons:
+        try:
+            assert Particle.from_pdgid(pid).is_unflavoured_meson == False
+        except (ParticleNotFound, InvalidParticle):
+            pass
 
 
 spin_type_classification = (
