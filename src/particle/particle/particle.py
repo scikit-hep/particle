@@ -752,7 +752,7 @@ class Particle(object):
         if not pid.is_meson:
             return False
 
-        if pid.has_charm or pid.has_bottom or pid.has_top: # Heavy flavour
+        if pid.has_charm or pid.has_bottom or pid.has_top:  # Heavy flavour
             return True if self.is_self_conjugate else False
         else:  # Light or strange mesons at this point
             # Special case of the KS and KL
