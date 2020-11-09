@@ -53,8 +53,8 @@ When you are done, you can save one or more of the tables:
 
 import os
 from datetime import date
-import numpy as np  # type: ignore
-import pandas as pd  # type: ignore
+import numpy as np
+import pandas as pd
 
 try:
     from io import StringIO
@@ -252,6 +252,7 @@ def sort_particles(table):
 
 
 def get_from_pdg_mcd(filename):
+    # type: (str) -> pd.DataFrame
     """
     Reads in a current-style PDG .mcd file (mass_width_2020.mcd file tested).
 
@@ -299,7 +300,7 @@ def get_from_pdg_mcd(filename):
         ),
     )
 
-    ds = []
+    ds_list = []
     for i in range(4):
         name = "ID{0}".format(i + 1)
         d = nar[~pd.isna(nar[name])].copy()
@@ -309,9 +310,9 @@ def get_from_pdg_mcd(filename):
         abcd = nc[1].str.split(",", 4, expand=True)
         d["charge"] = abcd[i]
         d.set_index("ID", inplace=True)
-        ds.append(d)
+        ds_list.append(d)
 
-    ds = pd.concat(ds)
+    ds = pd.concat(ds)  # type: pd.DataFrame
     del ds["NameCharge"], ds["ID1"], ds["ID2"], ds["ID3"], ds["ID4"]
     ds.sort_index(inplace=True)
 

@@ -5,6 +5,6 @@
 # or https://github.com/scikit-hep/particle for details.
 
 try:
-    from importlib.resources import open_text
+    from importlib.resources import open_text  # type: ignore
 except ImportError:
-    from importlib_resources import open_text  # type: ignore
+    from importlib_resources import open_text
