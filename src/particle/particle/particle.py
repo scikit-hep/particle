@@ -740,7 +740,7 @@ class Particle(object):
     def is_unflavoured_meson(self):
         # type: () -> bool
         """
-        Is the particle a light non-strange mesons or quarkonia?
+        Is the particle a light non-strange meson or a quarkonium?
 
         Indeed, unflavoured mesons are either:
         all light mesons with no net flavour quantum number (S = C = B = T = 0),
