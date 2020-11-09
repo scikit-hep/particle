@@ -749,17 +749,19 @@ class Particle(object):
         """
         pid = self.pdgid
 
-        if not pid.is_meson:
+        if not pid.is_meson:  # type: ignore
             return False
 
-        if pid.has_charm or pid.has_bottom or pid.has_top:  # Heavy flavour
+        # Heavy flavour
+        if pid.has_charm or pid.has_bottom or pid.has_top:  # type: ignore
             return True if self.is_self_conjugate else False
-        else:  # Light or strange mesons at this point
+        # Light or strange mesons at this point
+        else:
             # Special case of the KS and KL
             if pid in {130, 310}:
                 return False
             # I = 1 light mesons have no s-sbar component, hence has_strange == False
-            if _digit(pid, Location.Nq3) == 1 and not pid.has_strange:
+            if _digit(pid, Location.Nq3) == 1 and not pid.has_strange:  # type: ignore
                 return True
             # I = 0 light mesons have a s-sbar component, has_strange == True,
             # thought their net S = 0
