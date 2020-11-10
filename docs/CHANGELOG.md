@@ -1,9 +1,18 @@
 Changelog
 =========
 
-IN PROGRESS
------------
-- Full static typing
+Version 0.13.1
+--------------
+
+November 10th, 2020
+
+- PDG ID:
+  - Minor simplifications in some PID functions.
+- `Particle` class:
+  - Test for `Particle.is_unflavoured_meson` added.
+- Miscellaneous:
+  - Full static typing implemented.
+
 
 Version 0.13.0
 --------------
