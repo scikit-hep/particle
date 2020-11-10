@@ -44,6 +44,7 @@ class PythiaID(int):
 
     @classmethod
     def from_pdgid(cls, pdgid):
+        # type: (int) -> PythiaID
         """
         Constructor from a PDGID.
         """
@@ -55,15 +56,19 @@ class PythiaID(int):
         )
 
     def to_pdgid(self):
+        # type: () -> PDGID
         return PDGID(_bimap[self])
 
     def __repr__(self):
+        # type: () -> str
         return "<PythiaID: {:d}>".format(int(self))
 
     def __str__(self):
+        # type: () -> str
         return repr(self)
 
     def __neg__(self):
+        # type: () -> PythiaID
         return self.__class__(-int(self))
 
     __invert__ = __neg__

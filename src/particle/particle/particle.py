@@ -189,8 +189,8 @@ class Particle(object):
         The upper uncertainty on the particle decay width, in MeV.
     """
 
-    pdgid = attr.ib(converter=PDGID)
-    pdg_name = attr.ib()
+    pdgid = attr.ib(converter=PDGID)  # type: PDGID
+    pdg_name = attr.ib()  # type: str
     mass = attr.ib(
         minus_one, converter=_none_or_positive_converter
     )  # type: Optional[float]
@@ -218,10 +218,10 @@ class Particle(object):
     anti_flag = attr.ib(
         Inv.Same, converter=Inv
     )  # Info about particle name for anti-particles
-    rank = attr.ib(0)
+    rank = attr.ib(0)  # type: int
     status = attr.ib(Status.NotInPDT, converter=Status)
     quarks = attr.ib("", converter=str)
-    latex_name = attr.ib("Unknown")
+    latex_name = attr.ib("Unknown")  # type: str
 
     def __repr__(self):
         # type: () -> str
@@ -283,7 +283,7 @@ class Particle(object):
         cls,
         exclusive_fields=(),  # type: Iterable[str]
         exclude_fields=(),  # type: Iterable[str]
-        n_rows=-1,
+        n_rows=-1,  # type: int
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
     ):
         # type: (...) -> List[List[Any]]
@@ -412,7 +412,7 @@ class Particle(object):
 
     @classmethod
     def to_dict(cls, *args, **kwargs):
-        # type: (...) -> Dict[List[str], List[Any]]
+        # type: (Any, Any) -> Dict[List[str], List[Any]]
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `dict`, loading the table from the default location if no table has yet been loaded.
@@ -585,7 +585,7 @@ class Particle(object):
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
-    def __le__(self, other):
+    def __lt__(self, other):
         # type: (Any) -> bool
         # Sort by absolute particle numbers
         # The positive one should come first
@@ -619,7 +619,7 @@ class Particle(object):
         Note that the returned value corresponds to that effectively encoded
         in the particle PDG ID.
         """
-        return self.pdgid.J  # type: ignore
+        return self.pdgid.J
 
     @property
     def L(self):
@@ -630,7 +630,7 @@ class Particle(object):
         Note that the returned value corresponds to that effectively encoded
         in the particle PDG ID.
         """
-        return self.pdgid.L  # type: ignore
+        return self.pdgid.L
 
     @property
     def S(self):
@@ -641,7 +641,7 @@ class Particle(object):
         Note that the returned value corresponds to that effectively encoded
         in the particle PDG ID.
         """
-        return self.pdgid.S  # type: ignore
+        return self.pdgid.S
 
     @property
     def charge(self):
@@ -655,17 +655,17 @@ class Particle(object):
         Consistency of both ways of retrieving the particle charge is guaranteed
         for all PDG table particles.
         """
-        return self.three_charge / 3 if self.three_charge is not None else None  # type: ignore
+        return self.three_charge / 3 if self.three_charge is not None else None
 
     @property
     def three_charge(self):
         # type: () -> Optional[int]
         "Three times the particle charge (charge * 3), in units of the positron charge."
-        if not self.pdgid.is_nucleus:  # type: ignore
+        if not self.pdgid.is_nucleus:
             # Return int(...) not to return the actual enum Charge
             return int(self._three_charge) if self._three_charge != Charge.u else None
         else:
-            return self.pdgid.three_charge  # type: ignore
+            return self.pdgid.three_charge
 
     @property
     def lifetime(self):
@@ -709,11 +709,11 @@ class Particle(object):
         Note that this is relevant for bosons only. SpinType.NonDefined is returned otherwise.
         """
         # Non-valid or non-standard PDG IDs
-        if self.pdgid.j_spin is None:  # type: ignore
+        if self.pdgid.j_spin is None:
             return SpinType.NonDefined
 
         # Fermions - 2J+1 is always an even number
-        if self.pdgid.j_spin % 2 == 0:  # type: ignore
+        if self.pdgid.j_spin % 2 == 0:
             return SpinType.NonDefined
 
         if self.J in [0, 1, 2]:
@@ -749,11 +749,11 @@ class Particle(object):
         """
         pid = self.pdgid
 
-        if not pid.is_meson:  # type: ignore
+        if not pid.is_meson:
             return False
 
         # Heavy flavour
-        if pid.has_charm or pid.has_bottom or pid.has_top:  # type: ignore
+        if pid.has_charm or pid.has_bottom or pid.has_top:
             return True if self.is_self_conjugate else False
         # Light or strange mesons at this point
         else:
@@ -761,7 +761,7 @@ class Particle(object):
             if pid in {130, 310}:
                 return False
             # I = 1 light mesons have no s-sbar component, hence has_strange == False
-            if _digit(pid, Location.Nq3) == 1 and not pid.has_strange:  # type: ignore
+            if _digit(pid, Location.Nq3) == 1 and not pid.has_strange:
                 return True
             # I = 0 light mesons have a s-sbar component, has_strange == True,
             # thought their net S = 0
@@ -852,7 +852,7 @@ class Particle(object):
             return True  # antiparticle flips sign of particle
         if self.pdgid in (23, 25, 111, 130, 310, 311, -311):
             return True  # the Z0, H0, pi0, KL0, KS0, K0 and K0bar
-        if self.pdgid.is_diquark:  # type: ignore
+        if self.pdgid.is_diquark:
             return False
         if abs(self.pdgid) in (2212, 2112):
             return False  # proton and neutron
@@ -874,23 +874,23 @@ class Particle(object):
                 ]
             ):
                 return False
-            elif pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top:  # type: ignore
+            elif pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top:
                 return False
             else:  # Light unflavoured mesons
                 return True
         # Lambda baryons
         if (
-            self.pdgid.is_baryon  # type: ignore
+            self.pdgid.is_baryon
             and _digit(self.pdgid, Location.Nq2) == 1
             and self.I
             == 0.0  # 1st check alone is not sufficient to filter out lowest-ground Sigma's
-            and self.pdgid.has_strange  # type: ignore
+            and self.pdgid.has_strange
             and not (
-                self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top  # type: ignore
+                self.pdgid.has_charm or self.pdgid.has_bottom or self.pdgid.has_top
             )
         ):
             return False
-        if self.pdgid.is_nucleus:  # type: ignore
+        if self.pdgid.is_nucleus:
             return False
         return True
 
@@ -902,10 +902,10 @@ class Particle(object):
         """
         if self._three_charge is None:
             return "None"
-        elif not self.pdgid.is_nucleus:  # type: ignore
+        elif not self.pdgid.is_nucleus:
             return Charge_undo[Charge(self._three_charge)]
         else:
-            return str(self.pdgid.charge)  # type: ignore
+            return str(self.pdgid.charge)
 
     def _str_mass(self):
         # type: () -> str
@@ -1109,7 +1109,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def find(cls, *args, **search_terms):
-        # type: (...) -> Particle
+        # type: (Any, Any) -> Particle
         """
         Require that the search returns one and only one result.
         The method otherwise raises a ParticleNotFound or RuntimeError exception.

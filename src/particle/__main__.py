@@ -16,6 +16,7 @@ import sys
 
 
 def main():
+    # type: () -> None
     parser = argparse.ArgumentParser(
         prog="particle",
         description="Particle command line display utility. Has two modes.",
