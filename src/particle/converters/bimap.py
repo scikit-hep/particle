@@ -19,17 +19,17 @@ from .. import data
 from ..exceptions import MatchingIDNotFound
 
 from typing import (
-    Union,
-    TextIO,
-    Callable,
-    TypeVar,
-    Generic,
-    overload,
-    Type,
-    Tuple,
     Any,
+    Callable,
     Dict,
+    Generic,
     Iterator,
+    TextIO,
+    Tuple,
+    Type,
+    TypeVar,
+    Union,
+    overload,
 )
 
 A = TypeVar("A")
