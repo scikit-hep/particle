@@ -288,7 +288,7 @@ class Particle(object):
         particle=None,  # type: Optional[bool]
         **search_terms  # type: Any
     ):
-        # type: (...) -> List[List[Any]]
+        # type: (...) -> List[List[Union[bool, int, str, float]]]
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `list`, loading the table from the default location if no table has yet been loaded.
