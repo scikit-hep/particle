@@ -349,19 +349,25 @@ class Particle(object):
         --------
         Reproduce the whole particle table kept internally:
 
-        >>> Particle.to_list()    # doctest: +SKIP
+        >>> query_as_list = Particle.to_list()
 
         Reduce the information on the particle table to the only fields
         ['pdgid', 'pdg_name'] and render the first 5 particles:
 
         >>> query_as_list = Particle.to_list(exclusive_fields=['pdgid', 'pdg_name'], n_rows=5)
         >>> from tabulate import tabulate
-        >>> print(tabulate(query_as_list, headers='firstrow'))    # doctest: +SKIP
+        >>> print(tabulate(query_as_list, headers='firstrow'))
+          pdgid  pdg_name
+        -------  ----------
+              1  d
+             -1  d
+              2  u
+             -2  u
+              3  s
 
         Request the properties of a specific list of particles:
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'], particle=False)
-
         >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
         =======  ======  ===============  ========
           pdgid  name               mass    charge
@@ -485,19 +491,26 @@ class Particle(object):
         --------
         Reproduce the whole particle table kept internally:
 
-        >>> Particle.to_dict()    # doctest: +SKIP
+        >>> query_as_dict = Particle.to_dict()
 
         Reduce the information on the particle table to the only fields
         ['pdgid', 'pdg_name'] and render the first 5 particles:
 
         >>> query_as_dict = Particle.to_dict(exclusive_fields=['pdgid', 'pdg_name'], n_rows=5)
-        >>> from tabulate import tabulate    # doctest: +SKIP
-        >>> print(tabulate(query_as_dict, headers='keys'))    # doctest: +SKIP
+        >>> from tabulate import tabulate
+        >>> print(tabulate(query_as_dict, headers='keys'))
+          pdgid  pdg_name
+        -------  ----------
+              1  d
+             -1  d
+              2  u
+             -2  u
+              3  s
 
         Request the properties of a specific list of particles:
 
         >>> query_as_dict = Particle.to_dict(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'], particle=True)
-        >>> print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"))    # doctest: +SKIP
+        >>> print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
         =======  ======  ===============  ========
           pdgid  name               mass    charge
         =======  ======  ===============  ========
