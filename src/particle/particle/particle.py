@@ -497,8 +497,8 @@ class Particle(object):
         ['pdgid', 'pdg_name'] and render the first 5 particles:
 
         >>> query_as_dict = Particle.to_dict(exclusive_fields=['pdgid', 'pdg_name'], n_rows=5)
-        >>> from tabulate import tabulate
-        >>> print(tabulate(query_as_dict, headers='keys'))
+        >>> from tabulate import tabulate    # doctest: +SKIP
+        >>> print(tabulate(query_as_dict, headers='keys'))    # doctest: +SKIP
           pdgid  pdg_name
         -------  ----------
               1  d
