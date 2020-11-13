@@ -285,6 +285,8 @@ class Particle(object):
         exclude_fields=(),  # type: Iterable[str]
         n_rows=-1,  # type: int
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
+        particle=None,  # type: Optional[bool]
+        **search_terms  # type: Any
     ):
         # type: (...) -> List[List[Any]]
         """
@@ -328,6 +330,11 @@ class Particle(object):
         filter_fn: function, optional, default is None
             Apply a filter to each particle.
             See `findall(...)`` for typical use cases.
+        particle: bool, optional, default is None
+            Pass particle=True/False to only return particles or antiparticles.
+            Option passed on internally to `findall(...)``.
+        search_terms: keyword arguments, optional
+            See `findall(...)`` for typical use cases.
 
         Returns
         -------
@@ -342,32 +349,41 @@ class Particle(object):
         --------
         Reproduce the whole particle table kept internally:
 
-        >>> Particle.to_list()    # doctest: +SKIP
+        >>> query_as_list = Particle.to_list()
 
         Reduce the information on the particle table to the only fields
         ['pdgid', 'pdg_name'] and render the first 5 particles:
 
         >>> query_as_list = Particle.to_list(exclusive_fields=['pdgid', 'pdg_name'], n_rows=5)
         >>> from tabulate import tabulate
-        >>> print(tabulate(query_as_list, headers='firstrow'))    # doctest: +SKIP
+        >>> print(tabulate(query_as_list, headers='firstrow'))
+          pdgid  pdg_name
+        -------  ----------
+              1  d
+             -1  d
+              2  u
+             -2  u
+              3  s
 
         Request the properties of a specific list of particles:
 
-        >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
-
+        >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'], particle=False)
         >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
         =======  ======  ===============  ========
           pdgid  name               mass    charge
         =======  ======  ===============  ========
-             11  e-         0.5109989461        -1
             -11  e+         0.5109989461         1
-             13  mu-      105.6583745           -1
             -13  mu+      105.6583745            1
-             15  tau-    1776.86                -1
             -15  tau+    1776.86                 1
-             17  tau'-                          -1
             -17  tau'+                           1
         =======  ======  ===============  ========
+
+        >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton, pdg_name='tau', exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
+        >>> print(tabulate(query_as_list, headers='firstrow'))
+          pdgid  name       mass    charge
+        -------  ------  -------  --------
+             15  tau-    1776.86        -1
+            -15  tau+    1776.86         1
 
         Save it to a file:
 
@@ -396,7 +412,7 @@ class Particle(object):
 
         # Apply a filter, if specified
         if filter_fn is not None:
-            tbl_all = cls.findall(filter_fn)
+            tbl_all = cls.findall(filter_fn, particle, **search_terms)
 
         # In any case, only keep a given number of rows?
         if n_rows >= 0:
@@ -416,6 +432,8 @@ class Particle(object):
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `dict`, loading the table from the default location if no table has yet been loaded.
+
+        See `to_list` for details on the full function signature.
 
         The returned attributes are those of the class. By default all attributes
         are used as fields. Their complete list is:
@@ -454,6 +472,11 @@ class Particle(object):
         filter_fn: function, optional, default is None
             Apply a filter to each particle.
             See `findall(...)`` for typical use cases.
+        particle: bool, optional, default is None
+            Pass particle=True/False to only return particles or antiparticles.
+            Option passed on internally to `findall(...)``.
+        search_terms: keyword arguments, optional
+            See `findall(...)`` for typical use cases.
 
         Returns
         -------
@@ -468,7 +491,7 @@ class Particle(object):
         --------
         Reproduce the whole particle table kept internally:
 
-        >>> Particle.to_dict()    # doctest: +SKIP
+        >>> query_as_dict = Particle.to_dict()
 
         Reduce the information on the particle table to the only fields
         ['pdgid', 'pdg_name'] and render the first 5 particles:
@@ -476,24 +499,33 @@ class Particle(object):
         >>> query_as_dict = Particle.to_dict(exclusive_fields=['pdgid', 'pdg_name'], n_rows=5)
         >>> from tabulate import tabulate    # doctest: +SKIP
         >>> print(tabulate(query_as_dict, headers='keys'))    # doctest: +SKIP
+          pdgid  pdg_name
+        -------  ----------
+              1  d
+             -1  d
+              2  u
+             -2  u
+              3  s
 
         Request the properties of a specific list of particles:
 
-        >>> query_as_dict = Particle.to_dict(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
-
+        >>> query_as_dict = Particle.to_dict(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'], particle=True)
         >>> print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"))    # doctest: +SKIP
         =======  ======  ===============  ========
           pdgid  name               mass    charge
         =======  ======  ===============  ========
              11  e-         0.5109989461        -1
-            -11  e+         0.5109989461         1
              13  mu-      105.6583745           -1
-            -13  mu+      105.6583745            1
              15  tau-    1776.86                -1
-            -15  tau+    1776.86                 1
              17  tau'-                          -1
-            -17  tau'+                           1
         =======  ======  ===============  ========
+
+        >>> query_as_dict = Particle.to_dict(filter_fn=lambda p: p.pdgid.is_lepton, pdg_name='tau', exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
+        >>> print(tabulate(query_as_dict, headers='keys'))    # doctest: +SKIP
+          pdgid  name       mass    charge
+        -------  ------  -------  --------
+             15  tau-    1776.86        -1
+            -15  tau+    1776.86         1
 
         Save it to a file:
 
