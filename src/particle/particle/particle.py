@@ -288,7 +288,7 @@ class Particle(object):
         particle=None,  # type: Optional[bool]
         **search_terms  # type: Any
     ):
-        # type: (...) -> List[List[Any]]
+        # type: (...) -> List[List[Union[bool, int, str, float]]]
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `list`, loading the table from the default location if no table has yet been loaded.
@@ -428,7 +428,7 @@ class Particle(object):
 
     @classmethod
     def to_dict(cls, *args, **kwargs):
-        # type: (Any, Any) -> Dict[List[str], List[Any]]
+        # type: (Any, Any) -> Dict[str, List[Union[str, float, bool, int]]]
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `dict`, loading the table from the default location if no table has yet been loaded.
@@ -534,9 +534,10 @@ class Particle(object):
         """
         query_as_list = cls.to_list(*args, **kwargs)
 
-        return dict(
-            zip(query_as_list[0], zip(*query_as_list[1:]))
-        )  # dict(zip(keys, values))
+        keys = query_as_list[0]
+        values = query_as_list[1:]
+
+        return {str(key): value for key, value in zip(keys, values)}
 
     @classmethod
     def load_table(cls, filename=None, append=False, _name=None):
