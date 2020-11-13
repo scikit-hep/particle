@@ -510,7 +510,7 @@ class Particle(object):
         Request the properties of a specific list of particles:
 
         >>> query_as_dict = Particle.to_dict(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'], particle=True)
-        >>> print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
+        >>> print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"))    # doctest: +SKIP
         =======  ======  ===============  ========
           pdgid  name               mass    charge
         =======  ======  ===============  ========
@@ -521,7 +521,7 @@ class Particle(object):
         =======  ======  ===============  ========
 
         >>> query_as_dict = Particle.to_dict(filter_fn=lambda p: p.pdgid.is_lepton, pdg_name='tau', exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
-        >>> print(tabulate(query_as_dict, headers='keys'))
+        >>> print(tabulate(query_as_dict, headers='keys'))    # doctest: +SKIP
           pdgid  name       mass    charge
         -------  ------  -------  --------
              15  tau-    1776.86        -1
