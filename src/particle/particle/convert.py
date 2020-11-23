@@ -213,6 +213,7 @@ def get_from_pdg_extended(filename, latexes=()):
 
     # Parity flips for baryons
     def is_baryon_with_defined_parity(i, p):
+        # type: (PDGID, Parity) -> bool
         return is_baryon(i) and p != Parity.u
 
     pdg_table_inv["P"] = np.where(
