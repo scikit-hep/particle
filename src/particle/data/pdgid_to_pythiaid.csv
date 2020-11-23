@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - pdgid_to_pythiaid.csv - version 7 - 2020-08-17
+# (c) Scikit-HEP project - Particle package data file - pdgid_to_pythiaid.csv - version 8 - 2020-11-23
 PDGID,PYTHIAID
 1,1
 -1,-1
