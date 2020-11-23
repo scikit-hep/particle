@@ -217,7 +217,9 @@ def get_from_pdg_extended(filename, latexes=()):
         return is_baryon(i) and p != Parity.u
 
     pdg_table_inv["P"] = np.where(
-        pdg_table_inv.reset_index().apply(lambda x: is_baryon_with_defined_parity(x["ID"], x["P"]), axis=1),
+        pdg_table_inv.reset_index().apply(
+            lambda x: is_baryon_with_defined_parity(x["ID"], x["P"]), axis=1
+        ),
         -pdg_table_inv["P"],
         pdg_table_inv["P"],
     )
