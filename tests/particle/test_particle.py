@@ -248,28 +248,30 @@ def test_P_consistency_baryons():
     """
     The parity quantum number is stored in the (curated) data CSV files.
     For baryons the (intrinsic) parity flips sign for the antiparticle.
+    As for baryons with undefined parity, that of the antibaryon
+    is equally undefined, of course.
     """
     pdgid = lambda p: p.pdgid
 
-    pdgids_baryons = [
+    pdgids_baryons_defined_P = [
         pdgid(b)
         for b in Particle.findall(
             lambda p: p.P != Parity.u and p.pdgid.is_baryon and p.pdgid > 0
         )
     ]
-    pdgids_antibaryons = [
+
+    pdgids_baryons_undefined_P = [
         pdgid(b)
         for b in Particle.findall(
-            lambda p: p.P != Parity.u and p.pdgid.is_baryon and p.pdgid < 0
+            lambda p: p.P == Parity.u and p.pdgid.is_baryon and p.pdgid > 0
         )
     ]
 
-    for pdgid in pdgids_baryons:
-        # Only consider checks on existing baryon-antibaryon pairs in the "DB"
-        if not (-pdgid in pdgids_antibaryons):
-            continue
-
+    for pdgid in pdgids_baryons_defined_P:
         assert Particle.from_pdgid(pdgid).P == -Particle.from_pdgid(-pdgid).P
+
+    for pdgid in pdgids_baryons_undefined_P:
+        assert Particle.from_pdgid(pdgid).P == Particle.from_pdgid(-pdgid).P
 
 
 def test_C_consistency():
