@@ -348,6 +348,21 @@ def test_explicit_table_loading():
     assert Particle.all() is not None
 
 
+def test_all_particles_are_loaded():
+    Particle.load_table(data.open_text(data, "particle2018.csv"))
+    assert len(Particle.all()) == 605
+    Particle.load_table(data.open_text(data, "particle2019.csv"))
+    assert len(Particle.all()) == 610
+    Particle.load_table(data.open_text(data, "particle2020.csv"))
+    assert len(Particle.all()) == 610
+
+    Particle.load_table(data.open_text(data, "nuclei2020.csv"))
+    assert len(Particle.all()) == 5880
+
+    # Load default table to restore global state
+    Particle.load_table()
+
+
 checklist_html_name = (
     (22, "&gamma;"),  # photon
     (1, "d"),  # d quark
