@@ -37,7 +37,6 @@ class Parity(IntEnum):
     p = 1
     m = -1
     u = 5
-    x = -5
 
 
 class Charge(IntEnum):
