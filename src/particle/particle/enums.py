@@ -35,7 +35,6 @@ class Parity(IntEnum):
     """Enum representing a particle parity."""
 
     p = 1
-    o = 0
     m = -1
     u = 5
 
@@ -109,7 +108,6 @@ class Status(IntEnum):
 # Mappings that allow the above classes to be produced from text mappings
 Parity_mapping = {
     "+": Parity.p,
-    "0": Parity.o,
     "-": Parity.m,
     "?": Parity.u,
     "": Parity.u,
@@ -140,8 +138,8 @@ Status_mapping = {
 }
 
 # Mappings that allow the above classes to be turned into text mappings
-Parity_undo = {Parity.p: "+", Parity.o: "0", Parity.m: "-", Parity.u: "None"}
-Parity_prog = {Parity.p: "p", Parity.o: "0", Parity.m: "m", Parity.u: "u"}
+Parity_undo = {Parity.p: "+", Parity.m: "-", Parity.u: "None"}
+Parity_prog = {Parity.p: "p", Parity.m: "m", Parity.u: "u"}
 
 Charge_undo = {
     Charge.pp: "++",
