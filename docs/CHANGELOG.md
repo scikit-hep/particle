@@ -4,14 +4,15 @@ Changelog
 Version 0.14.0
 --------------
 
-Under development
+November 26th, 2020
 
 - `Particle` class:
   - Methods `Particle.to_list` and `Particle.to_dict` enhanced.
 - Data CSV files:
   - Version 8 of package data files, with fixed parities for antibaryons with undefined parity.
+  - Tests added to check if every particle is parsed and loaded correctly.
 - Miscellaneous:
-- Minor fix on static typing.
+  - Minor fix on static typing.
 
 
 Version 0.13.1
