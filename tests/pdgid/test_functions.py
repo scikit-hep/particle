@@ -66,8 +66,8 @@ def test_charge(PDGIDs):
     assert charge(PDGIDs.Lb) == 0
     assert charge(PDGIDs.DD1) == -2 / 3
     assert charge(PDGIDs.SD0) == -2 / 3
-    assert charge(PDGIDs.Invalid1) == None
-    assert charge(PDGIDs.Invalid2) == None
+    assert charge(PDGIDs.Invalid1) is None
+    assert charge(PDGIDs.Invalid2) is None
 
 
 def test_three_charge(PDGIDs):
@@ -82,8 +82,8 @@ def test_three_charge(PDGIDs):
     assert three_charge(PDGIDs.Lb) == 0
     assert three_charge(PDGIDs.DD1) == -2
     assert three_charge(PDGIDs.SD0) == -2
-    assert three_charge(PDGIDs.Invalid1) == None
-    assert three_charge(PDGIDs.Invalid2) == None
+    assert three_charge(PDGIDs.Invalid1) is None
+    assert three_charge(PDGIDs.Invalid2) is None
 
 
 def test_is_valid(PDGIDs):
@@ -605,8 +605,8 @@ def test_JSL_mesons(PDGIDs):
 
 def test_JSL_badly_known_mesons(PDGIDs):
     assert j_spin(PDGIDs.f_4_2300) == 9
-    assert s_spin(PDGIDs.f_4_2300) == None
-    assert l_spin(PDGIDs.f_4_2300) == None
+    assert s_spin(PDGIDs.f_4_2300) is None
+    assert l_spin(PDGIDs.f_4_2300) is None
 
 
 def test_J_non_mesons(PDGIDs):
@@ -664,21 +664,21 @@ def test_J_non_mesons(PDGIDs):
     for id in _J_eq_3over2:
         assert j_spin(id) == 4
     for id in _invalid_pdgids:
-        assert j_spin(id) == None
+        assert j_spin(id) is None
     for id in _J_eq_None:
-        assert j_spin(id) == None
+        assert j_spin(id) is None
 
 
 def test_S_non_mesons(PDGIDs):
     _S_eq_None = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
     for id in _S_eq_None:
-        assert S(id) == None
+        assert S(id) is None
 
 
 def test_L_non_mesons(PDGIDs):
     _L_eq_None = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
     for id in _L_eq_None:
-        assert L(id) == None
+        assert L(id) is None
 
 
 def test_A(PDGIDs):
@@ -692,7 +692,7 @@ def test_A(PDGIDs):
     for id, a in _nuclei.items():
         assert A(id) == a
     for id in _non_nuclei:
-        assert A(id) == None
+        assert A(id) is None
 
 
 def test_Z(PDGIDs):
@@ -706,4 +706,4 @@ def test_Z(PDGIDs):
     for id, z in _nuclei.items():
         assert Z(id) == z
     for id in _non_nuclei:
-        assert Z(id) == None
+        assert Z(id) is None

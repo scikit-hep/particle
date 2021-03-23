@@ -104,9 +104,7 @@ def is_lepton(pdgid):
     """Does this PDG ID correspond to a lepton?"""
     if _extra_bits(pdgid) > 0:
         return False
-    if 11 <= int(_fundamental_id(pdgid)) <= 18:
-        return True
-    return False
+    return 11 <= int(_fundamental_id(pdgid)) <= 18
 
 
 def is_hadron(pdgid):
@@ -124,9 +122,7 @@ def is_hadron(pdgid):
         return True
     if is_pentaquark(pdgid):
         return True
-    if is_Rhadron(pdgid):
-        return True
-    return False
+    return bool(is_Rhadron(pdgid))
 
 
 def is_meson(pdgid):
@@ -154,13 +150,11 @@ def is_meson(pdgid):
         and _digit(pdgid, Location.Nq1) == 0
     ):
         # check for illegal antiparticles
-        if (
-            _digit(pdgid, Location.Nq3) == _digit(pdgid, Location.Nq2)
-            and int(pdgid) < 0
-        ):
-            return False
-        else:
-            return True
+        return (
+            _digit(pdgid, Location.Nq3) != _digit(pdgid, Location.Nq2)
+            or int(pdgid) >= 0
+        )
+
     return False
 
 
@@ -184,18 +178,12 @@ def is_baryon(pdgid):
     if abspid(pdgid) in {2110, 2210}:
         return True
 
-    if (
+    return (
         _digit(pdgid, Location.Nj) > 0
         and _digit(pdgid, Location.Nq3) > 0
         and _digit(pdgid, Location.Nq2) > 0
         and _digit(pdgid, Location.Nq1) > 0
-    ):
-        return True
-
-    if is_Rhadron(pdgid) or is_pentaquark(pdgid):
-        return False
-
-    return False
+    )
 
 
 def is_diquark(pdgid):
@@ -207,14 +195,12 @@ def is_diquark(pdgid):
         return False
     if 0 < int(_fundamental_id(pdgid)) <= 100:
         return False
-    if (
+    return (
         _digit(pdgid, Location.Nj) > 0
         and _digit(pdgid, Location.Nq3) == 0
         and _digit(pdgid, Location.Nq2) > 0
         and _digit(pdgid, Location.Nq1) > 0
-    ):
-        return True
-    return False
+    )
 
 
 def is_nucleus(pdgid):
@@ -258,7 +244,7 @@ def is_pentaquark(pdgid):
         return False
     if _digit(pdgid, Location.N) != 9:
         return False
-    if _digit(pdgid, Location.Nr) == 9 or _digit(pdgid, Location.Nr) == 0:
+    if _digit(pdgid, Location.Nr) in {9, 0}:
         return False
     if _digit(pdgid, Location.Nj) == 9 or _digit(pdgid, Location.Nl) == 0:
         return False
@@ -274,9 +260,7 @@ def is_pentaquark(pdgid):
         return False
     if _digit(pdgid, Location.Nq1) > _digit(pdgid, Location.Nl):
         return False
-    if _digit(pdgid, Location.Nl) > _digit(pdgid, Location.Nr):
-        return False
-    return True
+    return _digit(pdgid, Location.Nl) <= _digit(pdgid, Location.Nr)
 
 
 def is_gauge_boson_or_higgs(pdgid):
@@ -288,7 +272,7 @@ def is_gauge_boson_or_higgs(pdgid):
     The graviton and the boson content of a two-Higgs-doublet scenario
     and of additional SU(2)xU(1) groups are found in the range 31-40.
     """
-    return True if 21 <= abspid(pdgid) <= 40 else False
+    return 21 <= abspid(pdgid) <= 40
 
 
 def is_sm_gauge_boson_or_higgs(pdgid):
@@ -302,7 +286,7 @@ def is_sm_gauge_boson_or_higgs(pdgid):
     if abspid(pdgid) == 24:  # W is the only SM gauge boson not its antiparticle
         return True
 
-    return True if 21 <= int(pdgid) <= 25 else False
+    return 21 <= int(pdgid) <= 25
 
 
 def is_generator_specific(pdgid):
@@ -367,13 +351,11 @@ def is_Rhadron(pdgid):
     if is_SUSY(pdgid):
         return False
     # All R-hadrons have at least 3 core digits
-    if (
-        _digit(pdgid, Location.Nq2) == 0
-        or _digit(pdgid, Location.Nq3) == 0
-        or _digit(pdgid, Location.Nj) == 0
-    ):
-        return False
-    return True
+    return (
+        _digit(pdgid, Location.Nq2) != 0
+        and _digit(pdgid, Location.Nq3) != 0
+        and _digit(pdgid, Location.Nj) != 0
+    )
 
 
 def is_Qball(pdgid):
@@ -391,9 +373,7 @@ def is_Qball(pdgid):
         return False
     if (abspid(pdgid) // 10) % 10000 == 0:
         return False
-    if _digit(pdgid, Location.Nj) != 0:
-        return False
-    return True
+    return _digit(pdgid, Location.Nj) == 0
 
 
 def is_dyon(pdgid):
@@ -419,9 +399,7 @@ def is_dyon(pdgid):
         return False
     if _digit(pdgid, Location.Nq3) == 0:
         return False
-    if _digit(pdgid, Location.Nj) != 0:
-        return False
-    return True
+    return _digit(pdgid, Location.Nj) == 0
 
 
 def is_SUSY(pdgid):
@@ -433,13 +411,11 @@ def is_SUSY(pdgid):
     """
     if _extra_bits(pdgid) > 0:
         return False
-    if _digit(pdgid, Location.N) != 1 and _digit(pdgid, Location.N) != 2:
+    if _digit(pdgid, Location.N) not in {1, 2}:
         return False
     if _digit(pdgid, Location.Nr) != 0:
         return False
-    if _fundamental_id(pdgid) == 0:
-        return False
-    return True
+    return _fundamental_id(pdgid) != 0
 
 
 def is_technicolor(pdgid):
@@ -451,7 +427,7 @@ def is_technicolor(pdgid):
     """
     if _extra_bits(pdgid) > 0:
         return False
-    return True if _digit(pdgid, Location.N) == 3 else False
+    return _digit(pdgid, Location.N) == 3
 
 
 def is_composite_quark_or_lepton(pdgid):
@@ -465,9 +441,7 @@ def is_composite_quark_or_lepton(pdgid):
         return False
     if _fundamental_id(pdgid) == 0:
         return False
-    if not (_digit(pdgid, Location.N) == 4 and _digit(pdgid, Location.Nr) == 0):
-        return False
-    return True
+    return _digit(pdgid, Location.N) == 4 and _digit(pdgid, Location.Nr) == 0
 
 
 def has_down(pdgid):
@@ -520,7 +494,7 @@ def has_fundamental_anti(pdgid):
 
     # Check generator-specific PDGIDs
     if 81 <= fid <= 100:
-        return True if fid in {82, 84, 85, 86, 87} else False
+        return fid in {82, 84, 85, 86, 87}
 
     # Check PDGIDs from 1 to 79
     _cp_conjugates = {21, 22, 23, 25, 32, 33, 35, 36, 39, 40, 43}
@@ -528,7 +502,7 @@ def has_fundamental_anti(pdgid):
         [9, 10, 19, 20, 26] + list(range(26, 32)) + list(range(45, 80))
     )  # not in conversion.csv
     if (1 <= fid <= 79) and fid not in _cp_conjugates:
-        return False if fid in _unassigned else True
+        return fid not in _unassigned
 
     return False
 
@@ -686,12 +660,12 @@ def three_charge(pdgid):
         charge = ch100[sid - 1]
         if aid in {1000017, 1000018, 1000034, 1000052, 1000053, 1000054}:
             charge = 0
-        if aid == 5100061 or aid == 5100062:
+        if aid in {5100061, 5100062}:
             charge = 6
     elif _digit(pdgid, Location.Nj) == 0:  # KL, KS, or undefined
         return 0
     elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9):  # mesons
-        if q2 == 3 or q2 == 5:
+        if q2 in {3, 5}:
             charge = ch100[q3 - 1] - ch100[q2 - 1]
         else:
             charge = ch100[q2 - 1] - ch100[q3 - 1]
@@ -764,7 +738,7 @@ def S(pdgid):
     nl = (abspid(pdgid) // 10000) % 10
     js = abspid(pdgid) % 10
 
-    if not (js == 1 or js >= 3):
+    if js != 1 and js < 3:
         return 0
 
     if nl == 0:
@@ -816,44 +790,40 @@ def L(pdgid):
     js = abspid(pdgid) % 10
 
     if nl == 0:
-        if js == 1:
+        if js in {1, 3}:
             return 0
-        if js == 3:
-            return 0
-        if js == 5:
+        elif js == 5:
             return 1
-        if js == 7:
+        elif js == 7:
             return 2
-        if js == 9:
+        elif js == 9:
             return 3
     elif nl == 1:
-        if js == 1:
+        if js in {1, 3}:
             return 1
-        if js == 3:
-            return 1
-        if js == 5:
+        elif js == 5:
             return 2
-        if js == 7:
+        elif js == 7:
             return 3
-        if js == 9:
+        elif js == 9:
             return 4
     elif nl == 2:
         if js == 3:
             return 1
-        if js == 5:
+        elif js == 5:
             return 2
-        if js == 7:
+        elif js == 7:
             return 3
-        if js == 9:
+        elif js == 9:
             return 4
     elif nl == 3:
         if js == 3:
             return 2
-        if js == 5:
+        elif js == 5:
             return 3
-        if js == 7:
+        elif js == 7:
             return 4
-        if js == 9:
+        elif js == 9:
             return 5
 
     return 0

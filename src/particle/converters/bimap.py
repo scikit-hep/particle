@@ -183,8 +183,6 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
     name_B = name_B.upper()
 
     fieldnames = None
-    skipinitialspace = True
-
     if filename is None:
         file_object = data.open_text(data, "conversions.csv")
     elif hasattr(filename, "read"):
@@ -194,6 +192,8 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
         file_object = open(str(filename))
 
     with file_object as _f:
+        skipinitialspace = True
+
         to_map = {
             converters[1](v[name_B]): converters[0](v[name_A])
             for v in csv.DictReader(

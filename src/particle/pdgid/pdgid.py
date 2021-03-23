@@ -58,10 +58,10 @@ class PDGID(int):
         """
         Print all PDGID properties one per line, for easy inspection.
         """
-        val = ""
-        for item in _fnames:
-            val += "{item:14} {value}\n".format(item=item, value=getattr(self, item))
-        return val
+        return "".join(
+            "{item:14} {value}\n".format(item=item, value=getattr(self, item))
+            for item in _fnames
+        )
 
     A = property(_functions.A, doc=_functions.A.__doc__)
     J = property(_functions.J, doc=_functions.J.__doc__)
