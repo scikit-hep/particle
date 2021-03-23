@@ -38,9 +38,10 @@ for item in common_particles:
     locals()[item] = PDGID(common_particles[item])
 
 
-__doc = "".join("  {item!s} = PDGID({pdgid})\n".format(
-        item=item, pdgid=common_particles[item]
-    ) for item in common_particles)
+__doc = "".join(
+    "  {item!s} = PDGID({pdgid})\n".format(item=item, pdgid=common_particles[item])
+    for item in common_particles
+)
 __doc__ = __doc__.format(__doc)
 
 del PDGID, common_particles

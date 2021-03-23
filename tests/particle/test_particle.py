@@ -432,9 +432,11 @@ def test_self_conjugation_consistenty():
     ``self.anti_flag == Inv.ChargeInv and self.three_charge != Charge.o``
     in ``Particle.invert()`` should match ``Particle.is_self_conjugate``.
     """
-    n_inconsistencies = sum((
-            p.anti_flag == Inv.ChargeInv and p.three_charge == Charge.o
-        ) and not p.is_self_conjugate for p in Particle.all())
+    n_inconsistencies = sum(
+        (p.anti_flag == Inv.ChargeInv and p.three_charge == Charge.o)
+        and not p.is_self_conjugate
+        for p in Particle.all()
+    )
 
     assert n_inconsistencies == 0
 

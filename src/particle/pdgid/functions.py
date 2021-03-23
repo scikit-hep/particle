@@ -441,7 +441,7 @@ def is_composite_quark_or_lepton(pdgid):
         return False
     if _fundamental_id(pdgid) == 0:
         return False
-    return (_digit(pdgid, Location.N) == 4 and _digit(pdgid, Location.Nr) == 0)
+    return _digit(pdgid, Location.N) == 4 and _digit(pdgid, Location.Nr) == 0
 
 
 def has_down(pdgid):

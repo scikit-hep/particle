@@ -849,7 +849,9 @@ class Particle(object):
             return "Width = 0.0 MeV"
         elif self.width_lower is None or self.width_upper is None:
             return "Width < {width} MeV".format(width=self.width)
-        elif self.width < 0.05:  # corresponds to a lifetime of approximately 1.3e-20 seconds
+        elif (
+            self.width < 0.05
+        ):  # corresponds to a lifetime of approximately 1.3e-20 seconds
             assert self.lifetime is not None
             if self.width_lower != self.width_upper:
                 return "Lifetime = {lifetime} ns".format(
@@ -863,8 +865,8 @@ class Particle(object):
                 )
             e = width_to_lifetime(self.width - self.width_lower) - self.lifetime
             return "Lifetime = {lifetime} ns".format(
-                    lifetime=str_with_unc(self.lifetime, e, e)
-                )
+                lifetime=str_with_unc(self.lifetime, e, e)
+            )
         else:
             return "Width = {width} MeV".format(
                 width=str_with_unc(self.width, self.width_upper, self.width_lower)
