@@ -790,7 +790,7 @@ def L(pdgid):
     js = abspid(pdgid) % 10
 
     if nl == 0:
-        if js in [1, 3]:
+        if js in {1, 3}:
             return 0
         elif js == 5:
             return 1
@@ -799,7 +799,7 @@ def L(pdgid):
         elif js == 9:
             return 3
     elif nl == 1:
-        if js in [1, 3]:
+        if js in {1, 3}:
             return 1
         elif js == 5:
             return 2
