@@ -263,7 +263,7 @@ class Particle(object):
         """
         Check to see if the table is loaded.
         """
-        return not cls._table is None
+        return cls._table is not None
 
     @classmethod
     def all(cls):
@@ -419,8 +419,7 @@ class Particle(object):
             tbl_all = tbl_all[:n_rows]
 
         # Build all table rows
-        tbl = []
-        tbl.append(tbl_names)
+        tbl = [tbl_names]
         for p in tbl_all:
             tbl.append([getattr(p, attr) for attr in tbl_names])
 
@@ -850,17 +849,10 @@ class Particle(object):
             return "Width = 0.0 MeV"
         elif self.width_lower is None or self.width_upper is None:
             return "Width < {width} MeV".format(width=self.width)
-        elif (
-            self.width < 0.05
-        ):  # corresponds to a lifetime of approximately 1.3e-20 seconds
+        elif self.width < 0.05:  # corresponds to a lifetime of approximately 1.3e-20 seconds
             assert self.lifetime is not None
-            if self.width_lower == self.width_upper:
-                e = width_to_lifetime(self.width - self.width_lower) - self.lifetime
-                s = "Lifetime = {lifetime} ns".format(
-                    lifetime=str_with_unc(self.lifetime, e, e)
-                )
-            else:
-                s = "Lifetime = {lifetime} ns".format(
+            if self.width_lower != self.width_upper:
+                return "Lifetime = {lifetime} ns".format(
                     lifetime=str_with_unc(
                         self.lifetime,
                         width_to_lifetime(self.width - self.width_lower)
@@ -869,7 +861,10 @@ class Particle(object):
                         - width_to_lifetime(self.width + self.width_upper),
                     )
                 )
-            return s
+            e = width_to_lifetime(self.width - self.width_lower) - self.lifetime
+            return "Lifetime = {lifetime} ns".format(
+                    lifetime=str_with_unc(self.lifetime, e, e)
+                )
         else:
             return "Width = {width} MeV".format(
                 width=str_with_unc(self.width, self.width_upper, self.width_lower)
@@ -1110,7 +1105,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
                     except TypeError:  # skip checks such as 'lambda p: p.width > 0',
                         continue  # which fail when width=None
                 else:
-                    if not (filter_fn in item.name):
+                    if filter_fn not in item.name:
                         continue
 
             # At this point, if you break, you will not add a match
@@ -1210,10 +1205,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         list_can = cls.findall(name=name, particle=particle)
         if list_can:
             return list_can
-        else:
-            list_can = cls.findall(pdg_name=short_name, particle=particle)
-            if list_can:
-                return list_can
+        list_can = cls.findall(pdg_name=short_name, particle=particle)
+        if list_can:
+            return list_can
 
         mat_str = getname.match(short_name)
 

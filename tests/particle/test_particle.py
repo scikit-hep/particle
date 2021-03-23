@@ -432,13 +432,9 @@ def test_self_conjugation_consistenty():
     ``self.anti_flag == Inv.ChargeInv and self.three_charge != Charge.o``
     in ``Particle.invert()`` should match ``Particle.is_self_conjugate``.
     """
-    n_inconsistencies = 0
-
-    for p in Particle.all():
-        if (
+    n_inconsistencies = sum((
             p.anti_flag == Inv.ChargeInv and p.three_charge == Charge.o
-        ) and not p.is_self_conjugate:
-            n_inconsistencies += 1
+        ) and not p.is_self_conjugate for p in Particle.all())
 
     assert n_inconsistencies == 0
 
@@ -577,8 +573,8 @@ def test_default_particle():
 
     assert repr(p) == '<Particle: name="Unknown", pdgid=0, mass=None>'
     assert "Name: Unknown" in p.describe()
-    assert p.mass == None
-    assert p.width == None
+    assert p.mass is None
+    assert p.width is None
     assert p.spin_type == SpinType.NonDefined
     assert p.programmatic_name == "Unknown"
     assert p.status == Status.NotInPDT
