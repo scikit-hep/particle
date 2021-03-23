@@ -411,7 +411,7 @@ def is_SUSY(pdgid):
     """
     if _extra_bits(pdgid) > 0:
         return False
-    if _digit(pdgid, Location.N) not in [1, 2]:
+    if _digit(pdgid, Location.N) not in {1, 2}:
         return False
     if _digit(pdgid, Location.Nr) != 0:
         return False
