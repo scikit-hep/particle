@@ -660,12 +660,12 @@ def three_charge(pdgid):
         charge = ch100[sid - 1]
         if aid in {1000017, 1000018, 1000034, 1000052, 1000053, 1000054}:
             charge = 0
-        if aid in [5100061, 5100062]:
+        if aid in {5100061, 5100062}:
             charge = 6
     elif _digit(pdgid, Location.Nj) == 0:  # KL, KS, or undefined
         return 0
     elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9):  # mesons
-        if q2 in [3, 5]:
+        if q2 in {3, 5}:
             charge = ch100[q3 - 1] - ch100[q2 - 1]
         else:
             charge = ch100[q2 - 1] - ch100[q3 - 1]
