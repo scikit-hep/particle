@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version 0.14.1
+--------------
+
+March 23rd, 2021
+
+- Code refactored in the CI by Sourcery.ai.
+- Updates to versions of pre-commit hooks.
+
+
 Version 0.14.0
 --------------
 
