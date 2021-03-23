@@ -244,7 +244,7 @@ def is_pentaquark(pdgid):
         return False
     if _digit(pdgid, Location.N) != 9:
         return False
-    if _digit(pdgid, Location.Nr) in [9, 0]:
+    if _digit(pdgid, Location.Nr) in {9, 0}:
         return False
     if _digit(pdgid, Location.Nj) == 9 or _digit(pdgid, Location.Nl) == 0:
         return False
