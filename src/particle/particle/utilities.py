@@ -160,7 +160,7 @@ def latex_name_unicode(name):
     if "ambda" in name:
         name = name.replace("ambda", "amda")
     for gl in _list_name_greek_letters:
-        name = name.replace(r"\%s" % gl, "%s" % greek_letter_name_to_unicode(gl))
+        name = name.replace(r"\{}".format(gl), greek_letter_name_to_unicode(gl))
     return name
 
 
