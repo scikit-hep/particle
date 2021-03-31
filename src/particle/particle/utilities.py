@@ -147,6 +147,7 @@ def latex_name_unicode(name):
 
     Examples
     --------
+    >>> from particle import Particle
     >>> n = Particle.from_pdgid(3124).latex_name
     >>> n
     '\\Lambda(1520)'
