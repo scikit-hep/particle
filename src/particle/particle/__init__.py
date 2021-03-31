@@ -10,4 +10,5 @@ from .particle import Particle
 from .particle import ParticleNotFound, InvalidParticle
 from .enums import SpinType, Parity, Charge, Inv, Status
 from .kinematics import width_to_lifetime, lifetime_to_width
-from .utilities import latex_to_html_name
+from .utilities import latex_to_html_name, latex_name_unicode
+from .utilities import programmatic_name

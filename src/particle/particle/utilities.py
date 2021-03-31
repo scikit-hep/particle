@@ -121,7 +121,8 @@ _list_name_greek_letters += [l.lower() for l in _list_name_greek_letters]
 def greek_letter_name_to_unicode(letter):
     # type: (str) -> str
     """
-    Return a greek letter name as a Unicode character.
+    Return a greek letter name as a Unicode character,
+    the same as the input if no match is found.
 
     Examples
     --------
@@ -129,11 +130,38 @@ def greek_letter_name_to_unicode(letter):
     Omega -> Ω
     omega -> ω
     """
-    return unicodedata.lookup(
-        "GREEK {case} LETTER {name}".format(
-            case="SMALL" if letter == letter.lower() else "CAPITAL", name=letter.upper()
+    try:
+        return unicodedata.lookup(
+            "GREEK {case} LETTER {name}".format(
+                case="SMALL" if letter == letter.lower() else "CAPITAL",
+                name=letter.upper(),
+            )
         )
-    )
+    except KeyError:  # Unicodedata library uses "lamda" for "lambda", so that's an obvious miss
+        return letter
+
+
+def latex_name_unicode(name):
+    # type: (str) -> str
+    """
+    Convert in particle names in LaTeX all greek letters by their unicode.
+
+    Examples
+    --------
+    >>> from particle import Particle
+    >>> n = Particle.from_pdgid(3124).latex_name
+    >>> print(n)
+    \Lambda(1520)
+    >>> latex_name_unicode(n)
+    'Λ(1520)'
+    """
+    # Make sure "Lambda" and "lambda" are naturally deal with given that the
+    # unicodedata library uses "lamda" for "lambda" :S!
+    if "ambda" in name:
+        name = name.replace("ambda", "amda")
+    for gl in _list_name_greek_letters:
+        name = name.replace(r"\{}".format(gl), greek_letter_name_to_unicode(gl))
+    return name
 
 
 def latex_to_html_name(name):
@@ -147,6 +175,6 @@ def latex_to_html_name(name):
     for gl in _list_name_greek_letters:
         name = name.replace(r"\%s" % gl, "&%s;" % gl)
     name = re.sub(r"\\tilde\{(.*?)\}", r"\1&#771;", name)
-    name = re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)
     name = re.sub(r"\\overline\{(.*?)\}", r"\1&#773;", name)
+    name = re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)
     return name
