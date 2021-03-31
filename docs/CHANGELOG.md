@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version 0.15.0 (under preparation)
+--------------
+
+- Data CSV files:
+  - Version 9 of package data files, with all antiparticle bars done with `\overline` instead of `\bar`.
+- Miscellanous:
+  - Added `latex_name_unicode()` function to convert in particle names in LaTeX all greek letters by their unicode.
+
+
 Version 0.14.1
 --------------
 
