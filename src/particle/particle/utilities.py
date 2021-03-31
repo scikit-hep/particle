@@ -150,8 +150,8 @@ def latex_name_unicode(name):
     --------
     >>> from particle import Particle
     >>> n = Particle.from_pdgid(3124).latex_name
-    >>> n
-    '\\Lambda(1520)'
+    >>> print(n)
+    \Lambda(1520)
     >>> latex_name_unicode(n)
     'Λ(1520)'
     """
