@@ -133,7 +133,8 @@ def greek_letter_name_to_unicode(letter):
     try:
         return unicodedata.lookup(
             "GREEK {case} LETTER {name}".format(
-                case="SMALL" if letter == letter.lower() else "CAPITAL", name=letter.upper()
+                case="SMALL" if letter == letter.lower() else "CAPITAL",
+                name=letter.upper(),
             )
         )
     except KeyError:  # Unicodedata library uses "lamda" for "lambda", so that's an obvious miss
@@ -157,7 +158,7 @@ def latex_name_unicode(name):
     # Make sure "Lambda" and "lambda" are naturally deal with given that the
     # unicodedata library uses "lamda" for "lambda" :S!
     if "ambda" in name:
-        name = name.replace("ambda","amda")
+        name = name.replace("ambda", "amda")
     for gl in _list_name_greek_letters:
         name = name.replace(r"\%s" % gl, "%s" % greek_letter_name_to_unicode(gl))
     return name
