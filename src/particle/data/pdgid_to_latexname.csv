@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - pdgid_to_latexname.csv - version 8 - 2020-11-23
+# (c) Scikit-HEP project - Particle package data file - pdgid_to_latexname.csv - version 9 - 2021-03-30
 PDGID,LATEXNAME
 1,d
 2,u
