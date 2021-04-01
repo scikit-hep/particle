@@ -16,6 +16,6 @@ prune .github
 exclude .coveragerc .pre-commit-config.yaml azure-pipelines.yml environment.yml
 
 include src/particle/version.py
-include LICENSE README.rst CONTRIBUTING.md pyproject.toml setup.py setup.cfg
+include LICENSE README.rst CONTRIBUTING.md pyproject.toml setup.py setup.cfg .zenodo.json
 
 recursive-include src py.typed
