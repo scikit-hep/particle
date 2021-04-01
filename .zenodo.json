@@ -1,0 +1,24 @@
+{
+    "description": "PDG particle data and identification codes",
+    "license": "other-open",
+    "upload_type": "software",
+    "creators": [
+        {
+            "affiliation": "University of Liverpool",
+            "name": "Eduardo Rodrigues",
+            "orcid": "0000-0003-2846-7625"
+        },
+        {
+            "affiliation": "Princeton University",
+            "name": "Henry Schreiner",
+            "orcid": "0000-0002-7833-783X"
+        }
+    ],
+    "access_right": "open",
+    "keywords": [
+        "High Energy Physics",
+        "PDG",
+        "particle data",
+        "MC identification codes"
+      ]
+}
