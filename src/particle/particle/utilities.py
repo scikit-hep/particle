@@ -19,7 +19,19 @@ def programmatic_name(name):
     name = re.sub("^~", "tilde_", name)
     # The remaining "~" now always means it's an antiparticle
     name = name if "~" not in name else "".join(name.split("~")) + "_bar"
-    name = name.replace(")(", "_").replace("(", "_").replace(")", "").replace("*", "st").replace("'", "p").replace("::", "_").replace("/", "").replace("--", "_mm").replace("++", "_pp").replace("-", "_minus").replace("+", "_plus")
+    name = (
+        name.replace(")(", "_")
+        .replace("(", "_")
+        .replace(")", "")
+        .replace("*", "st")
+        .replace("'", "p")
+        .replace("::", "_")
+        .replace("/", "")
+        .replace("--", "_mm")
+        .replace("++", "_pp")
+        .replace("-", "_minus")
+        .replace("+", "_plus")
+    )
     # Strip off the ugly "_" at beginning of a name, such as when dealing with name="(bs)(0)""
     return re.sub("^_", "", name)
 
