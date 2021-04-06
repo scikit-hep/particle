@@ -16,7 +16,7 @@ def programmatic_name(name):
     "Return a name safe to use as a variable name."
     name = re.sub("0$", "_0", name)
     # Deal first with antiparticles of sparticles, e.g. "~d(R)~" antiparticle of "~d(R)"
-    name = re.sub("^~", "tilde-", name)
+    name = re.sub("^~", "tilde_", name)
     # The remaining "~" now always means it's an antiparticle
     name = name if "~" not in name else "".join(name.split("~")) + "_bar"
     name =
