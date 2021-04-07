@@ -15,8 +15,11 @@ def programmatic_name(name):
     # type: (str) -> str
     "Return a name safe to use as a variable name."
     name = re.sub("0$", "_0", name)
+    # Deal first with antiparticles of sparticles, e.g. "~d(R)~" antiparticle of "~d(R)"
+    name = re.sub("^~", "tilde_", name)
+    # The remaining "~" now always means it's an antiparticle
     name = name if "~" not in name else "".join(name.split("~")) + "_bar"
-    return (
+    name = (
         name.replace(")(", "_")
         .replace("(", "_")
         .replace(")", "")
@@ -29,6 +32,8 @@ def programmatic_name(name):
         .replace("-", "_minus")
         .replace("+", "_plus")
     )
+    # Strip off the ugly "_" at beginning of a name, such as when dealing with name="(bs)(0)""
+    return name.lstrip("_")
 
 
 def str_with_unc(value, upper, lower=None):

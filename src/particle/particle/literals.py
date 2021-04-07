@@ -43,4 +43,4 @@ for k, v in common_particles.items():
 __doc__ = __doc__.format(__doc)
 
 
-del Particle, ParticleNotFound, common_particles
+del Particle, ParticleNotFound, common_particles, k, v

@@ -44,4 +44,4 @@ __doc = "".join(
 )
 __doc__ = __doc__.format(__doc)
 
-del PDGID, common_particles
+del PDGID, common_particles, item
