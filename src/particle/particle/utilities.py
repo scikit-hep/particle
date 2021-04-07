@@ -33,7 +33,7 @@ def programmatic_name(name):
         .replace("+", "_plus")
     )
     # Strip off the ugly "_" at beginning of a name, such as when dealing with name="(bs)(0)""
-    return re.sub("^_", "", name)
+    return name.lstrip("_")
 
 
 def str_with_unc(value, upper, lower=None):
