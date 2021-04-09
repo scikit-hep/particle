@@ -6,7 +6,7 @@
 
 """
 Helper (internal) module with particle aliases
-for all particles in the latest "database", excluding nuclei.
+for all particles in the loaded "database" CSV file, excluding nuclei.
 
 See the particle.literals and the pdgid.literals submodules for the actually exposed aliases.
 """

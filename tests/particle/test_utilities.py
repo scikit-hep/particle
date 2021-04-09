@@ -10,7 +10,6 @@ import sys
 from particle import Particle
 from particle.particle.utilities import programmatic_name
 from particle.particle.utilities import str_with_unc
-from particle.shared_literals import common_particles
 from particle.particle.particle import ParticleNotFound
 
 
