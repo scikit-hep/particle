@@ -38,7 +38,9 @@ for item in common_particles:
 
 
 __doc = "".join(
-    "  {item!s} = Particle.from_pdgid({pdgid})\n".format(item=item, pdgid=common_particles[item])
+    "  {item!s} = Particle.from_pdgid({pdgid})\n".format(
+        item=item, pdgid=common_particles[item]
+    )
     for item in common_particles
 )
 __doc__ = __doc__.format(__doc)
