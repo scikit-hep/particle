@@ -16,7 +16,10 @@ from .particle import Particle
 
 
 # Make aliases for all particles in the latest "database", excluding nuclei
-common_particles = {p.programmatic_name:int(p.pdgid) for p in Particle.findall(lambda p: abs(p.pdgid)<1000000000)}
+common_particles = {
+    p.programmatic_name: int(p.pdgid)
+    for p in Particle.findall(lambda p: abs(p.pdgid) < 1000000000)
+}
 
 # Some extra names that are expected:
 common_particles.update(
@@ -24,6 +27,6 @@ common_particles.update(
     Higgs=25,  # official programmatic name is "H_0"
     proton=2212,  # official programmatic name is "p"
     antiproton=-2212,  # official programmatic name is "p_bar"
-    neutron=2112,    # official programmatic name is "n"
-    antineutron=-2112,    # official programmatic name is "n_bar"
+    neutron=2112,  # official programmatic name is "n"
+    antineutron=-2112,  # official programmatic name is "n_bar"
 )
