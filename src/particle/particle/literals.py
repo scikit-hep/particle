@@ -5,8 +5,8 @@
 # or https://github.com/scikit-hep/particle for details.
 
 """
-Definitions of handy particle literals
-======================================
+Definitions of handy particle `Particle` literals
+=================================================
 
 The particle literals provide aliases for most common particles, with easily recognisable names.
 The aliases are instances of the Particle class.
@@ -24,7 +24,7 @@ Typical use cases::
     >>> Lambda_b_0.J
     0.5
 
-List of available/defined particle literals:
+List of available/defined literals:
 
 {0}
 """
@@ -32,15 +32,16 @@ List of available/defined particle literals:
 from ..shared_literals import common_particles
 from .particle import Particle, ParticleNotFound
 
-__doc = ""
-for k, v in common_particles.items():
-    try:
-        locals()[k] = Particle.from_pdgid(v)
-        __doc += "  {item!s} = Particle.from_pdgid({part})\n".format(item=k, part=v)
-    except ParticleNotFound:
-        pass
 
+for item in common_particles:
+    locals()[item] = Particle.from_pdgid(common_particles[item])
+
+
+__doc = "".join(
+    "  {item!s} = Particle.from_pdgid({pdgid})\n".format(item=item, pdgid=common_particles[item])
+    for item in common_particles
+)
 __doc__ = __doc__.format(__doc)
 
 
-del Particle, ParticleNotFound, common_particles, k, v
+del Particle, ParticleNotFound, common_particles, item
