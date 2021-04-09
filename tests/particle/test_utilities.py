@@ -14,21 +14,6 @@ from particle.shared_literals import common_particles
 from particle.particle.particle import ParticleNotFound
 
 
-def test_programmatic_name():
-    """
-    Test makes sure that all literals defined in particle.shared_literals
-    match what is returned by Particle.programmatic_name.
-    """
-    for literal_name, pid in common_particles.items():
-        if literal_name in ("photon", "proton", "antiproton", "neutron", "antineutron"):
-            continue
-        try:  # some particles in the literals may not be in the table (e.g the neutrinos as of 2018)
-            p = Particle.from_pdgid(pid)
-            assert Particle.from_pdgid(pid).programmatic_name == literal_name
-        except ParticleNotFound:
-            pass
-
-
 possibilites = (
     (1.234567, 0.01, None, u"1.235 ± 0.010"),
     (1.234567e-9, 0.01e-9, None, u"1.235e-09 ± 1.0e-11"),
