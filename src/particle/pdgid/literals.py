@@ -5,8 +5,8 @@
 # or https://github.com/scikit-hep/particle for details.
 
 """
-Definitions of handy particle PDGID literals
-============================================
+Definitions of handy particle `PDGID` literals
+==============================================
 
 The PDGID literals provide aliases for most common particle PDGIDs, with easily recognisable names.
 The aliases are instances of the PDGID class.
@@ -24,7 +24,7 @@ Typical use cases::
     >>> Lambda_b_0.has_bottom
     True
 
-List of available/defined particle PDGID literals:
+List of available/defined literals:
 
 {0}
 """

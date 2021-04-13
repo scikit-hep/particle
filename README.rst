@@ -119,7 +119,7 @@ For the sake of example, quarkonia can be specified with the following user-defi
     >>> is_heavy_flavor = lambda x: has_charm(x) or has_bottom(x) or has_top(x)
     >>> is_quarkonium = lambda x: is_meson(x) and three_charge(x)==0 and is_heavy_flavor(x).
 
-PDG ID literals provide (``PDGID`` class) aliases for the most common particles, with easily recognisable names.
+PDG ID literals provide (``PDGID`` class) aliases for all particles loaded, with easily recognisable names.
 For example:
 
 .. code-block:: python
@@ -225,7 +225,7 @@ You can get the ``.pdgid`` from a particle, as well.
 Sorting particles will put lowest ``abs(PDGID)`` first.
 
 
-Particle literals provide (``Particle`` class) aliases for the most common particles,
+Particle literals provide (``Particle`` class) aliases for the particles loaded,
 with easily recognisable names. For example:
 
 .. code-block:: python

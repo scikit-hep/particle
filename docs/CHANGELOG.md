@@ -4,10 +4,14 @@ Changelog
 Version 0.15.0 (under preparation)
 --------------
 
+- `Particle` class:
+  - Literals now defined for all particles in the loaded "database" CSV file, excluding nuclei.
+  - Defined and/or fixed the programmatic name for diquarks and SUSY particles.
 - Data CSV files:
   - Version 9 of package data files, with all antiparticle bars done with `\overline` instead of `\bar`.
 - Miscellanous:
   - Added `latex_name_unicode()` function to convert in particle names in LaTeX all greek letters by their unicode.
+  - Added a `.zenodo.json` file to provided enhanced metadata for Zenodo.
 
 
 Version 0.14.1
