@@ -13,7 +13,7 @@ prune notebooks
 prune tests
 prune .ci
 prune .github
-exclude .coveragerc .pre-commit-config.yaml azure-pipelines.yml environment.yml
+exclude .coveragerc .pre-commit-config.yaml environment.yml
 
 include src/particle/version.py
 include LICENSE README.rst CONTRIBUTING.md pyproject.toml setup.py setup.cfg .zenodo.json
