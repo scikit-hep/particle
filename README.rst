@@ -25,18 +25,6 @@
    :alt: GitHub Actions status
    :target: https://github.com/scikit-hep/particle/workflows/CI
 
-.. image:: https://dev.azure.com/scikit-hep/particle/_apis/build/status/scikit-hep.particle?branchName=master
-  :alt: Build Status
-  :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
-
-.. image:: https://img.shields.io/azure-devops/coverage/scikit-hep/particle/1.svg
-  :alt: Coverage
-  :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
-
-.. image:: https://img.shields.io/azure-devops/tests/scikit-hep/particle/1.svg
-   :alt: Tests
-   :target: https://dev.azure.com/scikit-hep/particle/_build/latest?definitionId=1?branchName=master
-
 .. image:: https://mybinder.org/badge_logo.svg
    :alt: Binder
    :target: https://mybinder.org/v2/gh/scikit-hep/particle/master?urlpath=lab/tree/notebooks/ParticleDemo.ipynb
