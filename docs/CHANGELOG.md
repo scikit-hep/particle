@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 0.15.1 (in preparation)
+--------------
+
+- Miscellaneous:
+  - Removed Azure pipelines since superseded by GitHub Actions.
+
+
 Version 0.15.0
 --------------
 
