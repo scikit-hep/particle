@@ -6,9 +6,6 @@ on:
   push:
     branches:
     - master
-  release:
-    types:
-    - published
 
 
 jobs:
@@ -17,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-python@v2
-    - uses: pre-commit/action@v2.0.0
+    - uses: pre-commit/action@v2.0.2
       with:
         extra_args: --all-files --hook-stage manual
 
@@ -65,68 +62,3 @@ jobs:
 
     - name: Run the notebooks inplace
       run: jupyter nbconvert --execute --inplace notebooks/*.ipynb
-
-
-
-  dist:
-    name: SDist and Wheel
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v1
-
-    - uses: actions/setup-python@v2
-
-    - name: Install wheel and sdist requirements
-      run: python -m pip install build
-
-    - name: Build SDist and wheel
-      run: python -m build
-
-    - uses: actions/upload-artifact@v2
-      with:
-        path: dist
-
-    - uses: pypa/gh-action-pypi-publish@v1.4.1
-      if: github.event_name == 'release' && github.event.action == 'published'
-      with:
-        user: __token__
-        password: ${{ secrets.pypi_password }}
-
-  zipapp:
-    name: ZipApp
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-
-    - uses: actions/setup-python@v2
-      with:
-        python-version: 3.7
-
-    - name: Install wheel and sdist requirements
-      run: python -m pip install "setuptools>=42.0" "setuptools_scm[toml]>=3.4" "wheel"
-
-    - name: Add version
-      run: python setup.py sdist
-
-    - name: Install requirements
-      run: python -m pip install attrs hepunits importlib_resources --target src
-
-    - name: Make ZipApp
-      run: python -m zipapp -c -p "/usr/bin/env python3" -m "particle.__main__:main" -o ../particle.pyz .
-      working-directory: src
-
-    - uses: actions/upload-artifact@v2
-      with:
-        path: particle.pyz
-
-    - name: Upload ZipApp if release
-      if: github.event_name == 'release' && github.event.action == 'published'
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./particle.pyz
-        asset_name: particle.pyz
-        asset_content_type: application/zip
