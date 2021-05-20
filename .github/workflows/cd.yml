@@ -1,0 +1,86 @@
+name: CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - main
+  release:
+    types:
+    - published
+
+jobs:
+  dist:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Build wheel and SDist
+      run: pipx run build
+
+    - uses: actions/upload-artifact@v2
+      with:
+        path: dist/*
+
+    - name: Check metadata
+      run: pipx run twine check dist/*
+
+  zipapp:
+    name: ZipApp
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+
+    - name: Install wheel and sdist requirements
+      run: python -m pip install "setuptools>=42.0" "setuptools_scm[toml]>=3.4" "wheel"
+
+    - name: Add version
+      run: python setup.py sdist
+
+    - name: Install requirements
+      run: python -m pip install attrs hepunits importlib_resources --target src
+
+    - name: Make ZipApp
+      run: python -m zipapp -c -p "/usr/bin/env python3" -m "particle.__main__:main" -o ../particle.pyz .
+      working-directory: src
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: zipapp
+        path: particle.pyz
+        
+        
+  publish:
+    needs: [dist]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: artifact
+        path: dist
+
+    - uses: pypa/gh-action-pypi-publish@v1.4.2
+      with:
+        password: ${{ secrets.pypi_password }}
+        
+    - uses: actions/download-artifact@v2
+      with:
+        name: zipapp
+        path: zipapp
+
+    - name: Upload ZipApp
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./zipapp/particle.pyz
+        asset_name: particle.pyz
+        asset_content_type: application/zip
