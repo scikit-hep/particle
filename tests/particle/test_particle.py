@@ -604,9 +604,12 @@ def test_to_list():
 
 
 def test_to_dict():
-    query_as_dict = Particle.to_dict(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0,
-                                     exclusive_fields=['name', 'charge'], particle=False)
-    assert set(query_as_dict["name"]) == set(('e+', 'mu+', 'tau+', "tau'+"))
+    query_as_dict = Particle.to_dict(
+        filter_fn=lambda p: p.pdgid.is_lepton and p.charge != 0,
+        exclusive_fields=["name", "charge"],
+        particle=False,
+    )
+    assert set(query_as_dict["name"]) == set(("e+", "mu+", "tau+", "tau'+"))
 
 
 ampgen_style_names = (
