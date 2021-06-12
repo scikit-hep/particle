@@ -23,6 +23,7 @@ from typing import (
     List,
     Callable,
     Iterable,
+    Iterator,
     SupportsInt,
     Union,
     TextIO,
@@ -427,7 +428,7 @@ class Particle(object):
 
     @classmethod
     def to_dict(cls, *args, **kwargs):
-        # type: (Any, Any) -> Dict[List[str], List[Any]]
+        # type: (Any, Any) -> Dict[Iterable[Union[bool, int, str, float]], Iterator[Tuple[Any, ...]]]
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `dict`, loading the table from the default location if no table has yet been loaded.
