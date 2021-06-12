@@ -428,7 +428,7 @@ class Particle(object):
 
     @classmethod
     def to_dict(cls, *args, **kwargs):
-        # type: (Any, Any) -> Dict[str, Iterator[Tuple[Any, ...]]]
+        # type: (Any, Any) -> Dict[str, Any]
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `dict`, loading the table from the default location if no table has yet been loaded.
