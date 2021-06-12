@@ -533,9 +533,7 @@ class Particle(object):
         """
         query_as_list = cls.to_list(*args, **kwargs)
 
-        return dict(
-            zip(query_as_list[0], zip(*query_as_list[1:]))
-        )
+        return dict(zip(query_as_list[0], zip(*query_as_list[1:])))
 
     @classmethod
     def load_table(cls, filename=None, append=False, _name=None):
