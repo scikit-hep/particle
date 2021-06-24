@@ -23,6 +23,7 @@ from typing import (
     List,
     Callable,
     Iterable,
+    Iterator,
     SupportsInt,
     Union,
     TextIO,
@@ -427,7 +428,7 @@ class Particle(object):
 
     @classmethod
     def to_dict(cls, *args, **kwargs):
-        # type: (Any, Any) -> Dict[str, List[Union[str, float, bool, int]]]
+        # type: (Any, Any) -> Dict[str, Tuple[Union[bool, int, str, float], ...]]
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `dict`, loading the table from the default location if no table has yet been loaded.
@@ -532,11 +533,10 @@ class Particle(object):
         ...    print(tabulate(query_as_dict, headers='keys', tablefmt="rst", floatfmt=".12g", numalign="decimal"), file=outfile)    # doctest: +SKIP
         """
         query_as_list = cls.to_list(*args, **kwargs)
+        headers = query_as_list[0]
+        rows = zip(*query_as_list[1:])
 
-        keys = query_as_list[0]
-        values = query_as_list[1:]
-
-        return {str(key): value for key, value in zip(keys, values)}
+        return {str(h): r for h, r in zip(headers, rows)}
 
     @classmethod
     def load_table(cls, filename=None, append=False, _name=None):
