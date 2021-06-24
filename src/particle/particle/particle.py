@@ -70,7 +70,7 @@ def _isospin_converter(isospin):
         "1": 1.0,
         "3/2": 1.5,
     }  # type: Dict[Optional[str], Optional[float]]
-    return vals.get(isospin, None)
+    return vals.get(isospin)
 
 
 def _none_or_positive_converter(value):
@@ -786,21 +786,19 @@ class Particle(object):
 
         # Heavy flavour
         if pid.has_charm or pid.has_bottom or pid.has_top:
-            return True if self.is_self_conjugate else False
-        # Light or strange mesons at this point
-        else:
-            # Special case of the KS and KL
-            if pid in {130, 310}:
-                return False
-            # I = 1 light mesons have no s-sbar component, hence has_strange == False
-            if _digit(pid, Location.Nq3) == 1 and not pid.has_strange:
-                return True
-            # I = 0 light mesons have a s-sbar component, has_strange == True,
-            # thought their net S = 0
-            elif _digit(pid, Location.Nq3) in {2, 3} and self.three_charge == 0:
-                return True
-            else:  # Only K-mesons at this point
-                return False
+            return bool(self.is_self_conjugate)
+        # Special case of the KS and KL
+        if pid in {130, 310}:
+            return False
+        # I = 1 light mesons have no s-sbar component, hence has_strange == False
+        if _digit(pid, Location.Nq3) == 1 and not pid.has_strange:
+            return True
+        # I = 0 light mesons have a s-sbar component, has_strange == True,
+        # thought their net S = 0
+        elif _digit(pid, Location.Nq3) in {2, 3} and self.three_charge == 0:
+            return True
+        else:  # Only K-mesons at this point
+            return False
 
     def invert(self):
         # type: () -> Particle
@@ -894,14 +892,9 @@ class Particle(object):
             pid = self.pdgid
             if pid < 25:
                 return False  # Gauge bosons
-            # Quarkonia never exhibit the 0 charge
-            # All eta, eta', h, h', omega, phi, f, f' light mesons are supposed to have an s-sbar component (see PDG site),
-            # but some particles have pdgid.has_strange==False :S! Play it safe ...
             elif any(
-                [
-                    chr in self.pdg_name
-                    for chr in ("eta", "h(", "h'(", "omega", "phi", "f", "f'")
-                ]
+                chr in self.pdg_name
+                for chr in ("eta", "h(", "h'(", "omega", "phi", "f", "f'")
             ):
                 return False
             elif pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top:
@@ -1106,9 +1099,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
                             continue
                     except TypeError:  # skip checks such as 'lambda p: p.width > 0',
                         continue  # which fail when width=None
-                else:
-                    if filter_fn not in item.name:
-                        continue
+                elif filter_fn not in item.name:
+                    continue
 
             # At this point, if you break, you will not add a match
             for term, value in search_terms.items():
@@ -1230,12 +1222,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def _from_group_dict_list(cls, mat):
         # type: (Dict[str, Any]) -> List[Particle]
 
-        kw = dict()  # type: Dict[str, Any]
-        kw["particle"] = (
-            False
+        kw = {
+            "particle": False
             if mat["bar"] is not None
-            else (True if mat["charge"] == "0" else None)
-        )
+            else True
+            if mat["charge"] == "0"
+            else None
+        }
 
         name = mat["name"]
 
@@ -1255,11 +1248,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if mat["state"] is not None:
             kw["J"] = float(mat["state"])
 
-        if mat["mass"]:
-            maxname = name + "({mat[mass]})".format(mat=mat)
-        else:
-            maxname = name
-
+        maxname = name + "({mat[mass]})".format(mat=mat) if mat["mass"] else name
         if "charge" in mat and mat["charge"] is not None:
             kw["three_charge"] = Charge_mapping[mat["charge"]]
 

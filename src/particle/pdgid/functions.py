@@ -928,11 +928,7 @@ def _has_quark_q(pdgid, q):
         if q in {1, 2}:
             return True  # Nuclei by construction contain up and down quarks
         elif q == 3 and pdgid not in {2112, 2212}:
-            if _digit(pdgid, Location.N8) > 0:
-                return True
-            else:
-                return False
-
+            return _digit(pdgid, Location.N8) > 0
     if _extra_bits(pdgid) > 0:
         return False
     if _fundamental_id(pdgid) > 0:
@@ -946,10 +942,7 @@ def _has_quark_q(pdgid, q):
         for loc in range(6, 1, -1):
             if _digit(pdgid, loc) == 0:
                 iz = loc
-            elif loc == iz - 1:
-                # ignore squark or gluino
-                pass
-            else:
+            elif loc != iz - 1:
                 if _digit(pdgid, loc) == q:
                     return True
         return False
@@ -961,8 +954,9 @@ def _has_quark_q(pdgid, q):
     ):
         return True
 
-    if is_pentaquark(pdgid):
-        if _digit(pdgid, Location.Nl) == q or _digit(pdgid, Location.Nr) == q:
-            return True
+    if is_pentaquark(pdgid) and (
+        _digit(pdgid, Location.Nl) == q or _digit(pdgid, Location.Nr) == q
+    ):
+        return True
 
     return False
