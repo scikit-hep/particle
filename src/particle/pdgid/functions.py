@@ -945,6 +945,7 @@ def _has_quark_q(pdgid, q):
             elif loc != iz - 1:
                 if _digit(pdgid, loc) == q:
                     return True
+            # ignore squark or gluino
         return False
 
     if (

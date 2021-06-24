@@ -786,7 +786,10 @@ class Particle(object):
 
         # Heavy flavour
         if pid.has_charm or pid.has_bottom or pid.has_top:
-            return bool(self.is_self_conjugate)
+            return self.is_self_conjugate
+
+        # Light or strange mesons at this point
+
         # Special case of the KS and KL
         if pid in {130, 310}:
             return False
@@ -892,6 +895,9 @@ class Particle(object):
             pid = self.pdgid
             if pid < 25:
                 return False  # Gauge bosons
+            # Quarkonia never exhibit the 0 charge
+            # All eta, eta', h, h', omega, phi, f, f' light mesons are supposed to have an s-sbar component (see PDG site),
+            # but some particles have pdgid.has_strange==False :S! Play it safe ...
             elif any(
                 chr in self.pdg_name
                 for chr in ("eta", "h(", "h'(", "omega", "phi", "f", "f'")
@@ -1228,7 +1234,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             else True
             if mat["charge"] == "0"
             else None
-        }
+        }  # type: Dict[str, Any]
 
         name = mat["name"]
 

@@ -71,6 +71,7 @@ def str_with_unc(value, upper, lower=None):
         else:
             fsv = fse = ".0f"
 
+    # This is scientific notation - a little odd, but better than the other options.
     else:
         fsv = ".{0}e".format(abs(error_digits - value_digits))
         pure_error_digits = int(math.floor(math.log10(error)))
