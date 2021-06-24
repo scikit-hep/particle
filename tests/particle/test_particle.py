@@ -609,7 +609,8 @@ def test_to_dict():
         exclusive_fields=["name", "charge"],
         particle=False,
     )
-    assert set(query_as_dict["name"]) == set(("e+", "mu+", "tau+", "tau'+"))
+
+    assert set(query_as_dict["name"]) == {"e+", "mu+", "tau+", "tau'+"}
 
 
 ampgen_style_names = (
