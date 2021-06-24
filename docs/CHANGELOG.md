@@ -1,11 +1,19 @@
 Changelog
 =========
 
-Version 0.15.1 (in preparation)
+Version 0.15.1
 --------------
 
+June 24th, 2021
+
+- `Particle` class:
+  - Bug fix in `Particle.to_dict`.
+- Tests:
+  - CI improvements.
+  - Azure pipelines removed since superseded by GitHub Actions.
 - Miscellaneous:
-  - Removed Azure pipelines since superseded by GitHub Actions.
+  - Code improvements thanks to Sourcery.
+  - Clean-up of unnecessary files/code.
 
 
 Version 0.15.0
