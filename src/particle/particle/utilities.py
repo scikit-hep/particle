@@ -43,9 +43,6 @@ def str_with_unc(value, upper, lower=None):
     identical upper/lower bounds. Nicely formats numbers using PDG rule.
     """
 
-    # Only bother with unicode if this is Python 3.
-    pm = u"±" if type(u"") is type("") else "+/-"
-
     # If no errors are available, simply return the value alone
     if upper is None:
         return str(value)
@@ -65,8 +62,6 @@ def str_with_unc(value, upper, lower=None):
 
     value_digits = int(math.floor(math.log10(value)))
     error_digits = int(math.floor(math.log10(error) - math.log10(2.5)))
-    pure_error_digits = int(math.floor(math.log10(error)))
-
     # This is split based on the value being larger than 1000000 or smaller than 0.001 - scientific notation split
 
     # This is normal notation
@@ -79,17 +74,22 @@ def str_with_unc(value, upper, lower=None):
     # This is scientific notation - a little odd, but better than the other options.
     else:
         fsv = ".{0}e".format(abs(error_digits - value_digits))
+        pure_error_digits = int(math.floor(math.log10(error)))
+
         fse = ".0e" if error_digits == pure_error_digits else ".1e"
 
     # Now, print values based on upper=lower being true or not (even if they print the same)
-    if upper == lower:
-        return "{value:{fsv}} {pm} {upper:{fse}}".format(
-            value=value, pm=pm, upper=upper, fsv=fsv, fse=fse
-        )
-    else:
+    if upper != lower:
         return "{value:{fsv}} + {upper:{fse}} - {lower:{fse}}".format(
             value=value, upper=upper, lower=lower, fsv=fsv, fse=fse
         )
+
+    # Only bother with unicode if this is Python 3.
+    pm = u"±" if type(u"") is type("") else "+/-"
+
+    return "{value:{fsv}} {pm} {upper:{fse}}".format(
+        value=value, pm=pm, upper=upper, fsv=fsv, fse=fse
+    )
 
 
 # List of greek letter names as used in Unicode (see unicodedata package)
