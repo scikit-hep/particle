@@ -228,12 +228,12 @@ def get_from_pdg_extended(filename, latexes=()):
     pdg_table_inv.Latex.where(
         ~full_inversion,
         pdg_table_inv.Latex.str.replace(
-            r"^(\\mathrm{|)([a-zA-Z\\][a-zA-Z]*)", r"\1\\overline{\2}"
+            r"^(\\mathrm{|)([a-zA-Z\\][a-zA-Z]*)", r"\1\\overline{\2}", regex=True
         ),
         inplace=True,
     )
     pdg_table_inv.Latex = (
-        pdg_table_inv.Latex.str.replace(r"+", r"%")
+        pdg_table_inv.Latex.str.replace(r"+", r"%", regex=True)
         .str.replace(r"-", r"+")
         .str.replace(r"%", r"-")
     )
