@@ -1,7 +1,7 @@
 Particle Data folder contents
 -----------------------------
 
-You can ``import particle.data``, then use ``particle.data.open_text(particle.data, 'particle2020.csv')``
+You can ``import particle.data``, then use ``particle.data.open_text(particle.data, 'particle2021.csv')``
 to access data reliably regardless of how you have installed or are running the package (even from a zip file!).
 
 
@@ -20,15 +20,15 @@ An extension file for the extended PDG data file, prepared by this package's mai
 It contains entries necessary to provide extended information for the particles in the standard .mcd file.
 
 
-``mass_width_2020.mcd``
+``mass_width_2021.mcd``
 =======================
 
-The current style PDG data file, with much less information,
-but with more particles and more up to date.
+The latest version of the PDG particle data file, downloaded from the PDG website,
+with much less information, but with more particles and more up to date.
 A few older years are included, too.
 
 
-``particle2020.csv``
+``particle2021.csv``
 ====================
 
 The combined data file, in a format that is easy for the ``Particle`` class to read and easy for physicists to extend or edit.
@@ -42,7 +42,7 @@ If you'd like to append to this file, write a similar file with the same header,
 to read in the original table and then the new file you've written.
 
 This file was created from ``pdgid_to_latexname.csv``, ``mass_width_2008.fwf``,
-``mass_width_2008_ext.fwf`` and ``mass_width_2020.mcd``.
+``mass_width_2008_ext.fwf`` and ``mass_width_2021.mcd``.
 The 2008 version of the file was created with only the first two.
 
 
@@ -73,7 +73,7 @@ Note that this file contains entries for particles not in the PDG data file,
 for completeness (e.g., non-yet-observed baryons, leptoquarks).
 
 
-``pdgid_to_Geant3ID.csv``
+``pdgid_to_geant3id.csv``
 =========================
 
 A list of matching particle PDG and Geant3 identification codes;

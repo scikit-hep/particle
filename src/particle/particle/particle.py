@@ -561,8 +561,8 @@ class Particle(object):
         assert cls._table_names is not None
 
         if filename is None:
-            with data.open_text(data, "particle2020.csv") as f:
-                cls.load_table(f, append=append, _name="particle2020.csv")
+            with data.open_text(data, "particle2021.csv") as f:
+                cls.load_table(f, append=append, _name="particle2021.csv")
             with data.open_text(data, "nuclei2020.csv") as f:
                 cls.load_table(f, append=True, _name="nuclei2020.csv")
             return

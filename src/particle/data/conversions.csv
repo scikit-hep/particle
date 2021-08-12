@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - conversions.csv - version 9 - 2021-03-30
+# (c) Scikit-HEP project - Particle package data file - conversions.csv - version 10 - 2021-08-12
       PDGID,   PYTHIAID,   GEANT3ID,            PDGNAME,            EVTGENNAME,                          LATEXNAME
           1,          1,        303,                  d,                     d,                                  d
          -1,         -1,        304,                 d~,                anti-d,                       \overline{d}

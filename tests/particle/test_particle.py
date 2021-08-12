@@ -303,7 +303,7 @@ checklist_describe = (
     [22, "Width = 0.0 MeV"],  # photon
     # Test print-out of symmetric width errors
     [413, u"Width = 0.0834 ± 0.0018 MeV"],  # D*(2010)+
-    [443, u"Width = 0.093 ± 0.003 MeV"],  # J/psi
+    [443, u"Width = 0.0926 ± 0.0017 MeV"],  # J/psi
     # Test print-out of asymmetric width errors
     [4222, "Width = 1.89 + 0.09 - 0.18 MeV"],  # Sigma_c(2455)++
     [23, u"Width = 2495.2 ± 2.3 MeV"],  # H0
@@ -331,18 +331,18 @@ def test_describe(pid, description):
 
 
 def test_default_table_loading():
-    assert Particle.table_names() == ("particle2020.csv", "nuclei2020.csv")
+    assert Particle.table_names() == ("particle2021.csv", "nuclei2020.csv")
 
 
 def test_default_table_loading_bis():
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
-    assert p.table_names() == ("particle2020.csv", "nuclei2020.csv")
+    assert p.table_names() == ("particle2021.csv", "nuclei2020.csv")
 
 
 def test_explicit_table_loading():
-    Particle.load_table(data.open_text(data, "particle2020.csv"))
+    Particle.load_table(data.open_text(data, "particle2021.csv"))
     assert Particle.table_loaded() == True
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
@@ -355,6 +355,8 @@ def test_all_particles_are_loaded():
     assert len(Particle.all()) == 610
     Particle.load_table(data.open_text(data, "particle2020.csv"))
     assert len(Particle.all()) == 610
+    Particle.load_table(data.open_text(data, "particle2021.csv"))
+    assert len(Particle.all()) == 616
 
     Particle.load_table(data.open_text(data, "nuclei2020.csv"))
     assert len(Particle.all()) == 5880
