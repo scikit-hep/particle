@@ -316,7 +316,7 @@ def get_from_pdg_mcd(filename):
                 "WidthLower",
                 "NameCharge",
             ),
-        )        
+        )
 
     ds_list = []
     for i in range(4):
