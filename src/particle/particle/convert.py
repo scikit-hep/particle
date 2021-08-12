@@ -9,7 +9,7 @@ This is a conversion file, not part of the public API.
 
 The default CSV files can be updated directly using the command:
 
-    >>> python -m particle.particle.convert regenerate 2020 <version_number>    # doctest: +SKIP
+    >>> python -m particle.particle.convert regenerate 2021 <version_number>    # doctest: +SKIP
 
 A custom fwf file and LaTeX file can be converted into the CSV format using:
 
@@ -17,7 +17,7 @@ A custom fwf file and LaTeX file can be converted into the CSV format using:
 
 The command is typically
 
-    >>> python -m particle.particle.convert extended output.csv particle/data/mass_width_2008.fwf <version_number>    # doctest: +SKIP
+    >>> python -m particle.particle.convert extended output.csv src/particle/data/mass_width_2008.fwf <version_number>    # doctest: +SKIP
 
 This file requires pandas. But most users will not need this file, as it only
 converts PDG data files into the CSV file(s) the public API tools use. The tests
@@ -34,7 +34,7 @@ combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
 
 You can also read in a modern "standard" file (this will produce fewer columns):
 
-    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2020.mcd')
+    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2021.mcd')
 
 A utility is even provided to use the modern table to update the full table:
 
@@ -272,11 +272,11 @@ def sort_particles(table):
 def get_from_pdg_mcd(filename):
     # type: (str) -> pd.DataFrame
     """
-    Reads in a current-style PDG .mcd file (mass_width_2020.mcd file tested).
+    Reads in a current-style PDG .mcd file (mass_width_2021.mcd file tested).
 
     Example
     -------
-    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2020.mcd')
+    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2021.mcd')
     """
 
     # The format here includes the space before a column
@@ -316,7 +316,7 @@ def get_from_pdg_mcd(filename):
                 "WidthLower",
                 "NameCharge",
             ),
-        )
+        )        
 
     ds_list = []
     for i in range(4):
@@ -349,7 +349,7 @@ def update_from_mcd(full_table, update_table):
 
     Example
     -------
-    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2020.mcd')    # doctest: +SKIP
+    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2021.mcd')    # doctest: +SKIP
     """
 
     full_table = full_table.copy()
@@ -361,7 +361,7 @@ def update_from_mcd(full_table, update_table):
     return full_table
 
 
-def produce_files(particle2008, particle2020, version, year):
+def produce_files(particle2008, particle2021, version, year):
     # type: (str, str, str, str) -> None
     "This produces listed output files from all input files."
 
@@ -403,9 +403,9 @@ def produce_files(particle2008, particle2020, version, year):
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    particle2020 = str(particle2020)  # Conversion to handle pathlib on Python < 3.6
-    with open(particle2020, "w", newline="\n", encoding="utf-8") as f:
-        f.write(version_header(particle2020, version))
+    particle2021 = str(particle2021)  # Conversion to handle pathlib on Python < 3.6
+    with open(particle2021, "w", newline="\n", encoding="utf-8") as f:
+        f.write(version_header(particle2021, version))
         new_table.to_csv(f, float_format="%.12g")
 
 
