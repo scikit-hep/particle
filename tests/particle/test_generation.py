@@ -15,16 +15,16 @@ from particle import data
 from particle.particle.convert import produce_files
 
 
-FILES = ["particle2019.csv", "particle2020.csv"]
+FILES = ["particle2020.csv", "particle2021.csv"]
 
 
 def test_generate(tmp_path):
     "This verifies that the input and output files match."
 
-    particle2019 = tmp_path / "particle2019.csv"
     particle2020 = tmp_path / "particle2020.csv"
+    particle2021 = tmp_path / "particle2021.csv"
 
-    produce_files(particle2019, particle2020, "DUMMY", "2020")
+    produce_files(particle2020, particle2021, "DUMMY", "2021")
 
     """
     # No longer test this file, which eventually will be removed
@@ -35,8 +35,8 @@ def test_generate(tmp_path):
         assert src == res
     """
 
-    particle2020_data = data.open_text(data, "particle2020.csv")
-    with particle2020.open() as src, particle2020_data as res:
+    particle2021_data = data.open_text(data, "particle2021.csv")
+    with particle2021.open() as src, particle2021_data as res:
         src = [l for l in src.readlines() if not l.startswith("#")]
         res = [l for l in res.readlines() if not l.startswith("#")]
         assert src == res
