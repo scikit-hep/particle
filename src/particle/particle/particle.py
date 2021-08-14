@@ -30,6 +30,8 @@ from typing import (
     Set,
 )
 
+from deprecated import deprecated
+
 from hepunits.constants import c_light
 
 from .. import data
@@ -1136,6 +1138,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return sorted(results)
 
     @classmethod
+    @deprecated(version='0.16.0', reason="This method is deprecated and will be removed from version 0.17.0. Use findall instead.")
     def find(cls, *args, **search_terms):
         # type: (Any, Any) -> Particle
         """
