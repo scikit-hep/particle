@@ -1,6 +1,20 @@
 Changelog
 =========
 
+Version 0.16.0 (in preparation)
+--------------
+
+- `Particle` class:
+  - Method `find`deprecated. It will be removed from version 0.17.0 onwards.
+    Please use the more general `findall` method.
+- Data files:
+  - Added the 2021 PDG data table .mcd file, now default.
+  - Version 10 of package CSV data files:
+      - Since PDG 2021 information now the default.
+- Miscellaneous:
+  - A couple of `FutureWarning` warnings fixed.
+
+
 Version 0.15.1
 --------------
 
