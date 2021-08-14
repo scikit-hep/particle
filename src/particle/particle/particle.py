@@ -1141,7 +1141,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @deprecated(
         version="0.16.0",
         reason="This method is deprecated and will be removed from version 0.17.0. Use findall instead.",
-    )
+    )  # type: ignore
     def find(cls, *args, **search_terms):
         # type: (Any, Any) -> Particle
         """
