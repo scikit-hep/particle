@@ -46,6 +46,11 @@ jobs:
     - name: Test package
       run: python -m pytest
 
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
   notebooks:
     runs-on: ubuntu-latest
 
