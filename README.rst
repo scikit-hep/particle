@@ -1,37 +1,15 @@
 .. image:: https://github.com/scikit-hep/particle/raw/master/docs/ParticleLogo300.png
-    :alt: particle
     :target: https://github.com/scikit-hep/particle
 
 
 ``Particle``: PDG particle data and identification codes
 ========================================================
 
-.. image:: https://scikit-hep.org/assets/images/Scikit--HEP-Project-blue.svg
-   :alt: Scikit-HEP project package
-   :target: https://scikit-hep.org
+|Scikit-HEP| |PyPI version| |Conda-forge version| |Zenodo DOI|
 
-.. image:: https://img.shields.io/pypi/v/particle.svg
-  :alt: PyPI
-  :target: https://pypi.python.org/pypi/particle
+|GitHub Actions Status: CI| |Code Coverage| |Code style: black|
 
-.. image:: https://img.shields.io/conda/vn/conda-forge/particle.svg
-   :alt: conda-forge
-   :target: https://anaconda.org/conda-forge/particle
-
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.2552429.svg
-  :target: https://doi.org/10.5281/zenodo.2552429
-
-.. image:: https://github.com/scikit-hep/particle/workflows/CI/badge.svg
-   :alt: GitHub Actions status
-   :target: https://github.com/scikit-hep/particle/workflows/CI
-
-.. image:: https://mybinder.org/badge_logo.svg
-   :alt: Binder
-   :target: https://mybinder.org/v2/gh/scikit-hep/particle/master?urlpath=lab/tree/notebooks/ParticleDemo.ipynb
-
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-   :alt: Code styled with Black
-   :target: https://github.com/psf/black
+|Binder|
 
 
 Particle provides a pythonic interface to the `Particle Data Group <http://pdg.lbl.gov/>`_ (PDG)
@@ -338,3 +316,28 @@ Support for this work was provided by the National Science Foundation
 cooperative agreement OAC-1450377 (DIANA/HEP) and OAC-1836650 (IRIS-HEP).
 Any opinions, findings, conclusions or recommendations expressed in this material
 are those of the authors and do not necessarily reflect the views of the National Science Foundation.
+
+
+.. |Scikit-HEP| image:: https://scikit-hep.org/assets/images/Scikit--HEP-Project-blue.svg
+   :target: https://scikit-hep.org
+
+.. |PyPI version| image:: https://img.shields.io/pypi/v/particle.svg
+   :target: https://pypi.python.org/pypi/particle
+
+.. |Conda-forge version| image:: https://img.shields.io/conda/vn/conda-forge/particle.svg
+   :target: https://anaconda.org/conda-forge/particle
+
+.. |Zenodo DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.2552429.svg
+   :target: https://doi.org/10.5281/zenodo.2552429
+
+.. |GitHub Actions Status: CI| image:: https://github.com/scikit-hep/particle/workflows/CI/badge.svg
+   :target: https://github.com/scikit-hep/particle/actions
+
+.. |Code Coverage| image:: https://codecov.io/gh/scikit-hep/particle/graph/badge.svg?branch=master
+   :target: https://codecov.io/gh/scikit-hep/particle?branch=master
+
+.. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+   :target: https://github.com/psf/black
+
+.. |Binder| image:: https://mybinder.org/badge_logo.svg
+   :target: https://mybinder.org/v2/gh/scikit-hep/particle/master?urlpath=lab/tree/notebooks/ParticleDemo.ipynb
