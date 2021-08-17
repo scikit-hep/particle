@@ -1,5 +1,0 @@
-[run]
-omit =
-    # omit this single file
-    particle/particle/convert.py
-    particle/__main__.py
