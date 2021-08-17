@@ -50,7 +50,7 @@ jobs:
       uses: coverallsapp/github-action@1.1.3
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ./lcov.info
+        path-to-lcov: ${{ github.workspace }}/coverage/lcov.info
 
   notebooks:
     runs-on: ubuntu-latest
