@@ -1,0 +1,3 @@
+ignore:
+  - "particle/particle/convert.py"
+  - "particle/__main__.py"
