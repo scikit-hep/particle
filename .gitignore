@@ -29,9 +29,10 @@ pip-log.txt
 .coverage
 .tox
 .coverage.*
-nosetests.xml
 coverage.xml
+coverage*
 htmlcov
+nosetests.xml
 
 # Translations
 *.mo
