@@ -1,7 +1,7 @@
 Particle Data folder contents
 -----------------------------
 
-You can ``import particle.data``, then use ``particle.data.open_text(particle.data, 'particle2021.csv')``
+You can ``import particle.data``, then use ``particle.data.files / "particle2021.csv"``
 to access data reliably regardless of how you have installed or are running the package (even from a zip file!).
 
 

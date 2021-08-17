@@ -28,7 +28,7 @@ def test_BiMap():
 
 
 def test_DirectionalMaps():
-    filename = data.open_text(data, "pdgid_to_pythiaid.csv")
+    filename = data.files / "pdgid_to_pythiaid.csv"
     PDG2PyIDMap, Py2PDGIDMap = DirectionalMaps(
         "PDGID", "PythiaID", filename=filename, converters=(int, int)
     )

@@ -35,6 +35,7 @@ from deprecated import deprecated
 from hepunits.constants import c_light
 
 from .. import data
+from ..typing import HasOpen, HasRead
 from ..pdgid import PDGID
 from ..pdgid import is_valid
 from ..pdgid.functions import _digit
@@ -563,22 +564,23 @@ class Particle(object):
         assert cls._table_names is not None
 
         if filename is None:
-            with data.open_text(data, "particle2021.csv") as f:
+            with data.files.joinpath("particle2021.csv").open() as f:
                 cls.load_table(f, append=append, _name="particle2021.csv")
-            with data.open_text(data, "nuclei2020.csv") as f:
+            with data.files.joinpath("nuclei2020.csv").open() as f:
                 cls.load_table(f, append=True, _name="nuclei2020.csv")
             return
-        elif not hasattr(filename, "read"):
-            cls._table_names.append(str(filename))
-            # Conversion to handle pathlib on Python < 3.6:
-            open_file = open(str(filename))
-        else:
-            assert not isinstance(filename, str)  # Tell typing that this is true
+        elif isinstance(filename, HasRead):
             tmp_name = _name or getattr(filename, "name")
             cls._table_names.append(
                 tmp_name or "{0!r} {1}".format(filename, len(cls._table_names))
             )
             open_file = filename
+        elif isinstance(filename, HasOpen):
+            cls._table_names.append(str(filename))
+            open_file = filename.open()
+        else:
+            cls._table_names.append(str(filename))
+            open_file = open(filename)
 
         with open_file as f:
             r = csv.DictReader(l for l in f if not l.startswith("#"))

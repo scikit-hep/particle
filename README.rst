@@ -249,8 +249,8 @@ If you want a non-default data file distributed with the package just proceed as
 .. code-block:: python
 
     >>> from particle import data
-    >>> Particle.load_table(data.open_text(data, 'particle2018.csv'))
-    >>> Particle.load_table(data.open_text(data, "nuclei2020.csv"), append=True)  # I still want nuclei info
+    >>> Particle.load_table(data.files / "particle2018.csv"))
+    >>> Particle.load_table(data.files / "nuclei2020.csv"), append=True)  # I still want nuclei info
     >>> Particle.table_names()  # list the loaded tables
 
 

@@ -22,7 +22,7 @@ from ..pdgid import PDGID
 from ..exceptions import MatchingIDNotFound
 
 
-with data.open_text(data, "pdgid_to_geant3id.csv") as _f:
+with data.files.joinpath("pdgid_to_geant3id.csv").open() as _f:
     _bimap = {
         int(v["GEANT3ID"]): int(v["PDGID"])
         for v in csv.DictReader(l for l in _f if not l.startswith("#"))
