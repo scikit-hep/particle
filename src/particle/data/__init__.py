@@ -17,6 +17,6 @@ else:
 files = resources.files(__name__)
 
 
-open_text = deprecated(version="0.13.0", reason="Use particle.data.files instead.")(
+open_text = deprecated(version="0.16.0", reason="Use particle.data.files instead.")(
     resources.open_text
 )
