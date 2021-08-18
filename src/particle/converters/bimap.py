@@ -78,7 +78,7 @@ class BiMap(Generic[A, B]):
         Advanced usage:
         >>> # Either pass a file name or a file object
         >>> from particle import data
-        >>> filename = data.files("pdgid_to_pythiaid.csv")
+        >>> filename = data.basepath / "pdgid_to_pythiaid.csv"
         >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
         """
 
@@ -90,7 +90,7 @@ class BiMap(Generic[A, B]):
 
         if filename is None:
             filename = "{a}_to_{b}.csv".format(a=name_A.lower(), b=name_B.lower())
-            file_object = data.files.joinpath(filename).open()
+            file_object = data.basepath.joinpath(filename).open()
         elif isinstance(filename, HasRead):
             file_object = filename
         elif isinstance(filename, HasOpen):
@@ -177,7 +177,7 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
     --------
 
     >>> from particle import data  # doctest: +SKIP
-    >>> filename = data.files / "a_to_b.csv"  # doctest: +SKIP
+    >>> filename = data.basepath / "a_to_b.csv"  # doctest: +SKIP
     >>> A2BMap, B2AMap = DirectionalMaps('A', 'B', filename=filename)  # doctest: +SKIP
     """
 
@@ -186,7 +186,7 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
 
     fieldnames = None
     if filename is None:
-        file_object = data.files.joinpath("conversions.csv").open()
+        file_object = data.basepath.joinpath("conversions.csv").open()
     elif isinstance(filename, HasOpen):
         file_object = filename.open()
     elif isinstance(filename, HasRead):

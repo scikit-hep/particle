@@ -14,9 +14,9 @@ else:
     import importlib.resources as resources
 
 
-files = resources.files(__name__)
+basepath = resources.files(__name__)
 
 
-open_text = deprecated(version="0.16.0", reason="Use particle.data.files instead.")(
+open_text = deprecated(version="0.16.0", reason="Use particle.data.basepath instead.")(
     resources.open_text
 )

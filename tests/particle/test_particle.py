@@ -343,23 +343,23 @@ def test_default_table_loading_bis():
 
 
 def test_explicit_table_loading():
-    Particle.load_table(data.files / "particle2021.csv")
+    Particle.load_table(data.basepath / "particle2021.csv")
     assert Particle.table_loaded() == True
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
 
 
 def test_all_particles_are_loaded():
-    Particle.load_table(data.files / "particle2018.csv")
+    Particle.load_table(data.basepath / "particle2018.csv")
     assert len(Particle.all()) == 605
-    Particle.load_table(data.files / "particle2019.csv")
+    Particle.load_table(data.basepath / "particle2019.csv")
     assert len(Particle.all()) == 610
-    Particle.load_table(data.files / "particle2020.csv")
+    Particle.load_table(data.basepath / "particle2020.csv")
     assert len(Particle.all()) == 610
-    Particle.load_table(data.files / "particle2021.csv")
+    Particle.load_table(data.basepath / "particle2021.csv")
     assert len(Particle.all()) == 616
 
-    Particle.load_table(data.files / "nuclei2020.csv")
+    Particle.load_table(data.basepath / "nuclei2020.csv")
     assert len(Particle.all()) == 5880
 
     # Load default table to restore global state

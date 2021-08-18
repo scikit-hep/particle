@@ -564,9 +564,9 @@ class Particle(object):
         assert cls._table_names is not None
 
         if filename is None:
-            with data.files.joinpath("particle2021.csv").open() as f:
+            with data.basepath.joinpath("particle2021.csv").open() as f:
                 cls.load_table(f, append=append, _name="particle2021.csv")
-            with data.files.joinpath("nuclei2020.csv").open() as f:
+            with data.basepath.joinpath("nuclei2020.csv").open() as f:
                 cls.load_table(f, append=True, _name="nuclei2020.csv")
             return
         elif isinstance(filename, HasRead):
