@@ -41,7 +41,7 @@ def test_generate(tmp_path):
 
 
 @pytest.mark.parametrize("filename", FILES)
-def test__csv_file_duplicates(filename):
+def test_csv_file_duplicates(filename):
     with data.open_text(data, filename) as particle_data:
         p = pd.read_csv(particle_data, comment="#")
 
