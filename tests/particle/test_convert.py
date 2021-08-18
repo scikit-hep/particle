@@ -11,7 +11,6 @@ except ImportError:
 
 import pytest
 
-from particle import data
 from particle.particle.convert import get_from_pdg_mcd
 
 
