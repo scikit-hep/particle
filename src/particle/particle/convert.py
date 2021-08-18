@@ -318,6 +318,14 @@ def get_from_pdg_mcd(filename):
             ),
         )
 
+        # Check for duplicates!
+        duplicated_ids = nar.duplicated(subset=['ID1'], keep=False) & nar['ID1'].notna() \
+            | nar.duplicated(subset=['ID2'], keep=False) & nar['ID2'].notna() \
+            | nar.duplicated(subset=['ID3'], keep=False) & nar['ID3'].notna() \
+            | nar.duplicated(subset=['ID4'], keep=False) & nar['ID4'].notna()
+        print("DUPLICATES:\n", nar[duplicated_ids])
+        assert nar[duplicated_ids].shape[0] == 0, "Duplicate entries found in {} !".format(filename)
+
     ds_list = []
     for i in range(4):
         name = "ID{0}".format(i + 1)
