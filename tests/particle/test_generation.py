@@ -6,9 +6,7 @@
 
 import pytest
 
-# Requires pandas
-pd = pytest.importorskip("pandas")
-
+import pandas as pd
 from collections import Counter
 
 from particle import data
@@ -43,7 +41,7 @@ def test_generate(tmp_path):
 
 
 @pytest.mark.parametrize("filename", FILES)
-def test_file_dup(filename):
+def test__csv_file_duplicates(filename):
     with data.open_text(data, filename) as particle_data:
         p = pd.read_csv(particle_data, comment="#")
 
@@ -52,7 +50,7 @@ def test_file_dup(filename):
 
 
 @pytest.mark.parametrize("filename", FILES)
-def test_file_has_latex(filename):
+def test_csv_file_has_latex(filename):
     with data.open_text(data, filename) as particle_data:
         p = pd.read_csv(particle_data, comment="#")
 
