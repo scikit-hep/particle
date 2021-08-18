@@ -6,7 +6,9 @@
 
 import pytest
 
-import pandas as pd
+# Requires pandas
+pd = pytest.importorskip("pandas")
+
 from collections import Counter
 
 from particle import data

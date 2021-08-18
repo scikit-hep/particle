@@ -4,12 +4,15 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
+import pytest
+
+# Requires pandas
+pd = pytest.importorskip("pandas")
+
 try:
     from pathlib2 import Path
 except ImportError:
     from pathlib import Path
-
-import pytest
 
 from particle.particle.convert import get_from_pdg_mcd
 
