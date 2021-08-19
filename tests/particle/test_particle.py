@@ -9,16 +9,15 @@ from __future__ import absolute_import, division, print_function
 import sys
 
 import pytest
+from hepunits import meter, second
 from pytest import approx
 
-from particle.particle.enums import Charge, Parity, SpinType, Status, Inv
-from particle.particle import Particle
-from particle.particle.particle import ParticleNotFound, InvalidParticle
-from particle.pdgid import PDGID
-from particle.pdgid.functions import _digit, Location
 from particle import data
-
-from hepunits import second, meter
+from particle.particle import Particle
+from particle.particle.enums import Charge, Inv, Parity, SpinType, Status
+from particle.particle.particle import InvalidParticle, ParticleNotFound
+from particle.pdgid import PDGID
+from particle.pdgid.functions import Location, _digit
 
 
 def test_find():

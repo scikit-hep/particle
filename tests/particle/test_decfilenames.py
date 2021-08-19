@@ -10,7 +10,6 @@ import pytest
 
 from particle.particle import Particle, ParticleNotFound
 
-
 # All particle names found in DECAY.DEC
 dec_names = [
     "B'_1+",

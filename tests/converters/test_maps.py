@@ -6,15 +6,11 @@
 
 import pytest
 
-from particle.converters.bimap import BiMap
-from particle.converters.bimap import DirectionalMaps
-
+from particle import data
+from particle.converters.bimap import BiMap, DirectionalMaps
+from particle.exceptions import MatchingIDNotFound
 from particle.pdgid import PDGID
 from particle.pythia import PythiaID
-
-from particle.exceptions import MatchingIDNotFound
-
-from particle import data
 
 
 def test_BiMap():

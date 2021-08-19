@@ -16,7 +16,6 @@ except ImportError:
 
 from particle.particle.convert import get_from_pdg_mcd
 
-
 DIR = Path(__file__).parent.resolve()
 
 

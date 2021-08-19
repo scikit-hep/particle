@@ -24,10 +24,10 @@ References
 - HepPDT and HepPID versions 3.04.01.
 """
 
-from __future__ import print_function, division, absolute_import
+from __future__ import absolute_import, division, print_function
 
 from enum import IntEnum
-from typing import SupportsInt, Optional
+from typing import Optional, SupportsInt
 
 PDGID_TYPE = SupportsInt
 

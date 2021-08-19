@@ -6,11 +6,9 @@
 
 from __future__ import absolute_import
 
-from ..pdgid import PDGID
 from ..geant import Geant3ID
-
+from ..pdgid import PDGID
 from .bimap import BiMap
-
 
 Geant2PDGIDBiMap = BiMap(PDGID, Geant3ID)
 Geant2PDGIDBiMap.__doc__ = """

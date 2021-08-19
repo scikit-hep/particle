@@ -12,8 +12,8 @@ See the particle.literals and the pdgid.literals submodules for the actually exp
 """
 
 from __future__ import absolute_import
-from .particle import Particle
 
+from .particle import Particle
 
 # Make aliases for all particles in the latest "database", excluding nuclei
 common_particles = {

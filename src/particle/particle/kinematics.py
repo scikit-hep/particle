@@ -10,8 +10,8 @@ Functions relevant to particle kinematics.
 
 from __future__ import absolute_import, division, print_function
 
-from hepunits.units import MeV, ns
 from hepunits.constants import hbar
+from hepunits.units import MeV, ns
 
 
 def width_to_lifetime(Gamma):

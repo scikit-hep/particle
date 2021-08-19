@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-import nox
 from pathlib import Path
+
+import nox
 
 nox.options.sessions = ["lint", "tests"]
 

@@ -9,53 +9,47 @@ from __future__ import absolute_import, division, print_function
 # Python standard library
 import csv
 from copy import copy
-
 from functools import total_ordering
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterable,
+    Iterator,
+    List,
+    Optional,
+    Set,
+    SupportsInt,
+    TextIO,
+    Tuple,
+    Union,
+)
 
 # External dependencies
 import attr
-
-from typing import (
-    Optional,
-    Any,
-    Dict,
-    Tuple,
-    List,
-    Callable,
-    Iterable,
-    Iterator,
-    SupportsInt,
-    Union,
-    TextIO,
-    Set,
-)
-
 from deprecated import deprecated
-
 from hepunits.constants import c_light
 
 from .. import data
-from ..typing import HasOpen, HasRead
-from ..pdgid import PDGID
-from ..pdgid import is_valid
-from ..pdgid.functions import _digit
-from ..pdgid.functions import Location
-from .regex import getname, getdec
-from .enums import (
-    SpinType,
-    Parity,
-    Charge,
-    Inv,
-    Status,
-    Parity_undo,
-    Parity_prog,
-    Charge_undo,
-    Charge_prog,
-    Charge_mapping,
-)
-from .utilities import programmatic_name, str_with_unc, latex_to_html_name
-from .kinematics import width_to_lifetime
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
+from ..pdgid import PDGID, is_valid
+from ..pdgid.functions import Location, _digit
+from ..typing import HasOpen, HasRead
+from .enums import (
+    Charge,
+    Charge_mapping,
+    Charge_prog,
+    Charge_undo,
+    Inv,
+    Parity,
+    Parity_prog,
+    Parity_undo,
+    SpinType,
+    Status,
+)
+from .kinematics import width_to_lifetime
+from .regex import getdec, getname
+from .utilities import latex_to_html_name, programmatic_name, str_with_unc
 
 
 class ParticleNotFound(RuntimeError):

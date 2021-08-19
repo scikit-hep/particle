@@ -61,49 +61,46 @@ Useful definitions:
 
 from __future__ import absolute_import
 
-from .functions import is_valid
-from .functions import abspid
-
-from .functions import is_quark
-from .functions import is_lepton
-from .functions import is_hadron
-from .functions import is_meson
-from .functions import is_baryon
-from .functions import is_pentaquark
-from .functions import is_gauge_boson_or_higgs
-from .functions import is_sm_gauge_boson_or_higgs
-from .functions import is_generator_specific
-from .functions import is_special_particle
-from .functions import is_nucleus
-from .functions import is_diquark
-from .functions import is_Rhadron
-from .functions import is_Qball
-from .functions import is_dyon
-from .functions import is_SUSY
-from .functions import is_technicolor
-from .functions import is_composite_quark_or_lepton
-
-from .functions import has_down
-from .functions import has_up
-from .functions import has_strange
-from .functions import has_charm
-from .functions import has_bottom
-from .functions import has_top
-from .functions import has_fundamental_anti
-
-from .functions import charge
-from .functions import three_charge
-from .functions import j_spin
-from .functions import J
-from .functions import s_spin
-from .functions import S
-from .functions import l_spin
-from .functions import L
-from .functions import A
-from .functions import Z
-
+from .functions import (
+    A,
+    J,
+    L,
+    S,
+    Z,
+    abspid,
+    charge,
+    has_bottom,
+    has_charm,
+    has_down,
+    has_fundamental_anti,
+    has_strange,
+    has_top,
+    has_up,
+    is_baryon,
+    is_composite_quark_or_lepton,
+    is_diquark,
+    is_dyon,
+    is_gauge_boson_or_higgs,
+    is_generator_specific,
+    is_hadron,
+    is_lepton,
+    is_meson,
+    is_nucleus,
+    is_pentaquark,
+    is_Qball,
+    is_quark,
+    is_Rhadron,
+    is_sm_gauge_boson_or_higgs,
+    is_special_particle,
+    is_SUSY,
+    is_technicolor,
+    is_valid,
+    j_spin,
+    l_spin,
+    s_spin,
+    three_charge,
+)
 from .pdgid import PDGID
-
 
 __all__ = (
     "is_valid",

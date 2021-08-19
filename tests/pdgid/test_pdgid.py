@@ -7,8 +7,8 @@
 import pytest
 
 from particle.pdgid import PDGID
-from particle.pdgid.pdgid import _fnames
 from particle.pdgid import functions as _functions
+from particle.pdgid.pdgid import _fnames
 
 
 def test_class_string_representations():

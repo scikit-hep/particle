@@ -5,13 +5,11 @@
 # or https://github.com/scikit-hep/particle for details.
 
 import pytest
+from hepunits.constants import hbar
+from hepunits.units import GeV, MeV, ps
 from pytest import approx
 
-from particle.particle import width_to_lifetime
-from particle.particle import lifetime_to_width
-
-from hepunits.units import MeV, GeV, ps
-from hepunits.constants import hbar
+from particle.particle import lifetime_to_width, width_to_lifetime
 
 
 def test_valid_width_lifetime_conversions():

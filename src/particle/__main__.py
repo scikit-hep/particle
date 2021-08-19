@@ -7,12 +7,12 @@
 
 from __future__ import absolute_import, print_function
 
+import argparse
+import sys
+
 from . import __version__
 from .particle import Particle
 from .pdgid import PDGID
-
-import argparse
-import sys
 
 
 def main():

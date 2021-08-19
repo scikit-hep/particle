@@ -4,10 +4,9 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-import re
 import math
+import re
 import unicodedata
-
 from typing import Optional
 
 

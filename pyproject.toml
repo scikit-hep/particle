@@ -15,6 +15,9 @@ ignore = [
     "noxfile.py",
 ]
 
+[tool.isort]
+profile = "black"
+
 [tool.mypy]
 warn_unused_configs = true
 warn_unused_ignores = true

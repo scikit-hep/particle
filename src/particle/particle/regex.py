@@ -10,7 +10,6 @@ Collection of regular expression helper utilities for the ``Particle`` class.
 
 import re
 
-
 getname = re.compile(
     r"""
 ^                                           # Beginning of string

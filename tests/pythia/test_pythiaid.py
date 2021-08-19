@@ -6,9 +6,9 @@
 
 import pytest
 
-from particle.pythia import PythiaID
-from particle.pdgid import PDGID
 from particle.exceptions import MatchingIDNotFound
+from particle.pdgid import PDGID
+from particle.pythia import PythiaID
 
 
 def test_class_string_representations():

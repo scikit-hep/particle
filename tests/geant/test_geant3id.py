@@ -6,9 +6,9 @@
 
 import pytest
 
+from particle.exceptions import MatchingIDNotFound
 from particle.geant import Geant3ID
 from particle.pdgid import PDGID
-from particle.exceptions import MatchingIDNotFound
 
 
 def test_class_string_representations():

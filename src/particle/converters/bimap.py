@@ -14,11 +14,6 @@ except ImportError:
     from collections import Mapping
 
 import csv
-
-from .. import data
-from ..exceptions import MatchingIDNotFound
-from ..typing import HasRead, HasOpen
-
 from typing import (
     Any,
     Callable,
@@ -32,6 +27,10 @@ from typing import (
     Union,
     overload,
 )
+
+from .. import data
+from ..exceptions import MatchingIDNotFound
+from ..typing import HasOpen, HasRead
 
 A = TypeVar("A")
 B = TypeVar("B")

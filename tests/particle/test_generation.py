@@ -14,7 +14,6 @@ from collections import Counter
 from particle import data
 from particle.particle.convert import produce_files
 
-
 FILES = ["particle2020.csv", "particle2021.csv"]
 
 
