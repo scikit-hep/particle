@@ -13,7 +13,7 @@ from particle.particle.utilities import str_with_unc
 from particle.particle.particle import ParticleNotFound
 
 
-possibilites = (
+possibilities = (
     (1.234567, 0.01, None, u"1.235 ± 0.010"),
     (1.234567e-9, 0.01e-9, None, u"1.235e-09 ± 1.0e-11"),
     (1.234567e9, 0.04e9, None, u"1.23e+09 ± 4e+07"),
@@ -29,7 +29,7 @@ possibilites = (
 )
 
 
-@pytest.mark.parametrize("value,err_u,err_l,test_str", possibilites)
+@pytest.mark.parametrize("value,err_u,err_l,test_str", possibilities)
 def test_unc_printout(value, err_u, err_l, test_str):
 
     if sys.version_info < (3, 0):

@@ -571,7 +571,7 @@ dec_names = [
 ]
 
 
-# Sub-list of .dec particle names unkown to the PDG data table (the .mcd and our .csv files)
+# Sub-list of .dec particle names unknown to the PDG data table (the .mcd and our .csv files)
 list_dec_but_not_in_pdt = [
     "B'_1+",
     "B'_1-",

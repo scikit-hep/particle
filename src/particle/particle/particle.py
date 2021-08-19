@@ -980,8 +980,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             val += "    SpinType: {self.spin_type!s}\n".format(self=self)
         if self.quarks:
             val += "    Quarks: {self.quarks}\n".format(self=self)
-        val += "    Antiparticle name: {iself.name} (antiparticle status: {self.anti_flag.name})".format(
-            iself=self.invert(), self=self
+        val += "    Antiparticle name: {inv_self.name} (antiparticle status: {self.anti_flag.name})".format(
+            inv_self=self.invert(), self=self
         )
         return val
 
