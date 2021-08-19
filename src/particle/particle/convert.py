@@ -377,8 +377,8 @@ def produce_files(particle2008, particle2021, version, year):
     # type: (str, str, str, str) -> None
     "This produces listed output files from all input files."
 
-    with data.open_text(data, "mass_width_2008.fwf") as fwf_f:
-        with data.open_text(data, "pdgid_to_latexname.csv") as csv_f:
+    with data.basepath.joinpath("mass_width_2008.fwf").open() as fwf_f:
+        with data.basepath.joinpath("pdgid_to_latexname.csv").open() as csv_f:
             full_table = get_from_pdg_extended(fwf_f, [csv_f])
 
     # Entries to remove, see comments in file mass_width_2008_ext.fwf:
@@ -394,11 +394,11 @@ def produce_files(particle2008, particle2021, version, year):
     # f.write(version_header(particle2008, version))
     # full_table.to_csv(f, float_format="%.12g")
 
-    with data.open_text(data, "mass_width_" + year + ".mcd") as mcd_f:
+    with data.basepath.joinpath("mass_width_" + year + ".mcd").open() as mcd_f:
         ext_table = get_from_pdg_mcd(mcd_f)
 
-    with data.open_text(data, "mass_width_2008_ext.fwf") as fwf_f:
-        with data.open_text(data, "pdgid_to_latexname.csv") as csv_f:
+    with data.basepath.joinpath("mass_width_2008_ext.fwf").open() as fwf_f:
+        with data.basepath.joinpath("pdgid_to_latexname.csv").open() as csv_f:
             addons = get_from_pdg_extended(fwf_f, [csv_f])
 
     # Only keep rows present in the .mcd file specified by year
@@ -444,7 +444,7 @@ def main(version, year):
 
 def convert(version, output, fwf, latex=None):
     # type: (str, str, str, Optional[str]) -> None
-    latexes = [data.open_text(data, "pdgid_to_latexname.csv")]
+    latexes = [data.basepath / "pdgid_to_latexname.csv"]
     if latex:
         latexes.append(latex)
     table = get_from_pdg_extended(fwf, latexes)

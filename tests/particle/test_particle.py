@@ -23,15 +23,16 @@ from hepunits import second, meter
 
 def test_find():
     # 1 match found
-    prepr = repr(Particle.find(name="gamma"))
+    with pytest.deprecated_call():
+        prepr = repr(Particle.find(name="gamma"))
     assert prepr == '<Particle: name="gamma", pdgid=22, mass=0.0 MeV>'
 
     # No match found
-    with pytest.raises(ParticleNotFound):
+    with pytest.deprecated_call(), pytest.raises(ParticleNotFound):
         Particle.find(name="NotInPDT")
 
     # Multiple matches found
-    with pytest.raises(RuntimeError):
+    with pytest.deprecated_call(), pytest.raises(RuntimeError):
         Particle.find(name=lambda x: "Upsilon" in x)
 
 
@@ -342,23 +343,23 @@ def test_default_table_loading_bis():
 
 
 def test_explicit_table_loading():
-    Particle.load_table(data.open_text(data, "particle2021.csv"))
+    Particle.load_table(data.basepath / "particle2021.csv")
     assert Particle.table_loaded() == True
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
 
 
 def test_all_particles_are_loaded():
-    Particle.load_table(data.open_text(data, "particle2018.csv"))
+    Particle.load_table(data.basepath / "particle2018.csv")
     assert len(Particle.all()) == 605
-    Particle.load_table(data.open_text(data, "particle2019.csv"))
+    Particle.load_table(data.basepath / "particle2019.csv")
     assert len(Particle.all()) == 610
-    Particle.load_table(data.open_text(data, "particle2020.csv"))
+    Particle.load_table(data.basepath / "particle2020.csv")
     assert len(Particle.all()) == 610
-    Particle.load_table(data.open_text(data, "particle2021.csv"))
+    Particle.load_table(data.basepath / "particle2021.csv")
     assert len(Particle.all()) == 616
 
-    Particle.load_table(data.open_text(data, "nuclei2020.csv"))
+    Particle.load_table(data.basepath / "nuclei2020.csv")
     assert len(Particle.all()) == 5880
 
     # Load default table to restore global state

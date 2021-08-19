@@ -17,6 +17,7 @@ import csv
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
+from ..typing import HasRead, HasOpen
 
 from typing import (
     Any,
@@ -77,7 +78,7 @@ class BiMap(Generic[A, B]):
         Advanced usage:
         >>> # Either pass a file name or a file object
         >>> from particle import data
-        >>> filename = data.open_text(data, 'pdgid_to_pythiaid.csv')
+        >>> filename = data.basepath / "pdgid_to_pythiaid.csv"
         >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
         """
 
@@ -89,12 +90,13 @@ class BiMap(Generic[A, B]):
 
         if filename is None:
             filename = "{a}_to_{b}.csv".format(a=name_A.lower(), b=name_B.lower())
-            file_object = data.open_text(data, filename)
-        elif hasattr(filename, "read"):
+            file_object = data.basepath.joinpath(filename).open()
+        elif isinstance(filename, HasRead):
             file_object = filename
+        elif isinstance(filename, HasOpen):
+            file_object = filename.open()
         else:
-            # Conversion to handle pathlib on Python < 3.6:
-            file_object = open(str(filename))
+            file_object = open(filename)
 
         with file_object as _f:
             self._to_map = {
@@ -175,7 +177,7 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
     --------
 
     >>> from particle import data  # doctest: +SKIP
-    >>> filename = data.open_text(data, 'a_to_b.csv')  # doctest: +SKIP
+    >>> filename = data.basepath / "a_to_b.csv"  # doctest: +SKIP
     >>> A2BMap, B2AMap = DirectionalMaps('A', 'B', filename=filename)  # doctest: +SKIP
     """
 
@@ -184,12 +186,13 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
 
     fieldnames = None
     if filename is None:
-        file_object = data.open_text(data, "conversions.csv")
-    elif hasattr(filename, "read"):
+        file_object = data.basepath.joinpath("conversions.csv").open()
+    elif isinstance(filename, HasOpen):
+        file_object = filename.open()
+    elif isinstance(filename, HasRead):
         file_object = filename
     else:
-        # Conversion to handle pathlib on Python < 3.6:
-        file_object = open(str(filename))
+        file_object = open(filename)
 
     with file_object as _f:
         skipinitialspace = True
