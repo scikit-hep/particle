@@ -52,7 +52,7 @@ class PythiaID(int):
             if v == pdgid:
                 return cls(k)
         raise MatchingIDNotFound(
-            "Non-existent PythiaID for input PDGID {0} !".format(pdgid)
+            "Non-existent PythiaID for input PDGID {} !".format(pdgid)
         )
 
     def to_pdgid(self):

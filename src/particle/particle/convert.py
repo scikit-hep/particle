@@ -332,7 +332,7 @@ def get_from_pdg_mcd(filename):
 
     ds_list = []
     for i in range(4):
-        name = "ID{0}".format(i + 1)
+        name = "ID{}".format(i + 1)
         d = nar[~pd.isna(nar[name])].copy()
         d["ID"] = d[name].astype(int)
         nc = d.NameCharge.str.split(expand=True)

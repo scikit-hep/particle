@@ -572,7 +572,7 @@ class Particle(object):
         elif isinstance(filename, HasRead):
             tmp_name = _name or getattr(filename, "name")
             cls._table_names.append(
-                tmp_name or "{0!r} {1}".format(filename, len(cls._table_names))
+                tmp_name or "{!r} {}".format(filename, len(cls._table_names))
             )
             open_file = filename
         elif isinstance(filename, HasOpen):
@@ -950,7 +950,7 @@ class Particle(object):
         if self.mass is None:
             return "None"
         else:
-            return "{0} MeV".format(
+            return "{} MeV".format(
                 str_with_unc(self.mass, self.mass_upper, self.mass_lower)
             )
 
@@ -1024,13 +1024,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             If no matching PDG ID is found in the loaded data table(s).
         """
         if not is_valid(value):
-            raise InvalidParticle("Input PDGID {0} is invalid!".format(value))
+            raise InvalidParticle("Input PDGID {} is invalid!".format(value))
 
         for item in cls.all():
             if item.pdgid == value:
                 return item
         else:
-            raise ParticleNotFound("Could not find PDGID {0}".format(value))
+            raise ParticleNotFound("Could not find PDGID {}".format(value))
 
     @classmethod
     def findall(
@@ -1194,7 +1194,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if matches:
             return matches[0]
         else:
-            raise ParticleNotFound("{0} not found in particle table".format(name))
+            raise ParticleNotFound("{} not found in particle table".format(name))
 
     @classmethod
     def from_string_list(cls, name):
@@ -1272,7 +1272,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
         if not vals:
             raise ParticleNotFound(
-                "Could not find particle {0} or {1}".format(maxname, name)
+                "Could not find particle {} or {}".format(maxname, name)
             )
 
         if len(vals) > 1 and mat["mass"] is not None:

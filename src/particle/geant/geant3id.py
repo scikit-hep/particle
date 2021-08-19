@@ -57,7 +57,7 @@ class Geant3ID(int):
             if v == pdgid:
                 return cls(k)
         raise MatchingIDNotFound(
-            "Non-existent Geant3ID for input PDGID {0} !".format(pdgid)
+            "Non-existent Geant3ID for input PDGID {} !".format(pdgid)
         )
 
     def to_pdgid(self):
