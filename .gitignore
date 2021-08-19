@@ -72,3 +72,5 @@ docs/_build
 /src/particle/version.py
 /.mypy_cache/*
 /pip-wheel-metadata
+
+*.pyz

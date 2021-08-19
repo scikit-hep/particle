@@ -12,7 +12,9 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - uses: actions/setup-python@v2
     - uses: pre-commit/action@v2.0.3
       with:
@@ -24,14 +26,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version:
-        - 2.7
-        - 3.6
-        - 3.8
-        - 3.9
+        python-version: ["2.7", "3.6", "3.8", "3.9", "3.10-dev"]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - uses: actions/setup-python@v2
       with:
@@ -53,7 +53,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - uses: actions/setup-python@v2
 
@@ -65,3 +67,22 @@ jobs:
 
     - name: Run the notebooks inplace
       run: jupyter nbconvert --execute --inplace notebooks/*.ipynb
+
+
+  zipapp:
+    name: ZipApp
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - uses: excitedleigh/setup-nox@v2.0.0
+
+    - name: Make ZipApp
+      run: nox -s zipapp
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: zipapp
+        path: particle.pyz
