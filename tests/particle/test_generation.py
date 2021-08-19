@@ -43,7 +43,7 @@ def test_generate(tmp_path):
 
 
 @pytest.mark.parametrize("filename", FILES)
-def test_file_dup(filename):
+def test_csv_file_duplicates(filename):
     with data.basepath / filename as particle_data:
         p = pd.read_csv(particle_data, comment="#")
 
@@ -52,7 +52,7 @@ def test_file_dup(filename):
 
 
 @pytest.mark.parametrize("filename", FILES)
-def test_file_has_latex(filename):
+def test_csv_file_has_latex(filename):
     with data.basepath / filename as particle_data:
         p = pd.read_csv(particle_data, comment="#")
 

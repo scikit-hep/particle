@@ -1,0 +1,15 @@
+* Example PDG particle data file in ".mcd format" for testing purposes.
+* File in the very same format as the mass_width_<year>.mcd files.
+* Values below come from the 2021 file.
+*
+* Particle ID(s)                  Mass  (GeV)       Errors (GeV)       Width (GeV)       Errors (GeV)      Name          Charges
+       1                          4.67E-03          +0.5E-03 -0.2E-03                                      d                -1/3
+       2                          2.16E-03          +0.5E-03 -0.3E-03                                      u                +2/3
+       3                          9.3E-02           +1.1E-02 -5.0E-03                                      s                -1/3
+       4                          1.27E+00          +2.0E-02 -2.0E-02                                      c                +2/3
+       5                          4.180E+00         +3.0E-02 -2.0E-02                                      b                -1/3
+       6                          1.725E+02         +7.0E-01 -7.0E-01  1.42E+00          +1.9E-01 -1.5E-01 t                +2/3
+     313                          8.9555E-01        +2.0E-04 -2.0E-04  4.73E-02          +5.0E-04 -5.0E-04 K*(892)             0
+     323                          8.9167E-01        +2.6E-04 -2.6E-04  5.14E-02          +8.0E-04 -8.0E-04 K*(892)             +
+     323                          8.955E-01         +8.0E-04 -8.0E-04  4.62E-02          +1.3E-03 -1.3E-03 K*(892)             +
+    1114    2114    2214    2224  1.2320E+00        +2.0E-03 -2.0E-03  1.170E-01         +3.0E-03 -3.0E-03 Delta(1232)  -,0,+,++
