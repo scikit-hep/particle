@@ -141,7 +141,7 @@ def test_is_sm_quark(PDGIDs):
     )
     _non_sm_quarks = [id for id in PDGIDs if id not in _sm_quarks]
     for id in _sm_quarks:
-        assert is_sm_quark(id) == True
+        assert is_sm_quark(id)
     for id in _non_sm_quarks:
         assert is_sm_quark(id) == False
 
