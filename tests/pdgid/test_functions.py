@@ -143,7 +143,7 @@ def test_is_sm_quark(PDGIDs):
     for id in _sm_quarks:
         assert is_sm_quark(id)
     for id in _non_sm_quarks:
-        assert is_sm_quark(id) == False
+        assert not is_sm_quark(id)
 
 
 def test_is_lepton(PDGIDs):
