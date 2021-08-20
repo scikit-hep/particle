@@ -68,6 +68,7 @@ is_baryon      False
 is_composite_quark_or_lepton False
 is_diquark     False
 is_dyon        False
+is_excited_quark_or_lepton False
 is_gauge_boson_or_higgs True
 is_generator_specific False
 is_hadron      False
@@ -77,6 +78,8 @@ is_nucleus     False
 is_pentaquark  False
 is_quark       False
 is_sm_gauge_boson_or_higgs True
+is_sm_lepton   False
+is_sm_quark    False
 is_special_particle False
 is_technicolor False
 is_valid       True
