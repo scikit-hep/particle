@@ -88,6 +88,10 @@ class PDGID(int):
     )
     is_diquark = property(_functions.is_diquark, doc=_functions.is_diquark.__doc__)
     is_dyon = property(_functions.is_dyon, doc=_functions.is_dyon.__doc__)
+    is_excited_quark_or_lepton = property(
+        _functions.is_excited_quark_or_lepton,
+        doc=_functions.is_excited_quark_or_lepton.__doc__,
+    )
     is_gauge_boson_or_higgs = property(
         _functions.is_gauge_boson_or_higgs,
         doc=_functions.is_gauge_boson_or_higgs.__doc__,
@@ -107,6 +111,8 @@ class PDGID(int):
         _functions.is_sm_gauge_boson_or_higgs,
         doc=_functions.is_sm_gauge_boson_or_higgs.__doc__,
     )
+    is_sm_lepton = property(_functions.is_sm_lepton, doc=_functions.is_sm_lepton.__doc__)
+    is_sm_quark = property(_functions.is_sm_quark, doc=_functions.is_sm_quark.__doc__)
     is_special_particle = property(
         _functions.is_special_particle, doc=_functions.is_special_particle.__doc__
     )
