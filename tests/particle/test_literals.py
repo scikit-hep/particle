@@ -6,8 +6,6 @@
 
 from __future__ import division
 
-import pytest
-
 from particle import literals as lp
 
 

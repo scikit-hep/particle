@@ -77,7 +77,7 @@ def is_valid(pdgid):
         return True
     if is_technicolor(pdgid):
         return True
-    if is_composite_quark_or_lepton(pdgid):
+    if is_excited_quark_or_lepton(pdgid):
         return True
     if _extra_bits(pdgid) > 0:
         return is_Qball(pdgid) or is_nucleus(pdgid)
