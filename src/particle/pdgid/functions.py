@@ -26,9 +26,10 @@ References
 
 from __future__ import absolute_import, division, print_function
 
-from deprecated import deprecated as _deprecated
 from enum import IntEnum
 from typing import Optional, SupportsInt
+
+from deprecated import deprecated as _deprecated
 
 PDGID_TYPE = SupportsInt
 
@@ -116,7 +117,7 @@ def is_lepton(pdgid):
     # type: (PDGID_TYPE) -> bool
     """
     Does this PDG ID correspond to a lepton?
-    
+
     Fourth-generation leptons are included, but not excited (composite) leptons.
     """
     return 11 <= abspid(pdgid) <= 18
@@ -128,7 +129,7 @@ def is_sm_lepton(pdgid):
     Does this PDG ID correspond to a Standard Model lepton?
 
     Codes 11-18 are reserved for Standard Model or fourth-generation leptons,
-    but only the codes 11-16 actually correspond to SM leptons. 
+    but only the codes 11-16 actually correspond to SM leptons.
     """
     return 11 <= abspid(pdgid) <= 16
 
