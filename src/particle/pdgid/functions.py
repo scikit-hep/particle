@@ -106,6 +106,7 @@ def is_sm_quark(pdgid):
     """
     Does this PDG ID correspond to a Standard Model quark?
 
+	Fourth-generation leptons are not included.
     Codes 1-8 are reserved for Standard Model or fourth-generation quarks,
     (excluding excited, i.e. composite, quarks)
     but only the codes 1-6 actually correspond to SM quarks.
