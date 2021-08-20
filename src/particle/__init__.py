@@ -4,6 +4,8 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
+from __future__ import absolute_import
+
 import sys
 from typing import Tuple
 
@@ -13,7 +15,7 @@ from .geant import Geant3ID
 # Direct access to Particle literals
 # Direct access to Particle (the CSV file is not read until a particle is accessed)
 from .particle import InvalidParticle, Particle, ParticleNotFound, literals
-from .particle.enums import Inv, Parity, SpinType, Status
+from .particle.enums import Charge, Inv, Parity, SpinType, Status
 
 # Direct access to PDGID
 from .pdgid import PDGID
