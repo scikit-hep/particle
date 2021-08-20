@@ -43,11 +43,15 @@ def test_lambda_style_search():
     assert 1000010010 in particles
     assert -1000010010 in particles
 
-    [p.pdgid for p in Particle.findall(lambda p: p.pdg_name == "p" and p > 0)] == [
+    assert [
+        p.pdgid for p in Particle.findall(lambda p: p.pdg_name == "p" and p > 0)
+    ] == [
         2212,
         1000010010,
     ]
-    [p.pdgid for p in Particle.findall(lambda p: p.pdg_name == "p" and p < 0)] == [
+    assert [
+        p.pdgid for p in Particle.findall(lambda p: p.pdg_name == "p" and p < 0)
+    ] == [
         -2212,
         -1000010010,
     ]
@@ -78,17 +82,20 @@ def test_keyword_style_search_with_except_catch():
     assert 2212 in particles
     assert 1000010010 in particles
 
-    [p.pdgid for p in Particle.findall(pdg_name="p", particle=True)] == [
+    assert [p.pdgid for p in Particle.findall(pdg_name="p", particle=True)] == [
         2212,
         1000010010,
     ]
-    [p.pdgid for p in Particle.findall(pdg_name="p", particle=False)] == [
+    assert [p.pdgid for p in Particle.findall(pdg_name="p", particle=False)] == [
         -2212,
         -1000010010,
     ]
 
-    [p.pdgid for p in Particle.findall(name="p", particle=True)] == [2212, 1000010010]
-    [p.pdgid for p in Particle.findall(name="p~", particle=False)] == [
+    assert [p.pdgid for p in Particle.findall(name="p", particle=True)] == [
+        2212,
+        1000010010,
+    ]
+    assert [p.pdgid for p in Particle.findall(name="p~", particle=False)] == [
         -2212,
         -1000010010,
     ]
@@ -251,7 +258,7 @@ def test_P_consistency_baryons():
     As for baryons with undefined parity, that of the antibaryon
     is equally undefined, of course.
     """
-    pdgid = lambda p: p.pdgid
+    pdgid = lambda p: p.pdgid  # noqa: E731
 
     pdgids_baryons_defined_P = [
         pdgid(b)
@@ -343,7 +350,7 @@ def test_default_table_loading_bis():
 
 def test_explicit_table_loading():
     Particle.load_table(data.basepath / "particle2021.csv")
-    assert Particle.table_loaded() == True
+    assert Particle.table_loaded()
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
 
@@ -493,12 +500,12 @@ def test_is_unflavoured_meson(PDGIDs):
     _non_unflavoured_mesons = [pid for pid in PDGIDs if pid not in _unflavoured_mesons]
     for pid in _unflavoured_mesons:
         try:
-            assert Particle.from_pdgid(pid).is_unflavoured_meson == True
+            assert Particle.from_pdgid(pid).is_unflavoured_meson
         except (ParticleNotFound, InvalidParticle):
             pass
     for pid in _non_unflavoured_mesons:
         try:
-            assert Particle.from_pdgid(pid).is_unflavoured_meson == False
+            assert not Particle.from_pdgid(pid).is_unflavoured_meson
         except (ParticleNotFound, InvalidParticle):
             pass
 
@@ -569,7 +576,7 @@ checklist_isospin = (
 def test_isospin(pid, isospin):
     particle = Particle.from_pdgid(pid)
 
-    assert particle.I == isospin
+    assert particle.I == isospin  # noqa: E741
 
 
 def test_default_particle():

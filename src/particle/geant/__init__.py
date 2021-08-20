@@ -6,4 +6,13 @@
 
 from __future__ import absolute_import
 
+from typing import Tuple
+
 from .geant3id import Geant3ID
+
+__all__ = ("Geant3ID",)
+
+
+def __dir__():
+    # type: () -> Tuple[str, ...]
+    return __all__

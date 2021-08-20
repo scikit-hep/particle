@@ -61,6 +61,15 @@ Useful definitions:
 
 from __future__ import absolute_import
 
+from typing import Tuple
+
+from .functions import is_composite_quark_or_lepton  # noqa: F401
+from .functions import is_gauge_boson_or_higgs  # noqa: F401
+from .functions import is_generator_specific  # noqa: F401
+from .functions import is_quark  # noqa: F401
+from .functions import is_sm_gauge_boson_or_higgs  # noqa: F401
+from .functions import is_special_particle  # noqa: F401
+from .functions import is_technicolor  # noqa: F401
 from .functions import (
     A,
     J,
@@ -77,26 +86,19 @@ from .functions import (
     has_top,
     has_up,
     is_baryon,
-    is_composite_quark_or_lepton,
     is_diquark,
     is_dyon,
     is_excited_quark_or_lepton,
-    is_gauge_boson_or_higgs,
-    is_generator_specific,
     is_hadron,
     is_lepton,
     is_meson,
     is_nucleus,
     is_pentaquark,
     is_Qball,
-    is_quark,
     is_Rhadron,
-    is_sm_gauge_boson_or_higgs,
     is_sm_lepton,
     is_sm_quark,
-    is_special_particle,
     is_SUSY,
-    is_technicolor,
     is_valid,
     j_spin,
     l_spin,
@@ -106,6 +108,8 @@ from .functions import (
 from .pdgid import PDGID
 
 __all__ = (
+    "PDGID",
+    #
     "is_valid",
     "abspid",
     #
@@ -152,3 +156,8 @@ __all__ = (
     #
     "PDGID",
 )
+
+
+def __dir__():
+    # type: () -> Tuple[str, ...]
+    return __all__

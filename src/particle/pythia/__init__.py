@@ -6,4 +6,13 @@
 
 from __future__ import absolute_import
 
+from typing import Tuple
+
 from .pythiaid import PythiaID
+
+__all__ = ("PythiaID",)
+
+
+def __dir__():
+    # type: () -> Tuple[str, ...]
+    return __all__
