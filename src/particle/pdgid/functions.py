@@ -473,7 +473,7 @@ def is_excited_quark_or_lepton(pdgid):
 
 @_deprecated(
     version="0.16.0",
-    reason="This method is deprecated and will be removed from version 0.17.0. Use is_excited_quark_or_lepton instead.",
+    reason="This method will be removed from version 0.17.0. Use is_excited_quark_or_lepton instead.",
 )
 def is_composite_quark_or_lepton(pdgid):
     # type: (PDGID_TYPE) -> bool
