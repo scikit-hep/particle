@@ -129,6 +129,7 @@ def is_sm_lepton(pdgid):
     """
     Does this PDG ID correspond to a Standard Model lepton?
 
+	Fourth-generation leptons are not included.
     Codes 11-18 are reserved for Standard Model or fourth-generation leptons,
     but only the codes 11-16 actually correspond to SM leptons.
     """
