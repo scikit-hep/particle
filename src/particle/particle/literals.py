@@ -32,7 +32,6 @@ List of available/defined literals:
 from ..shared_literals import common_particles
 from .particle import Particle, ParticleNotFound
 
-
 for item in common_particles:
     locals()[item] = Particle.from_pdgid(common_particles[item])
 

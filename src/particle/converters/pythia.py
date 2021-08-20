@@ -8,9 +8,7 @@ from __future__ import absolute_import
 
 from ..pdgid import PDGID
 from ..pythia import PythiaID
-
 from .bimap import BiMap
-
 
 Pythia2PDGIDBiMap = BiMap(PDGID, PythiaID)
 Pythia2PDGIDBiMap.__doc__ = """

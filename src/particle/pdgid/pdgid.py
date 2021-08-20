@@ -12,10 +12,9 @@ All methods of HepPID are implemented in a Pythonic version, see the functions m
 
 from __future__ import absolute_import
 
-from . import functions as _functions
-
 from inspect import isfunction
 
+from . import functions as _functions
 
 # Collect all the user defined, non-hidden functions in the pdgid.functions module
 _fnames = [

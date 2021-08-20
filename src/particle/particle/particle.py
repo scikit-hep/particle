@@ -9,53 +9,47 @@ from __future__ import absolute_import, division, print_function
 # Python standard library
 import csv
 from copy import copy
-
 from functools import total_ordering
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterable,
+    Iterator,
+    List,
+    Optional,
+    Set,
+    SupportsInt,
+    TextIO,
+    Tuple,
+    Union,
+)
 
 # External dependencies
 import attr
-
-from typing import (
-    Optional,
-    Any,
-    Dict,
-    Tuple,
-    List,
-    Callable,
-    Iterable,
-    Iterator,
-    SupportsInt,
-    Union,
-    TextIO,
-    Set,
-)
-
 from deprecated import deprecated
-
 from hepunits.constants import c_light
 
 from .. import data
-from ..typing import HasOpen, HasRead
-from ..pdgid import PDGID
-from ..pdgid import is_valid
-from ..pdgid.functions import _digit
-from ..pdgid.functions import Location
-from .regex import getname, getdec
-from .enums import (
-    SpinType,
-    Parity,
-    Charge,
-    Inv,
-    Status,
-    Parity_undo,
-    Parity_prog,
-    Charge_undo,
-    Charge_prog,
-    Charge_mapping,
-)
-from .utilities import programmatic_name, str_with_unc, latex_to_html_name
-from .kinematics import width_to_lifetime
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
+from ..pdgid import PDGID, is_valid
+from ..pdgid.functions import Location, _digit
+from ..typing import HasOpen, HasRead
+from .enums import (
+    Charge,
+    Charge_mapping,
+    Charge_prog,
+    Charge_undo,
+    Inv,
+    Parity,
+    Parity_prog,
+    Parity_undo,
+    SpinType,
+    Status,
+)
+from .kinematics import width_to_lifetime
+from .regex import getdec, getname
+from .utilities import latex_to_html_name, programmatic_name, str_with_unc
 
 
 class ParticleNotFound(RuntimeError):
@@ -572,7 +566,7 @@ class Particle(object):
         elif isinstance(filename, HasRead):
             tmp_name = _name or getattr(filename, "name")
             cls._table_names.append(
-                tmp_name or "{0!r} {1}".format(filename, len(cls._table_names))
+                tmp_name or "{!r} {}".format(filename, len(cls._table_names))
             )
             open_file = filename
         elif isinstance(filename, HasOpen):
@@ -950,7 +944,7 @@ class Particle(object):
         if self.mass is None:
             return "None"
         else:
-            return "{0} MeV".format(
+            return "{} MeV".format(
                 str_with_unc(self.mass, self.mass_upper, self.mass_lower)
             )
 
@@ -980,8 +974,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             val += "    SpinType: {self.spin_type!s}\n".format(self=self)
         if self.quarks:
             val += "    Quarks: {self.quarks}\n".format(self=self)
-        val += "    Antiparticle name: {iself.name} (antiparticle status: {self.anti_flag.name})".format(
-            iself=self.invert(), self=self
+        val += "    Antiparticle name: {inv_self.name} (antiparticle status: {self.anti_flag.name})".format(
+            inv_self=self.invert(), self=self
         )
         return val
 
@@ -1024,13 +1018,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             If no matching PDG ID is found in the loaded data table(s).
         """
         if not is_valid(value):
-            raise InvalidParticle("Input PDGID {0} is invalid!".format(value))
+            raise InvalidParticle("Input PDGID {} is invalid!".format(value))
 
         for item in cls.all():
             if item.pdgid == value:
                 return item
         else:
-            raise ParticleNotFound("Could not find PDGID {0}".format(value))
+            raise ParticleNotFound("Could not find PDGID {}".format(value))
 
     @classmethod
     def findall(
@@ -1194,7 +1188,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if matches:
             return matches[0]
         else:
-            raise ParticleNotFound("{0} not found in particle table".format(name))
+            raise ParticleNotFound("{} not found in particle table".format(name))
 
     @classmethod
     def from_string_list(cls, name):
@@ -1272,7 +1266,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
         if not vals:
             raise ParticleNotFound(
-                "Could not find particle {0} or {1}".format(maxname, name)
+                "Could not find particle {} or {}".format(maxname, name)
             )
 
         if len(vals) > 1 and mat["mass"] is not None:

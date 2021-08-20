@@ -10,8 +10,8 @@ Functions relevant to particle kinematics.
 
 from __future__ import absolute_import, division, print_function
 
-from hepunits.units import MeV, ns
 from hepunits.constants import hbar
+from hepunits.units import MeV, ns
 
 
 def width_to_lifetime(Gamma):
@@ -52,7 +52,7 @@ def width_to_lifetime(Gamma):
     """
 
     if Gamma < 0.0:
-        raise ValueError("Input provided, {0} <= 0!".format(Gamma))
+        raise ValueError("Input provided, {} <= 0!".format(Gamma))
     elif Gamma == 0:
         return float("inf")
 
@@ -99,7 +99,7 @@ def lifetime_to_width(tau):
     """
 
     if tau < 0:
-        raise ValueError("Input provided, {0} <= 0!".format(tau))
+        raise ValueError("Input provided, {} <= 0!".format(tau))
     elif tau == 0:
         return float("inf")
 

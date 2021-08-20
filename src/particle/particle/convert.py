@@ -53,10 +53,10 @@ When you are done, you can save one or more of the tables:
 
 import os
 from datetime import date
+from typing import Any, Callable, Dict, Iterable, List, Optional, TextIO, TypeVar, Union
+
 import numpy as np
 import pandas as pd
-
-from typing import TextIO, List, Optional, Dict, TypeVar, Callable, Union, Iterable, Any
 
 try:
     from io import StringIO
@@ -66,23 +66,19 @@ except ImportError:  # Python2 workaround, could also use six
     except ImportError:
         from StringIO import StringIO  # type: ignore
 
-from ..pdgid import PDGID
-from ..pdgid import is_baryon
-
-from .enums import (
-    SpinType,
-    Parity,
-    Charge,
-    Inv,
-    Status,
-    Parity_mapping,
-    Inv_mapping,
-    Status_mapping,
-    Charge_mapping,
-)
-
 from .. import data
-
+from ..pdgid import PDGID, is_baryon
+from .enums import (
+    Charge,
+    Charge_mapping,
+    Inv,
+    Inv_mapping,
+    Parity,
+    Parity_mapping,
+    SpinType,
+    Status,
+    Status_mapping,
+)
 
 FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -332,7 +328,7 @@ def get_from_pdg_mcd(filename):
 
     ds_list = []
     for i in range(4):
-        name = "ID{0}".format(i + 1)
+        name = "ID{}".format(i + 1)
         d = nar[~pd.isna(nar[name])].copy()
         d["ID"] = d[name].astype(int)
         nc = d.NameCharge.str.split(expand=True)

@@ -14,7 +14,9 @@ jobs:
   dist:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Build wheel and SDist
       run: pipx run build
@@ -24,30 +26,22 @@ jobs:
         path: dist/*
 
     - name: Check metadata
-      run: pipx run twine check dist/*
+      run: pipx run twine check --strict dist/*
 
   zipapp:
     name: ZipApp
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
-    - uses: actions/setup-python@v2
+    - uses: excitedleigh/setup-nox@v2.0.0
       with:
         python-version: 3.7
 
-    - name: Install wheel and sdist requirements
-      run: python -m pip install "setuptools>=42.0" "setuptools_scm[toml]>=3.4" "wheel"
-
-    - name: Add version
-      run: python setup.py sdist
-
-    - name: Install requirements
-      run: python -m pip install attrs hepunits importlib_resources --target src
-
     - name: Make ZipApp
-      run: python -m zipapp -c -p "/usr/bin/env python3" -m "particle.__main__:main" -o ../particle.pyz .
-      working-directory: src
+      run: nox -s zipapp
 
     - uses: actions/upload-artifact@v2
       with:

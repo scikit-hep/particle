@@ -8,42 +8,44 @@ from __future__ import absolute_import, division, print_function
 
 import pytest
 
-from particle.pdgid import is_valid
-from particle.pdgid import is_quark
-from particle.pdgid import is_lepton
-from particle.pdgid import is_hadron
-from particle.pdgid import is_meson
-from particle.pdgid import is_baryon
-from particle.pdgid import is_pentaquark
-from particle.pdgid import is_gauge_boson_or_higgs
-from particle.pdgid import is_sm_gauge_boson_or_higgs
-from particle.pdgid import is_generator_specific
-from particle.pdgid import is_special_particle
-from particle.pdgid import is_nucleus
-from particle.pdgid import is_diquark
-from particle.pdgid import is_Rhadron
-from particle.pdgid import is_Qball
-from particle.pdgid import is_dyon
-from particle.pdgid import is_SUSY
-from particle.pdgid import is_technicolor
-from particle.pdgid import is_composite_quark_or_lepton
-from particle.pdgid import has_down
-from particle.pdgid import has_up
-from particle.pdgid import has_strange
-from particle.pdgid import has_charm
-from particle.pdgid import has_bottom
-from particle.pdgid import has_top
-from particle.pdgid import has_fundamental_anti
-from particle.pdgid import charge
-from particle.pdgid import three_charge
-from particle.pdgid import J
-from particle.pdgid import j_spin
-from particle.pdgid import S
-from particle.pdgid import s_spin
-from particle.pdgid import L
-from particle.pdgid import l_spin
-from particle.pdgid import A
-from particle.pdgid import Z
+from particle.pdgid import (
+    A,
+    J,
+    L,
+    S,
+    Z,
+    charge,
+    has_bottom,
+    has_charm,
+    has_down,
+    has_fundamental_anti,
+    has_strange,
+    has_top,
+    has_up,
+    is_baryon,
+    is_composite_quark_or_lepton,
+    is_diquark,
+    is_dyon,
+    is_gauge_boson_or_higgs,
+    is_generator_specific,
+    is_hadron,
+    is_lepton,
+    is_meson,
+    is_nucleus,
+    is_pentaquark,
+    is_Qball,
+    is_quark,
+    is_Rhadron,
+    is_sm_gauge_boson_or_higgs,
+    is_special_particle,
+    is_SUSY,
+    is_technicolor,
+    is_valid,
+    j_spin,
+    l_spin,
+    s_spin,
+    three_charge,
+)
 
 
 def test_charge(PDGIDs):

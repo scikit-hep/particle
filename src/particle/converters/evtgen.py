@@ -7,11 +7,8 @@
 from __future__ import absolute_import
 
 from .. import data
-
 from ..pdgid import PDGID
-
 from .bimap import BiMap, DirectionalMaps
-
 
 EvtGenName2PDGIDBiMap = BiMap(
     PDGID,

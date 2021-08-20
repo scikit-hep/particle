@@ -4,10 +4,9 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-import re
 import math
+import re
 import unicodedata
-
 from typing import Optional
 
 
@@ -67,13 +66,13 @@ def str_with_unc(value, upper, lower=None):
     # This is normal notation
     if -3 < value_digits < 6:
         if error_digits < 0:
-            fsv = fse = ".{0}f".format(-error_digits)
+            fsv = fse = ".{}f".format(-error_digits)
         else:
             fsv = fse = ".0f"
 
     # This is scientific notation - a little odd, but better than the other options.
     else:
-        fsv = ".{0}e".format(abs(error_digits - value_digits))
+        fsv = ".{}e".format(abs(error_digits - value_digits))
         pure_error_digits = int(math.floor(math.log10(error)))
 
         fse = ".0e" if error_digits == pure_error_digits else ".1e"
@@ -148,7 +147,7 @@ def greek_letter_name_to_unicode(letter):
 
 def latex_name_unicode(name):
     # type: (str) -> str
-    """
+    r"""
     Convert in particle names in LaTeX all greek letters by their unicode.
 
     Examples

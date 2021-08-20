@@ -6,9 +6,7 @@
 
 from __future__ import absolute_import
 
-from .particle import Particle
-from .particle import ParticleNotFound, InvalidParticle
-from .enums import SpinType, Parity, Charge, Inv, Status
-from .kinematics import width_to_lifetime, lifetime_to_width
-from .utilities import latex_to_html_name, latex_name_unicode
-from .utilities import programmatic_name
+from .enums import Charge, Inv, Parity, SpinType, Status
+from .kinematics import lifetime_to_width, width_to_lifetime
+from .particle import InvalidParticle, Particle, ParticleNotFound
+from .utilities import latex_name_unicode, latex_to_html_name, programmatic_name

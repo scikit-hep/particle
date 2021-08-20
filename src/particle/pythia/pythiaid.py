@@ -13,9 +13,8 @@ from __future__ import absolute_import
 import csv
 
 from .. import data
-from ..pdgid import PDGID
 from ..exceptions import MatchingIDNotFound
-
+from ..pdgid import PDGID
 
 with data.basepath.joinpath("pdgid_to_pythiaid.csv").open() as _f:
     _bimap = {
@@ -52,7 +51,7 @@ class PythiaID(int):
             if v == pdgid:
                 return cls(k)
         raise MatchingIDNotFound(
-            "Non-existent PythiaID for input PDGID {0} !".format(pdgid)
+            "Non-existent PythiaID for input PDGID {} !".format(pdgid)
         )
 
     def to_pdgid(self):

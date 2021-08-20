@@ -6,8 +6,6 @@
 
 from __future__ import absolute_import
 
-from .pythia import Pythia2PDGIDBiMap
+from .evtgen import EvtGen2PDGNameMap, EvtGenName2PDGIDBiMap, PDG2EvtGenNameMap
 from .geant import Geant2PDGIDBiMap
-
-from .evtgen import EvtGenName2PDGIDBiMap
-from .evtgen import PDG2EvtGenNameMap, EvtGen2PDGNameMap
+from .pythia import Pythia2PDGIDBiMap
