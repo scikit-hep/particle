@@ -95,8 +95,11 @@ def is_quark(pdgid):
     # type: (PDGID_TYPE) -> bool
     """
     Does this PDG ID correspond to a quark?
-
-    Fourth-generation quarks are included, but not excited (composite) quarks.
+    
+    Standard Model and fourth-generation quarks are included, but not excited (composite) quarks.
+    
+    Codes 1-8 are reserved for Standard Model or fourth-generation quarks,
+    and exclude codes for excited, i.e. composite, quarks (see ``is_excited_quark_or_lepton``).
     """
     return 1 <= abspid(pdgid) <= 8
 
@@ -105,10 +108,11 @@ def is_sm_quark(pdgid):
     # type: (PDGID_TYPE) -> bool
     """
     Does this PDG ID correspond to a Standard Model quark?
-
-        Fourth-generation leptons are not included.
-    Codes 1-8 are reserved for Standard Model or fourth-generation quarks,
-    (excluding excited, i.e. composite, quarks)
+    
+    Fourth-generation quarks are not included.
+    
+    Codes 1-8 are reserved for Standard Model (SM) or fourth-generation quarks,
+    and exclude codes for excited, i.e. composite, quarks (see ``is_excited_quark_or_lepton``),
     but only the codes 1-6 actually correspond to SM quarks.
     """
     return 1 <= abspid(pdgid) <= 6
@@ -119,7 +123,10 @@ def is_lepton(pdgid):
     """
     Does this PDG ID correspond to a lepton?
 
-    Fourth-generation leptons are included, but not excited (composite) leptons.
+    Standard Model and fourth-generation leptons are included, but not excited (composite) leptons.
+    
+    Codes 11-18 are reserved for Standard Model or fourth-generation leptons,
+    and exclude codes for excited, i.e. composite, leptons (see ``is_excited_quark_or_lepton``).
     """
     return 11 <= abspid(pdgid) <= 18
 
@@ -128,9 +135,11 @@ def is_sm_lepton(pdgid):
     # type: (PDGID_TYPE) -> bool
     """
     Does this PDG ID correspond to a Standard Model lepton?
-
-        Fourth-generation leptons are not included.
-    Codes 11-18 are reserved for Standard Model or fourth-generation leptons,
+    
+    Fourth-generation leptons are not included.
+    
+    Codes 11-18 are reserved for Standard Model (SM) or fourth-generation leptons,
+    and exclude codes for excited, i.e. composite, leptons (see ``is_excited_quark_or_lepton``),
     but only the codes 11-16 actually correspond to SM leptons.
     """
     return 11 <= abspid(pdgid) <= 16
