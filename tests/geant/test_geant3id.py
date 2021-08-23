@@ -35,7 +35,7 @@ def test_from_pdgid():
 
 def test_from_pdgid_non_matching():
     with pytest.raises(MatchingIDNotFound):
-        gid = Geant3ID.from_pdgid(55)
+        Geant3ID.from_pdgid(55)
 
 
 def test_to_pdgid():

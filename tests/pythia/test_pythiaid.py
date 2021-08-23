@@ -33,7 +33,7 @@ def test_from_pdgid():
     assert PythiaID.from_pdgid(PDGID(9010221)) == PythiaID(10221)
 
     with pytest.raises(MatchingIDNotFound):
-        pdgid = PythiaID.from_pdgid(9000221)
+        PythiaID.from_pdgid(9000221)
 
 
 def test_to_pdgid():

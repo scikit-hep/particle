@@ -20,7 +20,7 @@ def test_BiMap():
     assert "BiMap(PDGID-PythiaID)" in str(bimap)
 
     with pytest.raises(MatchingIDNotFound):
-        pyid = bimap[PDGID(9000221)]
+        bimap[PDGID(9000221)]
 
 
 def test_DirectionalMaps():
@@ -36,6 +36,6 @@ def test_DirectionalMaps():
     assert "DirectionalMap(PYTHIAID->PDGID)" in str(Py2PDGIDMap)
 
     with pytest.raises(MatchingIDNotFound):
-        pyid = PDG2PyIDMap[PDGID(9000221)]
+        PDG2PyIDMap[PDGID(9000221)]
     with pytest.raises(MatchingIDNotFound):
-        pdgid = Py2PDGIDMap[PythiaID(9000221)]
+        Py2PDGIDMap[PythiaID(9000221)]

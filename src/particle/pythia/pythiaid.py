@@ -19,7 +19,7 @@ from ..pdgid import PDGID
 with data.basepath.joinpath("pdgid_to_pythiaid.csv").open() as _f:
     _bimap = {
         int(v["PYTHIAID"]): int(v["PDGID"])
-        for v in csv.DictReader(l for l in _f if not l.startswith("#"))
+        for v in csv.DictReader(line for line in _f if not line.startswith("#"))
     }
 
 

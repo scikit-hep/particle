@@ -100,12 +100,12 @@ class BiMap(Generic[A, B]):
         with file_object as _f:
             self._to_map = {
                 converters[1](v[name_B]): converters[0](v[name_A])
-                for v in csv.DictReader(l for l in _f if not l.startswith("#"))
+                for v in csv.DictReader(line for line in _f if not line.startswith("#"))
             }
             _f.seek(0)
             self._from_map = {
                 converters[0](v[name_A]): converters[1](v[name_B])
-                for v in csv.DictReader(l for l in _f if not l.startswith("#"))
+                for v in csv.DictReader(line for line in _f if not line.startswith("#"))
             }
 
     @overload
@@ -199,7 +199,7 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
         to_map = {
             converters[1](v[name_B]): converters[0](v[name_A])
             for v in csv.DictReader(
-                (l for l in _f if not l.startswith("#")),
+                (line for line in _f if not line.startswith("#")),
                 fieldnames=fieldnames,
                 skipinitialspace=skipinitialspace,
             )
@@ -208,7 +208,7 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
         from_map = {
             converters[0](v[name_A]): converters[1](v[name_B])
             for v in csv.DictReader(
-                (l for l in _f if not l.startswith("#")),
+                (line for line in _f if not line.startswith("#")),
                 fieldnames=fieldnames,
                 skipinitialspace=skipinitialspace,
             )

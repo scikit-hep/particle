@@ -36,8 +36,8 @@ def test_generate(tmp_path):
 
     particle2021_data = data.basepath / "particle2021.csv"
     with particle2021.open() as src, particle2021_data.open() as res:
-        src = [l for l in src.readlines() if not l.startswith("#")]
-        res = [l for l in res.readlines() if not l.startswith("#")]
+        src = [line for line in src.readlines() if not line.startswith("#")]
+        res = [line for line in res.readlines() if not line.startswith("#")]
         assert src == res
 
 

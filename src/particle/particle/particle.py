@@ -15,7 +15,6 @@ from typing import (
     Callable,
     Dict,
     Iterable,
-    Iterator,
     List,
     Optional,
     Set,
@@ -38,18 +37,23 @@ from ..typing import HasOpen, HasRead
 from .enums import (
     Charge,
     Charge_mapping,
-    Charge_prog,
     Charge_undo,
     Inv,
     Parity,
-    Parity_prog,
     Parity_undo,
     SpinType,
     Status,
 )
 from .kinematics import width_to_lifetime
-from .regex import getdec, getname
+from .regex import getname
 from .utilities import latex_to_html_name, programmatic_name, str_with_unc
+
+__all__ = ("Particle", "ParticleNotFound", "InvalidParticle")
+
+
+def __dir__():
+    # type: () -> Tuple[str, ...]
+    return __all__
 
 
 class ParticleNotFound(RuntimeError):
@@ -208,7 +212,9 @@ class Particle(object):
         minus_one, converter=_none_or_positive_converter
     )  # type: Optional[float]
     _three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    I = attr.ib(none_float, converter=_isospin_converter)  # type: Optional[float]
+    I = attr.ib(  # noqa: E741
+        none_float, converter=_isospin_converter
+    )  # type: Optional[float]
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity
@@ -402,7 +408,7 @@ class Particle(object):
             for fld in exclude_fields:
                 try:
                     tbl_names.remove(fld)
-                except:
+                except ValueError:
                     pass
 
         # Start with the full table
@@ -564,7 +570,7 @@ class Particle(object):
                 cls.load_table(f, append=True, _name="nuclei2020.csv")
             return
         elif isinstance(filename, HasRead):
-            tmp_name = _name or getattr(filename, "name")
+            tmp_name = _name or filename.name
             cls._table_names.append(
                 tmp_name or "{!r} {}".format(filename, len(cls._table_names))
             )
@@ -577,7 +583,7 @@ class Particle(object):
             open_file = open(filename)
 
         with open_file as f:
-            r = csv.DictReader(l for l in f if not l.startswith("#"))
+            r = csv.DictReader(line for line in f if not line.startswith("#"))
 
             for v in r:
                 try:

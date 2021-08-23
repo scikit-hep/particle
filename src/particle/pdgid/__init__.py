@@ -61,6 +61,8 @@ Useful definitions:
 
 from __future__ import absolute_import
 
+from typing import Tuple
+
 from .functions import (
     A,
     J,
@@ -106,30 +108,32 @@ from .functions import (
 from .pdgid import PDGID
 
 __all__ = (
+    "PDGID",
+    #
     "is_valid",
     "abspid",
     #
-    "is_quark",
-    "is_sm_quark",
-    "is_lepton",
-    "is_sm_lepton",
-    "is_hadron",
-    "is_meson",
+    "is_Qball",
+    "is_Rhadron",
+    "is_SUSY",
     "is_baryon",
+    "is_composite_quark_or_lepton",
     "is_diquark",
+    "is_dyon",
+    "is_excited_quark_or_lepton",
+    "is_gauge_boson_or_higgs",
+    "is_generator_specific",
+    "is_hadron",
+    "is_lepton",
+    "is_meson",
     "is_nucleus",
     "is_pentaquark",
-    "is_gauge_boson_or_higgs",
+    "is_quark",
     "is_sm_gauge_boson_or_higgs",
-    "is_generator_specific",
+    "is_sm_lepton",
+    "is_sm_quark",
     "is_special_particle",
-    "is_Rhadron",
-    "is_Qball",
-    "is_dyon",
-    "is_SUSY",
     "is_technicolor",
-    "is_excited_quark_or_lepton",
-    "is_composite_quark_or_lepton",
     #
     "has_down",
     "has_up",
@@ -149,6 +153,9 @@ __all__ = (
     "L",
     "A",
     "Z",
-    #
-    "PDGID",
 )
+
+
+def __dir__():
+    # type: () -> Tuple[str, ...]
+    return __all__

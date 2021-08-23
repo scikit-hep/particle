@@ -9,12 +9,13 @@ import pytest
 # Requires pandas
 pd = pytest.importorskip("pandas")
 
+from particle.particle.convert import get_from_pdg_mcd
+
 try:
     from pathlib2 import Path
 except ImportError:
     from pathlib import Path
 
-from particle.particle.convert import get_from_pdg_mcd
 
 DIR = Path(__file__).parent.resolve()
 
@@ -22,4 +23,4 @@ DIR = Path(__file__).parent.resolve()
 def test_get_from_pdg_mcd():
     with (DIR / "../data/test_PDG_mcd_file_duplicates.mcd").open() as f:
         with pytest.raises(AssertionError):
-            mcd_table = get_from_pdg_mcd(f)
+            get_from_pdg_mcd(f)

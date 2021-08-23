@@ -8,9 +8,7 @@ import sys
 
 import pytest
 
-from particle import Particle
-from particle.particle.particle import ParticleNotFound
-from particle.particle.utilities import programmatic_name, str_with_unc
+from particle.particle.utilities import str_with_unc
 
 possibilities = (
     (1.234567, 0.01, None, u"1.235 ± 0.010"),

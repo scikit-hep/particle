@@ -53,7 +53,17 @@ When you are done, you can save one or more of the tables:
 
 import os
 from datetime import date
-from typing import Any, Callable, Dict, Iterable, List, Optional, TextIO, TypeVar, Union
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Iterable,
+    Optional,
+    TextIO,
+    Tuple,
+    TypeVar,
+    Union,
+)
 
 import numpy as np
 import pandas as pd
@@ -75,12 +85,23 @@ from .enums import (
     Inv_mapping,
     Parity,
     Parity_mapping,
-    SpinType,
-    Status,
     Status_mapping,
 )
 
 FILE_DIR = os.path.dirname(os.path.realpath(__file__))
+
+__all__ = (
+    "convert",
+    "get_from_pdg_extended",
+    "get_from_pdg_mcd",
+    "get_from_latex",
+    "update_from_mcd",
+)
+
+
+def __dir__():
+    # type: () -> Tuple[str, ...]
+    return __all__
 
 
 def get_from_latex(filename):
