@@ -34,21 +34,21 @@ from .converters import Pythia2PDGIDBiMap
 from .particle import latex_to_html_name, lifetime_to_width, width_to_lifetime
 
 __all__ = (
-    "Geant3ID",
     "Charge",
+    "Geant3ID",
     "Inv",
     "InvalidParticle",
+    "PDGID",
     "Parity",
     "Particle",
     "ParticleNotFound",
-    "PythiaID",
-    "PDGID",
     "Pythia2PDGIDBiMap",
+    "PythiaID",
+    "SpinType",
+    "Status",
     "latex_to_html_name",
     "lifetime_to_width",
     "width_to_lifetime",
-    "Status",
-    "SpinType",
     "__version__",
 )
 
