@@ -6,8 +6,6 @@
 
 from __future__ import absolute_import, division, print_function
 
-import pytest
-
 from particle.particle import Particle, ParticleNotFound
 
 # All particle names found in DECAY.DEC

@@ -26,7 +26,6 @@ class PDGIDsEnum(IntEnum):
     Muon = 13
     AntiMuon = -Muon
     Tau = 15
-    TauPrime = 17
     # Neutrinos
     Nu_e = 12
     NuBar_tau = -16
@@ -37,7 +36,9 @@ class PDGIDsEnum(IntEnum):
     CQuark = 4
     BQuark = 5
     TQuark = 6
-    BPrimeQuark = 7  # 4th generation
+    # 4th generation quarks and leptons
+    TauPrime = 17
+    BPrimeQuark = 7
     TPrimeQuark = 8
     # Quarkonia
     jpsi = 443
@@ -118,7 +119,7 @@ class PDGIDsEnum(IntEnum):
     # Technicolor
     Pi0TC = 3000111
     PiMinusTC = -3000211
-    # Composite quarks and leptons
+    # Excited (composite) quarks and leptons
     UQuarkStar = 4000002
     AntiElectronStar = -4000011
     # Generator specific pseudoparticles or concepts

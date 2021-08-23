@@ -29,6 +29,8 @@ from __future__ import absolute_import, division, print_function
 from enum import IntEnum
 from typing import Optional, SupportsInt
 
+from deprecated import deprecated as _deprecated
+
 PDGID_TYPE = SupportsInt
 
 
@@ -76,7 +78,7 @@ def is_valid(pdgid):
         return True
     if is_technicolor(pdgid):
         return True
-    if is_composite_quark_or_lepton(pdgid):
+    if is_excited_quark_or_lepton(pdgid):
         return True
     if _extra_bits(pdgid) > 0:
         return is_Qball(pdgid) or is_nucleus(pdgid)
@@ -94,17 +96,53 @@ def is_quark(pdgid):
     """
     Does this PDG ID correspond to a quark?
 
-    Fourth-generation quarks are included, but not excited (composite) quarks.
+    Standard Model and fourth-generation quarks are included, but not excited (composite) quarks.
+
+    Codes 1-8 are reserved for Standard Model or fourth-generation quarks,
+    and exclude codes for excited, i.e. composite, quarks (see ``is_excited_quark_or_lepton``).
     """
     return 1 <= abspid(pdgid) <= 8
 
 
+def is_sm_quark(pdgid):
+    # type: (PDGID_TYPE) -> bool
+    """
+    Does this PDG ID correspond to a Standard Model quark?
+
+    Fourth-generation quarks are not included.
+
+    Codes 1-8 are reserved for Standard Model (SM) or fourth-generation quarks,
+    and exclude codes for excited, i.e. composite, quarks (see ``is_excited_quark_or_lepton``),
+    but only the codes 1-6 actually correspond to SM quarks.
+    """
+    return 1 <= abspid(pdgid) <= 6
+
+
 def is_lepton(pdgid):
     # type: (PDGID_TYPE) -> bool
-    """Does this PDG ID correspond to a lepton?"""
-    if _extra_bits(pdgid) > 0:
-        return False
-    return 11 <= int(_fundamental_id(pdgid)) <= 18
+    """
+    Does this PDG ID correspond to a lepton?
+
+    Standard Model and fourth-generation leptons are included, but not excited (composite) leptons.
+
+    Codes 11-18 are reserved for Standard Model or fourth-generation leptons,
+    and exclude codes for excited, i.e. composite, leptons (see ``is_excited_quark_or_lepton``).
+    """
+    return 11 <= abspid(pdgid) <= 18
+
+
+def is_sm_lepton(pdgid):
+    # type: (PDGID_TYPE) -> bool
+    """
+    Does this PDG ID correspond to a Standard Model lepton?
+
+    Fourth-generation leptons are not included.
+
+    Codes 11-18 are reserved for Standard Model (SM) or fourth-generation leptons,
+    and exclude codes for excited, i.e. composite, leptons (see ``is_excited_quark_or_lepton``),
+    but only the codes 11-16 actually correspond to SM leptons.
+    """
+    return 11 <= abspid(pdgid) <= 16
 
 
 def is_hadron(pdgid):
@@ -430,7 +468,7 @@ def is_technicolor(pdgid):
     return _digit(pdgid, Location.N) == 3
 
 
-def is_composite_quark_or_lepton(pdgid):
+def is_excited_quark_or_lepton(pdgid):
     # type: (PDGID_TYPE) -> bool
     """
     Does this PDG ID correspond to an excited (composite) quark or lepton?
@@ -442,6 +480,20 @@ def is_composite_quark_or_lepton(pdgid):
     if _fundamental_id(pdgid) == 0:
         return False
     return _digit(pdgid, Location.N) == 4 and _digit(pdgid, Location.Nr) == 0
+
+
+@_deprecated(
+    version="0.16.0",
+    reason="This method will be removed from version 0.17.0. Use is_excited_quark_or_lepton instead.",
+)
+def is_composite_quark_or_lepton(pdgid):
+    # type: (PDGID_TYPE) -> bool
+    """
+    Does this PDG ID correspond to an excited (composite) quark or lepton?
+
+    Excited (composite) quarks and leptons have N = 4 and Nr = 0.
+    """
+    return is_excited_quark_or_lepton(pdgid)
 
 
 def has_down(pdgid):
@@ -905,10 +957,10 @@ def _fundamental_id(pdgid):
     """
     if _extra_bits(pdgid) > 0:
         return 0
-    if _digit(pdgid, Location.Nq2) == 0 and _digit(pdgid, Location.Nq1) == 0:
-        return abspid(pdgid) % 10000
-    elif abspid(pdgid) <= 100:
+    if abspid(pdgid) <= 100:
         return abspid(pdgid)
+    elif _digit(pdgid, Location.Nq2) == 0 and _digit(pdgid, Location.Nq1) == 0:
+        return abspid(pdgid) % 10000
     else:
         return 0
 

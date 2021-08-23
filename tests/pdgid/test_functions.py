@@ -6,8 +6,6 @@
 
 from __future__ import absolute_import, division, print_function
 
-import pytest
-
 from particle.pdgid import (
     A,
     J,
@@ -23,9 +21,9 @@ from particle.pdgid import (
     has_top,
     has_up,
     is_baryon,
-    is_composite_quark_or_lepton,
     is_diquark,
     is_dyon,
+    is_excited_quark_or_lepton,
     is_gauge_boson_or_higgs,
     is_generator_specific,
     is_hadron,
@@ -37,6 +35,8 @@ from particle.pdgid import (
     is_quark,
     is_Rhadron,
     is_sm_gauge_boson_or_higgs,
+    is_sm_lepton,
+    is_sm_quark,
     is_special_particle,
     is_SUSY,
     is_technicolor,
@@ -130,6 +130,22 @@ def test_is_quark(PDGIDs):
         assert is_quark(id) == False
 
 
+def test_is_sm_quark(PDGIDs):
+    _sm_quarks = (
+        PDGIDs.DQuark,
+        PDGIDs.UQuark,
+        PDGIDs.SQuark,
+        PDGIDs.CQuark,
+        PDGIDs.BQuark,
+        PDGIDs.TQuark,
+    )
+    _non_sm_quarks = [id for id in PDGIDs if id not in _sm_quarks]
+    for id in _sm_quarks:
+        assert is_sm_quark(id)
+    for id in _non_sm_quarks:
+        assert not is_sm_quark(id)
+
+
 def test_is_lepton(PDGIDs):
     _leptons = (
         PDGIDs.Electron,
@@ -140,13 +156,29 @@ def test_is_lepton(PDGIDs):
         PDGIDs.TauPrime,
         PDGIDs.Nu_e,
         PDGIDs.NuBar_tau,
-        PDGIDs.AntiElectronStar,
     )
     _non_leptons = [id for id in PDGIDs if id not in _leptons]
     for id in _leptons:
         assert is_lepton(id) == True
     for id in _non_leptons:
         assert is_lepton(id) == False
+
+
+def test_is_sm_lepton(PDGIDs):
+    _sm_leptons = (
+        PDGIDs.Electron,
+        PDGIDs.Positron,
+        PDGIDs.Muon,
+        PDGIDs.AntiMuon,
+        PDGIDs.Tau,
+        PDGIDs.Nu_e,
+        PDGIDs.NuBar_tau,
+    )
+    _non_sm_leptons = [id for id in PDGIDs if id not in _sm_leptons]
+    for id in _sm_leptons:
+        assert is_sm_lepton(id) == True
+    for id in _non_sm_leptons:
+        assert is_sm_lepton(id) == False
 
 
 def test_is_meson(PDGIDs):
@@ -359,15 +391,15 @@ def test_is_technicolor(PDGIDs):
         assert is_technicolor(id) == False
 
 
-def test_is_composite_quark_or_lepton(PDGIDs):
-    _composite_quark_or_lepton = (PDGIDs.UQuarkStar, PDGIDs.AntiElectronStar)
-    _non_composite_quark_or_lepton = [
-        id for id in PDGIDs if id not in _composite_quark_or_lepton
+def test_is_excited_quark_or_lepton(PDGIDs):
+    _excited_quark_or_lepton = (PDGIDs.UQuarkStar, PDGIDs.AntiElectronStar)
+    _non_excited_quark_or_lepton = [
+        id for id in PDGIDs if id not in _excited_quark_or_lepton
     ]
-    for id in _composite_quark_or_lepton:
-        assert is_composite_quark_or_lepton(id) == True
-    for id in _non_composite_quark_or_lepton:
-        assert is_composite_quark_or_lepton(id) == False
+    for id in _excited_quark_or_lepton:
+        assert is_excited_quark_or_lepton(id) == True
+    for id in _non_excited_quark_or_lepton:
+        assert is_excited_quark_or_lepton(id) == False
 
 
 def test_has_down(PDGIDs):
