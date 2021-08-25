@@ -342,7 +342,8 @@ def get_from_pdg_mcd(filename):
             | nar.duplicated(subset=["ID3"], keep=False) & nar["ID3"].notna()
             | nar.duplicated(subset=["ID4"], keep=False) & nar["ID4"].notna()
         )
-        print("DUPLICATES:\n", nar[duplicated_ids])
+        if nar[duplicated_ids].shape[0] > 0:
+            print("DUPLICATES:\n", nar[duplicated_ids])
         assert (
             nar[duplicated_ids].shape[0] == 0
         ), "Duplicate entries found in {} !".format(filename)
