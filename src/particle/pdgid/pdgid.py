@@ -60,6 +60,7 @@ class PDGID(int):
         return "".join(
             "{item:14} {value}\n".format(item=item, value=getattr(self, item))
             for item in _fnames
+            if item != "is_composite_quark_or_lepton"
         )
 
     A = property(_functions.A, doc=_functions.A.__doc__)
