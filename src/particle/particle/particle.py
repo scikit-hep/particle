@@ -15,9 +15,9 @@ from typing import (
     Callable,
     Dict,
     Iterable,
+    Iterator,
     List,
     Optional,
-    Set,
     SupportsInt,
     TextIO,
     Tuple,
@@ -234,7 +234,7 @@ class Particle(object):
         )
 
     # Loaded table of entries
-    _table = None  # type: Optional[Set[Particle]]
+    _table = None  # type: Optional[List[Particle]]
 
     # Names of loaded tables
     _table_names = None  # type: Optional[List[str]]
@@ -271,7 +271,7 @@ class Particle(object):
 
     @classmethod
     def all(cls):
-        # type: () -> Set[Particle]
+        # type: () -> List[Particle]
         """
         Access, hence get hold of, the internal particle data CSV table,
         loading it from the default location if no table has yet been loaded.
@@ -280,7 +280,7 @@ class Particle(object):
         if not cls.table_loaded():
             cls.load_table()
 
-        return cls._table if cls._table is not None else set()
+        return cls._table if cls._table is not None else []
 
     @classmethod
     def to_list(
@@ -556,7 +556,7 @@ class Particle(object):
         if append and not cls.table_loaded():
             cls.load_table(append=False)  # default load
         elif not append:
-            cls._table = set()
+            cls._table = []
             cls._table_names = []
 
         # Tell MyPy that this is true
@@ -594,7 +594,7 @@ class Particle(object):
                     if value in cls._table:
                         cls._table.remove(value)  # type: ignore
 
-                    cls._table.add(
+                    cls._table.append(
                         cls(
                             pdgid=value,
                             mass=float(v["Mass"]),
@@ -618,6 +618,8 @@ class Particle(object):
                     )
                 except ValueError:
                     pass
+
+        cls._table = sorted(cls._table)
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
@@ -1033,13 +1035,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             raise ParticleNotFound("Could not find PDGID {}".format(value))
 
     @classmethod
-    def findall(
+    def finditer(
         cls,
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
         particle=None,  # type: Optional[bool]
         **search_terms  # type: Any
     ):
-        # type: (...) -> List[Particle]
+        # type: (...) -> Iterator[Particle]
         """
         Search for a particle, returning a list of candidates.
 
@@ -1084,8 +1086,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
         # Note that particle can be called by position to keep compatibility with Python 2, but that behavior should
         # not be used and will be removed when support for Python 2.7 is dropped.
-
-        results = set()
 
         # Filter out values
         for item in cls.all():
@@ -1134,10 +1134,21 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
             # If the loop was not broken
             else:
-                results.add(item)
+                yield item
 
-        # Matches are sorted so the top one is "best"
-        return sorted(results)
+    @classmethod
+    def findall(
+        cls,
+        filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
+        particle=None,  # type: Optional[bool]
+        **search_terms  # type: Any
+    ):
+        # type: (...) -> List[Particle]
+        return list(
+            cls.finditer(filter_fn=filter_fn, particle=particle, **search_terms)
+        )
+
+    findall.__doc__ = finditer.__doc__
 
     @classmethod
     @deprecated(

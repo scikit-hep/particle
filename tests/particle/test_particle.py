@@ -35,6 +35,10 @@ def test_find():
         Particle.find(name=lambda x: "Upsilon" in x)
 
 
+def test_sorted_find():
+    assert Particle.findall() == sorted(Particle.finditer())
+
+
 def test_lambda_style_search():
     particles = Particle.findall(lambda p: p.pdg_name == "p")
     assert len(particles) == 4
