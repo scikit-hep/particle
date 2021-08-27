@@ -4,6 +4,8 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
+import pytest
+
 from particle.pdgid import PDGID
 from particle.pdgid import functions as _functions
 from particle.pdgid.pdgid import _fnames
@@ -63,7 +65,6 @@ is_Qball       False
 is_Rhadron     False
 is_SUSY        False
 is_baryon      False
-is_composite_quark_or_lepton False
 is_diquark     False
 is_dyon        False
 is_excited_quark_or_lepton False
@@ -94,6 +95,7 @@ def test_decorated_class_methods(PDGIDs):
     Check that all particle.pdgid functions decorated in the PDGID class
     work as expected for all kinds of PDGIDs.
     """
-    for m in _fnames:
-        for pid in PDGIDs:
-            assert getattr(PDGID(pid), m) == getattr(_functions, m)(pid)
+    with pytest.deprecated_call():
+        for m in _fnames:
+            for pid in PDGIDs:
+                assert getattr(PDGID(pid), m) == getattr(_functions, m)(pid)
