@@ -1180,7 +1180,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         >>> # Trivially find all pseudoscalar charm mesons
         >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_charm and p.spin_type==SpinType.PseudoScalar)  # doctest: +SKIP
 
-        See also ``find``, which throws an exception if the particle is not found or too many are found.
         See also ``finditer``, which provides an iterator instead of a list.
         """
 
