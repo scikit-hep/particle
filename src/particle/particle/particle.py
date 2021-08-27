@@ -1043,45 +1043,41 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     ):
         # type: (...) -> Iterator[Particle]
         """
-        Search for a particle, returning a list of candidates.
+        Search for a particle, returning an iterator of candidates.
 
-        The first and only positional argument is given each particle
+        The first and only positional argument is given to each particle
         candidate, and returns True/False. Example:
 
-            >>> Particle.findall(lambda p: 'p' in p.name)    # doctest: +SKIP
-            # Returns list of all particles with p somewhere in name
+            >>> Particle.finditer(lambda p: 'p' in p.name)    # doctest: +SKIP
+            # Returns iterator of all particles with p somewhere in name
 
         You can pass particle=True/False to force a particle or antiparticle.
         If this is not callable, it will do a "fuzzy" search on the name. So this is identical:
 
-            >>> Particle.findall('p')    # doctest: +SKIP
-            # Returns list of all particles with p somewhere in name (same as example above)
+            >>> Particle.finditer('p')    # doctest: +SKIP
+            # Returns literator of all particles with p somewhere in name (same as example above)
 
         You can also pass keyword arguments, which are either called with the
         matching property if they are callable, or are compared if they are not.
         This would do an exact search on the name, instead of a fuzzy search:
 
            >>> # Returns proton and antiproton only
-           >>> Particle.findall(pdg_name='p')    # doctest: +NORMALIZE_WHITESPACE
-           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
-            <Particle: name="p~", pdgid=-2212, mass=938.272081 ± 0.000006 MeV>,
-            <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>,
-            <Particle: name="p~", pdgid=-1000010010, mass=938.272081 ± 0.000006 MeV>]
+           >>> Particle.finditer(pdg_name='p')    # doctest: +SKIP
+           # Returns iterator
 
            >>> # Returns proton only
-           >>> Particle.findall(pdg_name='p', particle=True)    # doctest: +NORMALIZE_WHITESPACE
-           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
-           <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>]
+           >>> Particle.finditer(pdg_name='p', particle=True)    # doctest: +SKIP
+           # Returns iterator
 
         Versatile searches require a (lambda) function as argument:
 
         >>> # Get all neutral beauty hadrons
-        >>> Particle.findall(lambda p: p.pdgid.has_bottom and p.charge==0)    # doctest: +SKIP
+        >>> Particle.finditer(lambda p: p.pdgid.has_bottom and p.charge==0)    # doctest: +SKIP
         >>>
         >>> # Trivially find all pseudoscalar charm mesons
-        >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_charm and p.spin_type==SpinType.PseudoScalar)  # doctest: +SKIP
+        >>> Particle.finditer(lambda p: p.pdgid.is_meson and p.pdgid.has_charm and p.spin_type==SpinType.PseudoScalar)  # doctest: +SKIP
 
-        See also ``find``, which throws an exception if the particle is not found or too many are found.
+        See also ``findall``, which returns the same thing, but as a list.
         """
 
         # Note that particle can be called by position to keep compatibility with Python 2, but that behavior should
@@ -1144,11 +1140,53 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         **search_terms  # type: Any
     ):
         # type: (...) -> List[Particle]
+
+        """
+        Search for a particle, returning a list of candidates.
+
+        The first and only positional argument is given to each particle
+        candidate, and returns True/False. Example:
+
+            >>> Particle.findall(lambda p: 'p' in p.name)    # doctest: +SKIP
+            # Returns list of all particles with p somewhere in name
+
+        You can pass particle=True/False to force a particle or antiparticle.
+        If this is not callable, it will do a "fuzzy" search on the name. So this is identical:
+
+            >>> Particle.findall('p')    # doctest: +SKIP
+            # Returns list of all particles with p somewhere in name (same as example above)
+
+        You can also pass keyword arguments, which are either called with the
+        matching property if they are callable, or are compared if they are not.
+        This would do an exact search on the name, instead of a fuzzy search:
+
+           >>> # Returns proton and antiproton only
+           >>> Particle.findall(pdg_name='p')    # doctest: +NORMALIZE_WHITESPACE
+           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
+            <Particle: name="p~", pdgid=-2212, mass=938.272081 ± 0.000006 MeV>,
+            <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>,
+            <Particle: name="p~", pdgid=-1000010010, mass=938.272081 ± 0.000006 MeV>]
+
+           >>> # Returns proton only
+           >>> Particle.findall(pdg_name='p', particle=True)    # doctest: +NORMALIZE_WHITESPACE
+           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
+           <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>]
+
+        Versatile searches require a (lambda) function as argument:
+
+        >>> # Get all neutral beauty hadrons
+        >>> Particle.findall(lambda p: p.pdgid.has_bottom and p.charge==0)    # doctest: +SKIP
+        >>>
+        >>> # Trivially find all pseudoscalar charm mesons
+        >>> Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_charm and p.spin_type==SpinType.PseudoScalar)  # doctest: +SKIP
+
+        See also ``find``, which throws an exception if the particle is not found or too many are found.
+        See also ``finditer``, which provides an iterator instead of a list.
+        """
+
         return list(
             cls.finditer(filter_fn=filter_fn, particle=particle, **search_terms)
         )
-
-    findall.__doc__ = finditer.__doc__
 
     @classmethod
     @deprecated(
