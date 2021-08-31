@@ -5,8 +5,9 @@ Version 0.16.0 (in preparation)
 --------------
 
 - `Particle` class:
-  - Method `find`deprecated. It will be removed from version 0.17.0 onwards.
-    Please use the more general `findall` method.
+  - Added `finditer`, which returns an iterator instead of a complete list like `findall`.
+  - Method `find` deprecated. It will be removed from version 0.17.0 onwards.
+    Please use the more general `findall` method, or the new `finditer` method.
 - Data files:
   - Added the 2021 PDG data table .mcd file, now default.
   - Version 10 of package CSV data files:
