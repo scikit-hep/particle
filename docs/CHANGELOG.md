@@ -1,19 +1,36 @@
 Changelog
 =========
 
-Version 0.16.0 (in preparation)
+Version 0.16.0
 --------------
+
+September 1st, 2021
 
 - `Particle` class:
   - Added `finditer`, which returns an iterator instead of a complete list like `findall`.
   - Method `find` deprecated. It will be removed from version 0.17.0 onwards.
     Please use the more general `findall` method, or the new `finditer` method.
+- `PDGID` class:
+  - New functions `is_sm_lepton`, `is_sm_quark` and `is_excited_quark_or_lepton`
+    for qualification of PDG IDs.
+  - `is_composite_quark_or_lepton` deprecated in favour of better named `is_excited_quark_or_lepton`.
+  - `is_lepton` fixed to match the behaviour of the related `is_quark`,
+     i.e. now excited leptons are not considered leptons (only SM and 4th generation leptons).
+  - Improvements to documentation.
+  - Test suite enhanced accordingly.
 - Data files:
   - Added the 2021 PDG data table .mcd file, now default.
   - Version 10 of package CSV data files:
       - Since PDG 2021 information now the default.
+  - Lifetimes of neutrinos set to infinity.
+  - Check added for duplicate entries in .mcd PDG data files.
+- Tests:
+  - Tests of coverage added back, using Codecov on GHAs.
+  - CI enhanced, e.g. adding codespell, isort and flake8 checks tp pre-commit hooks.
 - Miscellaneous:
-  - A couple of `FutureWarning` warnings fixed.
+  - Support for Python 3.10 added.
+  - Several `FutureWarning` warnings fixed.
+  - Code modernisation.
 
 
 Version 0.15.1
