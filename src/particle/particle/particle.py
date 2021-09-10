@@ -585,37 +585,40 @@ class Particle(object):
         with open_file as f:
             r = csv.DictReader(line for line in f if not line.startswith("#"))
 
+            # Use a set to avoid making this O(n^2)
+            known_particles = set(cls._table)
             for v in r:
                 try:
                     value = int(v["ID"])
 
                     # Replace the previous value if it exists
                     # We can remove an int; ignore typing thinking we need a particle
-                    if value in cls._table:
+                    if value in known_particles:
                         cls._table.remove(value)  # type: ignore
+                        known_particles.remove(value)  # type: ignore
 
-                    cls._table.append(
-                        cls(
-                            pdgid=value,
-                            mass=float(v["Mass"]),
-                            mass_upper=float(v["MassUpper"]),
-                            mass_lower=float(v["MassLower"]),
-                            width=float(v["Width"]),
-                            width_upper=float(v["WidthUpper"]),
-                            width_lower=float(v["WidthLower"]),
-                            I=v["I"],
-                            G=int(v["G"]),
-                            P=int(v["P"]),
-                            C=int(v["C"]),
-                            anti_flag=int(v["Anti"]),
-                            three_charge=int(v["Charge"]),
-                            rank=int(v["Rank"]),
-                            status=int(v["Status"]),
-                            pdg_name=v["Name"],
-                            quarks=v["Quarks"],
-                            latex_name=v["Latex"],
-                        )
+                    p = cls(
+                        pdgid=value,
+                        mass=float(v["Mass"]),
+                        mass_upper=float(v["MassUpper"]),
+                        mass_lower=float(v["MassLower"]),
+                        width=float(v["Width"]),
+                        width_upper=float(v["WidthUpper"]),
+                        width_lower=float(v["WidthLower"]),
+                        I=v["I"],
+                        G=int(v["G"]),
+                        P=int(v["P"]),
+                        C=int(v["C"]),
+                        anti_flag=int(v["Anti"]),
+                        three_charge=int(v["Charge"]),
+                        rank=int(v["Rank"]),
+                        status=int(v["Status"]),
+                        pdg_name=v["Name"],
+                        quarks=v["Quarks"],
+                        latex_name=v["Latex"],
                     )
+                    cls._table.append(p)
+                    known_particles.add(p)
                 except ValueError:
                     pass
 
