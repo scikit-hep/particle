@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 0.16.1
+--------------
+
+September 10th, 2021
+
+- Fixed an regression with the import time being unreasonably slow.
+
 Version 0.16.0
 --------------
 
