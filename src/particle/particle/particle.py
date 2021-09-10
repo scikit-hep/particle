@@ -587,6 +587,7 @@ class Particle(object):
 
             # Use a set to avoid making this O(n^2)
             known_particles = set(cls._table)
+            
             for v in r:
                 try:
                     value = int(v["ID"])
@@ -594,7 +595,6 @@ class Particle(object):
                     # Replace the previous value if it exists
                     # We can remove an int; ignore typing thinking we need a particle
                     if value in known_particles:
-                        cls._table.remove(value)  # type: ignore
                         known_particles.remove(value)  # type: ignore
 
                     p = cls(
@@ -617,12 +617,11 @@ class Particle(object):
                         quarks=v["Quarks"],
                         latex_name=v["Latex"],
                     )
-                    cls._table.append(p)
                     known_particles.add(p)
                 except ValueError:
                     pass
 
-        cls._table = sorted(cls._table)
+        cls._table = sorted(known_particles)
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
