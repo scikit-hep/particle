@@ -587,7 +587,7 @@ class Particle(object):
 
             # Use a set to avoid making this O(n^2)
             known_particles = set(cls._table)
-            
+
             for v in r:
                 try:
                     value = int(v["ID"])
