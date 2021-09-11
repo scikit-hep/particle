@@ -7,6 +7,7 @@ Version 0.16.1
 September 10th, 2021
 
 - Fixed an regression with the import time being unreasonably slow.
+- Restore Python 3.5 support (no benefit to drop until 2.7 is dropped)
 
 Version 0.16.0
 --------------
