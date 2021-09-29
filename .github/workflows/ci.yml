@@ -35,7 +35,6 @@ jobs:
           - {os: windows-latest, python-version: '3.9'}
         exclude:
           - {os: ubuntu-latest, python-version: '3.7'}
-    name: Check ${{ matrix.os }} Python ${{ matrix.python-version }}
 
     steps:
     - uses: actions/checkout@v2
