@@ -1,6 +1,13 @@
 Changelog
 =========
 
+
+Version 0.16.2  (in preparations)
+--------------
+
+- Resurrect tests on "all" platforms - Linux, macOS and Windows.
+
+
 Version 0.16.1
 --------------
 
