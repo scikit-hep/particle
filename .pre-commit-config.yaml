@@ -34,7 +34,7 @@ repos:
     args: [--max-py-version=3.10, --min-py3-version=3.5]
 
 - repo: https://github.com/asottile/pyupgrade
-  rev: v2.28.0
+  rev: v2.29.0
   hooks:
   - id: pyupgrade
 
