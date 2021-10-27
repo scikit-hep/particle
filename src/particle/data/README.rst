@@ -86,3 +86,9 @@ for completeness (e.g., non-yet-observed baryons, leptoquarks).
 ===========================
 
 A list of matching particle PDG IDs and particle names used by EvtGen.
+
+
+``pdgid_to_lhcbname.csv``
+===========================
+
+A list of matching particle PDG IDs and particle names used by the LHCb software.

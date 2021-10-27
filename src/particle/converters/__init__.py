@@ -10,12 +10,16 @@ from typing import Tuple
 
 from .evtgen import EvtGen2PDGNameMap, EvtGenName2PDGIDBiMap, PDG2EvtGenNameMap
 from .geant import Geant2PDGIDBiMap
+from .lhcb import LHCb2PDGNameMap, LHCbName2PDGIDBiMap, PDG2LHCbNameMap
 from .pythia import Pythia2PDGIDBiMap
 
 __all__ = (
     "EvtGen2PDGNameMap",
     "EvtGenName2PDGIDBiMap",
     "PDG2EvtGenNameMap",
+    "LHCb2PDGNameMap",
+    "LHCbName2PDGIDBiMap",
+    "PDG2LHCbNameMap",
     "Geant2PDGIDBiMap",
     "Pythia2PDGIDBiMap",
 )

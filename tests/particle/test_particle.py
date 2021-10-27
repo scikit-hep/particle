@@ -706,3 +706,23 @@ decfile_style_names = (
 @pytest.mark.parametrize("name,pid", decfile_style_names)
 def test_decfile_style_names(name, pid):
     assert Particle.from_evtgen_name(name).pdgid == pid
+
+
+lhcb_style_names = (
+    ("nu_tau", 16),
+    ("nu_tau~", -16),
+    ("eta_prime", 331),
+    ("f'_2(1525)", 335),
+    ("D*_s+", 433),
+    ("D*_s-", -433),
+    ("B_s0", 531),
+    ("B_s~0", -531),
+    ("Lambda_b0", 5122),
+    ("Lambda_b~0", -5122),
+    # ("X_1(3872)", 9920443),
+)
+
+
+@pytest.mark.parametrize("name,pid", lhcb_style_names)
+def test_lhcb_style_names(name, pid):
+    assert Particle.from_lhcb_name(name).pdgid == pid

@@ -31,6 +31,7 @@ from hepunits.constants import c_light
 
 from .. import data
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
+from ..converters.lhcb import LHCbName2PDGIDBiMap
 from ..pdgid import PDGID, is_valid
 from ..pdgid.functions import Location, _digit
 from ..typing import HasOpen, HasRead
@@ -996,6 +997,12 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return EvtGenName2PDGIDBiMap[self.pdgid]
 
     @property
+    def lhcb_name(self):
+        # type: () -> str
+        "This is the name used in the LHCb software framework"
+        return LHCbName2PDGIDBiMap[self.pdgid]
+
+    @property
     def programmatic_name(self):
         # type: () -> str
         "This name could be used for a variable name."
@@ -1235,6 +1242,21 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             If the matching EvtGen name - PDG ID done internally is unsuccessful.
         """
         return cls.from_pdgid(EvtGenName2PDGIDBiMap[name])
+
+    @classmethod
+    def from_lhcb_name(cls, name):
+        # type: (str) -> Particle
+        """
+        Get a particle from an LHCb particle name, as used in LHCb Gaudi applications
+
+        Raises
+        ------
+        ParticleNotFound
+            If `from_pdgid` returns no match.
+        MatchingIDNotFound
+            If the matching LHCb name - PDG ID done internally is unsuccessful.
+        """
+        return cls.from_pdgid(LHCbName2PDGIDBiMap[name])
 
     @classmethod
     def from_string(cls, name):
