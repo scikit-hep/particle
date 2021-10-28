@@ -806,7 +806,7 @@
    -2000003,   -2000003,        898,             ~s(R)~,               unknown,           \overline{\tilde{s}}_{R},           ~s_Rbar,
     2000004,    2000004,        899,              ~c(R),               unknown,                      \tilde{c}_{R},              ~c_R,
    -2000004,   -2000004,        900,             ~c(R)~,               unknown,           \overline{\tilde{c}}_{R},           ~c_Rbar,
-   2000005,    2000005,        901,              ~b(2),               unknown,                      \tilde{b}_{2},              ~b_2, 
+   2000005,    2000005,        901,              ~b(2),               unknown,                      \tilde{b}_{2},              ~b_2,
    -2000005,   -2000005,        902,             ~b(2)~,               unknown,           \overline{\tilde{b}}_{2},           ~b_2bar,
     2000006,    2000006,        903,              ~t(2),               unknown,                      \tilde{t}_{2},              ~t_2,
    -2000006,   -2000006,        904,             ~t(2)~,               unknown,           \overline{\tilde{t}}_{2},           ~t_2bar,
