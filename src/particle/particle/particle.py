@@ -233,8 +233,11 @@ class Particle(object):
             self=self, pdgid=int(self.pdgid), mass=self._str_mass()
         )
 
-    # Loaded table of entries
+    # Ordered loaded table of entries
     _table = None  # type: Optional[List[Particle]]
+
+    # Hash optimized table of particles
+    _hash_table = None  # type: Optional[Dict[int, Particle]]
 
     # Names of loaded tables
     _table_names = None  # type: Optional[List[str]]
@@ -557,10 +560,12 @@ class Particle(object):
             cls.load_table(append=False)  # default load
         elif not append:
             cls._table = []
+            cls._hash_table = {}
             cls._table_names = []
 
         # Tell MyPy that this is true
         assert cls._table is not None
+        assert cls._hash_table is not None
         assert cls._table_names is not None
 
         if filename is None:
@@ -585,17 +590,9 @@ class Particle(object):
         with open_file as f:
             r = csv.DictReader(line for line in f if not line.startswith("#"))
 
-            # Use a set to avoid making this O(n^2)
-            known_particles = set(cls._table)
-
             for v in r:
                 try:
                     value = int(v["ID"])
-
-                    # Replace the previous value if it exists
-                    # We can remove an int; ignore typing thinking we need a particle
-                    if value in known_particles:
-                        known_particles.remove(value)  # type: ignore
 
                     p = cls(
                         pdgid=value,
@@ -617,11 +614,14 @@ class Particle(object):
                         quarks=v["Quarks"],
                         latex_name=v["Latex"],
                     )
-                    known_particles.add(p)
+
+                    # Replace the previous value if it exists
+                    cls._hash_table[value] = p
+
                 except ValueError:
                     pass
 
-        cls._table = sorted(known_particles)
+        cls._table = sorted(cls._hash_table.values())
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
@@ -1030,11 +1030,17 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if not is_valid(value):
             raise InvalidParticle("Input PDGID {} is invalid!".format(value))
 
-        for item in cls.all():
-            if item.pdgid == value:
-                return item
-        else:
-            raise ParticleNotFound("Could not find PDGID {}".format(value))
+        if not cls.table_loaded():
+            cls.load_table()
+
+        assert cls._hash_table is not None
+
+        try:
+            return cls._hash_table[int(value)]
+        except KeyError:
+            raise ParticleNotFound(  # noqa: B904  <- use from None when Python 2 is dropped
+                "Could not find PDGID {}".format(value)
+            )
 
     @classmethod
     def finditer(
