@@ -17,9 +17,6 @@ def tests(session: nox.Session) -> None:
     session.install(".[test]")
     session.run(
         "pytest",
-        "--doctest-modules",
-        "--cov=particle",
-        "--cov-report=xml",
         *session.posargs,
     )
 
