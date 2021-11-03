@@ -17,7 +17,7 @@ from .geant import Geant3ID
 from .particle import InvalidParticle, Particle, ParticleNotFound, literals
 from .particle.enums import Charge, Inv, Parity, SpinType, Status
 
-# Direct access to PDGID
+# Direct access to PDGID and other ID classes
 from .pdgid import PDGID
 from .pythia import PythiaID
 
@@ -25,9 +25,6 @@ from .pythia import PythiaID
 from .version import version as __version__
 
 sys.modules["particle.literals"] = literals
-
-# Direct access to handy bi-directional maps
-from .converters import Pythia2PDGIDBiMap
 
 # Direct access to handy LaTeX to HTML particle name conversions
 # Direct access to kinematics functions
@@ -42,7 +39,6 @@ __all__ = (
     "Parity",
     "Particle",
     "ParticleNotFound",
-    "Pythia2PDGIDBiMap",
     "PythiaID",
     "SpinType",
     "Status",
