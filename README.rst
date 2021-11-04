@@ -183,10 +183,10 @@ whereas the latter returns an iterator.
     ...     print(p.name, p.pdgid, p.width_lower, p.width_upper)
     >>>
     >>> # Find all antiparticles with 'Omega' in the name
-    >>> Particle.findall('Omega', particle=False)   # several found
+    >>> Particle.finditer('Omega', particle=False)   # several found
     >>>
     >>> # Find all antiparticles of name=='Omega'
-    >>> Particle.findall(name='Omega', particle=False)  # none found
+    >>> Particle.finditer(name='Omega', particle=False)  # none found
     >>>
     >>> # Find all antiparticles of pdg_name=='Omega'
     >>> Particle.findall(pdg_name='Omega', particle=False)  # only 1, of course
