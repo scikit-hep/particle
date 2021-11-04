@@ -136,28 +136,21 @@ or, say, the name used in EvtGen, you can get a particle directly.
     >>>
     >>> Particle.from_evtgen_name("J/psi")
     <Particle: name="J/psi(1S)", pdgid=443, mass=3096.900 ± 0.006 MeV>
-    >>>
-    >>> next(Particle.finditer('pi'))  # iterator of particles
-    <Particle: name="pi0", pdgid=111, mass=134.9768 ± 0.0005 MeV>
-    >>> Particle.findall('pi')[0]  # Same as above but returning a list of particles
-    <Particle: name="pi0", pdgid=111, mass=134.9768 ± 0.0005 MeV>
 
-Similar methods exist to get a particle from a PDG style name,
-either a list or the best match:
+A similar method exists to get a list of particles from a PDG style name:
 
 .. code-block:: python
 
-    >>> Particle.from_string("pi")
-    <Particle: name="pi0", pdgid=111, mass=134.9768 ± 0.0005 MeV>
+    >>> Particle.findall(pdg_name="pi")
 
-The related method ``Particle.from_string_list("pi")`` returns the list of matching particles,
-which in this case is the three charged states of the pseudoscalar pion.
+returns the list of matching particles whose PDG name is "pi",
+which in this case comprises the three charged states of the pseudoscalar pion.
 
-Else you can use a search. A basic example is the following:
+Else, and more generally, you can use a search. A basic example is the following:
 
 .. code-block:: python
 
-    >>> next(Particle.finditer('pi'))  # iterator of particles
+    >>> next(Particle.finditer('pi'))  # first item in iterator of particles
     <Particle: name="pi0", pdgid=111, mass=134.9768 ± 0.0005 MeV>
     >>>
     >>> Particle.findall('pi')[0]  # Same as above but returning a list of particles
@@ -178,12 +171,14 @@ particle's ``name``.  The alternative, *now deprecated*, ``.find()`` requires on
 match returned by the search, and will throw an error if more or less than one
 match is found.
 
-Here are possible sophisticated searches:
+Here are possible sophisticated searches, all of which work with either
+``Particle.findall`` or ``Particle.finditer``, where the former method provides a list
+whereas the latter returns an iterator.
 
 .. code-block:: python
 
     >>> # Print out all particles with asymmetric decay width uncertainties
-    >>> ps = Particle.findall(lambda p: p.width_lower != p.width_upper)
+    >>> ps = Particle.finditer(lambda p: p.width_lower != p.width_upper)
     >>> for p in ps:
     ...     print(p.name, p.pdgid, p.width_lower, p.width_upper)
     >>>
