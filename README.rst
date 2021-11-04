@@ -126,16 +126,42 @@ Getting started: Particles
 --------------------------
 
 You can use a variety of methods to get particles. If you know the PDG ID number
-you can get a particle directly, or you can use a search:
+or, say, the name used in EvtGen, you can get a particle directly.
 
 .. code-block:: python
 
     >>> from particle import Particle
     >>> Particle.from_pdgid(211)
-    <Particle: name="pi+", pdgid=211, mass=139.57061 ± 0.00024 MeV>
+    <Particle: name="pi+", pdgid=211, mass=139.57039 ± 0.00018 MeV>
     >>>
-    >>> Particle.findall('pi')[0]
-    <Particle: name="pi0", pdgid=111, mass=134.9770 ± 0.0005 MeV>
+    >>> Particle.from_evtgen_name("J/psi")
+    <Particle: name="J/psi(1S)", pdgid=443, mass=3096.900 ± 0.006 MeV>
+    >>>
+    >>> next(Particle.finditer('pi'))  # iterator of particles
+    <Particle: name="pi0", pdgid=111, mass=134.9768 ± 0.0005 MeV>
+    >>> Particle.findall('pi')[0]  # Same as above but returning a list of particles
+    <Particle: name="pi0", pdgid=111, mass=134.9768 ± 0.0005 MeV>
+
+Similar methods exist to get a particle from a PDG style name,
+either a list or the best match:
+
+.. code-block:: python
+
+    >>> Particle.from_string("pi")
+    <Particle: name="pi0", pdgid=111, mass=134.9768 ± 0.0005 MeV>
+
+The related method ``Particle.from_string_list("pi")`` returns the list of matching particles,
+which in this case is the three charged states of the pseudoscalar pion.
+
+Else you can use a search. A basic example is the following:
+
+.. code-block:: python
+
+    >>> next(Particle.finditer('pi'))  # iterator of particles
+    <Particle: name="pi0", pdgid=111, mass=134.9768 ± 0.0005 MeV>
+    >>>
+    >>> Particle.findall('pi')[0]  # Same as above but returning a list of particles
+    <Particle: name="pi0", pdgid=111, mass=134.9768 ± 0.0005 MeV>
 
 You can search for the properties using keyword arguments, which include
 ``pdg_name``, ``name``, ``mass``, ``width``, ``charge``, ``three_charge``, ``anti_flag``, ``rank``,
@@ -144,10 +170,11 @@ You can search for the properties using keyword arguments, which include
 You can pass a callable or an exact match for any property.
 The argument ``particle`` can be set to ``True``/``False``, as well,
 to limit the search to particles or antiparticles.
+
 You can also build the search yourself with the first positional
 argument, which accepts a callable that is given the particle object itself.
 If the first positional argument is a string, that will match against the
-particle's ``name``.  The alternative ``.find()`` *requires only one*
+particle's ``name``.  The alternative, *now deprecated*, ``.find()`` requires only one
 match returned by the search, and will throw an error if more or less than one
 match is found.
 
