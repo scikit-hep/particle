@@ -1237,6 +1237,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return cls.from_pdgid(EvtGenName2PDGIDBiMap[name])
 
     @classmethod
+    @deprecated(
+        version="0.16.0",
+        reason="This method is deprecated and will be removed from version 0.17.0. Use finditer or findall instead.",
+    )
     def from_string(cls, name):
         # type: (str) -> Particle
         "Get a particle from a PDG style name - returns the best match."
@@ -1247,6 +1251,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             raise ParticleNotFound("{} not found in particle table".format(name))
 
     @classmethod
+    @deprecated(
+        version="0.16.0",
+        reason="This method is deprecated and will be removed from version 0.17.0. Use finditer or findall instead.",
+    )
     def from_string_list(cls, name):
         # type: (str) -> List[Particle]
         "Get a list of particles from a PDG style name."
