@@ -1297,7 +1297,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             return []
 
     @classmethod
-    @classmethod
     @deprecated(
         version="0.16.0",
         reason="This method is deprecated and will be removed from version 0.17.0. Use finditer or findall instead.",
