@@ -629,30 +629,6 @@ def test_to_dict():
     assert set(query_as_dict["name"]) == {"e+", "mu+", "tau+", "tau'+"}
 
 
-ampgen_style_names = (
-    ("b", 5),
-    ("b~", -5),
-    ("pi+", 211),
-    ("pi-", -211),
-    ("K~*0", -313),
-    ("K*(892)bar0", -313),
-    ("a(1)(1260)+", 20213),
-    ("rho(1450)0", 100113),
-    ("rho(770)0", 113),
-    ("K(1)(1270)bar-", -10323),
-    # ("K(1460)bar-", -100321),
-    ("K(2)*(1430)bar-", -325),
-)
-
-
-@pytest.mark.parametrize("name,pid", ampgen_style_names)
-def test_ampgen_style_names(name, pid):
-    particle = Particle.from_string(name)
-
-    assert particle.pdgid == pid
-    assert particle == pid
-
-
 decfile_style_names = (
     ("s", 3),
     ("anti-b", -5),
