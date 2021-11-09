@@ -247,7 +247,7 @@ class DirectionalMap(Mapping):
             msg = "Matching {a}->{b} for input {v} not found !".format(
                 a=self.name_A, b=self.name_B, v=value
             )
-            raise MatchingIDNotFound(msg)
+            raise MatchingIDNotFound(msg)  # noqa: B904 Remove when dropping Python 2
 
     def __iter__(self):
         # type: () -> Iterator[str]
