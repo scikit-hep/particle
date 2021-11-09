@@ -55,7 +55,7 @@ def main() -> None:
             if value:
                 particles = [Particle.from_pdgid(value)]
             else:
-                particles = Particle.from_string_list(cand)
+                particles = Particle.findall(cand)
 
             if not particles:
                 print("Particle", cand, "not found.")
