@@ -2,10 +2,21 @@ Changelog
 =========
 
 
-Version 0.16.2  (in preparations)
+Version 0.16.2
 --------------
 
-- Resurrect tests on "all" platforms - Linux, macOS and Windows.
+November 11th, 2021
+
+- `Particle` class:
+  - Faster `Particle.from_pdgid`.
+  - Better coverage of documentation for `Particle` methods, especially for newest method `finditer`.
+  - Do not expose converters on high-level imports. Usage is hence `from particle.converters import ...`.
+- Tests:
+  - Resurrected tests on "all" platforms - Linux, macOS and Windows.
+  - Performance benchmark tests added for loading of particle property CSV files.
+  - Updated pre-commit hooks.
+- Miscellaneous:
+  - Enforced `Black` formatting in notebooks.
 
 
 Version 0.16.1
@@ -15,6 +26,7 @@ September 10th, 2021
 
 - Fixed an regression with the import time being unreasonably slow.
 - Restore Python 3.5 support (no benefit to drop until 2.7 is dropped)
+
 
 Version 0.16.0
 --------------
