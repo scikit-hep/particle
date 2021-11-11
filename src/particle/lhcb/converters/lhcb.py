@@ -21,11 +21,11 @@ Bi-bidirectional map between PDG IDs and LHCb names.
 
 Examples
 --------
->>> name = LHCbName2PDGIDBiMap[PDGID(22)]
+>>> name = LHCbName2PDGIDBiMap[PDGID(-531)]
 >>> name
-'gamma'
+'B_s~0'
 
->>> pdgid = LHCbName2PDGIDBiMap['gamma']
+>>> pdgid = LHCbName2PDGIDBiMap['B_s~0']
 >>> pdgid
-<PDGID: 22>
+<PDGID: -531>
 """

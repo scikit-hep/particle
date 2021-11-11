@@ -6,7 +6,8 @@
 
 import pytest
 
-from particle.lhcb import Particle
+from particle import Particle
+from particle.lhcb import from_lhcb_name, to_lhcb_name
 
 lhcb_style_names = (
     ("nu_tau", 16),
@@ -24,5 +25,10 @@ lhcb_style_names = (
 
 
 @pytest.mark.parametrize("name,pid", lhcb_style_names)
-def test_lhcb_style_names(name, pid):
-    assert Particle.from_lhcb_name(name).pdgid == pid
+def test_from_lhcb_name(name, pid):
+    assert from_lhcb_name(name).pdgid == pid
+
+
+@pytest.mark.parametrize("name,pid", lhcb_style_names)
+def test_to_lhcb_name(name, pid):
+    assert to_lhcb_name(Particle.from_pdgid(pid)) == name

@@ -8,9 +8,12 @@ from __future__ import absolute_import
 
 from typing import Tuple
 
-from .particle import Particle
+from .utils import from_lhcb_name, to_lhcb_name
 
-__all__ = ("Particle",)
+__all__ = (
+    "from_lhcb_name",
+    "to_lhcb_name",
+)
 
 
 def __dir__():
