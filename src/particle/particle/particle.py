@@ -1297,10 +1297,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             return []
 
     @classmethod
-    @deprecated(
-        version="0.16.0",
-        reason="This method is deprecated and will be removed from version 0.17.0. Use finditer or findall instead.",
-    )
     def _from_group_dict_list(cls, mat):
         # type: (Dict[str, Any]) -> List[Particle]
 
