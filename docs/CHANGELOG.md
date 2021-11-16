@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 0.16.3 (WIP)
+--------------
+
+- `Particle` class:
+  - New class method `Particle.from_name`.
+
 
 Version 0.16.2
 --------------
