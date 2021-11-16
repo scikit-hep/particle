@@ -1054,11 +1054,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             If no particle matches the input name.
         """
         try:
-            (particle,) = Particle.finditer(name=name)  # throws an error if < 1 or > 1 particle is found
+            (particle,) = Particle.finditer(
+                name=name
+            )  # throws an error if < 1 or > 1 particle is found
             return particle
         except ValueError:
             raise ParticleNotFound(  # noqa: B904  <- use from None when Python 2 is dropped
-                "Could not find name \"{}\"".format(name)
+                'Could not find name "{}"'.format(name)
             )
 
     @classmethod
