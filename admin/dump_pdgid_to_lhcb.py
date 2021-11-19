@@ -1,10 +1,15 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-import requests
 import csv
 import datetime as dt
 
-def download_table(url="https://gitlab.cern.ch/lhcb-conddb/DDDB/-/raw/master/param/ParticleTable.txt"):
+import requests
+
+
+def download_table(
+    url="https://gitlab.cern.ch/lhcb-conddb/DDDB/-/raw/master/param/ParticleTable.txt",
+):
     r = requests.get(url)
     r.raise_for_status()
 
@@ -19,12 +24,19 @@ def main():
     lhcb_names = {int(pdg_id): name for name, _, pdg_id, *_ in table}
 
     with open("src/particle/lhcb/data/pdgid_to_lhcbname.csv", "w") as out_csv:
-        out_csv.write(f"# (c) Scikit-HEP project - Particle package data file - pdgid_to_lhcbname.csv - {date}\n")
-        writer = csv.DictWriter(out_csv, fieldnames=("PDGID", "STR"), lineterminator="\n")
+        out_csv.write(
+            f"# (c) Scikit-HEP project - Particle package data file - pdgid_to_lhcbname.csv - {date}\n"
+        )
+        writer = csv.DictWriter(
+            out_csv, fieldnames=("PDGID", "STR"), lineterminator="\n"
+        )
         writer.writeheader()
 
-        for pid,name in sorted(lhcb_names.items(), key=lambda x: (abs(int(x[0])), -int(x[0]))):
+        for pid, name in sorted(
+            lhcb_names.items(), key=lambda x: (abs(int(x[0])), -int(x[0]))
+        ):
             writer.writerow({"PDGID": pid, "STR": name})
+
 
 if __name__ == "__main__":
     main()
