@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from ..particle import Particle
-from .converters.lhcb import LHCbName2PDGIDBiMap
+from .converters import LHCbName2PDGIDBiMap
 
 
 def to_lhcb_name(p):
