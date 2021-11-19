@@ -1043,6 +1043,42 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             )
 
     @classmethod
+    def from_name(cls, name):
+        # type: (str) -> Particle
+        """
+        Get a particle from its name.
+
+        Raises
+        ------
+        ParticleNotFound
+            If no particle matches the input name.
+        """
+        try:
+            (particle,) = Particle.finditer(
+                name=name
+            )  # throws an error if < 1 or > 1 particle is found
+            return particle
+        except ValueError:
+            raise ParticleNotFound(  # noqa: B904  <- use from None when Python 2 is dropped
+                'Could not find name "{}"'.format(name)
+            )
+
+    @classmethod
+    def from_evtgen_name(cls, name):
+        # type: (str) -> Particle
+        """
+        Get a particle from an EvtGen particle name, as in .dec decay files.
+
+        Raises
+        ------
+        ParticleNotFound
+            If `from_pdgid`, internally called, returns no match.
+        MatchingIDNotFound
+            If the matching EvtGen name - PDG ID done internally is unsuccessful.
+        """
+        return cls.from_pdgid(EvtGenName2PDGIDBiMap[name])
+
+    @classmethod
     def finditer(
         cls,
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
@@ -1226,21 +1262,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             )
         else:
             raise RuntimeError("Found too many particles")
-
-    @classmethod
-    def from_evtgen_name(cls, name):
-        # type: (str) -> Particle
-        """
-        Get a particle from an EvtGen particle name, as in .dec decay files.
-
-        Raises
-        ------
-        ParticleNotFound
-            If `from_pdgid` returns no match.
-        MatchingIDNotFound
-            If the matching EvtGen name - PDG ID done internally is unsuccessful.
-        """
-        return cls.from_pdgid(EvtGenName2PDGIDBiMap[name])
 
     @classmethod
     def from_string(cls, name):
