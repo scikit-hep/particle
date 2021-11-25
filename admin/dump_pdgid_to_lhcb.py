@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
+#
+# Distributed under the 3-clause BSD license, see accompanying file LICENSE
+# or https://github.com/scikit-hep/particle for details.
+"""This script generates the PDGID<->LHCb name mapping using the table from the LHCb DDDB package."""
 
 import csv
 import datetime as dt
