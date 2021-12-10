@@ -4,8 +4,6 @@
 # or https://github.com/scikit-hep/particle for details.
 
 
-import sys
-
 import pytest
 from hepunits import meter, second
 from pytest import approx
@@ -328,9 +326,6 @@ checklist_describe = (
     [4212, "Width < 4.6 MeV"],  # Sigma(c)(2455)+
     [4214, "Width < 17.0 MeV"],  # Sigma(c)(2520)+
 )
-if sys.version_info < (3, 0):
-    for i, pair_vals in enumerate(checklist_describe):
-        checklist_describe[i][1] = pair_vals[1].replace("±", "+/-")
 
 
 @pytest.mark.parametrize("pid,description", checklist_describe)
@@ -403,7 +398,6 @@ checklist_html_name = (
 )
 
 
-@pytest.mark.skipif(sys.version_info < (3, 0), reason="Requires Python 3")
 @pytest.mark.parametrize("pid,html_name", checklist_html_name)
 def test_html_name(pid, html_name):
     particle = Particle.from_pdgid(pid)

@@ -5,7 +5,6 @@
 
 import math
 import re
-import sys
 import unicodedata
 from typing import Optional
 
@@ -83,12 +82,7 @@ def str_with_unc(value, upper, lower=None):
             value=value, upper=upper, lower=lower, fsv=fsv, fse=fse
         )
 
-    # Only bother with unicode if this is Python 3.
-    pm = "±" if sys.version_info >= (3,) else "+/-"
-
-    return "{value:{fsv}} {pm} {upper:{fse}}".format(
-        value=value, pm=pm, upper=upper, fsv=fsv, fse=fse
-    )
+    return f"{value:{fsv}} ± {upper:{fse}}"
 
 
 # List of greek letter names as used in Unicode (see unicodedata package)

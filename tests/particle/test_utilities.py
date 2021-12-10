@@ -3,8 +3,6 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-import sys
-
 import pytest
 
 from particle.particle.utilities import str_with_unc
@@ -27,8 +25,5 @@ possibilities = (
 
 @pytest.mark.parametrize("value,err_u,err_l,test_str", possibilities)
 def test_unc_printout(value, err_u, err_l, test_str):
-
-    if sys.version_info < (3, 0):
-        test_str = test_str.replace("±", "+/-")
 
     assert str_with_unc(value, err_u, err_l) == test_str
