@@ -1078,6 +1078,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def finditer(
         cls,
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
+        *,
         particle=None,  # type: Optional[bool]
         **search_terms,  # type: Any
     ):
@@ -1119,9 +1120,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
         See also ``findall``, which returns the same thing, but as a list.
         """
-
-        # Note that particle can be called by position to keep compatibility with Python 2, but that behavior should
-        # not be used and will be removed when support for Python 2.7 is dropped.
 
         # Filter out values
         for item in cls.all():
