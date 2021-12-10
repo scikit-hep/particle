@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-from __future__ import absolute_import
 
 try:
     # for Python 3
@@ -88,7 +86,7 @@ class BiMap(Generic[A, B]):
         name_B = self.class_B.__name__.upper()
 
         if filename is None:
-            filename = "{a}_to_{b}.csv".format(a=name_A.lower(), b=name_B.lower())
+            filename = f"{name_A.lower()}_to_{name_B.lower()}.csv"
             file_object = data.basepath.joinpath(filename).open()
         elif isinstance(filename, HasRead):
             file_object = filename

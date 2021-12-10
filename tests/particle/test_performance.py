@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from particle import Particle, data
 
 

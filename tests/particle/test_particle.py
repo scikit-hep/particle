@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-from __future__ import absolute_import, division, print_function
 
 import sys
 
@@ -313,14 +311,14 @@ checklist_describe = (
     # Test print-out of zero width values
     [22, "Width = 0.0 MeV"],  # photon
     # Test print-out of symmetric width errors
-    [413, u"Width = 0.0834 ± 0.0018 MeV"],  # D*(2010)+
-    [443, u"Width = 0.0926 ± 0.0017 MeV"],  # J/psi
+    [413, "Width = 0.0834 ± 0.0018 MeV"],  # D*(2010)+
+    [443, "Width = 0.0926 ± 0.0017 MeV"],  # J/psi
     # Test print-out of asymmetric width errors
     [4222, "Width = 1.89 + 0.09 - 0.18 MeV"],  # Sigma_c(2455)++
-    [23, u"Width = 2495.2 ± 2.3 MeV"],  # H0
+    [23, "Width = 2495.2 ± 2.3 MeV"],  # H0
     # Test print-out of symmetric lifetime errors
-    [5332, u"Lifetime = 1.65e-03 + 1.8e-04 - 1.8e-04 ns"],  # Omega_b-
-    [211, u"Lifetime = 26.033 ± 0.005 ns"],  # pion
+    [5332, "Lifetime = 1.65e-03 + 1.8e-04 - 1.8e-04 ns"],  # Omega_b-
+    [211, "Lifetime = 26.033 ± 0.005 ns"],  # pion
     # Test print-out of asymmetric lifetime errors
     [4332, "Lifetime = 2.7e-04 + 3e-05 - 3e-05 ns"],  # Omega_c^0
     # Test particles with at present an upper limit on their width
@@ -332,7 +330,7 @@ checklist_describe = (
 )
 if sys.version_info < (3, 0):
     for i, pair_vals in enumerate(checklist_describe):
-        checklist_describe[i][1] = pair_vals[1].replace(u"±", u"+/-")
+        checklist_describe[i][1] = pair_vals[1].replace("±", "+/-")
 
 
 @pytest.mark.parametrize("pid,description", checklist_describe)

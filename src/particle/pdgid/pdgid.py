@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -10,7 +9,6 @@ Class representing a PDG ID.
 All methods of HepPID are implemented in a Pythonic version, see the functions module.
 """
 
-from __future__ import absolute_import
 
 from inspect import isfunction
 
@@ -58,7 +56,7 @@ class PDGID(int):
         Print all PDGID properties one per line, for easy inspection.
         """
         return "".join(
-            "{item:14} {value}\n".format(item=item, value=getattr(self, item))
+            f"{item:14} {getattr(self, item)}\n"
             for item in _fnames
             if item != "is_composite_quark_or_lepton"
         )
@@ -135,4 +133,4 @@ class PDGID(int):
 for _n in _fnames:
     assert _n in dir(
         PDGID
-    ), "{} missing from PDGID class! Update the list in pdgid.py".format(_n)
+    ), f"{_n} missing from PDGID class! Update the list in pdgid.py"

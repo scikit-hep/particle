@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -8,7 +7,6 @@
 Functions relevant to particle kinematics.
 """
 
-from __future__ import absolute_import, division, print_function
 
 from hepunits.constants import hbar
 from hepunits.units import MeV, ns
@@ -52,7 +50,7 @@ def width_to_lifetime(Gamma):
     """
 
     if Gamma < 0.0:
-        raise ValueError("Input provided, {} <= 0!".format(Gamma))
+        raise ValueError(f"Input provided, {Gamma} <= 0!")
     elif Gamma == 0:
         return float("inf")
 
@@ -99,7 +97,7 @@ def lifetime_to_width(tau):
     """
 
     if tau < 0:
-        raise ValueError("Input provided, {} <= 0!".format(tau))
+        raise ValueError(f"Input provided, {tau} <= 0!")
     elif tau == 0:
         return float("inf")
 

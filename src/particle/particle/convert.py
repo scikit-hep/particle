@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -346,11 +345,11 @@ def get_from_pdg_mcd(filename):
             print("DUPLICATES:\n", nar[duplicated_ids])
         assert (
             nar[duplicated_ids].shape[0] == 0
-        ), "Duplicate entries found in {} !".format(filename)
+        ), f"Duplicate entries found in {filename} !"
 
     ds_list = []
     for i in range(4):
-        name = "ID{}".format(i + 1)
+        name = f"ID{i + 1}"
         d = nar[~pd.isna(nar[name])].copy()
         d["ID"] = d[name].astype(int)
         nc = d.NameCharge.str.split(expand=True)

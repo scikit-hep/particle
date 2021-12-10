@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -38,8 +37,7 @@ for item in common_particles:
 
 
 __doc = "".join(
-    "  {item!s} = PDGID({pdgid})\n".format(item=item, pdgid=common_particles[item])
-    for item in common_particles
+    f"  {item!s} = PDGID({common_particles[item]})\n" for item in common_particles
 )
 __doc__ = __doc__.format(__doc)
 
