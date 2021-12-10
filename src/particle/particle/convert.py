@@ -52,6 +52,7 @@ When you are done, you can save one or more of the tables:
 
 import os
 from datetime import date
+from io import StringIO
 from typing import (
     Any,
     Callable,
@@ -66,14 +67,6 @@ from typing import (
 
 import numpy as np
 import pandas as pd
-
-try:
-    from io import StringIO
-except ImportError:  # Python2 workaround, could also use six
-    try:
-        from cStringIO import StringIO  # type: ignore
-    except ImportError:
-        from StringIO import StringIO  # type: ignore
 
 from .. import data
 from ..pdgid import PDGID, is_baryon

@@ -4,14 +4,8 @@
 # or https://github.com/scikit-hep/particle for details.
 
 
-try:
-    # for Python 3
-    from collections.abc import Mapping
-except ImportError:
-    # for Python 2.7
-    from collections import Mapping
-
 import csv
+from collections.abc import Mapping
 from typing import (
     Any,
     Callable,

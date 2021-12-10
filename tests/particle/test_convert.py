@@ -8,13 +8,9 @@ import pytest
 # Requires pandas
 pd = pytest.importorskip("pandas")
 
+from pathlib import Path
+
 from particle.particle.convert import get_from_pdg_mcd
-
-try:
-    from pathlib2 import Path
-except ImportError:
-    from pathlib import Path
-
 
 DIR = Path(__file__).parent.resolve()
 
