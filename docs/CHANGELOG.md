@@ -1,11 +1,18 @@
 Changelog
 =========
 
-Version 0.16.3 (WIP)
+Version 0.16.3
 --------------
+
+December 15th, 2021
 
 - `Particle` class:
   - New class method `Particle.from_name`.
+- New experiment-specific module:
+  - Module `particle.lhcb` with functions and mappings to deal with particle names in use in LHCb software.
+  - Script `admin/dump_pdgid_to_lhcb.py` to generate the PDGID <-> LHCb name mapping (CSV file).
+- Tests:
+  - Updated pre-commit hooks.
 
 
 Version 0.16.2
