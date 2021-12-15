@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-from __future__ import absolute_import, division, print_function
 
 # Python standard library
 import csv
@@ -87,7 +85,7 @@ none_float = None  # type: Optional[float]
 
 @total_ordering
 @attr.s(slots=True, eq=False, order=False, repr=False)
-class Particle(object):
+class Particle:
     """
     The Particle object class. Hold a series of properties for a particle.
 
@@ -293,7 +291,7 @@ class Particle(object):
         n_rows=-1,  # type: int
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
         particle=None,  # type: Optional[bool]
-        **search_terms  # type: Any
+        **search_terms,  # type: Any
     ):
         # type: (...) -> List[List[Union[bool, int, str, float]]]
         """
@@ -419,7 +417,7 @@ class Particle(object):
 
         # Apply a filter, if specified
         if filter_fn is not None:
-            tbl_all = cls.findall(filter_fn, particle, **search_terms)
+            tbl_all = cls.findall(filter_fn, particle=particle, **search_terms)
 
         # In any case, only keep a given number of rows?
         if n_rows >= 0:
@@ -576,9 +574,7 @@ class Particle(object):
             return
         elif isinstance(filename, HasRead):
             tmp_name = _name or filename.name
-            cls._table_names.append(
-                tmp_name or "{!r} {}".format(filename, len(cls._table_names))
-            )
+            cls._table_names.append(tmp_name or f"{filename!r} {len(cls._table_names)}")
             open_file = filename
         elif isinstance(filename, HasOpen):
             cls._table_names.append(str(filename))
@@ -857,7 +853,7 @@ class Particle(object):
         elif self.width == 0:
             return "Width = 0.0 MeV"
         elif self.width_lower is None or self.width_upper is None:
-            return "Width < {width} MeV".format(width=self.width)
+            return f"Width < {self.width} MeV"
         elif (
             self.width < 0.05
         ):  # corresponds to a lifetime of approximately 1.3e-20 seconds
@@ -981,9 +977,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         )
 
         if self.spin_type != SpinType.Unknown:
-            val += "    SpinType: {self.spin_type!s}\n".format(self=self)
+            val += f"    SpinType: {self.spin_type!s}\n"
         if self.quarks:
-            val += "    Quarks: {self.quarks}\n".format(self=self)
+            val += f"    Quarks: {self.quarks}\n"
         val += "    Antiparticle name: {inv_self.name} (antiparticle status: {self.anti_flag.name})".format(
             inv_self=self.invert(), self=self
         )
@@ -1028,7 +1024,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             If no matching PDG ID is found in the loaded data table(s).
         """
         if not is_valid(value):
-            raise InvalidParticle("Input PDGID {} is invalid!".format(value))
+            raise InvalidParticle(f"Input PDGID {value} is invalid!")
 
         if not cls.table_loaded():
             cls.load_table()
@@ -1039,7 +1035,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             return cls._hash_table[int(value)]
         except KeyError:
             raise ParticleNotFound(  # noqa: B904  <- use from None when Python 2 is dropped
-                "Could not find PDGID {}".format(value)
+                f"Could not find PDGID {value}"
             )
 
     @classmethod
@@ -1060,7 +1056,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             return particle
         except ValueError:
             raise ParticleNotFound(  # noqa: B904  <- use from None when Python 2 is dropped
-                'Could not find name "{}"'.format(name)
+                f'Could not find name "{name}"'
             )
 
     @classmethod
@@ -1082,8 +1078,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def finditer(
         cls,
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
+        *,
         particle=None,  # type: Optional[bool]
-        **search_terms  # type: Any
+        **search_terms,  # type: Any
     ):
         # type: (...) -> Iterator[Particle]
         """
@@ -1123,9 +1120,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
         See also ``findall``, which returns the same thing, but as a list.
         """
-
-        # Note that particle can be called by position to keep compatibility with Python 2, but that behavior should
-        # not be used and will be removed when support for Python 2.7 is dropped.
 
         # Filter out values
         for item in cls.all():
@@ -1180,8 +1174,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def findall(
         cls,
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
+        *,
         particle=None,  # type: Optional[bool]
-        **search_terms  # type: Any
+        **search_terms,  # type: Any
     ):
         # type: (...) -> List[Particle]
 
@@ -1258,7 +1253,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             return results[0]
         elif len(results) == 0:
             raise ParticleNotFound(
-                "Did not find particle matching query: {}".format(search_terms)
+                f"Did not find particle matching query: {search_terms}"
             )
         else:
             raise RuntimeError("Found too many particles")
@@ -1271,7 +1266,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if matches:
             return matches[0]
         else:
-            raise ParticleNotFound("{} not found in particle table".format(name))
+            raise ParticleNotFound(f"{name} not found in particle table")
 
     @classmethod
     def from_string_list(cls, name):
@@ -1348,9 +1343,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             vals = cls.findall(name=lambda x: name in x, **kw)
 
         if not vals:
-            raise ParticleNotFound(
-                "Could not find particle {} or {}".format(maxname, name)
-            )
+            raise ParticleNotFound(f"Could not find particle {maxname} or {name}")
 
         if len(vals) > 1 and mat["mass"] is not None:
             vals = [val for val in vals if mat["mass"] in val.latex_name]

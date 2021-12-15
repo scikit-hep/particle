@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -6,7 +5,6 @@
 
 import math
 import re
-import sys
 import unicodedata
 from typing import Optional
 
@@ -67,13 +65,13 @@ def str_with_unc(value, upper, lower=None):
     # This is normal notation
     if -3 < value_digits < 6:
         if error_digits < 0:
-            fsv = fse = ".{}f".format(-error_digits)
+            fsv = fse = f".{-error_digits}f"
         else:
             fsv = fse = ".0f"
 
     # This is scientific notation - a little odd, but better than the other options.
     else:
-        fsv = ".{}e".format(abs(error_digits - value_digits))
+        fsv = f".{abs(error_digits - value_digits)}e"
         pure_error_digits = int(math.floor(math.log10(error)))
 
         fse = ".0e" if error_digits == pure_error_digits else ".1e"
@@ -84,12 +82,7 @@ def str_with_unc(value, upper, lower=None):
             value=value, upper=upper, lower=lower, fsv=fsv, fse=fse
         )
 
-    # Only bother with unicode if this is Python 3.
-    pm = u"±" if sys.version_info >= (3,) else "+/-"
-
-    return "{value:{fsv}} {pm} {upper:{fse}}".format(
-        value=value, pm=pm, upper=upper, fsv=fsv, fse=fse
-    )
+    return f"{value:{fsv}} ± {upper:{fse}}"
 
 
 # List of greek letter names as used in Unicode (see unicodedata package)
@@ -165,7 +158,7 @@ def latex_name_unicode(name):
     if "ambda" in name:
         name = name.replace("ambda", "amda")
     for gl in _list_name_greek_letters:
-        name = name.replace(r"\{}".format(gl), greek_letter_name_to_unicode(gl))
+        name = name.replace(fr"\{gl}", greek_letter_name_to_unicode(gl))
     return name
 
 

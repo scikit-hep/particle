@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -8,7 +7,6 @@
 Class representing a Pythia ID.
 """
 
-from __future__ import absolute_import
 
 import csv
 
@@ -50,9 +48,7 @@ class PythiaID(int):
         for k, v in _bimap.items():
             if v == pdgid:
                 return cls(k)
-        raise MatchingIDNotFound(
-            "Non-existent PythiaID for input PDGID {} !".format(pdgid)
-        )
+        raise MatchingIDNotFound(f"Non-existent PythiaID for input PDGID {pdgid} !")
 
     def to_pdgid(self):
         # type: () -> PDGID
@@ -60,7 +56,7 @@ class PythiaID(int):
 
     def __repr__(self):
         # type: () -> str
-        return "<PythiaID: {:d}>".format(int(self))
+        return f"<PythiaID: {int(self):d}>"
 
     def __str__(self):
         # type: () -> str

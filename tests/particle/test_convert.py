@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -9,13 +8,9 @@ import pytest
 # Requires pandas
 pd = pytest.importorskip("pandas")
 
+from pathlib import Path
+
 from particle.particle.convert import get_from_pdg_mcd
-
-try:
-    from pathlib2 import Path
-except ImportError:
-    from pathlib import Path
-
 
 DIR = Path(__file__).parent.resolve()
 

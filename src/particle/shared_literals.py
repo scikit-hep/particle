@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
@@ -11,7 +10,6 @@ for all particles in the loaded "database" CSV file, excluding nuclei.
 See the particle.literals and the pdgid.literals submodules for the actually exposed aliases.
 """
 
-from __future__ import absolute_import
 
 from .particle import Particle
 
