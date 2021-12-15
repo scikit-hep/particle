@@ -417,7 +417,7 @@ class Particle:
 
         # Apply a filter, if specified
         if filter_fn is not None:
-            tbl_all = cls.findall(filter_fn, particle, **search_terms)
+            tbl_all = cls.findall(filter_fn, particle=particle, **search_terms)
 
         # In any case, only keep a given number of rows?
         if n_rows >= 0:
@@ -1174,6 +1174,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     def findall(
         cls,
         filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
+        *,
         particle=None,  # type: Optional[bool]
         **search_terms,  # type: Any
     ):
