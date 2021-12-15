@@ -11,6 +11,7 @@ global-exclude __pycache__
 prune docs
 prune notebooks
 prune tests
+prune admin
 prune .ci
 prune .github
 exclude .pre-commit-config.yaml environment.yml codecov.yml
