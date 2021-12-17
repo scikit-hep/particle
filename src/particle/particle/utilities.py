@@ -79,9 +79,7 @@ def str_with_unc(value, upper, lower=None):
 
     # Now, print values based on upper=lower being true or not (even if they print the same)
     if upper != lower:
-        return "{value:{fsv}} + {upper:{fse}} - {lower:{fse}}".format(
-            value=value, upper=upper, lower=lower, fsv=fsv, fse=fse
-        )
+        return f"{value:{fsv}} + {upper:{fse}} - {lower:{fse}}"
 
     return f"{value:{fsv}} ± {upper:{fse}}"
 
@@ -174,7 +172,7 @@ def latex_to_html_name(name):
         # Special formatting since for example
         # f"{hex(html.entities.name2codepoint['Delta'])}" gives '0x394' whereas HTML needs 'x0394',
         # as in '&#x0394;', equivalent to '&Delta;'
-        name = name.replace(r"\%s" % gl, f"&#x{name2codepoint[gl]:04x};")
+        name = name.replace(fr"\{gl}", f"&#x{name2codepoint[gl]:04x};")
     name = re.sub(r"\\tilde\{(.*?)\}", r"\1&#771;", name)
     name = re.sub(r"\\overline\{(.*?)\}", r"\1&#773;", name)
     name = re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)
