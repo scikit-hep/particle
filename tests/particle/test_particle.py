@@ -370,15 +370,15 @@ def test_all_particles_are_loaded():
 
 
 checklist_html_name = (
-    (22, "&gamma;"),  # photon
+    (22, "&#x03b3;"),  # photon
     (1, "d"),  # d quark
     (-2, "u&#773;"),  # u antiquark
     (11, "e<SUP>-</SUP>"),  # e-
-    (-13, "&mu;<SUP>+</SUP>"),  # mu+
-    (-14, "&nu;&#773;<SUB>&mu;</SUB>"),  # nu_mu_bar
-    (111, "&pi;<SUP>0</SUP>"),  # pi0
-    (-211, "&pi;<SUP>-</SUP>"),  # pi-
-    (-213, "&rho;(770)<SUP>-</SUP>"),  # rho(770)-
+    (-13, "&#x03bc;<SUP>+</SUP>"),  # mu+
+    (-14, "&#x03bd;&#773;<SUB>&mu;</SUB>"),  # nu_mu_bar
+    (111, "&#x03c0;<SUP>0</SUP>"),  # pi0
+    (-211, "&#x03c0;<SUP>-</SUP>"),  # pi-
+    (-213, "&#x03c1;(770)<SUP>-</SUP>"),  # rho(770)-
     (20213, "a<SUB>1</SUB>(1260)<SUP>+</SUP>"),  # a_1(1260)+
     (321, "K<SUP>+</SUP>"),  # K+
     (130, "K<SUB>L</SUB><SUP>0</SUP>"),  # K_L
@@ -386,15 +386,15 @@ checklist_html_name = (
     (-10321, "K<SUB>0</SUB><SUP>*</SUP>(1430)<SUP>-</SUP>"),  # K(0)*(1430)-
     (10433, "D<SUB>s1</SUB>(2536)<SUP>+</SUP>"),  # D_s1(2536)+
     (-511, "B&#773;<SUP>0</SUP>"),  # B0_bar
-    (443, "J/&psi;(1S)"),  # J/psi
-    (10441, "&chi;<SUB>c0</SUB>(1P)"),  # chi_c0(1P)
-    (300553, "&Upsilon;(4S)"),  # Upsilon(4S)
+    (443, "J/&#x03c8;(1S)"),  # J/psi
+    (10441, "&#x03c7;<SUB>c0</SUB>(1P)"),  # chi_c0(1P)
+    (300553, "&#x03a5;(4S)"),  # Upsilon(4S)
     (2212, "p"),  # proton
     (-2112, "n&#773;"),  # antineutron
-    (-2224, "&Delta;&#773;(1232)<SUP>--</SUP>"),  # Delta_bar(1232)--
-    (3322, "&Xi;<SUP>0</SUP>"),  # Xi0
-    (-3322, "&Xi;&#773;<SUP>0</SUP>"),  # Xi0_bar
-    (-5122, "&Lambda;&#773;<SUB>b</SUB><SUP>0</SUP>"),  # Lb0_bar
+    (-2224, "&#x0394;&#773;(1232)<SUP>--</SUP>"),  # Delta_bar(1232)--
+    (3322, "&#x039e;<SUP>0</SUP>"),  # Xi0
+    (-3322, "&#x039e;&#773;<SUP>0</SUP>"),  # Xi0_bar
+    (-5122, "&#x039b;&#773;<SUB>b</SUB><SUP>0</SUP>"),  # Lb0_bar
 )
 
 
