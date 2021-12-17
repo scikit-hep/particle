@@ -375,7 +375,7 @@ checklist_html_name = (
     (-2, "u&#773;"),  # u antiquark
     (11, "e<SUP>-</SUP>"),  # e-
     (-13, "&#x03bc;<SUP>+</SUP>"),  # mu+
-    (-14, "&#x03bd;&#773;<SUB>&mu;</SUB>"),  # nu_mu_bar
+    (-14, "&#x03bd;&#773;<SUB>&#x03bc;</SUB>"),  # nu_mu_bar
     (111, "&#x03c0;<SUP>0</SUP>"),  # pi0
     (-211, "&#x03c0;<SUP>-</SUP>"),  # pi-
     (-213, "&#x03c1;(770)<SUP>-</SUP>"),  # rho(770)-
