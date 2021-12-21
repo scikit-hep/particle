@@ -6,6 +6,7 @@
 import math
 import re
 import unicodedata
+from html.entities import name2codepoint
 from typing import Optional
 
 
@@ -78,9 +79,7 @@ def str_with_unc(value, upper, lower=None):
 
     # Now, print values based on upper=lower being true or not (even if they print the same)
     if upper != lower:
-        return "{value:{fsv}} + {upper:{fse}} - {lower:{fse}}".format(
-            value=value, upper=upper, lower=lower, fsv=fsv, fse=fse
-        )
+        return f"{value:{fsv}} + {upper:{fse}} - {lower:{fse}}"
 
     return f"{value:{fsv}} ± {upper:{fse}}"
 
@@ -96,7 +95,6 @@ _list_name_greek_letters = [
     "Gamma",
     "Iota",
     "Kappa",
-    "Lamda",  # Unicodedata library uses "lamda" for "lambda" :S!
     "Lambda",
     "Mu",
     "Nu",
@@ -171,7 +169,10 @@ def latex_to_html_name(name):
     name = re.sub(r"\\mathrm\{(.*?)\}", r"\1", name)
     name = re.sub(r"\\left\[(.*?)\\right\]", r"[\1] ", name)
     for gl in _list_name_greek_letters:
-        name = name.replace(r"\%s" % gl, "&%s;" % gl)
+        # Special formatting since for example
+        # f"{hex(html.entities.name2codepoint['Delta'])}" gives '0x394' whereas HTML needs 'x0394',
+        # as in '&#x0394;', equivalent to '&Delta;'
+        name = name.replace(fr"\{gl}", f"&#x{name2codepoint[gl]:04x};")
     name = re.sub(r"\\tilde\{(.*?)\}", r"\1&#771;", name)
     name = re.sub(r"\\overline\{(.*?)\}", r"\1&#773;", name)
     name = re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)
