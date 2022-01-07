@@ -32,7 +32,7 @@ Install ``particle`` like any other Python package:
 
 .. code-block:: bash
 
-    pip install particle
+    python -m pip install particle
 
 or similar (use ``--user``, ``virtualenv``, etc. if you wish).
 
@@ -40,8 +40,8 @@ or similar (use ``--user``, ``virtualenv``, etc. if you wish).
 Strict dependencies
 -------------------
 
-- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (2.7+, 3.5+)
-- `importlib_resources backport <http://importlib-resources.readthedocs.io/en/latest/>`_ if using Python < 3.7
+- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (3.6+)
+- `importlib_resources backport <http://importlib-resources.readthedocs.io/en/latest/>`_ if using Python < 3.9
 - `attrs <http://www.attrs.org/en/stable/>`_ provides classes without boilerplate (similar to DataClasses in Python 3.7)
 - `hepunits <https://github.com/scikit-hep/hepunits>`_ provides units for the Scikit-HEP packages
 
