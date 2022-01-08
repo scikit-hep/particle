@@ -331,6 +331,58 @@ Possible use cases are the following:
     'pi+'
 
 
+Getting started: experiment-specific modules
+--------------------------------------------
+
+Experiment-specific submodules are welcome if they tie in nicely with the functionality of the package while prodiving
+add-ons of particular relevance to experiments.
+
+LHCb-specific module
+^^^^^^^^^^^^^^^^^^^^
+
+Available via
+
+.. code-block:: python
+
+    >>> from particle import lhcb
+
+it contains the following converter and functions:
+
+.. code-block:: python
+
+    >>> dir(lhcb)
+    ['LHCbName2PDGIDBiMap', 'from_lhcb_name', 'to_lhcb_name']
+
+
+.. code-block:: python
+
+    >>> n, e, l = Particle.from_pdgid(-531).name, Particle.from_pdgid(531).evtgen_name, lhcb.to_lhcb_name(Particle.from_pdgid(-531))
+    >>> print(f"Name: {n}\nEvtGen name: {e}\nLHCb name: {l}")
+    Name: B(s)~0
+    EvtGen name: B_s0
+    LHCb name: B_s~0
+
+    >>> p = Particle.from_pdgid(-531)
+    >>> p
+    <Particle: name="B(s)~0", pdgid=-531, mass=5366.88 ± 0.14 MeV>
+    >>>to_lhcb_name(p)
+    'B_s~0'
+
+
+Conversions PDG ID <-> LHCb name are available via a predefined bidirectional map
+similarly to what is available in the standard (i.e. non-experiment-specific) converters:
+
+.. code-block:: python
+
+    >>> name = LHCbName2PDGIDBiMap[PDGID(-531)]
+    >>> name
+    'B_s~0'
+
+    >>> pdgid = LHCbName2PDGIDBiMap['B_s~0']
+    >>> pdgid
+    <PDGID: -531>
+
+
 Acknowledgements
 ----------------
 
