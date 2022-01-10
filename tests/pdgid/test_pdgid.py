@@ -3,8 +3,6 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-import pytest
-
 from particle.pdgid import PDGID
 from particle.pdgid import functions as _functions
 from particle.pdgid.pdgid import _fnames
