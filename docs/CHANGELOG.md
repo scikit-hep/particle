@@ -1,6 +1,21 @@
 Changelog
 =========
 
+Version 0.20.0 (WIP)
+--------------------
+
+**First Python 3 (3.6+) only version.**
+
+- `Particle` class:
+  - HTML Greek letters in particle names use hex code rather than entity name.
+- Documentation:
+  - README updated with info on the new experiment-specific module `particle.lhcb`.
+- Miscellaneous:
+  - Support for Python 2 and Python 3.5 dropped.
+- Tests:
+  - Pre-commit hooks updated.
+
+
 Version 0.16.3
 --------------
 
