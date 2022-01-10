@@ -55,10 +55,7 @@ class PDGID(int):
         """
         Print all PDGID properties one per line, for easy inspection.
         """
-        return "".join(
-            f"{item:14} {getattr(self, item)}\n"
-            for item in _fnames
-        )
+        return "".join(f"{item:14} {getattr(self, item)}\n" for item in _fnames)
 
     A = property(_functions.A, doc=_functions.A.__doc__)
     J = property(_functions.J, doc=_functions.J.__doc__)
