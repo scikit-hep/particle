@@ -7,7 +7,10 @@ Version 0.20.0 (WIP)
 **First Python 3 (3.6+) only version.**
 
 - `Particle` class:
+  - Deprecated method `find` method removed. Use `findall` or `finditer` instead.
   - HTML Greek letters in particle names use hex code rather than entity name.
+- `PDGID` class method and related standalone functions:
+  - Deprecated function `is_composite_quark_or_lepton` removed. Use `is_excited_quark_or_lepton` instead.
 - Documentation:
   - README updated with info on the new experiment-specific module `particle.lhcb`.
 - Miscellaneous:
