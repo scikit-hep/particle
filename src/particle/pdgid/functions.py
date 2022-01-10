@@ -27,8 +27,6 @@ References
 from enum import IntEnum
 from typing import Optional, SupportsInt
 
-from deprecated import deprecated as _deprecated
-
 PDGID_TYPE = SupportsInt
 
 
@@ -478,20 +476,6 @@ def is_excited_quark_or_lepton(pdgid):
     if _fundamental_id(pdgid) == 0:
         return False
     return _digit(pdgid, Location.N) == 4 and _digit(pdgid, Location.Nr) == 0
-
-
-@_deprecated(
-    version="0.16.0",
-    reason="This method will be removed from version 0.17.0. Use is_excited_quark_or_lepton instead.",
-)
-def is_composite_quark_or_lepton(pdgid):
-    # type: (PDGID_TYPE) -> bool
-    """
-    Does this PDG ID correspond to an excited (composite) quark or lepton?
-
-    Excited (composite) quarks and leptons have N = 4 and Nr = 0.
-    """
-    return is_excited_quark_or_lepton(pdgid)
 
 
 def has_down(pdgid):
