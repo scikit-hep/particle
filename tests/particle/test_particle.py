@@ -16,21 +16,6 @@ from particle.pdgid import PDGID
 from particle.pdgid.functions import Location, _digit
 
 
-def test_find():
-    # 1 match found
-    with pytest.deprecated_call():
-        prepr = repr(Particle.find(name="gamma"))
-    assert prepr == '<Particle: name="gamma", pdgid=22, mass=0.0 MeV>'
-
-    # No match found
-    with pytest.deprecated_call(), pytest.raises(ParticleNotFound):
-        Particle.find(name="NotInPDT")
-
-    # Multiple matches found
-    with pytest.deprecated_call(), pytest.raises(RuntimeError):
-        Particle.find(name=lambda x: "Upsilon" in x)
-
-
 def test_sorted_find():
     assert Particle.findall() == sorted(Particle.finditer())
 

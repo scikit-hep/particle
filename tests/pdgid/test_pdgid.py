@@ -94,7 +94,6 @@ def test_decorated_class_methods(PDGIDs):
     Check that all particle.pdgid functions decorated in the PDGID class
     work as expected for all kinds of PDGIDs.
     """
-    with pytest.deprecated_call():
-        for m in _fnames:
-            for pid in PDGIDs:
-                assert getattr(PDGID(pid), m) == getattr(_functions, m)(pid)
+    for m in _fnames:
+        for pid in PDGIDs:
+            assert getattr(PDGID(pid), m) == getattr(_functions, m)(pid)

@@ -167,9 +167,7 @@ to limit the search to particles or antiparticles.
 You can also build the search yourself with the first positional
 argument, which accepts a callable that is given the particle object itself.
 If the first positional argument is a string, that will match against the
-particle's ``name``.  The alternative, *now deprecated*, ``.find()`` requires only one
-match returned by the search, and will throw an error if more or less than one
-match is found.
+particle's ``name``.
 
 Here are possible sophisticated searches, all of which work with either
 ``Particle.findall`` or ``Particle.finditer``, where the former method provides a list
