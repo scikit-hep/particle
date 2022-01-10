@@ -317,14 +317,14 @@ Possible use cases are the following:
     >>> g3id = Geant3ID(8)
     >>> p = Particle.from_pdgid(g3id.to_pdgid())
     >>>
-    >>> p = Particle.find(pdgid=g3id.to_pdgid())
+    >>> (p,) = Particle.finditer(pdgid=g3id.to_pdgid())  # syntax (p,) throws an error if < 1 or > 1 particle is found
     >>> p.name
     'pi+'
 
     >>> pythiaid = PythiaID(211)
     >>> p = Particle.from_pdgid(pythiaid.to_pdgid())
 
-    >>> p = Particle.find(pdgid=pythiaid.to_pdgid())
+    >>> (p,) = Particle.finditer(pdgid=pythiaid.to_pdgid())
     >>> p.name
     'pi+'
 
