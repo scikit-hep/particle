@@ -55,11 +55,7 @@ class PDGID(int):
         """
         Print all PDGID properties one per line, for easy inspection.
         """
-        return "".join(
-            f"{item:14} {getattr(self, item)}\n"
-            for item in _fnames
-            if item != "is_composite_quark_or_lepton"
-        )
+        return "".join(f"{item:14} {getattr(self, item)}\n" for item in _fnames)
 
     A = property(_functions.A, doc=_functions.A.__doc__)
     J = property(_functions.J, doc=_functions.J.__doc__)
@@ -81,10 +77,6 @@ class PDGID(int):
     is_Rhadron = property(_functions.is_Rhadron, doc=_functions.is_Rhadron.__doc__)
     is_SUSY = property(_functions.is_SUSY, doc=_functions.is_SUSY.__doc__)
     is_baryon = property(_functions.is_baryon, doc=_functions.is_baryon.__doc__)
-    is_composite_quark_or_lepton = property(
-        _functions.is_composite_quark_or_lepton,
-        doc=_functions.is_composite_quark_or_lepton.__doc__,
-    )
     is_diquark = property(_functions.is_diquark, doc=_functions.is_diquark.__doc__)
     is_dyon = property(_functions.is_dyon, doc=_functions.is_dyon.__doc__)
     is_excited_quark_or_lepton = property(

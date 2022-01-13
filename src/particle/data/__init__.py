@@ -5,8 +5,6 @@
 
 import sys
 
-from deprecated import deprecated
-
 if sys.version_info < (3, 9):
     import importlib_resources as resources
 else:
@@ -14,8 +12,3 @@ else:
 
 
 basepath = resources.files(__name__)
-
-
-open_text = deprecated(version="0.16.0", reason="Use particle.data.basepath instead.")(
-    resources.open_text
-)

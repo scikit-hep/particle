@@ -37,7 +37,7 @@ class Geant3ID(int):
     >>> from particle import Particle
     >>> p = Particle.from_pdgid(gid.to_pdgid())
 
-    >>> p = Particle.find(pdgid=gid.to_pdgid())
+    >>> (p,) = Particle.finditer(pdgid=gid.to_pdgid())
     >>> p.name
     'pi+'
     """

@@ -24,7 +24,6 @@ from typing import (
 
 # External dependencies
 import attr
-from deprecated import deprecated
 from hepunits.constants import c_light
 
 from .. import data
@@ -1227,36 +1226,11 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         )
 
     @classmethod
-    @deprecated(
-        version="0.16.0",
-        reason="This method is deprecated and will be removed from version 0.17.0. Use findall instead.",
-    )
     def find(cls, *args, **search_terms):
         # type: (Any, Any) -> Particle
-        """
-        Require that the search returns one and only one result.
-        The method otherwise raises a ParticleNotFound or RuntimeError exception.
-
-        See `findall` for full listing of parameters.
-
-        Raises
-        ------
-        ParticleNotFound
-            If no matching particle is found in the loaded data table(s).
-        RuntimeError
-            If too many particles match the search criteria.
-        """
-
-        results = cls.findall(*args, **search_terms)
-
-        if len(results) == 1:
-            return results[0]
-        elif len(results) == 0:
-            raise ParticleNotFound(
-                f"Did not find particle matching query: {search_terms}"
-            )
-        else:
-            raise RuntimeError("Found too many particles")
+        raise AttributeError(
+            "Method has been removed post versions 0.16. Please use finditer or findall instead."
+        )
 
     @classmethod
     def from_string(cls, name):

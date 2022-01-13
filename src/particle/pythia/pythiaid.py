@@ -32,7 +32,7 @@ class PythiaID(int):
     >>> from particle import Particle
     >>> p = Particle.from_pdgid(pythiaid.to_pdgid())
 
-    >>> p = Particle.find(pdgid=pythiaid.to_pdgid())
+    >>> (p,) = Particle.finditer(pdgid=pythiaid.to_pdgid())
     >>> p.name
     'pi+'
     """
