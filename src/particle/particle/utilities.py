@@ -125,13 +125,11 @@ def greek_letter_name_to_unicode(letter: str) -> str:
     Omega -> Ω
     omega -> ω
     """
+    case = "SMALL" if letter == letter.lower() else "CAPITAL"
+    name = letter.upper()
+
     try:
-        return unicodedata.lookup(
-            "GREEK {case} LETTER {name}".format(
-                case="SMALL" if letter == letter.lower() else "CAPITAL",
-                name=letter.upper(),
-            )
-        )
+        return unicodedata.lookup(f"GREEK {case} LETTER {name}")
     except KeyError:  # Unicodedata library uses "lamda" for "lambda", so that's an obvious miss
         return letter
 

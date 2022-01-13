@@ -127,18 +127,16 @@ class BiMap(Generic[A, B]):
             except KeyError:
                 pass
 
-        msg = "Matching {a}-{b} for input {v} not found !".format(
-            a=self.class_A.__name__, b=self.class_B.__name__, v=value
-        )
+        name_A = self.class_A.__name__
+        name_B = self.class_B.__name__
+        msg = f"Matching {name_A}-{name_B} for input {value} not found !"
         raise MatchingIDNotFound(msg)
 
     def __repr__(self) -> str:
-        return "<{self.__class__.__name__}({a}-{b}): {n} matches>".format(
-            self=self,
-            a=self.class_A.__name__,
-            b=self.class_B.__name__,
-            n=self.__len__(),
-        )
+        name_A = self.class_A.__name__
+        name_B = self.class_B.__name__
+
+        return f"<{self.__class__.__name__}({name_A}-{name_B}): {len(self)} matches>"
 
     def __len__(self) -> int:
         """Returns the number of matches."""
@@ -241,18 +239,14 @@ class DirectionalMap(Mapping[str, str]):
         try:
             return self._map[value]
         except KeyError:
-            msg = "Matching {a}->{b} for input {v} not found !".format(
-                a=self.name_A, b=self.name_B, v=value
-            )
-            raise MatchingIDNotFound(msg)  # noqa: B904 Remove when dropping Python 2
+            msg = f"Matching {self.name_A}->{self.name_B} for input {value} not found !"
+            raise MatchingIDNotFound(msg) from None
 
     def __iter__(self) -> Iterator[str]:
         return iter(self._map)
 
     def __repr__(self) -> str:
-        return "<{self.__class__.__name__}({a}->{b}): {n} matches>".format(
-            self=self, a=self.name_A, b=self.name_B, n=self.__len__()
-        )
+        return f"<{self.__class__.__name__}({self.name_A}->{self.name_B}): {len(self)} matches>"
 
     def __len__(self) -> int:
         """Returns the number of matches."""

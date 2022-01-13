@@ -711,9 +711,7 @@ def j_spin(pdgid: PDGID_TYPE) -> Optional[int]:
 def J(pdgid: PDGID_TYPE) -> Optional[float]:
     """Returns the total spin J."""
     value = j_spin(pdgid)
-    return (
-        (value - 1) / 2 if value is not None else value
-    )  # This works due to the Python 3 style division
+    return (value - 1) / 2 if value is not None else value
 
 
 def S(pdgid: PDGID_TYPE) -> Optional[int]:

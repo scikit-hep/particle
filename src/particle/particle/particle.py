@@ -221,9 +221,7 @@ class Particle:
     latex_name: str = attr.ib("Unknown")
 
     def __repr__(self) -> str:
-        return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass}>'.format(
-            self=self, pdgid=int(self.pdgid), mass=self._str_mass()
-        )
+        return f'<{self.__class__.__name__}: name="{self}", pdgid={int(self.pdgid)}, mass={self._str_mass()}>'
 
     # Ordered loaded table of entries
     _table: Optional[List["Particle"]] = None
@@ -836,23 +834,19 @@ class Particle:
         ):  # corresponds to a lifetime of approximately 1.3e-20 seconds
             assert self.lifetime is not None
             if self.width_lower != self.width_upper:
-                return "Lifetime = {lifetime} ns".format(
-                    lifetime=str_with_unc(
-                        self.lifetime,
-                        width_to_lifetime(self.width - self.width_lower)
-                        - self.lifetime,
-                        self.lifetime
-                        - width_to_lifetime(self.width + self.width_upper),
-                    )
+                lifetime = str_with_unc(
+                    self.lifetime,
+                    width_to_lifetime(self.width - self.width_lower) - self.lifetime,
+                    self.lifetime - width_to_lifetime(self.width + self.width_upper),
                 )
+                return f"Lifetime = {lifetime} ns"
+
             e = width_to_lifetime(self.width - self.width_lower) - self.lifetime
-            return "Lifetime = {lifetime} ns".format(
-                lifetime=str_with_unc(self.lifetime, e, e)
-            )
+            lifetime = str_with_unc(self.lifetime, e, e)
+            return f"Lifetime = {lifetime} ns"
         else:
-            return "Width = {width} MeV".format(
-                width=str_with_unc(self.width, self.width_upper, self.width_lower)
-            )
+            width = str_with_unc(self.width, self.width_upper, self.width_lower)
+            return f"Width = {width} MeV"
 
     def _charge_in_name(self) -> bool:
         """Assess whether the particle charge is part of the particle name.
@@ -924,38 +918,35 @@ class Particle:
         if self.mass is None:
             return "None"
         else:
-            return "{} MeV".format(
-                str_with_unc(self.mass, self.mass_upper, self.mass_lower)
-            )
+            txt = str_with_unc(self.mass, self.mass_upper, self.mass_lower)
+            return f"{txt} MeV"
 
     def describe(self) -> str:
         "Make a nice high-density string for a particle's properties."
+
         if self.pdgid == 0:
             return "Name: Unknown"
 
-        val = """Name: {self!s:<14} ID: {self.pdgid:<12} Latex: {latex_name}
+        G = Parity_undo[self.G]
+        C = Parity_undo[self.C]
+        Q = self._str_charge()
+        P = Parity_undo[self.P]
+        mass = self._str_mass()
+        width_or_lifetime = self._width_or_lifetime()
+        latex_name = self._repr_latex_()
+
+        val = f"""Name: {self!s:<14} ID: {self.pdgid:<12} Latex: {latex_name}
 Mass  = {mass}
 {width_or_lifetime}
 Q (charge)        = {Q:<6}  J (total angular) = {self.J!s:<7}  P (space parity) = {P}
 C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     = {G}
-""".format(
-            self=self,
-            G=Parity_undo[self.G],
-            C=Parity_undo[self.C],
-            Q=self._str_charge(),
-            P=Parity_undo[self.P],
-            mass=self._str_mass(),
-            width_or_lifetime=self._width_or_lifetime(),
-            latex_name=self._repr_latex_(),
-        )
+"""
 
         if self.spin_type != SpinType.Unknown:
             val += f"    SpinType: {self.spin_type!s}\n"
         if self.quarks:
             val += f"    Quarks: {self.quarks}\n"
-        val += "    Antiparticle name: {inv_self.name} (antiparticle status: {self.anti_flag.name})".format(
-            inv_self=self.invert(), self=self
-        )
+        val += f"    Antiparticle name: {self.invert().name} (antiparticle status: {self.anti_flag.name})"
         return val
 
     @property
@@ -1002,9 +993,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         try:
             return cls._hash_table[int(value)]  # type: ignore[return-value]
         except KeyError:
-            raise ParticleNotFound(  # noqa: B904  <- use from None when Python 2 is dropped
-                f"Could not find PDGID {value}"
-            )
+            raise ParticleNotFound(f"Could not find PDGID {value}") from None
 
     @classmethod
     def from_name(cls: Type[Self], name: str) -> Self:
@@ -1254,9 +1243,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if mat["family"]:
             if "_" in mat["family"]:
                 mat["family"] = mat["family"].strip("_")
-            name += "({mat[family]})".format(mat=mat)
+            name += f"({mat['family']})"
         if mat["state"]:
-            name += "({mat[state]})".format(mat=mat)
+            name += f"({mat['state']})"
 
         if "prime" in mat and mat["prime"]:
             name += "'"
@@ -1267,7 +1256,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if mat["state"] is not None:
             kw["J"] = float(mat["state"])
 
-        maxname = name + "({mat[mass]})".format(mat=mat) if mat["mass"] else name
+        maxname = name + f"({mat['mass']})" if mat["mass"] else name
         if "charge" in mat and mat["charge"] is not None:
             kw["three_charge"] = Charge_mapping[mat["charge"]]
 

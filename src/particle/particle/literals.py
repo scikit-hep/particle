@@ -28,20 +28,22 @@ List of available/defined literals:
 {0}
 """
 
+from typing import List
+
 from ..shared_literals import common_particles
-from .particle import Particle, ParticleNotFound
+from .particle import Particle
+
+
+def __dir__() -> List[str]:
+    return list(common_particles)
+
 
 for item in common_particles:
     locals()[item] = Particle.from_pdgid(common_particles[item])
 
 
 __doc = "".join(
-    "  {item!s} = Particle.from_pdgid({pdgid})\n".format(
-        item=item, pdgid=common_particles[item]
-    )
+    f"  {item} = Particle.from_pdgid({common_particles[item]})\n"
     for item in common_particles
 )
 __doc__ = __doc__.format(__doc)
-
-
-del Particle, ParticleNotFound, common_particles, item

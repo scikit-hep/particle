@@ -387,7 +387,7 @@ def produce_files(
     full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
 
     # No longer write out the particle2008.csv file, which nobody should use
-    # particle2008 = str(particle2008)  # Conversion to handle pathlib on Python < 3.6
+    # particle2008 = str(particle2008)  # Conversion to handle pathlib on Python < 3.6.1
     # with open(particle2008, "w", newline="\n", encoding="utf-8") as f:
     # f.write(version_header(particle2008, version))
     # full_table.to_csv(f, float_format="%.12g")
@@ -413,7 +413,7 @@ def produce_files(
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    particle2021 = str(particle2021)  # Conversion to handle pathlib on Python < 3.6
+    particle2021 = str(particle2021)  # Conversion to handle pathlib on Python < 3.6.1
     with open(particle2021, "w", newline="\n", encoding="utf-8") as f:
         f.write(version_header(particle2021, version))
         new_table.to_csv(f, float_format="%.12g")
@@ -421,11 +421,9 @@ def produce_files(
 
 def version_header(filename: str, version_number: str) -> str:
     filename = os.path.basename(filename)
-    VERSION = version_number  # version of CSV files
-    DATE = date.isoformat(date.today())
-    return "# (c) Scikit-HEP project - Particle package data file - {fname} - version {version} - {date}\n".format(
-        fname=filename, version=VERSION, date=DATE
-    )
+    version = version_number  # version of CSV files
+    today_date = date.isoformat(date.today())
+    return f"# (c) Scikit-HEP project - Particle package data file - {filename} - version {version} - {today_date}\n"
 
 
 def main(version: str, year: str) -> None:
