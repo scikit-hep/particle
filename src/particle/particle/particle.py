@@ -8,6 +8,7 @@
 import csv
 from copy import copy
 from functools import total_ordering
+from importlib.abc import Traversable
 from typing import (
     Any,
     Callable,
@@ -17,7 +18,6 @@ from typing import (
     List,
     Optional,
     SupportsInt,
-    TextIO,
     Tuple,
     Type,
     TypeVar,
@@ -26,13 +26,13 @@ from typing import (
 
 # External dependencies
 import attr
-from hepunits.constants import c_light
+from hepunits.constants import c_light  # type: ignore[attr-defined]
 
 from .. import data
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
 from ..pdgid import PDGID, is_valid
 from ..pdgid.functions import Location, _digit
-from ..typing import HasOpen, HasRead
+from ..typing import HasOpen, HasRead, StringOrIO
 from .enums import (
     Charge,
     Charge_mapping,
@@ -536,7 +536,7 @@ class Particle:
     @classmethod
     def load_table(
         cls,
-        filename: Union[None, str, TextIO] = None,
+        filename: Optional[StringOrIO] = None,
         append: bool = False,
         _name: Optional[str] = None,
     ) -> None:
@@ -562,10 +562,10 @@ class Particle:
         assert cls._table_names is not None
 
         if filename is None:
-            with data.basepath.joinpath("particle2021.csv").open() as f:
-                cls.load_table(f, append=append, _name="particle2021.csv")
-            with data.basepath.joinpath("nuclei2020.csv").open() as f:
-                cls.load_table(f, append=True, _name="nuclei2020.csv")
+            with data.basepath.joinpath("particle2021.csv").open() as fa:
+                cls.load_table(fa, append=append, _name="particle2021.csv")
+            with data.basepath.joinpath("nuclei2020.csv").open() as fb:
+                cls.load_table(fb, append=True, _name="nuclei2020.csv")
             return
         elif isinstance(filename, HasRead):
             tmp_name = _name or filename.name
@@ -576,6 +576,7 @@ class Particle:
             open_file = filename.open()
         else:
             cls._table_names.append(str(filename))
+            assert not isinstance(filename, Traversable)
             open_file = open(filename)
 
         with open_file as f:
@@ -616,20 +617,19 @@ class Particle:
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
-    def __lt__(self, other: Any) -> bool:
+    def __lt__(self, other: Union["Particle", int]) -> bool:
         # Sort by absolute particle numbers
         # The positive one should come first
-        if type(self) == type(other):
+        if isinstance(other, Particle):
             return abs(int(self.pdgid) - 0.25) < abs(int(other.pdgid) - 0.25)
-
         # Comparison with anything else should produce normal comparisons.
         else:
             return int(self.pdgid) < other
 
-    def __eq__(self, other: Any) -> bool:
-        try:
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Particle):
             return self.pdgid == other.pdgid
-        except AttributeError:
+        else:
             return self.pdgid == other
 
     # Only one particle can exist per PDGID number
@@ -646,7 +646,7 @@ class Particle:
         Note that the returned value corresponds to that effectively encoded
         in the particle PDG ID.
         """
-        return self.pdgid.J
+        return self.pdgid.J  # type: ignore[no-any-return]
 
     @property
     def L(self) -> Optional[int]:
@@ -656,7 +656,7 @@ class Particle:
         Note that the returned value corresponds to that effectively encoded
         in the particle PDG ID.
         """
-        return self.pdgid.L
+        return self.pdgid.L  # type: ignore[no-any-return]
 
     @property
     def S(self) -> Optional[int]:
@@ -666,7 +666,7 @@ class Particle:
         Note that the returned value corresponds to that effectively encoded
         in the particle PDG ID.
         """
-        return self.pdgid.S
+        return self.pdgid.S  # type: ignore[no-any-return]
 
     @property
     def charge(self) -> Optional[float]:
@@ -688,7 +688,7 @@ class Particle:
             # Return int(...) not to return the actual enum Charge
             return int(self._three_charge) if self._three_charge != Charge.u else None
         else:
-            return self.pdgid.three_charge
+            return self.pdgid.three_charge  # type: ignore[no-any-return]
 
     @property
     def lifetime(self) -> Optional[float]:
@@ -1022,9 +1022,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             )  # throws an error if < 1 or > 1 particle is found
             return particle
         except ValueError:
-            raise ParticleNotFound(  # noqa: B904  <- use from None when Python 2 is dropped
-                f'Could not find name "{name}"'
-            )
+            raise ParticleNotFound(f'Could not find name "{name}"') from None
 
     @classmethod
     def from_evtgen_name(cls: Type[Self], name: str) -> Self:

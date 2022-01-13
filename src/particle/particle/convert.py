@@ -52,24 +52,16 @@ When you are done, you can save one or more of the tables:
 
 import os
 from datetime import date
+from importlib.abc import Traversable
 from io import StringIO
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Iterable,
-    Optional,
-    TextIO,
-    Tuple,
-    TypeVar,
-    Union,
-)
+from typing import Any, Callable, Dict, Iterable, List, Optional, TextIO, Tuple, TypeVar
 
 import numpy as np
 import pandas as pd
 
 from .. import data
 from ..pdgid import PDGID, is_baryon
+from ..typing import StringOrIO
 from .enums import (
     Charge,
     Charge_mapping,
@@ -95,7 +87,7 @@ def __dir__() -> Tuple[str, ...]:
     return __all__
 
 
-def get_from_latex(filename: str) -> pd.Series:
+def get_from_latex(filename: StringOrIO) -> pd.Series:
     """
     Produce a pandas series from a file with LaTeX mappings in itself.
     The CVS file format is the following: PDGID, ParticleLatexName.
@@ -104,7 +96,7 @@ def get_from_latex(filename: str) -> pd.Series:
     return latex_table.LATEXNAME
 
 
-def filter_file(fileobject: Union[str, TextIO]) -> TextIO:
+def filter_file(fileobject: StringOrIO) -> TextIO:
     """
     Open a file if not already a file-like object, and strip lines that start with *.
     Returns a new file-like object (StringIO instance).
@@ -114,7 +106,7 @@ def filter_file(fileobject: Union[str, TextIO]) -> TextIO:
         assert isinstance(fileobject, str)
         fileobject = open(fileobject, encoding="utf-8")
 
-    assert not isinstance(fileobject, str)
+    assert not isinstance(fileobject, (str, Traversable))
 
     stream = StringIO()
     for line in fileobject:
@@ -132,7 +124,9 @@ def filter_file(fileobject: Union[str, TextIO]) -> TextIO:
 T = TypeVar("T")
 
 
-def get_from_pdg_extended(filename: str, latexes: Iterable[str] = ()) -> pd.DataFrame:
+def get_from_pdg_extended(
+    filename: StringOrIO, latexes: Iterable[StringOrIO] = ()
+) -> pd.DataFrame:
     """
     Read an "extended style" PDG data file (only produced in 2008), plus a list of LaTeX files,
     to produce a pandas DataFrame with particle information.
@@ -271,7 +265,7 @@ def sort_particles(table: pd.DataFrame) -> None:
     del table["TmpVals"]
 
 
-def get_from_pdg_mcd(filename: str) -> pd.DataFrame:
+def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
     """
     Reads in a current-style PDG .mcd file (mass_width_2021.mcd file tested).
 
@@ -445,7 +439,7 @@ def main(version: str, year: str) -> None:
 
 
 def convert(version: str, output: str, fwf: str, latex: Optional[str] = None) -> None:
-    latexes = [data.basepath / "pdgid_to_latexname.csv"]
+    latexes: List[StringOrIO] = [data.basepath / "pdgid_to_latexname.csv"]
     if latex:
         latexes.append(latex)
     table = get_from_pdg_extended(fwf, latexes)
