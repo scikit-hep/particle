@@ -12,8 +12,7 @@ from hepunits.constants import hbar
 from hepunits.units import MeV, ns
 
 
-def width_to_lifetime(Gamma):
-    # type: (float) -> float
+def width_to_lifetime(Gamma: float) -> float:
     """
     Convert from a particle decay width to a lifetime.
 
@@ -58,8 +57,7 @@ def width_to_lifetime(Gamma):
     return hbar / float(Gamma / MeV)
 
 
-def lifetime_to_width(tau):
-    # type: (float) -> float
+def lifetime_to_width(tau: float) -> float:
     """
     Convert from a particle lifetime to a decay width.
 

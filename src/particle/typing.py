@@ -16,13 +16,11 @@ from typing import Any
 
 @runtime_checkable
 class HasOpen(Protocol):
-    def open(self):
-        # type: () -> Any
+    def open(self) -> Any:
         pass
 
 
 @runtime_checkable
 class HasRead(Protocol):
-    def read(self):
-        # type: () -> str
+    def read(self) -> str:
         pass

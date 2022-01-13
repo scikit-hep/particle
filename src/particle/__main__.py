@@ -13,8 +13,7 @@ from .particle import Particle
 from .pdgid import PDGID
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     parser = argparse.ArgumentParser(
         prog="particle",
         description="Particle command line display utility. Has two modes.",

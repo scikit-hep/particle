@@ -10,8 +10,7 @@ from html.entities import name2codepoint
 from typing import Optional
 
 
-def programmatic_name(name):
-    # type: (str) -> str
+def programmatic_name(name: str) -> str:
     "Return a name safe to use as a variable name."
     name = re.sub("0$", "_0", name)
     # Deal first with antiparticles of sparticles, e.g. "~d(R)~" antiparticle of "~d(R)"
@@ -35,8 +34,9 @@ def programmatic_name(name):
     return name.lstrip("_")
 
 
-def str_with_unc(value, upper, lower=None):
-    # type: (float, Optional[float], Optional[float]) -> str
+def str_with_unc(
+    value: float, upper: Optional[float], lower: Optional[float] = None
+) -> str:
     """
     Utility to print out an uncertainty with different or
     identical upper/lower bounds. Nicely formats numbers using PDG rule.
@@ -114,8 +114,7 @@ _list_name_greek_letters = [
 _list_name_greek_letters += [item.lower() for item in _list_name_greek_letters]
 
 
-def greek_letter_name_to_unicode(letter):
-    # type: (str) -> str
+def greek_letter_name_to_unicode(letter: str) -> str:
     """
     Return a greek letter name as a Unicode character,
     the same as the input if no match is found.
@@ -137,8 +136,7 @@ def greek_letter_name_to_unicode(letter):
         return letter
 
 
-def latex_name_unicode(name):
-    # type: (str) -> str
+def latex_name_unicode(name: str) -> str:
     r"""
     Convert in particle names in LaTeX all greek letters by their unicode.
 
@@ -160,8 +158,7 @@ def latex_name_unicode(name):
     return name
 
 
-def latex_to_html_name(name):
-    # type:(str) -> str
+def latex_to_html_name(name: str) -> str:
     """Conversion of particle names from LaTeX to HTML."""
     name = re.sub(r"\^\{(.*?)\}", r"<SUP>\1</SUP>", name)
     name = re.sub(r"\_\{(.*?)\}", r"<SUB>\1</SUB>", name)

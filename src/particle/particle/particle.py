@@ -19,6 +19,8 @@ from typing import (
     SupportsInt,
     TextIO,
     Tuple,
+    Type,
+    TypeVar,
     Union,
 )
 
@@ -48,8 +50,7 @@ from .utilities import latex_to_html_name, programmatic_name, str_with_unc
 __all__ = ("Particle", "ParticleNotFound", "InvalidParticle")
 
 
-def __dir__():
-    # type: () -> Tuple[str, ...]
+def __dir__() -> Tuple[str, ...]:
     return __all__
 
 
@@ -61,25 +62,26 @@ class InvalidParticle(RuntimeError):
     pass
 
 
-def _isospin_converter(isospin):
-    # type: (str) -> Optional[float]
-    vals = {
+def _isospin_converter(isospin: str) -> Optional[float]:
+    vals: Dict[Optional[str], Optional[float]] = {
         "0": 0.0,
         "1/2": 0.5,
         "1": 1.0,
         "3/2": 1.5,
-    }  # type: Dict[Optional[str], Optional[float]]
+    }
     return vals.get(isospin)
 
 
-def _none_or_positive_converter(value):
-    # type: (float) -> Optional[float]
+def _none_or_positive_converter(value: float) -> Optional[float]:
     return None if value < 0 else value
 
 
 # These are needed to trick attrs typing
-minus_one = -1.0  # type: Optional[float]
-none_float = None  # type: Optional[float]
+minus_one: Optional[float] = -1.0
+none_float: Optional[float] = None
+
+
+Self = TypeVar("Self", bound="Particle")
 
 
 @total_ordering
@@ -188,30 +190,24 @@ class Particle:
         The upper uncertainty on the particle decay width, in MeV.
     """
 
-    pdgid = attr.ib(converter=PDGID)  # type: PDGID
-    pdg_name = attr.ib()  # type: str
-    mass = attr.ib(
+    pdgid: PDGID = attr.ib(converter=PDGID)
+    pdg_name: str = attr.ib()
+    mass: Optional[float] = attr.ib(minus_one, converter=_none_or_positive_converter)
+    mass_upper: Optional[float] = attr.ib(
         minus_one, converter=_none_or_positive_converter
-    )  # type: Optional[float]
-    mass_upper = attr.ib(
+    )
+    mass_lower: Optional[float] = attr.ib(
         minus_one, converter=_none_or_positive_converter
-    )  # type: Optional[float]
-    mass_lower = attr.ib(
+    )
+    width: Optional[float] = attr.ib(minus_one, converter=_none_or_positive_converter)
+    width_upper: Optional[float] = attr.ib(
         minus_one, converter=_none_or_positive_converter
-    )  # type: Optional[float]
-    width = attr.ib(
+    )
+    width_lower: Optional[float] = attr.ib(
         minus_one, converter=_none_or_positive_converter
-    )  # type: Optional[float]
-    width_upper = attr.ib(
-        minus_one, converter=_none_or_positive_converter
-    )  # type: Optional[float]
-    width_lower = attr.ib(
-        minus_one, converter=_none_or_positive_converter
-    )  # type: Optional[float]
+    )
     _three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    I = attr.ib(  # noqa: E741
-        none_float, converter=_isospin_converter
-    )  # type: Optional[float]
+    I: Optional[float] = attr.ib(none_float, converter=_isospin_converter)  # noqa: E741
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity
@@ -219,29 +215,27 @@ class Particle:
     anti_flag = attr.ib(
         Inv.Same, converter=Inv
     )  # Info about particle name for anti-particles
-    rank = attr.ib(0)  # type: int
+    rank: int = attr.ib(0)
     status = attr.ib(Status.NotInPDT, converter=Status)
     quarks = attr.ib("", converter=str)
-    latex_name = attr.ib("Unknown")  # type: str
+    latex_name: str = attr.ib("Unknown")
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass}>'.format(
             self=self, pdgid=int(self.pdgid), mass=self._str_mass()
         )
 
     # Ordered loaded table of entries
-    _table = None  # type: Optional[List[Particle]]
+    _table: Optional[List["Particle"]] = None
 
     # Hash optimized table of particles
-    _hash_table = None  # type: Optional[Dict[int, Particle]]
+    _hash_table: Optional[Dict[int, "Particle"]] = None
 
     # Names of loaded tables
-    _table_names = None  # type: Optional[List[str]]
+    _table_names: Optional[List[str]] = None
 
     @classmethod
-    def table_names(cls):
-        # type: () -> Tuple[str, ...]
+    def table_names(cls) -> Tuple[str, ...]:
         """
         Return the list of names loaded.
 
@@ -262,16 +256,14 @@ class Particle:
             return tuple()
 
     @classmethod
-    def table_loaded(cls):
-        # type: () -> bool
+    def table_loaded(cls) -> bool:
         """
         Check to see if the table is loaded.
         """
         return cls._table is not None
 
     @classmethod
-    def all(cls):
-        # type: () -> List[Particle]
+    def all(cls: Type[Self]) -> List[Self]:
         """
         Access, hence get hold of, the internal particle data CSV table,
         loading it from the default location if no table has yet been loaded.
@@ -280,19 +272,18 @@ class Particle:
         if not cls.table_loaded():
             cls.load_table()
 
-        return cls._table if cls._table is not None else []
+        return cls._table if cls._table is not None else []  # type: ignore[return-value]
 
     @classmethod
     def to_list(
         cls,
-        exclusive_fields=(),  # type: Iterable[str]
-        exclude_fields=(),  # type: Iterable[str]
-        n_rows=-1,  # type: int
-        filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
-        particle=None,  # type: Optional[bool]
-        **search_terms,  # type: Any
-    ):
-        # type: (...) -> List[List[Union[bool, int, str, float]]]
+        exclusive_fields: Iterable[str] = (),
+        exclude_fields: Iterable[str] = (),
+        n_rows: int = -1,
+        filter_fn: Optional[Callable[["Particle"], bool]] = None,
+        particle: Optional[bool] = None,
+        **search_terms: Any,
+    ) -> List[List[Union[bool, int, str, float]]]:
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `list`, loading the table from the default location if no table has yet been loaded.
@@ -430,8 +421,9 @@ class Particle:
         return tbl
 
     @classmethod
-    def to_dict(cls, *args, **kwargs):
-        # type: (Any, Any) -> Dict[str, Tuple[Union[bool, int, str, float], ...]]
+    def to_dict(
+        cls, *args: Any, **kwargs: Any
+    ) -> Dict[str, Tuple[Union[bool, int, str, float], ...]]:
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `dict`, loading the table from the default location if no table has yet been loaded.
@@ -542,8 +534,12 @@ class Particle:
         return {str(h): r for h, r in zip(headers, rows)}
 
     @classmethod
-    def load_table(cls, filename=None, append=False, _name=None):
-        # type: (Union[None, str, TextIO], bool, Optional[str]) -> None
+    def load_table(
+        cls,
+        filename: Union[None, str, TextIO] = None,
+        append: bool = False,
+        _name: Optional[str] = None,
+    ) -> None:
         """
         Load a particle data CSV table. Optionally append to the existing data already loaded if append=True.
         As a special case, if this is called with append=True and the table is not loaded, the default will
@@ -620,8 +616,7 @@ class Particle:
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
-    def __lt__(self, other):
-        # type: (Any) -> bool
+    def __lt__(self, other: Any) -> bool:
         # Sort by absolute particle numbers
         # The positive one should come first
         if type(self) == type(other):
@@ -631,23 +626,20 @@ class Particle:
         else:
             return int(self.pdgid) < other
 
-    def __eq__(self, other):
-        # type: (Any) -> bool
+    def __eq__(self, other: Any) -> bool:
         try:
             return self.pdgid == other.pdgid
         except AttributeError:
             return self.pdgid == other
 
     # Only one particle can exist per PDGID number
-    def __hash__(self):
-        # type: () -> int
+    def __hash__(self) -> int:
         return hash(self.pdgid)
 
     # Shared with PDGID
 
     @property
-    def J(self):
-        # type: () -> int
+    def J(self) -> int:
         """
         The total spin J quantum number.
 
@@ -657,8 +649,7 @@ class Particle:
         return self.pdgid.J
 
     @property
-    def L(self):
-        # type: () -> Optional[int]
+    def L(self) -> Optional[int]:
         """
         The orbital angular momentum L quantum number (None if not a meson).
 
@@ -668,8 +659,7 @@ class Particle:
         return self.pdgid.L
 
     @property
-    def S(self):
-        # type: () -> Optional[int]
+    def S(self) -> Optional[int]:
         """
         The spin S quantum number (None if not a meson).
 
@@ -679,8 +669,7 @@ class Particle:
         return self.pdgid.S
 
     @property
-    def charge(self):
-        # type: () -> Optional[float]
+    def charge(self) -> Optional[float]:
         """
         The particle charge, in units of the positron charge.
 
@@ -693,8 +682,7 @@ class Particle:
         return self.three_charge / 3 if self.three_charge is not None else None
 
     @property
-    def three_charge(self):
-        # type: () -> Optional[int]
+    def three_charge(self) -> Optional[int]:
         "Three times the particle charge (charge * 3), in units of the positron charge."
         if not self.pdgid.is_nucleus:
             # Return int(...) not to return the actual enum Charge
@@ -703,8 +691,7 @@ class Particle:
             return self.pdgid.three_charge
 
     @property
-    def lifetime(self):
-        # type: () -> Optional[float]
+    def lifetime(self) -> Optional[float]:
         """
         The particle lifetime, in nanoseconds.
 
@@ -713,8 +700,7 @@ class Particle:
         return width_to_lifetime(self.width) if self.width is not None else None
 
     @property
-    def ctau(self):
-        # type: () -> Optional[float]
+    def ctau(self) -> Optional[float]:
         """
         The particle c*tau, in millimeters.
 
@@ -727,8 +713,7 @@ class Particle:
         )
 
     @property
-    def is_name_barred(self):
-        # type: () -> bool
+    def is_name_barred(self) -> bool:
         """
         Check to see if particle is inverted (hence is it an antiparticle)
         and has a bar in its name.
@@ -736,8 +721,7 @@ class Particle:
         return self.pdgid < 0 and self.anti_flag == Inv.Barred
 
     @property
-    def spin_type(self):
-        # type: () -> SpinType
+    def spin_type(self) -> SpinType:
         """
         Access the SpinType enum.
 
@@ -764,16 +748,14 @@ class Particle:
         return SpinType.Unknown
 
     @property
-    def is_self_conjugate(self):
-        # type: () -> bool
+    def is_self_conjugate(self) -> bool:
         """
         Is the particle self-conjugate, i.e. its own antiparticle?
         """
         return self.anti_flag == Inv.Same
 
     @property
-    def is_unflavoured_meson(self):
-        # type: () -> bool
+    def is_unflavoured_meson(self) -> bool:
         """
         Is the particle a light non-strange meson or a quarkonium?
 
@@ -806,8 +788,7 @@ class Particle:
         else:  # Only K-mesons at this point
             return False
 
-    def invert(self):
-        # type: () -> Particle
+    def invert(self: Self) -> Self:
         "Get the antiparticle."
         if self.anti_flag == Inv.Barred or (
             self.anti_flag == Inv.ChargeInv and self.three_charge != Charge.o
@@ -821,8 +802,7 @@ class Particle:
 
     # Pretty descriptions
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         _tilde = "~" if self.anti_flag == Inv.Barred and self.pdgid < 0 else ""
         _charge = self._str_charge() if self._charge_in_name() else ""
         return self.pdg_name + _tilde + _charge
@@ -832,13 +812,11 @@ class Particle:
         doc="The nice name, with charge added, and a tilde for an antiparticle, if relevant.",
     )
 
-    def _repr_latex_(self):
-        # type: () -> str
+    def _repr_latex_(self) -> str:
         name = self.latex_name
         return ("$" + name + "$") if self.latex_name else "?"
 
-    def _width_or_lifetime(self):
-        # type: () -> str
+    def _width_or_lifetime(self) -> str:
         """
         Display either the particle width or the lifetime.
         Internally used by the describe() method.
@@ -876,8 +854,7 @@ class Particle:
                 width=str_with_unc(self.width, self.width_upper, self.width_lower)
             )
 
-    def _charge_in_name(self):
-        # type: () -> bool
+    def _charge_in_name(self) -> bool:
         """Assess whether the particle charge is part of the particle name.
 
         Internally used when creating the name.
@@ -926,8 +903,7 @@ class Particle:
             return False
         return True
 
-    def _str_charge(self):
-        # type: () -> str
+    def _str_charge(self) -> str:
         """
         Display a reasonable particle charge printout.
         Internally used by the describe() and __str__ methods.
@@ -939,8 +915,7 @@ class Particle:
         else:
             return str(self.pdgid.charge)
 
-    def _str_mass(self):
-        # type: () -> str
+    def _str_mass(self) -> str:
         """
         Display a reasonable particle mass printout
         even when no mass value is available.
@@ -953,8 +928,7 @@ class Particle:
                 str_with_unc(self.mass, self.mass_upper, self.mass_lower)
             )
 
-    def describe(self):
-        # type: () -> str
+    def describe(self) -> str:
         "Make a nice high-density string for a particle's properties."
         if self.pdgid == 0:
             return "Name: Unknown"
@@ -985,32 +959,27 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return val
 
     @property
-    def evtgen_name(self):
-        # type: () -> str
+    def evtgen_name(self) -> str:
         "This is the name used in EvtGen."
         return EvtGenName2PDGIDBiMap[self.pdgid]
 
     @property
-    def programmatic_name(self):
-        # type: () -> str
+    def programmatic_name(self) -> str:
         "This name could be used for a variable name."
         return programmatic_name(self.name)
 
     @property
-    def html_name(self):
-        # type: () -> str
+    def html_name(self) -> str:
         "This is the name in HTML."
         return latex_to_html_name(self.latex_name)
 
     @classmethod
-    def empty(cls):
-        # type: () -> Particle
+    def empty(cls: Type[Self]) -> Self:
         "Make a new empty particle."
         return cls(0, "Unknown", anti_flag=Inv.Same)
 
     @classmethod
-    def from_pdgid(cls, value):
-        # type: (SupportsInt) -> Particle
+    def from_pdgid(cls: Type[Self], value: SupportsInt) -> Self:
         """
         Get a particle from a PDGID. Uses by default the package
         extended PDG data table.
@@ -1031,15 +1000,14 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         assert cls._hash_table is not None
 
         try:
-            return cls._hash_table[int(value)]
+            return cls._hash_table[int(value)]  # type: ignore[return-value]
         except KeyError:
             raise ParticleNotFound(  # noqa: B904  <- use from None when Python 2 is dropped
                 f"Could not find PDGID {value}"
             )
 
     @classmethod
-    def from_name(cls, name):
-        # type: (str) -> Particle
+    def from_name(cls: Type[Self], name: str) -> Self:
         """
         Get a particle from its name.
 
@@ -1049,7 +1017,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             If no particle matches the input name.
         """
         try:
-            (particle,) = Particle.finditer(
+            (particle,) = cls.finditer(
                 name=name
             )  # throws an error if < 1 or > 1 particle is found
             return particle
@@ -1059,8 +1027,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             )
 
     @classmethod
-    def from_evtgen_name(cls, name):
-        # type: (str) -> Particle
+    def from_evtgen_name(cls: Type[Self], name: str) -> Self:
         """
         Get a particle from an EvtGen particle name, as in .dec decay files.
 
@@ -1075,13 +1042,12 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def finditer(
-        cls,
-        filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
+        cls: Type[Self],
+        filter_fn: Optional[Callable[["Particle"], bool]] = None,
         *,
-        particle=None,  # type: Optional[bool]
-        **search_terms,  # type: Any
-    ):
-        # type: (...) -> Iterator[Particle]
+        particle: Optional[bool] = None,
+        **search_terms: Any,
+    ) -> Iterator[Self]:
         """
         Search for a particle, returning an iterator of candidates.
 
@@ -1171,13 +1137,12 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def findall(
-        cls,
-        filter_fn=None,  # type: Optional[Callable[[Particle], bool]]
+        cls: Type[Self],
+        filter_fn: Optional[Callable[["Particle"], bool]] = None,
         *,
-        particle=None,  # type: Optional[bool]
-        **search_terms,  # type: Any
-    ):
-        # type: (...) -> List[Particle]
+        particle: Optional[bool] = None,
+        **search_terms: Any,
+    ) -> List[Self]:
 
         """
         Search for a particle, returning a list of candidates.
@@ -1226,15 +1191,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         )
 
     @classmethod
-    def find(cls, *args, **search_terms):
-        # type: (Any, Any) -> Particle
+    def find(cls: Type[Self], *args: Any, **search_terms: Any) -> Self:
         raise AttributeError(
             "Method has been removed post versions 0.16. Please use finditer or findall instead."
         )
 
     @classmethod
-    def from_string(cls, name):
-        # type: (str) -> Particle
+    def from_string(cls: Type[Self], name: str) -> Self:
         "Get a particle from a PDG style name - returns the best match."
         matches = cls.from_string_list(name)
         if matches:
@@ -1243,8 +1206,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             raise ParticleNotFound(f"{name} not found in particle table")
 
     @classmethod
-    def from_string_list(cls, name):
-        # type: (str) -> List[Particle]
+    def from_string_list(cls: Type[Self], name: str) -> List[Self]:
         "Get a list of particles from a PDG style name."
 
         # Forcible override
@@ -1279,16 +1241,15 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             return []
 
     @classmethod
-    def _from_group_dict_list(cls, mat):
-        # type: (Dict[str, Any]) -> List[Particle]
+    def _from_group_dict_list(cls: Type[Self], mat: Dict[str, Any]) -> List[Self]:
 
-        kw = {
+        kw: Dict[str, Any] = {
             "particle": False
             if mat["bar"] is not None
             else True
             if mat["charge"] == "0"
             else None
-        }  # type: Dict[str, Any]
+        }
 
         name = mat["name"]
 

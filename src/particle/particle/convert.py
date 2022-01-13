@@ -91,13 +91,11 @@ __all__ = (
 )
 
 
-def __dir__():
-    # type: () -> Tuple[str, ...]
+def __dir__() -> Tuple[str, ...]:
     return __all__
 
 
-def get_from_latex(filename):
-    # type: (str) -> pd.Series
+def get_from_latex(filename: str) -> pd.Series:
     """
     Produce a pandas series from a file with LaTeX mappings in itself.
     The CVS file format is the following: PDGID, ParticleLatexName.
@@ -106,8 +104,7 @@ def get_from_latex(filename):
     return latex_table.LATEXNAME
 
 
-def filter_file(fileobject):
-    # type: (Union[str, TextIO]) -> TextIO
+def filter_file(fileobject: Union[str, TextIO]) -> TextIO:
     """
     Open a file if not already a file-like object, and strip lines that start with *.
     Returns a new file-like object (StringIO instance).
@@ -135,8 +132,7 @@ def filter_file(fileobject):
 T = TypeVar("T")
 
 
-def get_from_pdg_extended(filename, latexes=()):
-    # type: (str, Iterable[str]) -> pd.DataFrame
+def get_from_pdg_extended(filename: str, latexes: Iterable[str] = ()) -> pd.DataFrame:
     """
     Read an "extended style" PDG data file (only produced in 2008), plus a list of LaTeX files,
     to produce a pandas DataFrame with particle information.
@@ -155,8 +151,7 @@ def get_from_pdg_extended(filename, latexes=()):
     """
     "Read a file, plus a list of LaTeX files, to produce a pandas DataFrame with particle information"
 
-    def unmap(mapping):
-        # type: (Dict[str, T]) -> Callable[[str], T]
+    def unmap(mapping: Dict[str, T]) -> Callable[[str], T]:
         return lambda x: mapping[x.strip()]
 
     # Convert each column from text to appropriate data type
@@ -221,8 +216,7 @@ def get_from_pdg_extended(filename, latexes=()):
     )
 
     # Parity flips for baryons
-    def is_baryon_with_defined_parity(i, p):
-        # type: (PDGID, Parity) -> bool
+    def is_baryon_with_defined_parity(i: PDGID, p: Parity) -> bool:
         return is_baryon(i) and p != Parity.u
 
     pdg_table_inv["P"] = np.where(
@@ -270,16 +264,14 @@ def get_from_pdg_extended(filename, latexes=()):
     return full.fillna("")
 
 
-def sort_particles(table):
-    # type: (pd.DataFrame) -> None
+def sort_particles(table: pd.DataFrame) -> None:
     "Sort a particle list table nicely"
     table["TmpVals"] = abs(table.index - 0.25)
     table.sort_values("TmpVals", inplace=True)
     del table["TmpVals"]
 
 
-def get_from_pdg_mcd(filename):
-    # type: (str) -> pd.DataFrame
+def get_from_pdg_mcd(filename: str) -> pd.DataFrame:
     """
     Reads in a current-style PDG .mcd file (mass_width_2021.mcd file tested).
 
@@ -363,8 +355,9 @@ def get_from_pdg_mcd(filename):
     return ds
 
 
-def update_from_mcd(full_table, update_table):
-    # type: (pd.DataFrame, pd.DataFrame) -> pd.DataFrame
+def update_from_mcd(
+    full_table: pd.DataFrame, update_table: pd.DataFrame
+) -> pd.DataFrame:
     """
     Update the full table (aka the PDG extended-style table) with the
     up-to-date information from the PDG .mcd file.
@@ -383,8 +376,9 @@ def update_from_mcd(full_table, update_table):
     return full_table
 
 
-def produce_files(particle2008, particle2021, version, year):
-    # type: (str, str, str, str) -> None
+def produce_files(
+    particle2008: str, particle2021: str, version: str, year: str
+) -> None:
     "This produces listed output files from all input files."
 
     with data.basepath.joinpath("mass_width_2008.fwf").open() as fwf_f:
@@ -431,8 +425,7 @@ def produce_files(particle2008, particle2021, version, year):
         new_table.to_csv(f, float_format="%.12g")
 
 
-def version_header(filename, version_number):
-    # type: (str, str) -> str
+def version_header(filename: str, version_number: str) -> str:
     filename = os.path.basename(filename)
     VERSION = version_number  # version of CSV files
     DATE = date.isoformat(date.today())
@@ -441,8 +434,7 @@ def version_header(filename, version_number):
     )
 
 
-def main(version, year):
-    # type: (str, str) -> None
+def main(version: str, year: str) -> None:
     "Regenerate output files - run directly inside the package"
     master_dir = os.path.dirname(FILE_DIR)
     data_dir = os.path.join(master_dir, "data")
@@ -452,8 +444,7 @@ def main(version, year):
     produce_files(particle2008, particlenew, version, year)
 
 
-def convert(version, output, fwf, latex=None):
-    # type: (str, str, str, Optional[str]) -> None
+def convert(version: str, output: str, fwf: str, latex: Optional[str] = None) -> None:
     latexes = [data.basepath / "pdgid_to_latexname.csv"]
     if latex:
         latexes.append(latex)
@@ -464,13 +455,11 @@ def convert(version, output, fwf, latex=None):
         table.to_csv(f, float_format="%.12g")
 
 
-def run_regen(args):
-    # type: (Any) -> None
+def run_regen(args: Any) -> None:
     main(args.version, args.year)
 
 
-def run_convert(args):
-    # type: (Any) -> None
+def run_convert(args: Any) -> None:
     convert(args.version, args.output, args.fwf, args.latex)
 
 

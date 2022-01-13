@@ -10,6 +10,5 @@ from .lhcb import LHCbName2PDGIDBiMap
 __all__ = ("LHCbName2PDGIDBiMap",)
 
 
-def __dir__():
-    # type: () -> Tuple[str, ...]
+def __dir__() -> Tuple[str, ...]:
     return __all__
