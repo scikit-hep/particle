@@ -5,6 +5,7 @@
 
 
 import csv
+import sys
 from collections.abc import Mapping
 from typing import (
     Any,
@@ -217,7 +218,13 @@ def DirectionalMaps(
     )
 
 
-class DirectionalMap(Mapping[str, str]):
+if sys.version_info < (3, 9):
+    StrStrMapping = Mapping
+else:
+    StrStrMapping = Mapping[str, str]
+
+
+class DirectionalMap(StrStrMapping):
     def __init__(self, name_A: str, name_B: str, map: Dict[str, str]) -> None:
         """
         Directional map class providing a A -> B mapping.
