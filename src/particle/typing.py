@@ -11,8 +11,22 @@ if sys.version_info < (3, 8):
 else:
     from typing import Protocol, runtime_checkable
 
-from importlib.abc import Traversable
+if sys.version_info < (3, 9):
+    from importlib_resources.abc import Traversable
+else:
+    from importlib.abc import Traversable
+
 from typing import Any, TextIO, Union
+
+__all__ = (
+    "Protocol",
+    "runtime_checkable",
+    "Traversable",
+    "StringOrIO",
+    "HasOpen",
+    "HasRead",
+)
+
 
 StringOrIO = Union[Traversable, str, TextIO]
 

@@ -52,7 +52,6 @@ When you are done, you can save one or more of the tables:
 
 import os
 from datetime import date
-from importlib.abc import Traversable
 from io import StringIO
 from typing import Any, Callable, Dict, Iterable, List, Optional, TextIO, Tuple, TypeVar
 
@@ -61,7 +60,7 @@ import pandas as pd
 
 from .. import data
 from ..pdgid import PDGID, is_baryon
-from ..typing import StringOrIO
+from ..typing import StringOrIO, Traversable
 from .enums import (
     Charge,
     Charge_mapping,

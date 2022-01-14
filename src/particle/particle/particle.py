@@ -8,7 +8,6 @@
 import csv
 from copy import copy
 from functools import total_ordering
-from importlib.abc import Traversable
 from typing import (
     Any,
     Callable,
@@ -32,7 +31,7 @@ from .. import data
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
 from ..pdgid import PDGID, is_valid
 from ..pdgid.functions import Location, _digit
-from ..typing import HasOpen, HasRead, StringOrIO
+from ..typing import HasOpen, HasRead, StringOrIO, Traversable
 from .enums import (
     Charge,
     Charge_mapping,
