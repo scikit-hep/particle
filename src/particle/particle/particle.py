@@ -1242,9 +1242,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if mat["family"]:
             if "_" in mat["family"]:
                 mat["family"] = mat["family"].strip("_")
-            name += f"({mat['family']})"
+            name += f'({mat["family"]})'
         if mat["state"]:
-            name += f"({mat['state']})"
+            name += f'({mat["state"]})'
 
         if "prime" in mat and mat["prime"]:
             name += "'"
@@ -1255,7 +1255,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if mat["state"] is not None:
             kw["J"] = float(mat["state"])
 
-        maxname = name + f"({mat['mass']})" if mat["mass"] else name
+        maxname = name + f'({mat["mass"]})' if mat["mass"] else name
         if "charge" in mat and mat["charge"] is not None:
             kw["three_charge"] = Charge_mapping[mat["charge"]]
 
