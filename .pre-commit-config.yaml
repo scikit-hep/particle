@@ -54,7 +54,8 @@ repos:
   hooks:
   - id: mypy
     files: src
-    additional_dependencies: [attrs==21.2.0, types-deprecated]
+    additional_dependencies: [attrs==21.3.0, types-deprecated, hepunits, importlib_resources]
+    args: [--show-error-codes]
 
 - repo: https://github.com/codespell-project/codespell
   rev: v2.1.0

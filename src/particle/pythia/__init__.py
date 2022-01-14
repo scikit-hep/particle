@@ -11,6 +11,5 @@ from .pythiaid import PythiaID
 __all__ = ("PythiaID",)
 
 
-def __dir__():
-    # type: () -> Tuple[str, ...]
+def __dir__() -> Tuple[str, ...]:
     return __all__

@@ -14,10 +14,14 @@ follows the PDG rules, hence uses the standard PDG IDs.
 
 
 import csv
+from typing import Type, TypeVar
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
 from ..pdgid import PDGID
+
+Self = TypeVar("Self", bound="Geant3ID")
+
 
 with data.basepath.joinpath("pdgid_to_geant3id.csv").open() as _f:
     _bimap = {
@@ -45,8 +49,7 @@ class Geant3ID(int):
     __slots__ = ()  # Keep PythiaID a slots based class
 
     @classmethod
-    def from_pdgid(cls, pdgid):
-        # type: (int) -> Geant3ID
+    def from_pdgid(cls: Type[Self], pdgid: int) -> Self:
         """
         Constructor from a PDGID.
         """
@@ -55,20 +58,16 @@ class Geant3ID(int):
                 return cls(k)
         raise MatchingIDNotFound(f"Non-existent Geant3ID for input PDGID {pdgid} !")
 
-    def to_pdgid(self):
-        # type: () -> PDGID
+    def to_pdgid(self) -> PDGID:
         return PDGID(_bimap[self])
 
-    def __repr__(self):
-        # type: () -> str
-        return f"<Geant3ID: {int(self):d}>"
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__}: {int(self):d}>"
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return repr(self)
 
-    def __neg__(self):
-        # type: () -> Geant3ID
+    def __neg__(self: Self) -> Self:
         """
         Note:
         Allowed operation though ALL Geant3 identification codes are positive!

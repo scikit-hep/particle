@@ -11,6 +11,5 @@ from .geant3id import Geant3ID
 __all__ = ("Geant3ID",)
 
 
-def __dir__():
-    # type: () -> Tuple[str, ...]
+def __dir__() -> Tuple[str, ...]:
     return __all__

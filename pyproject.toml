@@ -26,6 +26,7 @@ files = "src"
 check_untyped_defs = true
 disallow_untyped_defs = true
 
+# NumPy is used lightly, so ignored here for now
 [[tool.mypy.overrides]]
-module = [ "pandas.*", ]
+module = [ "pandas.*", "numpy.*"]
 ignore_missing_imports = true

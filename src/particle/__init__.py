@@ -47,6 +47,5 @@ __all__ = (
 )
 
 
-def __dir__():
-    # type: () -> Tuple[str, ...]
+def __dir__() -> Tuple[str, ...]:
     return __all__

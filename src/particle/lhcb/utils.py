@@ -7,8 +7,7 @@ from ..particle import Particle
 from .converters import LHCbName2PDGIDBiMap
 
 
-def to_lhcb_name(p):
-    # type: (Particle) -> str
+def to_lhcb_name(p: Particle) -> str:
     """
     Convert to the name used in the LHCb software framework.
 
@@ -23,8 +22,7 @@ def to_lhcb_name(p):
     return LHCbName2PDGIDBiMap[p.pdgid]
 
 
-def from_lhcb_name(name):
-    # type: (str) -> Particle
+def from_lhcb_name(name: str) -> Particle:
     """
     Get a `Particle` from an LHCb particle name, as used in LHCb Gaudi applications.
 

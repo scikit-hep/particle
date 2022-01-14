@@ -11,6 +11,7 @@ All methods of HepPID are implemented in a Pythonic version, see the functions m
 
 
 from inspect import isfunction
+from typing import TypeVar
 
 from . import functions as _functions
 
@@ -20,6 +21,9 @@ _fnames = [
     for fname in dir(_functions)
     if not fname.startswith("_") and isfunction(getattr(_functions, fname))
 ]
+
+
+Self = TypeVar("Self", bound="PDGID")
 
 
 class PDGID(int):
@@ -34,24 +38,19 @@ class PDGID(int):
 
     __slots__ = ()  # Keep PDGID a slots based class
 
-    def __repr__(self):
-        # type: () -> str
-        return "<PDGID: {:d}{:s}>".format(
-            int(self), "" if _functions.is_valid(self) else " (is_valid==False)"
-        )
+    def __repr__(self) -> str:
+        is_valid_str = "" if _functions.is_valid(self) else " (is_valid==False)"
+        return f"<{self.__class__.__name__}: {int(self):d}{is_valid_str}>"
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return repr(self)
 
-    def __neg__(self):
-        # type: () -> PDGID
+    def __neg__(self: Self) -> Self:
         return self.__class__(-int(self))
 
     __invert__ = __neg__
 
-    def info(self):
-        # type: () -> str
+    def info(self) -> str:
         """
         Print all PDGID properties one per line, for easy inspection.
         """

@@ -31,8 +31,13 @@ B_conv = Callable[[str], Union[B, int]]
 
 
 class BiMap(Generic[A, B]):
-    def __init__(self, class_A, class_B, converters=(int, int), filename=None):
-        # type: (Type[A], Type[B], Tuple[A_conv, B_conv], Union[str, TextIO, None]) -> None
+    def __init__(
+        self,
+        class_A: Type[A],
+        class_B: Type[B],
+        converters: Tuple[A_conv, B_conv] = (int, int),
+        filename: Union[str, TextIO, None] = None,
+    ) -> None:
         """
         Bi-bidirectional map class.
 
@@ -73,8 +78,8 @@ class BiMap(Generic[A, B]):
         >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
         """
 
-        self.class_A = class_A  # type: Type[A]
-        self.class_B = class_B  # type: Type[B]
+        self.class_A: Type[A] = class_A
+        self.class_B: Type[B] = class_B
 
         name_A = self.class_A.__name__.upper()
         name_B = self.class_B.__name__.upper()
@@ -101,17 +106,14 @@ class BiMap(Generic[A, B]):
             }
 
     @overload
-    def __getitem__(self, value):
-        # type: (A) -> B
+    def __getitem__(self, value: A) -> B:
         pass
 
     @overload
-    def __getitem__(self, value):
-        # type: (B) -> A
+    def __getitem__(self, value: B) -> A:
         pass
 
-    def __getitem__(self, value):
-        # type: (Any) -> Any
+    def __getitem__(self, value: Any) -> Any:
         if isinstance(value, self.class_B):
             try:
                 return self.class_A(self._to_map[value])  # type: ignore
@@ -128,8 +130,7 @@ class BiMap(Generic[A, B]):
         )
         raise MatchingIDNotFound(msg)
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return "<{self.__class__.__name__}({a}-{b}): {n} matches>".format(
             self=self,
             a=self.class_A.__name__,
@@ -137,14 +138,17 @@ class BiMap(Generic[A, B]):
             n=self.__len__(),
         )
 
-    def __len__(self):
-        # type: () -> int
+    def __len__(self) -> int:
         """Returns the number of matches."""
         return len(self._to_map)
 
 
-def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
-    # type: (str, str, Tuple[Callable[[str],str], Callable[[str],str]], Union[None, str, TextIO]) -> Tuple[DirectionalMap, DirectionalMap]
+def DirectionalMaps(
+    name_A: str,
+    name_B: str,
+    converters: Tuple[Callable[[str], str], Callable[[str], str]] = (str, str),
+    filename: Union[None, str, TextIO] = None,
+) -> Tuple["DirectionalMap", "DirectionalMap"]:
     """
     Directional map class providing a to and from mapping.
 
@@ -213,8 +217,7 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
 
 
 class DirectionalMap(Mapping):
-    def __init__(self, name_A, name_B, map):
-        # type: (str, str, Dict[str, str]) -> None
+    def __init__(self, name_A: str, name_B: str, map: Dict[str, str]) -> None:
         """
         Directional map class providing a A -> B mapping.
 
@@ -231,8 +234,7 @@ class DirectionalMap(Mapping):
 
         self._map = map
 
-    def __getitem__(self, value):
-        # type: (str) -> str
+    def __getitem__(self, value: str) -> str:
         try:
             return self._map[value]
         except KeyError:
@@ -241,17 +243,14 @@ class DirectionalMap(Mapping):
             )
             raise MatchingIDNotFound(msg)  # noqa: B904 Remove when dropping Python 2
 
-    def __iter__(self):
-        # type: () -> Iterator[str]
+    def __iter__(self) -> Iterator[str]:
         return iter(self._map)
 
-    def __repr__(self):
-        # type: () -> str
+    def __repr__(self) -> str:
         return "<{self.__class__.__name__}({a}->{b}): {n} matches>".format(
             self=self, a=self.name_A, b=self.name_B, n=self.__len__()
         )
 
-    def __len__(self):
-        # type: () -> int
+    def __len__(self) -> int:
         """Returns the number of matches."""
         return len(self._map)
