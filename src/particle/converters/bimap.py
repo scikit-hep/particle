@@ -5,6 +5,7 @@
 
 
 import csv
+import sys
 from collections.abc import Mapping
 from typing import (
     Any,
@@ -12,6 +13,7 @@ from typing import (
     Dict,
     Generic,
     Iterator,
+    Optional,
     TextIO,
     Tuple,
     Type,
@@ -22,7 +24,7 @@ from typing import (
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
-from ..typing import HasOpen, HasRead
+from ..typing import HasOpen, HasRead, StringOrIO
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -35,8 +37,8 @@ class BiMap(Generic[A, B]):
         self,
         class_A: Type[A],
         class_B: Type[B],
-        converters: Tuple[A_conv, B_conv] = (int, int),
-        filename: Union[str, TextIO, None] = None,
+        converters: Tuple[A_conv, B_conv] = (int, int),  # type: ignore[type-arg]
+        filename: Optional[StringOrIO] = None,
     ) -> None:
         """
         Bi-bidirectional map class.
@@ -84,6 +86,7 @@ class BiMap(Generic[A, B]):
         name_A = self.class_A.__name__.upper()
         name_B = self.class_B.__name__.upper()
 
+        file_object: TextIO
         if filename is None:
             filename = f"{name_A.lower()}_to_{name_B.lower()}.csv"
             file_object = data.basepath.joinpath(filename).open()
@@ -92,7 +95,7 @@ class BiMap(Generic[A, B]):
         elif isinstance(filename, HasOpen):
             file_object = filename.open()
         else:
-            file_object = open(filename)
+            file_object = open(filename)  # type: ignore[arg-type]
 
         with file_object as _f:
             self._to_map = {
@@ -125,18 +128,16 @@ class BiMap(Generic[A, B]):
             except KeyError:
                 pass
 
-        msg = "Matching {a}-{b} for input {v} not found !".format(
-            a=self.class_A.__name__, b=self.class_B.__name__, v=value
-        )
+        name_A = self.class_A.__name__
+        name_B = self.class_B.__name__
+        msg = f"Matching {name_A}-{name_B} for input {value} not found !"
         raise MatchingIDNotFound(msg)
 
     def __repr__(self) -> str:
-        return "<{self.__class__.__name__}({a}-{b}): {n} matches>".format(
-            self=self,
-            a=self.class_A.__name__,
-            b=self.class_B.__name__,
-            n=self.__len__(),
-        )
+        name_A = self.class_A.__name__
+        name_B = self.class_B.__name__
+
+        return f"<{self.__class__.__name__}({name_A}-{name_B}): {len(self)} matches>"
 
     def __len__(self) -> int:
         """Returns the number of matches."""
@@ -147,7 +148,7 @@ def DirectionalMaps(
     name_A: str,
     name_B: str,
     converters: Tuple[Callable[[str], str], Callable[[str], str]] = (str, str),
-    filename: Union[None, str, TextIO] = None,
+    filename: Optional[StringOrIO] = None,
 ) -> Tuple["DirectionalMap", "DirectionalMap"]:
     """
     Directional map class providing a to and from mapping.
@@ -180,6 +181,7 @@ def DirectionalMaps(
     name_B = name_B.upper()
 
     fieldnames = None
+    file_object: TextIO
     if filename is None:
         file_object = data.basepath.joinpath("conversions.csv").open()
     elif isinstance(filename, HasOpen):
@@ -187,7 +189,7 @@ def DirectionalMaps(
     elif isinstance(filename, HasRead):
         file_object = filename
     else:
-        file_object = open(filename)
+        file_object = open(filename)  # type: ignore[arg-type]
 
     with file_object as _f:
         skipinitialspace = True
@@ -216,7 +218,13 @@ def DirectionalMaps(
     )
 
 
-class DirectionalMap(Mapping):
+if sys.version_info < (3, 9):
+    StrStrMapping = Mapping
+else:
+    StrStrMapping = Mapping[str, str]
+
+
+class DirectionalMap(StrStrMapping):
     def __init__(self, name_A: str, name_B: str, map: Dict[str, str]) -> None:
         """
         Directional map class providing a A -> B mapping.
@@ -238,18 +246,14 @@ class DirectionalMap(Mapping):
         try:
             return self._map[value]
         except KeyError:
-            msg = "Matching {a}->{b} for input {v} not found !".format(
-                a=self.name_A, b=self.name_B, v=value
-            )
-            raise MatchingIDNotFound(msg)  # noqa: B904 Remove when dropping Python 2
+            msg = f"Matching {self.name_A}->{self.name_B} for input {value} not found !"
+            raise MatchingIDNotFound(msg) from None
 
     def __iter__(self) -> Iterator[str]:
         return iter(self._map)
 
     def __repr__(self) -> str:
-        return "<{self.__class__.__name__}({a}->{b}): {n} matches>".format(
-            self=self, a=self.name_A, b=self.name_B, n=self.__len__()
-        )
+        return f"<{self.__class__.__name__}({self.name_A}->{self.name_B}): {len(self)} matches>"
 
     def __len__(self) -> int:
         """Returns the number of matches."""

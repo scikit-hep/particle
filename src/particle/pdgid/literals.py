@@ -28,9 +28,15 @@ List of available/defined literals:
 {0}
 """
 
+from typing import List
 
 from ..shared_literals import common_particles
 from .pdgid import PDGID
+
+
+def __dir__() -> List[str]:
+    return list(common_particles)
+
 
 for item in common_particles:
     locals()[item] = PDGID(common_particles[item])
@@ -40,5 +46,3 @@ __doc = "".join(
     f"  {item!s} = PDGID({common_particles[item]})\n" for item in common_particles
 )
 __doc__ = __doc__.format(__doc)
-
-del PDGID, common_particles, item

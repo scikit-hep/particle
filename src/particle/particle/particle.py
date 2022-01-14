@@ -17,7 +17,6 @@ from typing import (
     List,
     Optional,
     SupportsInt,
-    TextIO,
     Tuple,
     Type,
     TypeVar,
@@ -32,7 +31,7 @@ from .. import data
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
 from ..pdgid import PDGID, is_valid
 from ..pdgid.functions import Location, _digit
-from ..typing import HasOpen, HasRead
+from ..typing import HasOpen, HasRead, StringOrIO, Traversable
 from .enums import (
     Charge,
     Charge_mapping,
@@ -221,9 +220,7 @@ class Particle:
     latex_name: str = attr.ib("Unknown")
 
     def __repr__(self) -> str:
-        return '<{self.__class__.__name__}: name="{self!s}", pdgid={pdgid}, mass={mass}>'.format(
-            self=self, pdgid=int(self.pdgid), mass=self._str_mass()
-        )
+        return f'<{self.__class__.__name__}: name="{self}", pdgid={int(self.pdgid)}, mass={self._str_mass()}>'
 
     # Ordered loaded table of entries
     _table: Optional[List["Particle"]] = None
@@ -536,7 +533,7 @@ class Particle:
     @classmethod
     def load_table(
         cls,
-        filename: Union[None, str, TextIO] = None,
+        filename: Optional[StringOrIO] = None,
         append: bool = False,
         _name: Optional[str] = None,
     ) -> None:
@@ -562,10 +559,10 @@ class Particle:
         assert cls._table_names is not None
 
         if filename is None:
-            with data.basepath.joinpath("particle2021.csv").open() as f:
-                cls.load_table(f, append=append, _name="particle2021.csv")
-            with data.basepath.joinpath("nuclei2020.csv").open() as f:
-                cls.load_table(f, append=True, _name="nuclei2020.csv")
+            with data.basepath.joinpath("particle2021.csv").open() as fa:
+                cls.load_table(fa, append=append, _name="particle2021.csv")
+            with data.basepath.joinpath("nuclei2020.csv").open() as fb:
+                cls.load_table(fb, append=True, _name="nuclei2020.csv")
             return
         elif isinstance(filename, HasRead):
             tmp_name = _name or filename.name
@@ -576,6 +573,7 @@ class Particle:
             open_file = filename.open()
         else:
             cls._table_names.append(str(filename))
+            assert not isinstance(filename, Traversable)
             open_file = open(filename)
 
         with open_file as f:
@@ -616,20 +614,19 @@ class Particle:
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
 
-    def __lt__(self, other: Any) -> bool:
+    def __lt__(self, other: Union["Particle", int]) -> bool:
         # Sort by absolute particle numbers
         # The positive one should come first
-        if type(self) == type(other):
+        if isinstance(other, Particle):
             return abs(int(self.pdgid) - 0.25) < abs(int(other.pdgid) - 0.25)
-
         # Comparison with anything else should produce normal comparisons.
         else:
             return int(self.pdgid) < other
 
-    def __eq__(self, other: Any) -> bool:
-        try:
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, Particle):
             return self.pdgid == other.pdgid
-        except AttributeError:
+        else:
             return self.pdgid == other
 
     # Only one particle can exist per PDGID number
@@ -646,7 +643,7 @@ class Particle:
         Note that the returned value corresponds to that effectively encoded
         in the particle PDG ID.
         """
-        return self.pdgid.J
+        return self.pdgid.J  # type: ignore[no-any-return]
 
     @property
     def L(self) -> Optional[int]:
@@ -656,7 +653,7 @@ class Particle:
         Note that the returned value corresponds to that effectively encoded
         in the particle PDG ID.
         """
-        return self.pdgid.L
+        return self.pdgid.L  # type: ignore[no-any-return]
 
     @property
     def S(self) -> Optional[int]:
@@ -666,7 +663,7 @@ class Particle:
         Note that the returned value corresponds to that effectively encoded
         in the particle PDG ID.
         """
-        return self.pdgid.S
+        return self.pdgid.S  # type: ignore[no-any-return]
 
     @property
     def charge(self) -> Optional[float]:
@@ -688,7 +685,7 @@ class Particle:
             # Return int(...) not to return the actual enum Charge
             return int(self._three_charge) if self._three_charge != Charge.u else None
         else:
-            return self.pdgid.three_charge
+            return self.pdgid.three_charge  # type: ignore[no-any-return]
 
     @property
     def lifetime(self) -> Optional[float]:
@@ -836,23 +833,19 @@ class Particle:
         ):  # corresponds to a lifetime of approximately 1.3e-20 seconds
             assert self.lifetime is not None
             if self.width_lower != self.width_upper:
-                return "Lifetime = {lifetime} ns".format(
-                    lifetime=str_with_unc(
-                        self.lifetime,
-                        width_to_lifetime(self.width - self.width_lower)
-                        - self.lifetime,
-                        self.lifetime
-                        - width_to_lifetime(self.width + self.width_upper),
-                    )
+                lifetime = str_with_unc(
+                    self.lifetime,
+                    width_to_lifetime(self.width - self.width_lower) - self.lifetime,
+                    self.lifetime - width_to_lifetime(self.width + self.width_upper),
                 )
+                return f"Lifetime = {lifetime} ns"
+
             e = width_to_lifetime(self.width - self.width_lower) - self.lifetime
-            return "Lifetime = {lifetime} ns".format(
-                lifetime=str_with_unc(self.lifetime, e, e)
-            )
+            lifetime = str_with_unc(self.lifetime, e, e)
+            return f"Lifetime = {lifetime} ns"
         else:
-            return "Width = {width} MeV".format(
-                width=str_with_unc(self.width, self.width_upper, self.width_lower)
-            )
+            width = str_with_unc(self.width, self.width_upper, self.width_lower)
+            return f"Width = {width} MeV"
 
     def _charge_in_name(self) -> bool:
         """Assess whether the particle charge is part of the particle name.
@@ -924,38 +917,35 @@ class Particle:
         if self.mass is None:
             return "None"
         else:
-            return "{} MeV".format(
-                str_with_unc(self.mass, self.mass_upper, self.mass_lower)
-            )
+            txt = str_with_unc(self.mass, self.mass_upper, self.mass_lower)
+            return f"{txt} MeV"
 
     def describe(self) -> str:
         "Make a nice high-density string for a particle's properties."
+
         if self.pdgid == 0:
             return "Name: Unknown"
 
-        val = """Name: {self!s:<14} ID: {self.pdgid:<12} Latex: {latex_name}
+        G = Parity_undo[self.G]
+        C = Parity_undo[self.C]
+        Q = self._str_charge()
+        P = Parity_undo[self.P]
+        mass = self._str_mass()
+        width_or_lifetime = self._width_or_lifetime()
+        latex_name = self._repr_latex_()
+
+        val = f"""Name: {self!s:<14} ID: {self.pdgid:<12} Latex: {latex_name}
 Mass  = {mass}
 {width_or_lifetime}
 Q (charge)        = {Q:<6}  J (total angular) = {self.J!s:<7}  P (space parity) = {P}
 C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     = {G}
-""".format(
-            self=self,
-            G=Parity_undo[self.G],
-            C=Parity_undo[self.C],
-            Q=self._str_charge(),
-            P=Parity_undo[self.P],
-            mass=self._str_mass(),
-            width_or_lifetime=self._width_or_lifetime(),
-            latex_name=self._repr_latex_(),
-        )
+"""
 
         if self.spin_type != SpinType.Unknown:
             val += f"    SpinType: {self.spin_type!s}\n"
         if self.quarks:
             val += f"    Quarks: {self.quarks}\n"
-        val += "    Antiparticle name: {inv_self.name} (antiparticle status: {self.anti_flag.name})".format(
-            inv_self=self.invert(), self=self
-        )
+        val += f"    Antiparticle name: {self.invert().name} (antiparticle status: {self.anti_flag.name})"
         return val
 
     @property
@@ -1002,9 +992,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         try:
             return cls._hash_table[int(value)]  # type: ignore[return-value]
         except KeyError:
-            raise ParticleNotFound(  # noqa: B904  <- use from None when Python 2 is dropped
-                f"Could not find PDGID {value}"
-            )
+            raise ParticleNotFound(f"Could not find PDGID {value}") from None
 
     @classmethod
     def from_name(cls: Type[Self], name: str) -> Self:
@@ -1022,9 +1010,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             )  # throws an error if < 1 or > 1 particle is found
             return particle
         except ValueError:
-            raise ParticleNotFound(  # noqa: B904  <- use from None when Python 2 is dropped
-                f'Could not find name "{name}"'
-            )
+            raise ParticleNotFound(f'Could not find name "{name}"') from None
 
     @classmethod
     def from_evtgen_name(cls: Type[Self], name: str) -> Self:
@@ -1256,9 +1242,9 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if mat["family"]:
             if "_" in mat["family"]:
                 mat["family"] = mat["family"].strip("_")
-            name += "({mat[family]})".format(mat=mat)
+            name += f'({mat["family"]})'
         if mat["state"]:
-            name += "({mat[state]})".format(mat=mat)
+            name += f'({mat["state"]})'
 
         if "prime" in mat and mat["prime"]:
             name += "'"
@@ -1269,7 +1255,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if mat["state"] is not None:
             kw["J"] = float(mat["state"])
 
-        maxname = name + "({mat[mass]})".format(mat=mat) if mat["mass"] else name
+        maxname = name + f'({mat["mass"]})' if mat["mass"] else name
         if "charge" in mat and mat["charge"] is not None:
             kw["three_charge"] = Charge_mapping[mat["charge"]]
 

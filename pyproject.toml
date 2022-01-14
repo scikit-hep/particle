@@ -21,10 +21,9 @@ profile = "black"
 [tool.mypy]
 warn_unused_configs = true
 warn_unused_ignores = true
-python_version = "3.6"
+python_version = "3.9"
 files = "src"
-check_untyped_defs = true
-disallow_untyped_defs = true
+strict = true
 
 # NumPy is used lightly, so ignored here for now
 [[tool.mypy.overrides]]

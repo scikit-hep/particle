@@ -53,23 +53,14 @@ When you are done, you can save one or more of the tables:
 import os
 from datetime import date
 from io import StringIO
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Iterable,
-    Optional,
-    TextIO,
-    Tuple,
-    TypeVar,
-    Union,
-)
+from typing import Any, Callable, Dict, Iterable, List, Optional, TextIO, Tuple, TypeVar
 
 import numpy as np
 import pandas as pd
 
 from .. import data
 from ..pdgid import PDGID, is_baryon
+from ..typing import StringOrIO, Traversable
 from .enums import (
     Charge,
     Charge_mapping,
@@ -95,7 +86,7 @@ def __dir__() -> Tuple[str, ...]:
     return __all__
 
 
-def get_from_latex(filename: str) -> pd.Series:
+def get_from_latex(filename: StringOrIO) -> pd.Series:
     """
     Produce a pandas series from a file with LaTeX mappings in itself.
     The CVS file format is the following: PDGID, ParticleLatexName.
@@ -104,7 +95,7 @@ def get_from_latex(filename: str) -> pd.Series:
     return latex_table.LATEXNAME
 
 
-def filter_file(fileobject: Union[str, TextIO]) -> TextIO:
+def filter_file(fileobject: StringOrIO) -> TextIO:
     """
     Open a file if not already a file-like object, and strip lines that start with *.
     Returns a new file-like object (StringIO instance).
@@ -114,7 +105,7 @@ def filter_file(fileobject: Union[str, TextIO]) -> TextIO:
         assert isinstance(fileobject, str)
         fileobject = open(fileobject, encoding="utf-8")
 
-    assert not isinstance(fileobject, str)
+    assert not isinstance(fileobject, (str, Traversable))
 
     stream = StringIO()
     for line in fileobject:
@@ -132,7 +123,9 @@ def filter_file(fileobject: Union[str, TextIO]) -> TextIO:
 T = TypeVar("T")
 
 
-def get_from_pdg_extended(filename: str, latexes: Iterable[str] = ()) -> pd.DataFrame:
+def get_from_pdg_extended(
+    filename: StringOrIO, latexes: Iterable[StringOrIO] = ()
+) -> pd.DataFrame:
     """
     Read an "extended style" PDG data file (only produced in 2008), plus a list of LaTeX files,
     to produce a pandas DataFrame with particle information.
@@ -271,7 +264,7 @@ def sort_particles(table: pd.DataFrame) -> None:
     del table["TmpVals"]
 
 
-def get_from_pdg_mcd(filename: str) -> pd.DataFrame:
+def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
     """
     Reads in a current-style PDG .mcd file (mass_width_2021.mcd file tested).
 
@@ -393,7 +386,7 @@ def produce_files(
     full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
 
     # No longer write out the particle2008.csv file, which nobody should use
-    # particle2008 = str(particle2008)  # Conversion to handle pathlib on Python < 3.6
+    # particle2008 = str(particle2008)  # Conversion to handle pathlib on Python < 3.6.1
     # with open(particle2008, "w", newline="\n", encoding="utf-8") as f:
     # f.write(version_header(particle2008, version))
     # full_table.to_csv(f, float_format="%.12g")
@@ -419,7 +412,7 @@ def produce_files(
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    particle2021 = str(particle2021)  # Conversion to handle pathlib on Python < 3.6
+    particle2021 = str(particle2021)  # Conversion to handle pathlib on Python < 3.6.1
     with open(particle2021, "w", newline="\n", encoding="utf-8") as f:
         f.write(version_header(particle2021, version))
         new_table.to_csv(f, float_format="%.12g")
@@ -427,11 +420,9 @@ def produce_files(
 
 def version_header(filename: str, version_number: str) -> str:
     filename = os.path.basename(filename)
-    VERSION = version_number  # version of CSV files
-    DATE = date.isoformat(date.today())
-    return "# (c) Scikit-HEP project - Particle package data file - {fname} - version {version} - {date}\n".format(
-        fname=filename, version=VERSION, date=DATE
-    )
+    version = version_number  # version of CSV files
+    today_date = date.isoformat(date.today())
+    return f"# (c) Scikit-HEP project - Particle package data file - {filename} - version {version} - {today_date}\n"
 
 
 def main(version: str, year: str) -> None:
@@ -445,7 +436,7 @@ def main(version: str, year: str) -> None:
 
 
 def convert(version: str, output: str, fwf: str, latex: Optional[str] = None) -> None:
-    latexes = [data.basepath / "pdgid_to_latexname.csv"]
+    latexes: List[StringOrIO] = [data.basepath / "pdgid_to_latexname.csv"]
     if latex:
         latexes.append(latex)
     table = get_from_pdg_extended(fwf, latexes)
