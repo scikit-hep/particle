@@ -25,7 +25,7 @@ from typing import (
 
 # External dependencies
 import attr
-from hepunits.constants import c_light  # type: ignore[attr-defined]
+from hepunits.constants import c_light
 
 from .. import data
 from ..converters.evtgen import EvtGenName2PDGIDBiMap

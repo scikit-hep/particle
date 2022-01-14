@@ -8,9 +8,8 @@ Functions relevant to particle kinematics.
 """
 
 
-# Bug in HEPUnits exporting
-from hepunits.constants import hbar  # type: ignore[attr-defined]
-from hepunits.units import MeV, ns  # type: ignore[attr-defined]
+from hepunits.constants import hbar
+from hepunits.units import MeV, ns
 
 
 def width_to_lifetime(Gamma: float) -> float:
@@ -55,7 +54,7 @@ def width_to_lifetime(Gamma: float) -> float:
         return float("inf")
 
     # Just need to first make sure that the width is in the standard unit MeV
-    return hbar / float(Gamma / MeV)  # type: ignore[no-any-return]
+    return hbar / float(Gamma / MeV)
 
 
 def lifetime_to_width(tau: float) -> float:
@@ -101,4 +100,4 @@ def lifetime_to_width(tau: float) -> float:
         return float("inf")
 
     # Just need to first make sure that the lifetime is in the standard unit ns
-    return hbar / float(tau / ns)  # type: ignore[no-any-return]
+    return hbar / float(tau / ns)
