@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Version 0.20.0 (WIP)
---------------------
+Version 0.20.0
+--------------
 
 **First Python 3 (3.6+) only version.**
 
@@ -15,6 +15,7 @@ Version 0.20.0 (WIP)
   - README updated with info on the new experiment-specific module `particle.lhcb`.
 - Miscellaneous:
   - Support for Python 2 and Python 3.5 dropped.
+  - Full static typing implemented.
 - Tests:
   - Pre-commit hooks updated.
 
