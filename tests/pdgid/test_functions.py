@@ -225,6 +225,12 @@ def test_is_meson(PDGIDs):
         assert not is_meson(id)
 
 
+def test_is_meson_B_mass_eigenstates():
+    # Test special IDs of B(L)0, B(sL)0, B(H)0, B(sH)0
+    for pdgid in {150, 350, 510, 530}:
+        assert is_meson(pdgid)
+
+
 def test_is_baryon(PDGIDs):
     _baryons = (
         PDGIDs.Proton,
@@ -249,6 +255,12 @@ def test_is_baryon(PDGIDs):
         assert is_baryon(id)
     for id in _non_baryons:
         assert not is_baryon(id)
+
+
+def test_is_baryon_old_codes_diffractive():
+    # Test old codes for diffractive p and n (MC usage)
+    assert is_baryon(2110)
+    assert is_baryon(2210)
 
 
 def test_is_hadron(PDGIDs):
@@ -333,6 +345,9 @@ def test_is_nucleus(PDGIDs):
         assert is_nucleus(id)
     for id in _non_nuclei:
         assert not is_nucleus(id)
+    # test 10-digit IDs that does not conform with form for nuclei (should start with +/- 10)
+    assert not is_nucleus(2000000010)
+    assert not is_nucleus(1100000010)
 
 
 def test_is_diquark(PDGIDs):
