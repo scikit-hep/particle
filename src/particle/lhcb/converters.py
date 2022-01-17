@@ -4,7 +4,7 @@
 # or https://github.com/scikit-hep/particle for details.
 
 from ..pdgid import PDGID
-from .. import data
+from . import data
 from ..converters.bimap import BiMap
 
 LHCbName2PDGIDBiMap = BiMap(
