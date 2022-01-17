@@ -7,7 +7,6 @@ from ..converters.bimap import BiMap
 from ...pdgid import PDGID
 from .. import data
 
-
 LHCbName2PDGIDBiMap = BiMap(
     PDGID,
     str,
