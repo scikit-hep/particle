@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 0.20.1 (WIP)
+--------------
+
+- Experiment-specific modules:
+  - `particle.lhcb` simplified.
+
+
 Version 0.20.0
 --------------
 
