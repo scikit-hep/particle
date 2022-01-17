@@ -3,7 +3,7 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-from ...converters.bimap import BiMap
+from ..converters.bimap import BiMap
 from ...pdgid import PDGID
 from .. import data
 
