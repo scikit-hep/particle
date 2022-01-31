@@ -152,7 +152,7 @@ def latex_name_unicode(name: str) -> str:
     if "ambda" in name:
         name = name.replace("ambda", "amda")
     for gl in _list_name_greek_letters:
-        name = name.replace(fr"\{gl}", greek_letter_name_to_unicode(gl))
+        name = name.replace(rf"\{gl}", greek_letter_name_to_unicode(gl))
     return name
 
 
@@ -167,7 +167,7 @@ def latex_to_html_name(name: str) -> str:
         # Special formatting since for example
         # f"{hex(html.entities.name2codepoint['Delta'])}" gives '0x394' whereas HTML needs 'x0394',
         # as in '&#x0394;', equivalent to '&Delta;'
-        name = name.replace(fr"\{gl}", f"&#x{name2codepoint[gl]:04x};")
+        name = name.replace(rf"\{gl}", f"&#x{name2codepoint[gl]:04x};")
     name = re.sub(r"\\tilde\{(.*?)\}", r"\1&#771;", name)
     name = re.sub(r"\\overline\{(.*?)\}", r"\1&#773;", name)
     name = re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)
