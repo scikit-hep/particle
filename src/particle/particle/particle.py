@@ -16,6 +16,7 @@ from typing import (
     Iterator,
     List,
     Optional,
+    Sequence,
     SupportsInt,
     Tuple,
     Type,
@@ -205,7 +206,7 @@ class Particle:
     width_lower: Optional[float] = attr.ib(
         minus_one, converter=_none_or_positive_converter
     )
-    _three_charge = attr.ib(Charge.u, converter=Charge)  # charge * 3
+    _three_charge: Optional[Charge] = attr.ib(Charge.u, converter=Charge)  # charge * 3
     I: Optional[float] = attr.ib(none_float, converter=_isospin_converter)  # noqa: E741
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
@@ -280,7 +281,7 @@ class Particle:
         filter_fn: Optional[Callable[["Particle"], bool]] = None,
         particle: Optional[bool] = None,
         **search_terms: Any,
-    ) -> List[List[Union[bool, int, str, float]]]:
+    ) -> Sequence[Sequence[Union[bool, int, float, str]]]:
         """
         Render a search (via `findall`) on the internal particle data CSV table
         as a `list`, loading the table from the default location if no table has yet been loaded.
@@ -386,12 +387,13 @@ class Particle:
             cls.load_table()
 
         # Get all table headers from the class attributes
-        tbl_names = [a.name for a in Particle.__attrs_attrs__]  # type: ignore
+        tbl_names = [a.name for a in attr.fields(Particle)]
         # ... and replace '_three_charge' with the better, public property
         tbl_names[tbl_names.index("_three_charge")] = "three_charge"
 
-        if exclusive_fields:
-            tbl_names = list(exclusive_fields)
+        list_exclusive_fields = list(exclusive_fields)
+        if list_exclusive_fields:
+            tbl_names = list_exclusive_fields
         else:
             for fld in exclude_fields:
                 try:
@@ -683,7 +685,11 @@ class Particle:
         "Three times the particle charge (charge * 3), in units of the positron charge."
         if not self.pdgid.is_nucleus:
             # Return int(...) not to return the actual enum Charge
-            return int(self._three_charge) if self._three_charge != Charge.u else None
+            return (
+                int(self._three_charge)
+                if self._three_charge is not None and self._three_charge != Charge.u
+                else None
+            )
         else:
             return self.pdgid.three_charge  # type: ignore[no-any-return]
 
@@ -1029,7 +1035,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @classmethod
     def finditer(
         cls: Type[Self],
-        filter_fn: Optional[Callable[["Particle"], bool]] = None,
+        filter_fn: Union[Callable[["Particle"], bool], str, None] = None,
         *,
         particle: Optional[bool] = None,
         **search_terms: Any,

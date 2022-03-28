@@ -119,12 +119,12 @@ class BiMap(Generic[A, B]):
     def __getitem__(self, value: Any) -> Any:
         if isinstance(value, self.class_B):
             try:
-                return self.class_A(self._to_map[value])  # type: ignore
+                return self.class_A(self._to_map[value])  # type: ignore[call-arg]
             except KeyError:
                 pass
         elif isinstance(value, self.class_A):
             try:
-                return self.class_B(self._from_map[value])  # type: ignore
+                return self.class_B(self._from_map[value])  # type: ignore[call-arg]
             except KeyError:
                 pass
 
