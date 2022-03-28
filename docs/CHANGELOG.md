@@ -1,11 +1,16 @@
 Changelog
 =========
 
-Version 0.20.1 (WIP)
+Version 0.20.1
 --------------
 
+- `Particle` class:
+  - More tests of PDGID functions for special particles.
 - Experiment-specific modules:
   - `particle.lhcb` simplified.
+- Tests:
+  - Now included in the SDist (`MANIFEST.in` updated).
+  - Pre-commit hooks updated.
 
 
 Version 0.20.0
