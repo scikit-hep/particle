@@ -20,3 +20,5 @@ include src/particle/version.py
 include LICENSE README.rst CONTRIBUTING.md pyproject.toml setup.py setup.cfg .zenodo.json
 
 recursive-include src py.typed
+
+recursive-include tests *.py *.mcd *.rst
