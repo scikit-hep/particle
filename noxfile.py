@@ -13,7 +13,7 @@ def lint(session: nox.Session) -> None:
 
 @nox.session
 def tests(session: nox.Session) -> None:
-    session.install(".[test]")
+    session.install("-e", ".[test]")
     session.run(
         "pytest",
         *session.posargs,

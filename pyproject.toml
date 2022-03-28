@@ -1,6 +1,7 @@
 [build-system]
 requires = [
     "setuptools>=42",
+    "wheel",
     "setuptools_scm[toml]>=3.4"
 ]
 build-backend = "setuptools.build_meta"
@@ -28,3 +29,14 @@ strict = true
 [[tool.mypy.overrides]]
 module = [ "pandas.*", "numpy.*"]
 ignore_missing_imports = true
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+junit_family = "xunit2"
+log_cli_level = "info"
+addopts = ["--benchmark-disable", "-ra", "--showlocals", "--strict-markers", "--strict-config"]
+filterwarnings = [
+    "error",
+]
