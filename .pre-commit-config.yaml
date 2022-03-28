@@ -62,3 +62,14 @@ repos:
   hooks:
   - id: codespell
     exclude: ^(src/particle/data/nuclei2020.csv|src/particle/data/mass_width_2008.fwf)$
+
+- repo: https://github.com/pre-commit/pygrep-hooks
+  rev: v1.9.0
+  hooks:
+  - id: python-check-blanket-noqa
+  - id: python-check-blanket-type-ignore
+  - id: python-no-eval
+  - id: python-use-type-annotations
+  - id: rst-backticks
+  - id: rst-directive-colons
+  - id: rst-inline-touching-normal
