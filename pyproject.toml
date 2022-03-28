@@ -23,8 +23,24 @@ warn_unused_ignores = true
 python_version = "3.9"
 files = "src"
 strict = true
+show_error_codes = true
+warn_unreachable = true
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+
+
 
 # NumPy is used lightly, so ignored here for now
 [[tool.mypy.overrides]]
 module = [ "pandas.*", "numpy.*"]
 ignore_missing_imports = true
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+junit_family = "xunit2"
+log_cli_level = "info"
+addopts = ["--benchmark-disable", "-ra", "--showlocals", "--strict-markers", "--strict-config"]
+filterwarnings = [
+    "error",
+]
