@@ -8,6 +8,8 @@ Version 0.20.1
   - More tests of PDGID functions for special particles.
 - Experiment-specific modules:
   - `particle.lhcb` simplified.
+- Miscellaneous:
+  - Minor cleanup and updates.
 - Tests:
   - Now included in the SDist (`MANIFEST.in` updated).
   - Pre-commit hooks updated.
