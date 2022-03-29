@@ -397,7 +397,7 @@ are those of the authors and do not necessarily reflect the views of the Nationa
    :target: https://pypi.python.org/pypi/particle
 
 .. |Conda-forge version| image:: https://img.shields.io/conda/vn/conda-forge/particle.svg
-   :target: https://anaconda.org/conda-forge/particle
+   :target: https://github.com/conda-forge/particle-feedstock
 
 .. |Zenodo DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.2552429.svg
    :target: https://doi.org/10.5281/zenodo.2552429
