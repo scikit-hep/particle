@@ -54,7 +54,7 @@ jobs:
 
     - name: Test coverage with Codecov
       if: "runner.os != 'Windows' && matrix.python-version != 3.6 && matrix.python-version != 3.7"
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
 
   notebooks:
     runs-on: ubuntu-latest
