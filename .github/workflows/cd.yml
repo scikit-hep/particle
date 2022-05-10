@@ -21,7 +21,7 @@ jobs:
     - name: Build wheel and SDist
       run: pipx run build
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         path: dist/*
 
