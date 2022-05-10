@@ -4,6 +4,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
     ignore:
       - dependency-name: "actions/*"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
