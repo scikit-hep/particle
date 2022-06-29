@@ -16,6 +16,8 @@ jobs:
       with:
         fetch-depth: 0
     - uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
     - uses: pre-commit/action@v2.0.3
       with:
         extra_args: --all-files --hook-stage manual
@@ -65,6 +67,8 @@ jobs:
         fetch-depth: 0
 
     - uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
 
     - name: Install package
       run: python -m pip install -e .[test]
