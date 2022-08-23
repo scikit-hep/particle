@@ -61,7 +61,8 @@ repos:
   rev: v2.2.1
   hooks:
   - id: codespell
-    exclude: ^(src/particle/data/nuclei2020.csv|src/particle/data/mass_width_2008.fwf)$
+    exclude: ^(src/particle/data/.*\.csv|src/particle/data/.*\.fwf)$
+    args: ["-L", "Lamda,lamda"]
 
 - repo: https://github.com/pre-commit/pygrep-hooks
   rev: v1.9.0
