@@ -332,7 +332,7 @@ def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
         d["ID"] = d[name].astype(int)
         nc = d.NameCharge.str.split(expand=True)
         d["Name"] = nc[0]
-        abcd = nc[1].str.split(",", 4, expand=True)
+        abcd = nc[1].str.split(pat=",", n=4, expand=True)
         d["charge"] = abcd[i]
         d.set_index("ID", inplace=True)
         ds_list.append(d)
