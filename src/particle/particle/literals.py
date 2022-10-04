@@ -28,13 +28,13 @@ List of available/defined literals:
 {0}
 """
 
-from typing import List
+from __future__ import annotations
 
 from ..shared_literals import common_particles
 from .particle import Particle
 
 
-def __dir__() -> List[str]:
+def __dir__() -> list[str]:
     return list(common_particles)
 
 

@@ -4,8 +4,9 @@
 # or https://github.com/scikit-hep/particle for details.
 
 
+from __future__ import annotations
+
 import sys
-from typing import Tuple
 
 # Direct access to other ID classes
 from .geant import Geant3ID
@@ -47,5 +48,5 @@ __all__ = (
 )
 
 
-def __dir__() -> Tuple[str, ...]:
+def __dir__() -> tuple[str, ...]:
     return __all__

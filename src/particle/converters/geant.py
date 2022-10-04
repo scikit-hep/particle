@@ -4,6 +4,8 @@
 # or https://github.com/scikit-hep/particle for details.
 
 
+from __future__ import annotations
+
 from ..geant import Geant3ID
 from ..pdgid import PDGID
 from .bimap import BiMap

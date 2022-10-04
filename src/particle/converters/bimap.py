@@ -4,23 +4,12 @@
 # or https://github.com/scikit-hep/particle for details.
 
 
+from __future__ import annotations
+
 import csv
 import sys
 from collections.abc import Mapping
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Generic,
-    Iterator,
-    Optional,
-    TextIO,
-    Tuple,
-    Type,
-    TypeVar,
-    Union,
-    overload,
-)
+from typing import Any, Callable, Generic, Iterator, TextIO, TypeVar, Union, overload
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
@@ -35,10 +24,10 @@ B_conv = Callable[[str], Union[B, int]]
 class BiMap(Generic[A, B]):
     def __init__(
         self,
-        class_A: Type[A],
-        class_B: Type[B],
-        converters: Tuple[A_conv, B_conv] = (int, int),  # type: ignore[type-arg]
-        filename: Optional[StringOrIO] = None,
+        class_A: type[A],
+        class_B: type[B],
+        converters: tuple[A_conv, B_conv] = (int, int),  # type: ignore[type-arg]
+        filename: StringOrIO | None = None,
     ) -> None:
         """
         Bi-bidirectional map class.
@@ -80,8 +69,8 @@ class BiMap(Generic[A, B]):
         >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
         """
 
-        self.class_A: Type[A] = class_A
-        self.class_B: Type[B] = class_B
+        self.class_A: type[A] = class_A
+        self.class_B: type[B] = class_B
 
         name_A = self.class_A.__name__.upper()
         name_B = self.class_B.__name__.upper()
@@ -147,9 +136,9 @@ class BiMap(Generic[A, B]):
 def DirectionalMaps(
     name_A: str,
     name_B: str,
-    converters: Tuple[Callable[[str], str], Callable[[str], str]] = (str, str),
-    filename: Optional[StringOrIO] = None,
-) -> Tuple["DirectionalMap", "DirectionalMap"]:
+    converters: tuple[Callable[[str], str], Callable[[str], str]] = (str, str),
+    filename: StringOrIO | None = None,
+) -> tuple[DirectionalMap, DirectionalMap]:
     """
     Directional map class providing a to and from mapping.
 
@@ -225,7 +214,7 @@ else:
 
 
 class DirectionalMap(StrStrMapping):
-    def __init__(self, name_A: str, name_B: str, map: Dict[str, str]) -> None:
+    def __init__(self, name_A: str, name_B: str, map: dict[str, str]) -> None:
         """
         Directional map class providing a A -> B mapping.
 

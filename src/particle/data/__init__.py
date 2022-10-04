@@ -3,6 +3,8 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
+from __future__ import annotations
+
 import sys
 
 if sys.version_info < (3, 9):

@@ -7,6 +7,8 @@
 Collection of regular expression helper utilities for the ``Particle`` class.
 """
 
+from __future__ import annotations
+
 import re
 
 getname = re.compile(

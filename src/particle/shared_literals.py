@@ -11,6 +11,8 @@ See the particle.literals and the pdgid.literals submodules for the actually exp
 """
 
 
+from __future__ import annotations
+
 from .particle import Particle
 
 # Make aliases for all particles in the latest "database", excluding nuclei

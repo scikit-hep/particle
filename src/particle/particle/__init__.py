@@ -4,7 +4,7 @@
 # or https://github.com/scikit-hep/particle for details.
 
 
-from typing import Tuple
+from __future__ import annotations
 
 from .enums import Charge, Inv, Parity, SpinType, Status
 from .kinematics import lifetime_to_width, width_to_lifetime
@@ -28,5 +28,5 @@ __all__ = (
 )
 
 
-def __dir__() -> Tuple[str, ...]:
+def __dir__() -> tuple[str, ...]:
     return __all__

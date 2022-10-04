@@ -4,6 +4,8 @@
 # or https://github.com/scikit-hep/particle for details.
 
 
+from __future__ import annotations
+
 from particle.particle import Particle, ParticleNotFound
 
 # All particle names found in DECAY.DEC
