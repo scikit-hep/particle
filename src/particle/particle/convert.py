@@ -418,9 +418,8 @@ def produce_files(
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    particle2021 = str(particle2021)  # Conversion to handle pathlib on Python < 3.6.1
     with open(particle2021, "w", newline="\n", encoding="utf-8") as f:
-        f.write(version_header(particle2021, version))
+        f.write(version_header(str(particle2021), version))
         new_table.to_csv(f, float_format="%.12g")
 
 
