@@ -55,6 +55,7 @@ from __future__ import annotations
 import os
 from datetime import date
 from io import StringIO
+from pathlib import Path
 from typing import Any, Callable, Iterable, TextIO, TypeVar
 
 import numpy as np
@@ -372,7 +373,10 @@ def update_from_mcd(
 
 
 def produce_files(
-    particle2008: str, particle2021: str, version: str, year: str
+    particle2008: str | Path,
+    particle2021: str | Path,
+    version: str,
+    year: str,
 ) -> None:
     "This produces listed output files from all input files."
 

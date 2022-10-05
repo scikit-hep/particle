@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import csv
 import sys
 from collections.abc import Mapping
@@ -107,15 +108,11 @@ class BiMap(Generic[A, B]):
 
     def __getitem__(self, value: Any) -> Any:
         if isinstance(value, self.class_B):
-            try:
+            with contextlib.suppress(KeyError):
                 return self.class_A(self._to_map[value])  # type: ignore[call-arg]
-            except KeyError:
-                pass
         elif isinstance(value, self.class_A):
-            try:
+            with contextlib.suppress(KeyError):
                 return self.class_B(self._from_map[value])  # type: ignore[call-arg]
-            except KeyError:
-                pass
 
         name_A = self.class_A.__name__
         name_B = self.class_B.__name__
