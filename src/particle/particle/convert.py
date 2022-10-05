@@ -388,7 +388,6 @@ def produce_files(
     full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
 
     # No longer write out the particle2008.csv file, which nobody should use
-    # particle2008 = str(particle2008)  # Conversion to handle pathlib on Python < 3.6.1
     # with open(particle2008, "w", newline="\n", encoding="utf-8") as f:
     # f.write(version_header(particle2008, version))
     # full_table.to_csv(f, float_format="%.12g")
@@ -414,7 +413,6 @@ def produce_files(
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    particle2021 = str(particle2021)  # Conversion to handle pathlib on Python < 3.6.1
     with open(particle2021, "w", newline="\n", encoding="utf-8") as f:
         f.write(version_header(particle2021, version))
         new_table.to_csv(f, float_format="%.12g")
