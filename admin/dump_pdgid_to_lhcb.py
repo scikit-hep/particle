@@ -5,6 +5,8 @@
 # or https://github.com/scikit-hep/particle for details.
 """This script generates the PDGID<->LHCb name mapping using the table from the LHCb DDDB package."""
 
+from __future__ import annotations
+
 import csv
 import datetime as dt
 

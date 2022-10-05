@@ -4,7 +4,7 @@
 # or https://github.com/scikit-hep/particle for details.
 
 
-from typing import Tuple
+from __future__ import annotations
 
 from .evtgen import EvtGen2PDGNameMap, EvtGenName2PDGIDBiMap, PDG2EvtGenNameMap
 from .geant import Geant2PDGIDBiMap
@@ -19,5 +19,5 @@ __all__ = (
 )
 
 
-def __dir__() -> Tuple[str, ...]:
+def __dir__() -> tuple[str, ...]:
     return __all__

@@ -4,6 +4,8 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
+from __future__ import annotations
+
 from setuptools import setup
 
 setup()

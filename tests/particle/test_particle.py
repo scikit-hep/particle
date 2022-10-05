@@ -4,6 +4,8 @@
 # or https://github.com/scikit-hep/particle for details.
 
 
+from __future__ import annotations
+
 import pytest
 from hepunits import meter, second
 from pytest import approx

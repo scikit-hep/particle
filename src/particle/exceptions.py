@@ -4,5 +4,8 @@
 # or https://github.com/scikit-hep/particle for details.
 
 
+from __future__ import annotations
+
+
 class MatchingIDNotFound(ValueError):
     pass

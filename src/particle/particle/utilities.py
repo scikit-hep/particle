@@ -3,11 +3,12 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
+from __future__ import annotations
+
 import math
 import re
 import unicodedata
 from html.entities import name2codepoint
-from typing import Optional
 
 
 def programmatic_name(name: str) -> str:
@@ -34,9 +35,7 @@ def programmatic_name(name: str) -> str:
     return name.lstrip("_")
 
 
-def str_with_unc(
-    value: float, upper: Optional[float], lower: Optional[float] = None
-) -> str:
+def str_with_unc(value: float, upper: float | None, lower: float | None = None) -> str:
     """
     Utility to print out an uncertainty with different or
     identical upper/lower bounds. Nicely formats numbers using PDG rule.

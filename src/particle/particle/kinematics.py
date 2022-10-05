@@ -8,6 +8,8 @@ Functions relevant to particle kinematics.
 """
 
 
+from __future__ import annotations
+
 from hepunits.constants import hbar
 from hepunits.units import MeV, ns
 

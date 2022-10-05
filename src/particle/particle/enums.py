@@ -8,6 +8,8 @@ Collection of enums to help characterising particle properties
 Examples are charge, spin and parity.
 """
 
+from __future__ import annotations
+
 from enum import IntEnum
 
 

@@ -8,8 +8,10 @@ Class representing a Pythia ID.
 """
 
 
+from __future__ import annotations
+
 import csv
-from typing import Type, TypeVar
+from typing import TypeVar
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
@@ -44,7 +46,7 @@ class PythiaID(int):
     __slots__ = ()  # Keep PythiaID a slots based class
 
     @classmethod
-    def from_pdgid(cls: Type[Self], pdgid: int) -> Self:
+    def from_pdgid(cls: type[Self], pdgid: int) -> Self:
         """
         Constructor from a PDGID.
         """

@@ -59,7 +59,7 @@ Useful definitions:
 """
 
 
-from typing import Tuple
+from __future__ import annotations
 
 from .functions import (
     A,
@@ -152,5 +152,5 @@ __all__ = (
 )
 
 
-def __dir__() -> Tuple[str, ...]:
+def __dir__() -> tuple[str, ...]:
     return __all__

@@ -16,6 +16,7 @@ ignore = [
 
 [tool.isort]
 profile = "black"
+add_imports = ["from __future__ import annotations"]
 
 [tool.mypy]
 warn_unused_configs = true

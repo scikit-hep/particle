@@ -50,10 +50,12 @@ When you are done, you can save one or more of the tables:
 
 """
 
+from __future__ import annotations
+
 import os
 from datetime import date
 from io import StringIO
-from typing import Any, Callable, Dict, Iterable, List, Optional, TextIO, Tuple, TypeVar
+from typing import Any, Callable, Iterable, TextIO, TypeVar
 
 import numpy as np
 import pandas as pd
@@ -82,7 +84,7 @@ __all__ = (
 )
 
 
-def __dir__() -> Tuple[str, ...]:
+def __dir__() -> tuple[str, ...]:
     return __all__
 
 
@@ -144,7 +146,7 @@ def get_from_pdg_extended(
     """
     "Read a file, plus a list of LaTeX files, to produce a pandas DataFrame with particle information"
 
-    def unmap(mapping: Dict[str, T]) -> Callable[[str], T]:
+    def unmap(mapping: dict[str, T]) -> Callable[[str], T]:
         return lambda x: mapping[x.strip()]
 
     # Convert each column from text to appropriate data type
@@ -435,8 +437,8 @@ def main(version: str, year: str) -> None:
     produce_files(particle2008, particlenew, version, year)
 
 
-def convert(version: str, output: str, fwf: str, latex: Optional[str] = None) -> None:
-    latexes: List[StringOrIO] = [data.basepath / "pdgid_to_latexname.csv"]
+def convert(version: str, output: str, fwf: str, latex: str | None = None) -> None:
+    latexes: list[StringOrIO] = [data.basepath / "pdgid_to_latexname.csv"]
     if latex:
         latexes.append(latex)
     table = get_from_pdg_extended(fwf, latexes)

@@ -10,6 +10,8 @@ All methods of HepPID are implemented in a Pythonic version, see the functions m
 """
 
 
+from __future__ import annotations
+
 from inspect import isfunction
 from typing import TypeVar
 

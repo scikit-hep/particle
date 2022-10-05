@@ -12,7 +12,7 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - uses: actions/setup-python@v4
@@ -29,15 +29,15 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.6", "3.8", "3.9", "3.10"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11-dev"]
         include:
-          - {os: macos-latest, python-version: '3.6'}
-          - {os: macos-latest, python-version: '3.10'}
+          - {os: macos-latest, python-version: '3.7'}
+          - {os: macos-latest, python-version: '3.11-dev'}
           - {os: windows-latest, python-version: '3.7'}
-          - {os: windows-latest, python-version: '3.9'}
+          - {os: windows-latest, python-version: '3.11-dev'}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
@@ -55,14 +55,14 @@ jobs:
       run: python -m pytest ./tests --doctest-modules --cov=src/particle --cov-report=xml
 
     - name: Test coverage with Codecov
-      if: "runner.os != 'Windows' && matrix.python-version != 3.6 && matrix.python-version != 3.7"
+      if: "runner.os != 'Windows' && matrix.python-version != 3.7"
       uses: codecov/codecov-action@v3
 
   notebooks:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
@@ -84,11 +84,11 @@ jobs:
     name: ZipApp
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - uses: excitedleigh/setup-nox@main
+    - uses: wntrblm/nox@2022.8.7
 
     - name: Make ZipApp
       run: nox -s zipapp

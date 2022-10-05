@@ -24,8 +24,10 @@ References
 """
 
 
+from __future__ import annotations
+
 from enum import IntEnum
-from typing import Optional, SupportsInt
+from typing import SupportsInt
 
 PDGID_TYPE = SupportsInt
 
@@ -512,7 +514,7 @@ def has_fundamental_anti(pdgid: PDGID_TYPE) -> bool:
     return False
 
 
-def charge(pdgid: PDGID_TYPE) -> Optional[float]:
+def charge(pdgid: PDGID_TYPE) -> float | None:
     """Returns the charge."""
 
     three_charge_pdgid = three_charge(pdgid)
@@ -524,7 +526,7 @@ def charge(pdgid: PDGID_TYPE) -> Optional[float]:
         return three_charge_pdgid / 30.0
 
 
-def three_charge(pdgid: PDGID_TYPE) -> Optional[int]:
+def three_charge(pdgid: PDGID_TYPE) -> int | None:
     """
     Returns 3 times the charge.
 
@@ -684,7 +686,7 @@ def three_charge(pdgid: PDGID_TYPE) -> Optional[int]:
     return charge
 
 
-def j_spin(pdgid: PDGID_TYPE) -> Optional[int]:
+def j_spin(pdgid: PDGID_TYPE) -> int | None:
     """Returns the total spin as 2J+1."""
     if not is_valid(pdgid):
         return None
@@ -708,13 +710,13 @@ def j_spin(pdgid: PDGID_TYPE) -> Optional[int]:
     return abspid(pdgid) % 10
 
 
-def J(pdgid: PDGID_TYPE) -> Optional[float]:
+def J(pdgid: PDGID_TYPE) -> float | None:
     """Returns the total spin J."""
     value = j_spin(pdgid)
     return (value - 1) / 2 if value is not None else value
 
 
-def S(pdgid: PDGID_TYPE) -> Optional[int]:
+def S(pdgid: PDGID_TYPE) -> int | None:
     """
     Returns the spin S.
 
@@ -749,7 +751,7 @@ def S(pdgid: PDGID_TYPE) -> Optional[int]:
         return 0
 
 
-def s_spin(pdgid: PDGID_TYPE) -> Optional[int]:
+def s_spin(pdgid: PDGID_TYPE) -> int | None:
     """
     Returns the spin S as 2S+1.
 
@@ -763,7 +765,7 @@ def s_spin(pdgid: PDGID_TYPE) -> Optional[int]:
     return (2 * value + 1) if value is not None else value
 
 
-def L(pdgid: PDGID_TYPE) -> Optional[int]:
+def L(pdgid: PDGID_TYPE) -> int | None:
     """
     Returns the orbital angular momentum L.
 
@@ -825,7 +827,7 @@ def L(pdgid: PDGID_TYPE) -> Optional[int]:
     return 0
 
 
-def l_spin(pdgid: PDGID_TYPE) -> Optional[int]:
+def l_spin(pdgid: PDGID_TYPE) -> int | None:
     """
     Returns the orbital angular momentum L as 2L+1.
 
@@ -839,7 +841,7 @@ def l_spin(pdgid: PDGID_TYPE) -> Optional[int]:
     return (2 * value + 1) if value is not None else value
 
 
-def A(pdgid: PDGID_TYPE) -> Optional[int]:
+def A(pdgid: PDGID_TYPE) -> int | None:
     """Returns the atomic number A if the PDG ID corresponds to a nucleus. Else it returns None."""
     # A proton can be a Hydrogen nucleus
     # A neutron can be considered as a nucleus when given the PDG ID 1000000010,
@@ -851,7 +853,7 @@ def A(pdgid: PDGID_TYPE) -> Optional[int]:
     return (abspid(pdgid) // 10) % 1000
 
 
-def Z(pdgid: PDGID_TYPE) -> Optional[int]:
+def Z(pdgid: PDGID_TYPE) -> int | None:
     """Returns the charge Z if the PDG ID corresponds to a nucleus. Else it returns None."""
     # A proton can be a Hydrogen nucleus
     if abspid(pdgid) == 2212:
