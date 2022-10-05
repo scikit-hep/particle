@@ -1,18 +1,71 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "setuptools_scm[toml]>=3.4"
-]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling>=1.10.0", "hatch-vcs"]
+build-backend = "hatchling.build"
 
-[tool.setuptools_scm]
-write_to = "src/particle/version.py"
-
-[tool.check-manifest]
-ignore = [
-    "src/particle/version.py",
-    "noxfile.py",
+[project]
+name = "particle"
+description = "Extended PDG particle data and MC identification codes"
+readme = "README.rst"
+requires-python = ">=3.7"
+authors = [
+    { name = "Eduardo Rodrigues", email = "eduardo.rodrigues@cern.ch" },
+    { name = "Henry Schreiner", email = "hschrein@cern.ch" },
 ]
+keywords = [
+    "HEP",
+    "MC identification codes",
+    "PDG",
+    "PDGID",
+    "particle",
+    "particle data table",
+    "particle properties",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "attrs>=19.2",
+    "hepunits>=2.0.0",
+    "importlib-resources>=2.0;python_version<\"3.9\"",
+    "typing-extensions;python_version<\"3.8\"",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+dev = [
+    "pandas",
+    "pytest-benchmark",
+    "pytest>=6",
+    "tabulate",
+]
+test = [
+    "pandas",
+    "pytest-benchmark",
+    "pytest-cov",
+    "pytest>=6",
+    "tabulate",
+]
+
+[project.urls]
+Homepage = "https://github.com/scikit-hep/particle"
+
+
+[tool.hatch]
+version.source = "vcs"
+build.hooks.vcs.version-file = "src/particle/version.py"
 
 [tool.isort]
 profile = "black"
@@ -26,22 +79,31 @@ files = "src"
 strict = true
 show_error_codes = true
 warn_unreachable = true
-enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+enable_error_code = [
+    "ignore-without-code",
+    "redundant-expr",
+    "truthy-bool",
+]
 
-
-
-# NumPy is used lightly, so ignored here for now
 [[tool.mypy.overrides]]
-module = [ "pandas.*", "numpy.*"]
+module = [
+    "pandas.*",
+    "numpy.*",
+]
 ignore_missing_imports = true
-
 
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = ["tests"]
 junit_family = "xunit2"
 log_cli_level = "info"
-addopts = ["--benchmark-disable", "-ra", "--showlocals", "--strict-markers", "--strict-config"]
+addopts = [
+    "--benchmark-disable",
+    "-ra",
+    "--showlocals",
+    "--strict-markers",
+    "--strict-config",
+]
 filterwarnings = [
     "error",
 ]

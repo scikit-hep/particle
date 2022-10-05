@@ -28,9 +28,12 @@ def build(session: nox.Session) -> None:
     Build an SDist and wheel.
     """
 
-    session.install("build", "twine")
+    session.install("build", "twine", "check-wheel-contents")
     session.run("python", "-m", "build")
     session.run("twine", "check", "--strict", "dist/*")
+    session.run(
+        "check-wheel-contents", str(*Path("dist").glob("*.whl")), "--ignore=W002"
+    )
 
 
 @nox.session
