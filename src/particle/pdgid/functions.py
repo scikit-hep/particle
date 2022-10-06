@@ -520,10 +520,9 @@ def charge(pdgid: PDGID_TYPE) -> float | None:
     three_charge_pdgid = three_charge(pdgid)
     if three_charge_pdgid is None:
         return None
-    elif not is_Qball(pdgid):
+    if not is_Qball(pdgid):
         return three_charge_pdgid / 3.0
-    else:
-        return three_charge_pdgid / 30.0
+    return three_charge_pdgid / 30.0
 
 
 def three_charge(pdgid: PDGID_TYPE) -> int | None:
@@ -743,12 +742,12 @@ def S(pdgid: PDGID_TYPE) -> int | None:
 
     if nl == 0:
         return 0 if js == 1 else 1
-    elif nl == 1:
+    if nl == 1:
         return 1 if js == 1 else 0
-    elif nl in {2, 3}:
+    if nl in {2, 3}:
         return 1 if js >= 3 else 0
-    else:
-        return 0
+
+    return 0
 
 
 def s_spin(pdgid: PDGID_TYPE) -> int | None:
@@ -899,10 +898,9 @@ def _fundamental_id(pdgid: PDGID_TYPE) -> int:
         return 0
     if abspid(pdgid) <= 100:
         return abspid(pdgid)
-    elif _digit(pdgid, Location.Nq2) == 0 and _digit(pdgid, Location.Nq1) == 0:
+    if _digit(pdgid, Location.Nq2) == _digit(pdgid, Location.Nq1) == 0:
         return abspid(pdgid) % 10000
-    else:
-        return 0
+    return 0
 
 
 def _has_quark_q(pdgid: PDGID_TYPE, q: int) -> bool:

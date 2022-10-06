@@ -57,7 +57,7 @@ def main() -> None:
             else:
                 particles = Particle.from_string_list(cand)
 
-            if len(particles) == 0:
+            if not particles:
                 print("Particle", cand, "not found.")
                 sys.exit(1)
             elif len(particles) == 1:

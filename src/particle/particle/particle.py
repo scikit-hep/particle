@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 # Python standard library
+import contextlib
 import csv
 from copy import copy
 from functools import total_ordering
@@ -234,8 +235,8 @@ class Particle:
 
         if cls._table_names is not None:
             return tuple(cls._table_names)  # make a copy to avoid user manipulation
-        else:
-            return tuple()
+
+        return ()
 
     @classmethod
     def table_loaded(cls) -> bool:
@@ -380,10 +381,8 @@ class Particle:
             tbl_names = list_exclusive_fields
         else:
             for fld in exclude_fields:
-                try:
+                with contextlib.suppress(ValueError):
                     tbl_names.remove(fld)
-                except ValueError:
-                    pass
 
         # Start with the full table
         tbl_all = sorted(cls.all())
@@ -566,7 +565,7 @@ class Particle:
             r = csv.DictReader(line for line in f if not line.startswith("#"))
 
             for v in r:
-                try:
+                with contextlib.suppress(ValueError):
                     value = int(v["ID"])
 
                     p = cls(
@@ -593,9 +592,6 @@ class Particle:
                     # Replace the previous value if it exists
                     cls._hash_table[value] = p
 
-                except ValueError:
-                    pass
-
         cls._table = sorted(cls._hash_table.values())
 
     # The following __le__ and __eq__ needed for total ordering (sort, etc)
@@ -606,14 +602,12 @@ class Particle:
         if isinstance(other, Particle):
             return abs(int(self.pdgid) - 0.25) < abs(int(other.pdgid) - 0.25)
         # Comparison with anything else should produce normal comparisons.
-        else:
-            return int(self.pdgid) < other
+        return int(self.pdgid) < other
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Particle):
             return self.pdgid == other.pdgid
-        else:
-            return self.pdgid == other
+        return self.pdgid == other
 
     # Only one particle can exist per PDGID number
     def __hash__(self) -> int:
@@ -674,8 +668,8 @@ class Particle:
                 if self._three_charge is not None and self._three_charge != Charge.u
                 else None
             )
-        else:
-            return self.pdgid.three_charge  # type: ignore[no-any-return]
+
+        return self.pdgid.three_charge  # type: ignore[no-any-return]
 
     @property
     def lifetime(self) -> float | None:
@@ -722,15 +716,17 @@ class Particle:
         if self.pdgid.j_spin % 2 == 0:
             return SpinType.NonDefined
 
-        if self.J in [0, 1, 2]:
-            J = int(self.J)
-
+        J = int(self.J)
+        if J in {0, 1, 2}:
             if self.P == Parity.p:
                 return (SpinType.Scalar, SpinType.Axial, SpinType.Tensor)[J]
-            elif self.P == Parity.m:
-                return (SpinType.PseudoScalar, SpinType.Vector, SpinType.PseudoTensor)[
-                    J
-                ]
+            if self.P == Parity.m:
+                spin_types = (
+                    SpinType.PseudoScalar,
+                    SpinType.Vector,
+                    SpinType.PseudoTensor,
+                )
+                return spin_types[J]
 
         return SpinType.Unknown
 
@@ -765,15 +761,18 @@ class Particle:
         # Special case of the KS and KL
         if pid in {130, 310}:
             return False
+
         # I = 1 light mesons have no s-sbar component, hence has_strange == False
         if _digit(pid, Location.Nq3) == 1 and not pid.has_strange:
             return True
+
         # I = 0 light mesons have a s-sbar component, has_strange == True,
         # thought their net S = 0
-        elif _digit(pid, Location.Nq3) in {2, 3} and self.three_charge == 0:
+        if _digit(pid, Location.Nq3) in {2, 3} and self.three_charge == 0:
             return True
-        else:  # Only K-mesons at this point
-            return False
+
+        # Only K-mesons at this point
+        return False
 
     def invert(self: Self) -> Self:
         "Get the antiparticle."
@@ -781,8 +780,7 @@ class Particle:
             self.anti_flag == Inv.ChargeInv and self.three_charge != Charge.o
         ):
             return self.from_pdgid(-self.pdgid)
-        else:
-            return copy(self)
+        return copy(self)
 
     __neg__ = invert
     __invert__ = invert
@@ -893,10 +891,10 @@ class Particle:
         """
         if self._three_charge is None:
             return "None"
-        elif not self.pdgid.is_nucleus:
+        if not self.pdgid.is_nucleus:
             return Charge_undo[Charge(self._three_charge)]
-        else:
-            return str(self.pdgid.charge)
+
+        return str(self.pdgid.charge)
 
     def _str_mass(self) -> str:
         """

@@ -55,6 +55,7 @@ from __future__ import annotations
 import os
 from datetime import date
 from io import StringIO
+from pathlib import Path
 from typing import Any, Callable, Iterable, TextIO, TypeVar
 
 import numpy as np
@@ -372,7 +373,10 @@ def update_from_mcd(
 
 
 def produce_files(
-    particle2008: str, particle2021: str, version: str, year: str
+    particle2008: str | Path,
+    particle2021: str | Path,
+    version: str,
+    year: str,
 ) -> None:
     "This produces listed output files from all input files."
 
@@ -414,7 +418,7 @@ def produce_files(
     new_table = update_from_mcd(full_table, ext_table)
 
     with open(particle2021, "w", newline="\n", encoding="utf-8") as f:
-        f.write(version_header(particle2021, version))
+        f.write(version_header(str(particle2021), version))
         new_table.to_csv(f, float_format="%.12g")
 
 
