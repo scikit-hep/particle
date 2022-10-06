@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling>=1.10.0", "hatch-vcs"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
@@ -10,6 +10,9 @@ requires-python = ">=3.7"
 authors = [
     { name = "Eduardo Rodrigues", email = "eduardo.rodrigues@cern.ch" },
     { name = "Henry Schreiner", email = "hschrein@cern.ch" },
+]
+maintainers = [
+    { name = "Scikit-HEP", email = "scikit-hep-admins@googlegroups.com" },
 ]
 keywords = [
     "HEP",
@@ -71,6 +74,7 @@ build.hooks.vcs.version-file = "src/particle/version.py"
 profile = "black"
 add_imports = ["from __future__ import annotations"]
 
+
 [tool.mypy]
 warn_unused_configs = true
 warn_unused_ignores = true
@@ -91,6 +95,7 @@ module = [
     "numpy.*",
 ]
 ignore_missing_imports = true
+
 
 [tool.pytest.ini_options]
 minversion = "6.0"
