@@ -52,7 +52,7 @@ def width_to_lifetime(Gamma: float) -> float:
 
     if Gamma < 0.0:
         raise ValueError(f"Input provided, {Gamma} <= 0!")
-    elif Gamma == 0:
+    if Gamma == 0:
         return float("inf")
 
     # Just need to first make sure that the width is in the standard unit MeV
@@ -98,7 +98,7 @@ def lifetime_to_width(tau: float) -> float:
 
     if tau < 0:
         raise ValueError(f"Input provided, {tau} <= 0!")
-    elif tau == 0:
+    if tau == 0:
         return float("inf")
 
     # Just need to first make sure that the lifetime is in the standard unit ns

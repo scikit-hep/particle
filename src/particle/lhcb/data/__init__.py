@@ -10,7 +10,9 @@ import sys
 if sys.version_info < (3, 9):
     import importlib_resources as resources
 else:
-    import importlib.resources as resources
+    from importlib import resources
 
+
+__all__ = ["basepath"]
 
 basepath = resources.files(__name__)

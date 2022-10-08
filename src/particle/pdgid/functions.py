@@ -251,7 +251,7 @@ def is_nucleus(pdgid: PDGID_TYPE) -> bool:
 
         if A_pdgid is None or Z_pdgid is None:
             return False
-        elif A_pdgid >= abs(Z_pdgid):
+        if A_pdgid >= abs(Z_pdgid):
             return True
     return False
 
@@ -535,7 +535,7 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
         return None
 
     aid = abspid(pdgid)
-    charge = None
+    charge = None  # pylint: disable=redefined-outer-name
     ch100 = [
         -1,
         2,
@@ -648,9 +648,8 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
             Z_pdgid = Z(pdgid)
             if Z_pdgid is None:
                 return None
-            else:
-                return 3 * Z_pdgid
-        elif is_Qball(pdgid):  # Qball
+            return 3 * Z_pdgid
+        if is_Qball(pdgid):  # Qball
             charge = 3 * ((aid // 10) % 10000)
         else:  # this should never be reached in the present numbering scheme
             return None  # since extra bits exist only for Q-balls and nuclei
@@ -700,9 +699,9 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
         if 20 < fund < 25:
             return 3
         return None
-    elif abs(int(pdgid)) in {1000000010, 1000010010}:  # neutron, proton
+    if abs(int(pdgid)) in {1000000010, 1000010010}:  # neutron, proton
         return 2
-    elif _extra_bits(pdgid) > 0:
+    if _extra_bits(pdgid) > 0:
         return None
     if pdgid in {130, 310}:
         return 1  # Special cases of the KS and KL !
@@ -789,38 +788,38 @@ def L(pdgid: PDGID_TYPE) -> int | None:
     if nl == 0:
         if js in {1, 3}:
             return 0
-        elif js == 5:
+        if js == 5:
             return 1
-        elif js == 7:
+        if js == 7:
             return 2
-        elif js == 9:
+        if js == 9:
             return 3
     elif nl == 1:
         if js in {1, 3}:
             return 1
-        elif js == 5:
+        if js == 5:
             return 2
-        elif js == 7:
+        if js == 7:
             return 3
-        elif js == 9:
+        if js == 9:
             return 4
     elif nl == 2:
         if js == 3:
             return 1
-        elif js == 5:
+        if js == 5:
             return 2
-        elif js == 7:
+        if js == 7:
             return 3
-        elif js == 9:
+        if js == 9:
             return 4
     elif nl == 3:
         if js == 3:
             return 2
-        elif js == 5:
+        if js == 5:
             return 3
-        elif js == 7:
+        if js == 7:
             return 4
-        elif js == 9:
+        if js == 9:
             return 5
 
     return 0
@@ -916,7 +915,7 @@ def _has_quark_q(pdgid: PDGID_TYPE, q: int) -> bool:
     if is_nucleus(pdgid):
         if q in {1, 2}:
             return True  # Nuclei by construction contain up and down quarks
-        elif q == 3 and pdgid not in {2112, 2212}:
+        if q == 3 and pdgid not in {2112, 2212}:
             return _digit(pdgid, Location.N8) > 0
     if _extra_bits(pdgid) > 0:
         return False

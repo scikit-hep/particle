@@ -85,7 +85,7 @@ class BiMap(Generic[A, B]):
         elif isinstance(filename, HasOpen):
             file_object = filename.open()
         else:
-            file_object = open(filename)  # type: ignore[arg-type]
+            file_object = open(filename, encoding="utf_8")  # type: ignore[arg-type]
 
         with file_object as _f:
             self._to_map = {
@@ -175,7 +175,7 @@ def DirectionalMaps(
     elif isinstance(filename, HasRead):
         file_object = filename
     else:
-        file_object = open(filename)  # type: ignore[arg-type]
+        file_object = open(filename, encoding="utf_8")  # type: ignore[arg-type]
 
     with file_object as _f:
         skipinitialspace = True
@@ -211,6 +211,7 @@ else:
 
 
 class DirectionalMap(StrStrMapping):
+    # pylint: disable-next=redefined-builtin
     def __init__(self, name_A: str, name_B: str, map: dict[str, str]) -> None:
         """
         Directional map class providing a A -> B mapping.

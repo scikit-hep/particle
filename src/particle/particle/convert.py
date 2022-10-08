@@ -106,7 +106,8 @@ def filter_file(fileobject: StringOrIO) -> TextIO:
 
     if not hasattr(fileobject, "read"):
         assert isinstance(fileobject, str)
-        fileobject = open(fileobject, encoding="utf-8")
+        with open(fileobject, encoding="utf-8") as f:
+            return filter_file(f)
 
     assert not isinstance(fileobject, (str, Traversable))
 
@@ -116,9 +117,6 @@ def filter_file(fileobject: StringOrIO) -> TextIO:
         if not line.lstrip("\ufeff").lstrip().startswith("*"):
             stream.write(line)
     stream.seek(0)
-
-    if not fileobject.closed:
-        fileobject.close()
 
     return stream
 
@@ -145,8 +143,8 @@ def get_from_pdg_extended(
     >>> full_table = get_from_pdg_extended('particle/data/mass_width_2008.fwf',
     ...                                    ['particle/data/pdgid_to_latexname.csv'])
     """
-    "Read a file, plus a list of LaTeX files, to produce a pandas DataFrame with particle information"
 
+    # Read a file, plus a list of LaTeX files, to produce a pandas DataFrame with particle information
     def unmap(mapping: dict[str, T]) -> Callable[[str], T]:
         return lambda x: mapping[x.strip()]
 
@@ -373,7 +371,7 @@ def update_from_mcd(
 
 
 def produce_files(
-    particle2008: str | Path,
+    particle2008: str | Path,  # pylint: disable=unused-argument
     particle2021: str | Path,
     version: str,
     year: str,
@@ -494,5 +492,5 @@ if __name__ == "__main__":
     )
     parser_convert.set_defaults(func=run_convert)
 
-    args = parser.parse_args()
-    args.func(args)
+    args_ = parser.parse_args()
+    args_.func(args_)
