@@ -549,7 +549,7 @@ class Particle:
             with data.basepath.joinpath("nuclei2020.csv").open() as fb:
                 cls.load_table(fb, append=True, _name="nuclei2020.csv")
             return
-        elif isinstance(filename, HasRead):
+        if isinstance(filename, HasRead):
             tmp_name = _name or filename.name
             cls._table_names.append(tmp_name or f"{filename!r} {len(cls._table_names)}")
             open_file = filename
@@ -559,7 +559,7 @@ class Particle:
         else:
             cls._table_names.append(str(filename))
             assert not isinstance(filename, Traversable)
-            open_file = open(filename)
+            open_file = open(filename, encoding="utf_8")
 
         with open_file as f:
             r = csv.DictReader(line for line in f if not line.startswith("#"))
@@ -812,11 +812,11 @@ class Particle:
         """
         if self.width is None:
             return "Width = None"
-        elif self.width == 0:
+        if self.width == 0:
             return "Width = 0.0 MeV"
-        elif self.width_lower is None or self.width_upper is None:
+        if self.width_lower is None or self.width_upper is None:
             return f"Width < {self.width} MeV"
-        elif (
+        if (
             self.width < 0.05
         ):  # corresponds to a lifetime of approximately 1.3e-20 seconds
             assert self.lifetime is not None
@@ -831,9 +831,9 @@ class Particle:
             e = width_to_lifetime(self.width - self.width_lower) - self.lifetime
             lifetime = str_with_unc(self.lifetime, e, e)
             return f"Lifetime = {lifetime} ns"
-        else:
-            width = str_with_unc(self.width, self.width_upper, self.width_lower)
-            return f"Width = {width} MeV"
+
+        width = str_with_unc(self.width, self.width_upper, self.width_lower)
+        return f"Width = {width} MeV"
 
     def _charge_in_name(self) -> bool:
         """Assess whether the particle charge is part of the particle name.
@@ -859,15 +859,16 @@ class Particle:
             # Quarkonia never exhibit the 0 charge
             # All eta, eta', h, h', omega, phi, f, f' light mesons are supposed to have an s-sbar component (see PDG site),
             # but some particles have pdgid.has_strange==False :S! Play it safe ...
-            elif any(
+            if any(
                 chr in self.pdg_name
                 for chr in ("eta", "h(", "h'(", "omega", "phi", "f", "f'")
             ):
                 return False
-            elif pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top:
+            if pid.has_strange or pid.has_charm or pid.has_bottom or pid.has_top:
                 return False
-            else:  # Light unflavoured mesons
-                return True
+
+            # Light unflavoured mesons
+            return True
         # Lambda baryons
         if (
             self.pdgid.is_baryon
@@ -904,9 +905,9 @@ class Particle:
         """
         if self.mass is None:
             return "None"
-        else:
-            txt = str_with_unc(self.mass, self.mass_upper, self.mass_lower)
-            return f"{txt} MeV"
+
+        txt = str_with_unc(self.mass, self.mass_upper, self.mass_lower)
+        return f"{txt} MeV"
 
     def describe(self) -> str:
         "Make a nice high-density string for a particle's properties."
@@ -1068,7 +1069,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             if particle is not None:
                 if particle and int(item.pdgid) < 0:
                     continue
-                elif (not particle) and int(item.pdgid) > 0:
+                if (not particle) and int(item.pdgid) > 0:
                     continue
 
             # If a filter function is passed, evaluate and skip if False
@@ -1176,8 +1177,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         matches = cls.from_string_list(name)
         if matches:
             return matches[0]
-        else:
-            raise ParticleNotFound(f"{name} not found in particle table")
+        raise ParticleNotFound(f"{name} not found in particle table")
 
     @classmethod
     def from_string_list(cls: type[Self], name: str) -> list[Self]:

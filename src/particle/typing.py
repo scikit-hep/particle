@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import sys
+from typing import Any, TextIO, Union
 
 if sys.version_info < (3, 8):
     from typing_extensions import Protocol, runtime_checkable
@@ -18,7 +19,6 @@ if sys.version_info < (3, 9):
 else:
     from importlib.abc import Traversable
 
-from typing import Any, TextIO, Union
 
 __all__ = (
     "Protocol",

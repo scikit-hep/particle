@@ -112,3 +112,34 @@ addopts = [
 filterwarnings = [
     "error",
 ]
+
+[tool.pylint]
+master.py-version = "3.7"
+reports.output-format = "colorized"
+similarities.ignore-imports = "yes"
+master.jobs = "0"
+messages_control.enable = [
+    "useless-suppression",
+]
+messages_control.disable = [
+    "duplicate-code",
+    "fixme",
+    "invalid-name",
+    "invalid-unary-operand-type",
+    "line-too-long",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "missing-module-docstring",
+    "too-few-public-methods",
+    "too-many-arguments",
+    "too-many-branches",
+    "too-many-instance-attributes",
+    "too-many-lines",
+    "too-many-locals",
+    "too-many-public-methods",
+    "too-many-return-statements",
+    "too-many-statements",
+    "unsubscriptable-object",
+    "unsupported-assignment-operation",
+    "wrong-import-position",
+]
