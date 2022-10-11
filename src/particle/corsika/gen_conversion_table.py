@@ -143,9 +143,9 @@ corsica_pdg_id = [
 ]
 
 
-def gen_conversation_table() -> None:
+def gen_conversion_table(file: pathlib.Path | None = None) -> None:
     """
-    Genertates the conversation from pdgid to corsika7id under '../data/pdgid_to_corsika7id.csv'
+    Genertates the conversation from pdgid to corsika7id under '../data/pdgid_to_corsika7id.csv' (if file is None, else the specified path)
     """
     # Loop over all thinkable values and only add them if the PDGid exists
     for a in range(2, 56 + 1):
@@ -153,18 +153,24 @@ def gen_conversation_table() -> None:
             corsikaid = a * 100 + z
             try:
                 corsica_pdg_id.append(
-                    (corsikaid, Particle.from_nucleus_info(a=a, z=z).pdgid)
+                    (corsikaid, int(Particle.from_nucleus_info(a=a, z=z).pdgid))
                 )
             except ParticleNotFound:
                 pass
 
+    if file is None:
+        file = (
+            pathlib.Path(__file__)
+            .parent.parent.resolve()
+            .absolute()
+            .joinpath("data/pdgid_to_corsika7id.csv")
+        )
+
     with open(
-        pathlib.Path(__file__)
-        .parent.parent.resolve()
-        .absolute()
-        .joinpath("data/pdgid_to_corsika7id.csv"),
+        file,
         "w",
         newline="",
+        encoding="utf-8",
     ) as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(
