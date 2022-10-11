@@ -140,7 +140,9 @@ corsica_pdg_id = [
 
 
 def gen_conversation_table() -> None:
-
+    """
+    Genertates the conversation from pdgid to corsika7id under '../data/pdgid_to_corsika7id.csv'
+    """
     # Loop over all thinkable values and only add them if the PDGid exists
     for a in range(2, 56 + 1):
         for z in range(0, a + 1):
