@@ -40,3 +40,12 @@ def test_is_particle():
     assert cid.is_particle()
     cid = Corsika7ID(75)
     assert not cid.is_particle()
+
+
+def test_from_particle_description():
+    cid, is_mother = Corsika7ID.from_particle_description(-6001)
+    assert is_mother
+    assert cid.is_particle()
+    cid, is_mother = Corsika7ID.from_particle_description(75001)
+    assert not is_mother
+    assert not cid.is_particle()

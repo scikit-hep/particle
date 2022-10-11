@@ -19,7 +19,7 @@ from typing import TypeVar
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
-from ..particle import Particle
+from ..particle import InvalidParticle, Particle
 from ..pdgid import PDGID
 
 Self = TypeVar("Self", bound="Corsika7ID")
@@ -72,13 +72,51 @@ class Corsika7ID(int):
                 return cls(k)
         raise MatchingIDNotFound(f"Non-existent Corsika7ID for input PDGID {pdgid}!")
 
+    @classmethod
+    def from_particle_description(
+        cls: type[Self], particle_description: int
+    ) -> tuple[Self, bool]:
+        """
+        Constructor from the particle description returned by Corsika7
+        in the particle data sub-block, mother particle data sub-block or
+        the grandmother particle data sub-block.
+
+        Returns
+        -------
+        Corsika7ID: The Corsika7 id
+        bool:       If the particle is a (grand)motherparticle.
+        """
+        cid = abs(particle_description) // 1000
+        ismother = particle_description < 0
+
+        if cls._is_non_particle_id(cid):
+            return cls(cid), ismother
+
+        # this catches the case, of nuclei with no known PDGid
+        if cid >= 200 and cid < 5699:
+            return cls(cid), ismother
+
+        if cid in _bimap:
+            return cls(cid), ismother
+
+        raise MatchingIDNotFound(
+            f"Non-existent Corsika7ID for particle_description {particle_description}!"
+        )
+
+    @classmethod
+    def _is_non_particle_id(cls: type[Self], id: int) -> bool:
+        """
+        returns True if the id is a valid id, but not a particle, False otherwise.
+        """
+        return id in _non_particles or id // 1000 == 8888 or id == 9900
+
     def is_particle(self) -> bool:
         """
         Returns if the corsikaid really belongs to a particle, since some are for example additional information.
         """
         iid = int(self)
 
-        return not (iid in _non_particles or iid // 1000 == 8888 or iid == 9900)
+        return not self._is_non_particle_id(iid)
 
     def name(self) -> str:
         """
@@ -108,6 +146,16 @@ class Corsika7ID(int):
         raise RuntimeError("This should be unreachable.")
 
     def to_pdgid(self) -> PDGID:
+        """
+        Raises
+        ------
+        InvalidParticle
+            If it is a valid Corsika particle, but not a valid PDGid particle.
+        """
+        if self not in _bimap:
+            raise InvalidParticle(
+                f"The Corsika7Id {self} is not a valid PDGID particle."
+            )
         return PDGID(_bimap[self])
 
     def __repr__(self) -> str:
