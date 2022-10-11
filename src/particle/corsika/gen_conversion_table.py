@@ -1,3 +1,7 @@
+# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
+#
+# Distributed under the 3-clause BSD license, see accompanying file LICENSE
+# or https://github.com/scikit-hep/particle for details.
 """
 Function to generate .csv conversion table from corsica to pdg_id and vice-versa.
 This script should be kept, so the table won't need to be hand-edited in the future.
