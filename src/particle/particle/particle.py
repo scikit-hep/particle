@@ -1016,6 +1016,76 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return cls.from_pdgid(EvtGenName2PDGIDBiMap[name])
 
     @classmethod
+    def from_nucleus_info(
+        cls: type[Self],
+        z: int,
+        a: int,
+        anti: bool = False,
+        i: int = 0,
+        l_strange: int = 0,
+    ) -> Self:
+        """
+        Get a nucleus particle from the neutron and proton count.
+        As described here https://pdg.lbl.gov/2007/reviews/montecarlorpp.pdf:
+        "To avoid ambiguities,nuclear codes should not be applied to a single hadron, like p, n
+        or Λ0, where quark-contents-based codes already exist."
+        Number of neutrons is equal to a-z.
+        PDGid format is ±10LZZZAAAI.
+
+        Parameters
+        ----------
+        z: int
+            Atomic number Z (number of protons).
+            Maximum three decimal digits.
+        a: int
+            Atomic mass number A (total number of baryons).
+            Maximum three decimal digits.
+        anti: bool, optional, defaults to False (not antimatter).
+            Whether the nucleus should be antimatter.
+        i: int, optional, default is 0
+            Isomer level I. I=0 corresponds to the ground-state.
+            I>0 are excitations.
+            Maximum is one decimal digit.
+        l_strange: int, optional, default is 0
+            Total number of strange quarks.
+            Maximum is one decimal digit.
+
+        Raises
+        ------
+        ParticleNotFound
+            If `from_pdgid`, internally called, returns no match.
+        InvalidParticle
+            If the input combination is invalid.
+        """
+        if l_strange < 0 or l_strange > 9:
+            raise InvalidParticle(
+                f"Number of strange quark l={l_strange} is invalid. Must be 0 <= l <= 9."
+            )
+        if z < 0 or z > 999:
+            raise InvalidParticle(
+                f"Atomic number Z={z} is invalid. Must be 0 <= A <= 999."
+            )
+        if a < 0 or a > 999:
+            raise InvalidParticle(
+                f"Atomic mass number A={a} is invalid. Must be 0 <= A <= 999."
+            )
+        if i < 0 or i > 9:
+            raise InvalidParticle(
+                f"Isomer level I={i} is invalid. Must be 0 <= I <= 9."
+            )
+        if z > a:
+            raise InvalidParticle(
+                f"Nucleus A={a}, Z={z} is invalid. Z must be smaller or equal to Z."
+            )
+
+        pdgid = int(1e9 + l_strange * 1e5 + z * 1e4 + a * 10 + i)
+
+        if anti:
+            return cls.from_pdgid(-pdgid)
+
+        return cls.from_pdgid(pdgid)
+
+    @classmethod
     def finditer(
         cls: type[Self],
         filter_fn: Callable[[Particle], bool] | str | None = None,
