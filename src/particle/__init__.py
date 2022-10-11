@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import sys
 
-# Direct access to other ID classes
+from .corsika import Corsika7ID
 from .geant import Geant3ID
 
 # Direct access to Particle literals
@@ -32,6 +32,7 @@ from .particle import latex_to_html_name, lifetime_to_width, width_to_lifetime
 __all__ = (
     "Charge",
     "Geant3ID",
+    "Corsika7ID",
     "Inv",
     "InvalidParticle",
     "PDGID",

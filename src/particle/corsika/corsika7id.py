@@ -19,7 +19,6 @@ from typing import TypeVar
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
-from ..particle import InvalidParticle, Particle
 from ..pdgid import PDGID
 
 Self = TypeVar("Self", bound="Corsika7ID")
@@ -129,6 +128,8 @@ class Corsika7ID(int):
             If it is a 'valid' PDG particle, but unknown.
             This for example happens with strange nuclei, which are not in the nuclei list.
         """
+        from ..particle.particle import Particle
+
         if self.is_particle():
             return str(Particle.from_pdgid(self.to_pdgid()).name)
 
@@ -152,6 +153,8 @@ class Corsika7ID(int):
         InvalidParticle
             If it is a valid Corsika particle, but not a valid PDGid particle.
         """
+        from ..particle.particle import InvalidParticle
+
         if self not in _bimap:
             raise InvalidParticle(
                 f"The Corsika7Id {self} is not a valid PDGID particle."
