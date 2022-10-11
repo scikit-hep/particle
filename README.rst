@@ -136,6 +136,8 @@ or, say, the name used in EvtGen, you can get a particle directly.
     >>>
     >>> Particle.from_evtgen_name("J/psi")
     <Particle: name="J/psi(1S)", pdgid=443, mass=3096.900 ± 0.006 MeV>
+    >>> Particle.from_nucleus_info(a=12, z=6)
+    <Particle: name="C12", pdgid=1000060120, mass=11177.9291399 MeV>
 
 A similar method exists to get a list of particles from a PDG style name:
 
@@ -312,7 +314,7 @@ Possible use cases are the following:
 .. code-block:: python
 
     >>> from particle import Particle
-    >>> from particle import Geant3ID, PythiaID
+    >>> from particle import Geant3ID, PythiaID, Corsika7ID
     >>>
     >>> g3id = Geant3ID(8)
     >>> p = Particle.from_pdgid(g3id.to_pdgid())
@@ -327,6 +329,18 @@ Possible use cases are the following:
     >>> (p,) = Particle.finditer(pdgid=pythiaid.to_pdgid())
     >>> p.name
     'pi+'
+    >>> cid = Corsika7ID(5)
+    >>> p = Particle.from_pdgid(cid.to_pdgid())
+    >>> p.name
+    'mu+'
+
+Corsika7
+^^^^^^^^
+
+The ``Corsika7ID`` class implements some features to make it easier to work with Corsika7 output.
+``Corsika7ID.is_particle()`` checks if the id refers to an actual particle or something else (like additional information).
+``Corsika7ID.from_particle_description(from_particle_description: int)`` returns the ``Corsika7ID, bool``
+to automatically parse the ``particle_description`` from the Corsika7 particle data sub-block.
 
 
 Getting started: experiment-specific modules
