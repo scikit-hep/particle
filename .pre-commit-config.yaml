@@ -29,7 +29,7 @@ repos:
   - id: black-jupyter
 
 - repo: https://github.com/asottile/pyupgrade
-  rev: v3.0.0
+  rev: v3.1.0
   hooks:
   - id: pyupgrade
     args: ["--py37-plus"]
@@ -49,7 +49,7 @@ repos:
     args: [--show-error-codes]
 
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.2.1
+  rev: v2.2.2
   hooks:
   - id: codespell
     exclude: ^(src/particle/data/.*\.csv|src/particle/data/.*\.fwf)$
