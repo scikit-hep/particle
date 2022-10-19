@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-from __future__ import absolute_import, division, print_function
 
-import sys
+from __future__ import annotations
 
 import pytest
 from hepunits import meter, second
@@ -18,21 +16,6 @@ from particle.particle.enums import Charge, Inv, Parity, SpinType, Status
 from particle.particle.particle import InvalidParticle, ParticleNotFound
 from particle.pdgid import PDGID
 from particle.pdgid.functions import Location, _digit
-
-
-def test_find():
-    # 1 match found
-    with pytest.deprecated_call():
-        prepr = repr(Particle.find(name="gamma"))
-    assert prepr == '<Particle: name="gamma", pdgid=22, mass=0.0 MeV>'
-
-    # No match found
-    with pytest.deprecated_call(), pytest.raises(ParticleNotFound):
-        Particle.find(name="NotInPDT")
-
-    # Multiple matches found
-    with pytest.deprecated_call(), pytest.raises(RuntimeError):
-        Particle.find(name=lambda x: "Upsilon" in x)
 
 
 def test_sorted_find():
@@ -316,14 +299,14 @@ checklist_describe = (
     # Test print-out of zero width values
     [22, "Width = 0.0 MeV"],  # photon
     # Test print-out of symmetric width errors
-    [413, u"Width = 0.0834 ± 0.0018 MeV"],  # D*(2010)+
-    [443, u"Width = 0.0926 ± 0.0017 MeV"],  # J/psi
+    [413, "Width = 0.0834 ± 0.0018 MeV"],  # D*(2010)+
+    [443, "Width = 0.0926 ± 0.0017 MeV"],  # J/psi
     # Test print-out of asymmetric width errors
     [4222, "Width = 1.89 + 0.09 - 0.18 MeV"],  # Sigma_c(2455)++
-    [23, u"Width = 2495.2 ± 2.3 MeV"],  # H0
+    [23, "Width = 2495.2 ± 2.3 MeV"],  # H0
     # Test print-out of symmetric lifetime errors
-    [5332, u"Lifetime = 1.65e-03 + 1.8e-04 - 1.8e-04 ns"],  # Omega_b-
-    [211, u"Lifetime = 26.033 ± 0.005 ns"],  # pion
+    [5332, "Lifetime = 1.65e-03 + 1.8e-04 - 1.8e-04 ns"],  # Omega_b-
+    [211, "Lifetime = 26.033 ± 0.005 ns"],  # pion
     # Test print-out of asymmetric lifetime errors
     [4332, "Lifetime = 2.7e-04 + 3e-05 - 3e-05 ns"],  # Omega_c^0
     # Test particles with at present an upper limit on their width
@@ -333,9 +316,6 @@ checklist_describe = (
     [4212, "Width < 4.6 MeV"],  # Sigma(c)(2455)+
     [4214, "Width < 17.0 MeV"],  # Sigma(c)(2520)+
 )
-if sys.version_info < (3, 0):
-    for i, pair_vals in enumerate(checklist_describe):
-        checklist_describe[i][1] = pair_vals[1].replace(u"±", u"+/-")
 
 
 @pytest.mark.parametrize("pid,description", checklist_describe)
@@ -380,15 +360,15 @@ def test_all_particles_are_loaded():
 
 
 checklist_html_name = (
-    (22, "&gamma;"),  # photon
+    (22, "&#x03b3;"),  # photon
     (1, "d"),  # d quark
     (-2, "u&#773;"),  # u antiquark
     (11, "e<SUP>-</SUP>"),  # e-
-    (-13, "&mu;<SUP>+</SUP>"),  # mu+
-    (-14, "&nu;&#773;<SUB>&mu;</SUB>"),  # nu_mu_bar
-    (111, "&pi;<SUP>0</SUP>"),  # pi0
-    (-211, "&pi;<SUP>-</SUP>"),  # pi-
-    (-213, "&rho;(770)<SUP>-</SUP>"),  # rho(770)-
+    (-13, "&#x03bc;<SUP>+</SUP>"),  # mu+
+    (-14, "&#x03bd;&#773;<SUB>&#x03bc;</SUB>"),  # nu_mu_bar
+    (111, "&#x03c0;<SUP>0</SUP>"),  # pi0
+    (-211, "&#x03c0;<SUP>-</SUP>"),  # pi-
+    (-213, "&#x03c1;(770)<SUP>-</SUP>"),  # rho(770)-
     (20213, "a<SUB>1</SUB>(1260)<SUP>+</SUP>"),  # a_1(1260)+
     (321, "K<SUP>+</SUP>"),  # K+
     (130, "K<SUB>L</SUB><SUP>0</SUP>"),  # K_L
@@ -396,19 +376,18 @@ checklist_html_name = (
     (-10321, "K<SUB>0</SUB><SUP>*</SUP>(1430)<SUP>-</SUP>"),  # K(0)*(1430)-
     (10433, "D<SUB>s1</SUB>(2536)<SUP>+</SUP>"),  # D_s1(2536)+
     (-511, "B&#773;<SUP>0</SUP>"),  # B0_bar
-    (443, "J/&psi;(1S)"),  # J/psi
-    (10441, "&chi;<SUB>c0</SUB>(1P)"),  # chi_c0(1P)
-    (300553, "&Upsilon;(4S)"),  # Upsilon(4S)
+    (443, "J/&#x03c8;(1S)"),  # J/psi
+    (10441, "&#x03c7;<SUB>c0</SUB>(1P)"),  # chi_c0(1P)
+    (300553, "&#x03a5;(4S)"),  # Upsilon(4S)
     (2212, "p"),  # proton
     (-2112, "n&#773;"),  # antineutron
-    (-2224, "&Delta;&#773;(1232)<SUP>--</SUP>"),  # Delta_bar(1232)--
-    (3322, "&Xi;<SUP>0</SUP>"),  # Xi0
-    (-3322, "&Xi;&#773;<SUP>0</SUP>"),  # Xi0_bar
-    (-5122, "&Lambda;&#773;<SUB>b</SUB><SUP>0</SUP>"),  # Lb0_bar
+    (-2224, "&#x0394;&#773;(1232)<SUP>--</SUP>"),  # Delta_bar(1232)--
+    (3322, "&#x039e;<SUP>0</SUP>"),  # Xi0
+    (-3322, "&#x039e;&#773;<SUP>0</SUP>"),  # Xi0_bar
+    (-5122, "&#x039b;&#773;<SUB>b</SUB><SUP>0</SUP>"),  # Lb0_bar
 )
 
 
-@pytest.mark.skipif(sys.version_info < (3, 0), reason="Requires Python 3")
 @pytest.mark.parametrize("pid,html_name", checklist_html_name)
 def test_html_name(pid, html_name):
     particle = Particle.from_pdgid(pid)

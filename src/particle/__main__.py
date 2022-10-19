@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-from __future__ import absolute_import, print_function
+
+from __future__ import annotations
 
 import argparse
 import sys
@@ -15,8 +15,7 @@ from .particle import Particle
 from .pdgid import PDGID
 
 
-def main():
-    # type: () -> None
+def main() -> None:
     parser = argparse.ArgumentParser(
         prog="particle",
         description="Particle command line display utility. Has two modes.",
@@ -25,7 +24,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s {version}".format(version=__version__),
+        version=f"%(prog)s {__version__}",
     )
 
     subparsers = parser.add_subparsers(help="Subcommands")
@@ -58,7 +57,7 @@ def main():
             else:
                 particles = Particle.findall(cand)
 
-            if len(particles) == 0:
+            if not particles:
                 print("Particle", cand, "not found.")
                 sys.exit(1)
             elif len(particles) == 1:

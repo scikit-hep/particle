@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -59,9 +58,8 @@ Useful definitions:
 
 """
 
-from __future__ import absolute_import
 
-from typing import Tuple
+from __future__ import annotations
 
 from .functions import (
     A,
@@ -79,7 +77,6 @@ from .functions import (
     has_top,
     has_up,
     is_baryon,
-    is_composite_quark_or_lepton,
     is_diquark,
     is_dyon,
     is_excited_quark_or_lepton,
@@ -117,7 +114,6 @@ __all__ = (
     "is_Rhadron",
     "is_SUSY",
     "is_baryon",
-    "is_composite_quark_or_lepton",
     "is_diquark",
     "is_dyon",
     "is_excited_quark_or_lepton",
@@ -156,6 +152,5 @@ __all__ = (
 )
 
 
-def __dir__():
-    # type: () -> Tuple[str, ...]
+def __dir__() -> tuple[str, ...]:
     return __all__

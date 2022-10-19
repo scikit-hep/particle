@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -10,9 +9,11 @@ Class representing a PDG ID.
 All methods of HepPID are implemented in a Pythonic version, see the functions module.
 """
 
-from __future__ import absolute_import
+
+from __future__ import annotations
 
 from inspect import isfunction
+from typing import TypeVar
 
 from . import functions as _functions
 
@@ -22,6 +23,9 @@ _fnames = [
     for fname in dir(_functions)
     if not fname.startswith("_") and isfunction(getattr(_functions, fname))
 ]
+
+
+Self = TypeVar("Self", bound="PDGID")
 
 
 class PDGID(int):
@@ -36,32 +40,23 @@ class PDGID(int):
 
     __slots__ = ()  # Keep PDGID a slots based class
 
-    def __repr__(self):
-        # type: () -> str
-        return "<PDGID: {:d}{:s}>".format(
-            int(self), "" if _functions.is_valid(self) else " (is_valid==False)"
-        )
+    def __repr__(self) -> str:
+        is_valid_str = "" if _functions.is_valid(self) else " (is_valid==False)"
+        return f"<{self.__class__.__name__}: {int(self):d}{is_valid_str}>"
 
-    def __str__(self):
-        # type: () -> str
+    def __str__(self) -> str:
         return repr(self)
 
-    def __neg__(self):
-        # type: () -> PDGID
+    def __neg__(self: Self) -> Self:
         return self.__class__(-int(self))
 
     __invert__ = __neg__
 
-    def info(self):
-        # type: () -> str
+    def info(self) -> str:
         """
         Print all PDGID properties one per line, for easy inspection.
         """
-        return "".join(
-            "{item:14} {value}\n".format(item=item, value=getattr(self, item))
-            for item in _fnames
-            if item != "is_composite_quark_or_lepton"
-        )
+        return "".join(f"{item:14} {getattr(self, item)}\n" for item in _fnames)
 
     A = property(_functions.A, doc=_functions.A.__doc__)
     J = property(_functions.J, doc=_functions.J.__doc__)
@@ -83,10 +78,6 @@ class PDGID(int):
     is_Rhadron = property(_functions.is_Rhadron, doc=_functions.is_Rhadron.__doc__)
     is_SUSY = property(_functions.is_SUSY, doc=_functions.is_SUSY.__doc__)
     is_baryon = property(_functions.is_baryon, doc=_functions.is_baryon.__doc__)
-    is_composite_quark_or_lepton = property(
-        _functions.is_composite_quark_or_lepton,
-        doc=_functions.is_composite_quark_or_lepton.__doc__,
-    )
     is_diquark = property(_functions.is_diquark, doc=_functions.is_diquark.__doc__)
     is_dyon = property(_functions.is_dyon, doc=_functions.is_dyon.__doc__)
     is_excited_quark_or_lepton = property(
@@ -135,4 +126,4 @@ class PDGID(int):
 for _n in _fnames:
     assert _n in dir(
         PDGID
-    ), "{} missing from PDGID class! Update the list in pdgid.py".format(_n)
+    ), f"{_n} missing from PDGID class! Update the list in pdgid.py"

@@ -4,6 +4,4 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
-    ignore:
-      - dependency-name: "actions/*"
+      interval: "monthly"

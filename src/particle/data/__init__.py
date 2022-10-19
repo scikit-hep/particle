@@ -1,22 +1,18 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-import sys
+from __future__ import annotations
 
-from deprecated import deprecated
+import sys
 
 if sys.version_info < (3, 9):
     import importlib_resources as resources
 else:
-    import importlib.resources as resources
+    from importlib import resources
+
+__all__ = ["basepath"]
 
 
 basepath = resources.files(__name__)
-
-
-open_text = deprecated(version="0.16.0", reason="Use particle.data.basepath instead.")(
-    resources.open_text
-)

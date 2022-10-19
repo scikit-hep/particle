@@ -1,36 +1,20 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-from __future__ import absolute_import
 
-try:
-    # for Python 3
-    from collections.abc import Mapping
-except ImportError:
-    # for Python 2.7
-    from collections import Mapping
+from __future__ import annotations
 
+import contextlib
 import csv
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Generic,
-    Iterator,
-    TextIO,
-    Tuple,
-    Type,
-    TypeVar,
-    Union,
-    overload,
-)
+import sys
+from collections.abc import Mapping
+from typing import Any, Callable, Generic, Iterator, TextIO, TypeVar, Union, overload
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
-from ..typing import HasOpen, HasRead
+from ..typing import HasOpen, HasRead, StringOrIO
 
 A = TypeVar("A")
 B = TypeVar("B")
@@ -39,8 +23,13 @@ B_conv = Callable[[str], Union[B, int]]
 
 
 class BiMap(Generic[A, B]):
-    def __init__(self, class_A, class_B, converters=(int, int), filename=None):
-        # type: (Type[A], Type[B], Tuple[A_conv, B_conv], Union[str, TextIO, None]) -> None
+    def __init__(
+        self,
+        class_A: type[A],
+        class_B: type[B],
+        converters: tuple[A_conv, B_conv] = (int, int),  # type: ignore[type-arg]
+        filename: StringOrIO | None = None,
+    ) -> None:
         """
         Bi-bidirectional map class.
 
@@ -81,21 +70,22 @@ class BiMap(Generic[A, B]):
         >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
         """
 
-        self.class_A = class_A  # type: Type[A]
-        self.class_B = class_B  # type: Type[B]
+        self.class_A: type[A] = class_A
+        self.class_B: type[B] = class_B
 
         name_A = self.class_A.__name__.upper()
         name_B = self.class_B.__name__.upper()
 
+        file_object: TextIO
         if filename is None:
-            filename = "{a}_to_{b}.csv".format(a=name_A.lower(), b=name_B.lower())
+            filename = f"{name_A.lower()}_to_{name_B.lower()}.csv"
             file_object = data.basepath.joinpath(filename).open()
         elif isinstance(filename, HasRead):
             file_object = filename
         elif isinstance(filename, HasOpen):
             file_object = filename.open()
         else:
-            file_object = open(filename)
+            file_object = open(filename, encoding="utf_8")  # type: ignore[arg-type]
 
         with file_object as _f:
             self._to_map = {
@@ -109,50 +99,43 @@ class BiMap(Generic[A, B]):
             }
 
     @overload
-    def __getitem__(self, value):
-        # type: (A) -> B
+    def __getitem__(self, value: A) -> B:
         pass
 
     @overload
-    def __getitem__(self, value):
-        # type: (B) -> A
+    def __getitem__(self, value: B) -> A:
         pass
 
-    def __getitem__(self, value):
-        # type: (Any) -> Any
+    def __getitem__(self, value: Any) -> Any:
         if isinstance(value, self.class_B):
-            try:
-                return self.class_A(self._to_map[value])  # type: ignore
-            except KeyError:
-                pass
+            with contextlib.suppress(KeyError):
+                return self.class_A(self._to_map[value])  # type: ignore[call-arg]
         elif isinstance(value, self.class_A):
-            try:
-                return self.class_B(self._from_map[value])  # type: ignore
-            except KeyError:
-                pass
+            with contextlib.suppress(KeyError):
+                return self.class_B(self._from_map[value])  # type: ignore[call-arg]
 
-        msg = "Matching {a}-{b} for input {v} not found !".format(
-            a=self.class_A.__name__, b=self.class_B.__name__, v=value
-        )
+        name_A = self.class_A.__name__
+        name_B = self.class_B.__name__
+        msg = f"Matching {name_A}-{name_B} for input {value} not found !"
         raise MatchingIDNotFound(msg)
 
-    def __repr__(self):
-        # type: () -> str
-        return "<{self.__class__.__name__}({a}-{b}): {n} matches>".format(
-            self=self,
-            a=self.class_A.__name__,
-            b=self.class_B.__name__,
-            n=self.__len__(),
-        )
+    def __repr__(self) -> str:
+        name_A = self.class_A.__name__
+        name_B = self.class_B.__name__
 
-    def __len__(self):
-        # type: () -> int
+        return f"<{self.__class__.__name__}({name_A}-{name_B}): {len(self)} matches>"
+
+    def __len__(self) -> int:
         """Returns the number of matches."""
         return len(self._to_map)
 
 
-def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
-    # type: (str, str, Tuple[Callable[[str],str], Callable[[str],str]], Union[None, str, TextIO]) -> Tuple[DirectionalMap, DirectionalMap]
+def DirectionalMaps(
+    name_A: str,
+    name_B: str,
+    converters: tuple[Callable[[str], str], Callable[[str], str]] = (str, str),
+    filename: StringOrIO | None = None,
+) -> tuple[DirectionalMap, DirectionalMap]:
     """
     Directional map class providing a to and from mapping.
 
@@ -184,6 +167,7 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
     name_B = name_B.upper()
 
     fieldnames = None
+    file_object: TextIO
     if filename is None:
         file_object = data.basepath.joinpath("conversions.csv").open()
     elif isinstance(filename, HasOpen):
@@ -191,7 +175,7 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
     elif isinstance(filename, HasRead):
         file_object = filename
     else:
-        file_object = open(filename)
+        file_object = open(filename, encoding="utf_8")  # type: ignore[arg-type]
 
     with file_object as _f:
         skipinitialspace = True
@@ -220,9 +204,15 @@ def DirectionalMaps(name_A, name_B, converters=(str, str), filename=None):
     )
 
 
-class DirectionalMap(Mapping):
-    def __init__(self, name_A, name_B, map):
-        # type: (str, str, Dict[str, str]) -> None
+if sys.version_info < (3, 9):
+    StrStrMapping = Mapping
+else:
+    StrStrMapping = Mapping[str, str]
+
+
+class DirectionalMap(StrStrMapping):
+    # pylint: disable-next=redefined-builtin
+    def __init__(self, name_A: str, name_B: str, map: dict[str, str]) -> None:
         """
         Directional map class providing a A -> B mapping.
 
@@ -239,27 +229,19 @@ class DirectionalMap(Mapping):
 
         self._map = map
 
-    def __getitem__(self, value):
-        # type: (str) -> str
+    def __getitem__(self, value: str) -> str:
         try:
             return self._map[value]
         except KeyError:
-            msg = "Matching {a}->{b} for input {v} not found !".format(
-                a=self.name_A, b=self.name_B, v=value
-            )
-            raise MatchingIDNotFound(msg)  # noqa: B904 Remove when dropping Python 2
+            msg = f"Matching {self.name_A}->{self.name_B} for input {value} not found !"
+            raise MatchingIDNotFound(msg) from None
 
-    def __iter__(self):
-        # type: () -> Iterator[str]
+    def __iter__(self) -> Iterator[str]:
         return iter(self._map)
 
-    def __repr__(self):
-        # type: () -> str
-        return "<{self.__class__.__name__}({a}->{b}): {n} matches>".format(
-            self=self, a=self.name_A, b=self.name_B, n=self.__len__()
-        )
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__}({self.name_A}->{self.name_B}): {len(self)} matches>"
 
-    def __len__(self):
-        # type: () -> int
+    def __len__(self) -> int:
         """Returns the number of matches."""
         return len(self._map)

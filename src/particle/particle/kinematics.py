@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -8,14 +7,14 @@
 Functions relevant to particle kinematics.
 """
 
-from __future__ import absolute_import, division, print_function
+
+from __future__ import annotations
 
 from hepunits.constants import hbar
 from hepunits.units import MeV, ns
 
 
-def width_to_lifetime(Gamma):
-    # type: (float) -> float
+def width_to_lifetime(Gamma: float) -> float:
     """
     Convert from a particle decay width to a lifetime.
 
@@ -52,16 +51,15 @@ def width_to_lifetime(Gamma):
     """
 
     if Gamma < 0.0:
-        raise ValueError("Input provided, {} <= 0!".format(Gamma))
-    elif Gamma == 0:
+        raise ValueError(f"Input provided, {Gamma} <= 0!")
+    if Gamma == 0:
         return float("inf")
 
     # Just need to first make sure that the width is in the standard unit MeV
     return hbar / float(Gamma / MeV)
 
 
-def lifetime_to_width(tau):
-    # type: (float) -> float
+def lifetime_to_width(tau: float) -> float:
     """
     Convert from a particle lifetime to a decay width.
 
@@ -99,8 +97,8 @@ def lifetime_to_width(tau):
     """
 
     if tau < 0:
-        raise ValueError("Input provided, {} <= 0!".format(tau))
-    elif tau == 0:
+        raise ValueError(f"Input provided, {tau} <= 0!")
+    if tau == 0:
         return float("inf")
 
     # Just need to first make sure that the lifetime is in the standard unit ns

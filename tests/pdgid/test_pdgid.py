@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
-import pytest
+from __future__ import annotations
 
 from particle.pdgid import PDGID
 from particle.pdgid import functions as _functions
@@ -95,7 +94,6 @@ def test_decorated_class_methods(PDGIDs):
     Check that all particle.pdgid functions decorated in the PDGID class
     work as expected for all kinds of PDGIDs.
     """
-    with pytest.deprecated_call():
-        for m in _fnames:
-            for pid in PDGIDs:
-                assert getattr(PDGID(pid), m) == getattr(_functions, m)(pid)
+    for m in _fnames:
+        for pid in PDGIDs:
+            assert getattr(PDGID(pid), m) == getattr(_functions, m)(pid)

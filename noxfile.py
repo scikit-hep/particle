@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
+from __future__ import annotations
+
 from pathlib import Path
 
 import nox
 
-nox.options.sessions = ["lint", "tests"]
+nox.options.sessions = ["lint", "pylint", "tests"]
 
 
 @nox.session
@@ -13,8 +14,19 @@ def lint(session: nox.Session) -> None:
 
 
 @nox.session
+def pylint(session: nox.Session) -> None:
+    """
+    Run pylint.
+    """
+
+    session.install("pylint~=2.15.0")
+    session.install("-e", ".[dev]")
+    session.run("pylint", "src", *session.posargs)
+
+
+@nox.session
 def tests(session: nox.Session) -> None:
-    session.install(".[test]")
+    session.install("-e", ".[test]")
     session.run(
         "pytest",
         *session.posargs,
@@ -27,9 +39,12 @@ def build(session: nox.Session) -> None:
     Build an SDist and wheel.
     """
 
-    session.install("build", "twine")
+    session.install("build", "twine", "check-wheel-contents")
     session.run("python", "-m", "build")
     session.run("twine", "check", "--strict", "dist/*")
+    session.run(
+        "check-wheel-contents", str(*Path("dist").glob("*.whl")), "--ignore=W002"
+    )
 
 
 @nox.session

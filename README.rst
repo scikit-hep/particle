@@ -32,7 +32,7 @@ Install ``particle`` like any other Python package:
 
 .. code-block:: bash
 
-    pip install particle
+    python -m pip install particle
 
 or similar (use ``--user``, ``virtualenv``, etc. if you wish).
 
@@ -40,8 +40,8 @@ or similar (use ``--user``, ``virtualenv``, etc. if you wish).
 Strict dependencies
 -------------------
 
-- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (2.7+, 3.5+)
-- `importlib_resources backport <http://importlib-resources.readthedocs.io/en/latest/>`_ if using Python < 3.7
+- `Python <http://docs.python-guide.org/en/latest/starting/installation/>`_ (3.7+)
+- `importlib_resources backport <http://importlib-resources.readthedocs.io/en/latest/>`_ if using Python < 3.9
 - `attrs <http://www.attrs.org/en/stable/>`_ provides classes without boilerplate (similar to DataClasses in Python 3.7)
 - `hepunits <https://github.com/scikit-hep/hepunits>`_ provides units for the Scikit-HEP packages
 
@@ -167,9 +167,7 @@ to limit the search to particles or antiparticles.
 You can also build the search yourself with the first positional
 argument, which accepts a callable that is given the particle object itself.
 If the first positional argument is a string, that will match against the
-particle's ``name``.  The alternative, *now deprecated*, ``.find()`` requires only one
-match returned by the search, and will throw an error if more or less than one
-match is found.
+particle's ``name``.
 
 Here are possible sophisticated searches, all of which work with either
 ``Particle.findall`` or ``Particle.finditer``, where the former method provides a list
@@ -319,16 +317,68 @@ Possible use cases are the following:
     >>> g3id = Geant3ID(8)
     >>> p = Particle.from_pdgid(g3id.to_pdgid())
     >>>
-    >>> p = Particle.find(pdgid=g3id.to_pdgid())
+    >>> (p,) = Particle.finditer(pdgid=g3id.to_pdgid())  # syntax (p,) throws an error if < 1 or > 1 particle is found
     >>> p.name
     'pi+'
 
     >>> pythiaid = PythiaID(211)
     >>> p = Particle.from_pdgid(pythiaid.to_pdgid())
 
-    >>> p = Particle.find(pdgid=pythiaid.to_pdgid())
+    >>> (p,) = Particle.finditer(pdgid=pythiaid.to_pdgid())
     >>> p.name
     'pi+'
+
+
+Getting started: experiment-specific modules
+--------------------------------------------
+
+Experiment-specific submodules are welcome if they tie in nicely with the functionality of the package while prodiving
+add-ons of particular relevance to experiments.
+
+LHCb-specific module
+^^^^^^^^^^^^^^^^^^^^
+
+Available via
+
+.. code-block:: python
+
+    >>> from particle import lhcb
+
+it contains the following converter and functions:
+
+.. code-block:: python
+
+    >>> dir(lhcb)
+    ['LHCbName2PDGIDBiMap', 'from_lhcb_name', 'to_lhcb_name']
+
+
+.. code-block:: python
+
+    >>> n, e, l = Particle.from_pdgid(-531).name, Particle.from_pdgid(531).evtgen_name, lhcb.to_lhcb_name(Particle.from_pdgid(-531))
+    >>> print(f"Name: {n}\nEvtGen name: {e}\nLHCb name: {l}")
+    Name: B(s)~0
+    EvtGen name: B_s0
+    LHCb name: B_s~0
+
+    >>> p = Particle.from_pdgid(-531)
+    >>> p
+    <Particle: name="B(s)~0", pdgid=-531, mass=5366.88 ± 0.14 MeV>
+    >>>to_lhcb_name(p)
+    'B_s~0'
+
+
+Conversions PDG ID <-> LHCb name are available via a predefined bidirectional map
+similarly to what is available in the standard (i.e. non-experiment-specific) converters:
+
+.. code-block:: python
+
+    >>> name = LHCbName2PDGIDBiMap[PDGID(-531)]
+    >>> name
+    'B_s~0'
+
+    >>> pdgid = LHCbName2PDGIDBiMap['B_s~0']
+    >>> pdgid
+    <PDGID: -531>
 
 
 Acknowledgements
@@ -347,7 +397,7 @@ are those of the authors and do not necessarily reflect the views of the Nationa
    :target: https://pypi.python.org/pypi/particle
 
 .. |Conda-forge version| image:: https://img.shields.io/conda/vn/conda-forge/particle.svg
-   :target: https://anaconda.org/conda-forge/particle
+   :target: https://github.com/conda-forge/particle-feedstock
 
 .. |Zenodo DOI| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.2552429.svg
    :target: https://doi.org/10.5281/zenodo.2552429

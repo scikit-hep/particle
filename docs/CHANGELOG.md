@@ -1,11 +1,68 @@
 Changelog
 =========
 
-
-Version 0.16.2  (in preparations)
+Version 0.20.1
 --------------
 
-- Resurrect tests on "all" platforms - Linux, macOS and Windows.
+- `Particle` class:
+  - More tests of PDGID functions for special particles.
+- Experiment-specific modules:
+  - `particle.lhcb` simplified.
+- Miscellaneous:
+  - Minor cleanup and updates.
+- Tests:
+  - Now included in the SDist (`MANIFEST.in` updated).
+  - Pre-commit hooks updated.
+
+
+Version 0.20.0
+--------------
+
+**First Python 3 (3.6+) only version.**
+
+- `Particle` class:
+  - Deprecated method `find` method removed. Use `findall` or `finditer` instead.
+  - HTML Greek letters in particle names use hex code rather than entity name.
+- `PDGID` class method and related standalone functions:
+  - Deprecated function `is_composite_quark_or_lepton` removed. Use `is_excited_quark_or_lepton` instead.
+- Documentation:
+  - README updated with info on the new experiment-specific module `particle.lhcb`.
+- Miscellaneous:
+  - Support for Python 2 and Python 3.5 dropped.
+  - Full static typing implemented.
+- Tests:
+  - Pre-commit hooks updated.
+
+
+Version 0.16.3
+--------------
+
+December 15th, 2021
+
+- `Particle` class:
+  - New class method `Particle.from_name`.
+- New experiment-specific module:
+  - Module `particle.lhcb` with functions and mappings to deal with particle names in use in LHCb software.
+  - Script `admin/dump_pdgid_to_lhcb.py` to generate the PDGID <-> LHCb name mapping (CSV file).
+- Tests:
+  - Updated pre-commit hooks.
+
+
+Version 0.16.2
+--------------
+
+November 11th, 2021
+
+- `Particle` class:
+  - Faster `Particle.from_pdgid`.
+  - Better coverage of documentation for `Particle` methods, especially for newest method `finditer`.
+  - Do not expose converters on high-level imports. Usage is hence `from particle.converters import ...`.
+- Tests:
+  - Resurrected tests on "all" platforms - Linux, macOS and Windows.
+  - Performance benchmark tests added for loading of particle property CSV files.
+  - Updated pre-commit hooks.
+- Miscellaneous:
+  - Enforced `Black` formatting in notebooks.
 
 
 Version 0.16.1
@@ -15,6 +72,7 @@ September 10th, 2021
 
 - Fixed an regression with the import time being unreasonably slow.
 - Restore Python 3.5 support (no benefit to drop until 2.7 is dropped)
+
 
 Version 0.16.0
 --------------

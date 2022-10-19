@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2018-2021, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -29,18 +28,21 @@ List of available/defined literals:
 {0}
 """
 
+from __future__ import annotations
 
 from ..shared_literals import common_particles
 from .pdgid import PDGID
+
+
+def __dir__() -> list[str]:
+    return list(common_particles)
+
 
 for item in common_particles:
     locals()[item] = PDGID(common_particles[item])
 
 
 __doc = "".join(
-    "  {item!s} = PDGID({pdgid})\n".format(item=item, pdgid=common_particles[item])
-    for item in common_particles
+    f"  {item!s} = PDGID({common_particles[item]})\n" for item in common_particles
 )
 __doc__ = __doc__.format(__doc)
-
-del PDGID, common_particles, item
