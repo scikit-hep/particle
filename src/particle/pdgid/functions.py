@@ -840,7 +840,12 @@ def l_spin(pdgid: PDGID_TYPE) -> int | None:
 
 
 def A(pdgid: PDGID_TYPE) -> int | None:
-    """Returns the atomic number A if the PDG ID corresponds to a nucleus. Else it returns None."""
+    """
+    Returns the atomic mass number A if the PDG ID corresponds to a nucleus, else it returns None.
+
+    The (atomic) mass number is also known as the nucleon number, the total number of protons and neutrons.
+    The number of neutrons is hence N = A - Z.
+    """
     # A proton can be a Hydrogen nucleus
     # A neutron can be considered as a nucleus when given the PDG ID 1000000010,
     # hence consistency demands that A(neutron) = 1
@@ -852,7 +857,12 @@ def A(pdgid: PDGID_TYPE) -> int | None:
 
 
 def Z(pdgid: PDGID_TYPE) -> int | None:
-    """Returns the charge Z if the PDG ID corresponds to a nucleus. Else it returns None."""
+    """
+    Returns the nuclear charge Z if the PDG ID corresponds to a nucleus, else it returns None.
+
+    The nuclear charge number Z is also known as the atomic number.
+    For ordinary nuclei Z is equal to the number of protons.
+    """
     # A proton can be a Hydrogen nucleus
     if abspid(pdgid) == 2212:
         return int(pdgid) // 2212
