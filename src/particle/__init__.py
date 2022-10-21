@@ -31,8 +31,8 @@ from .particle import latex_to_html_name, lifetime_to_width, width_to_lifetime
 
 __all__ = (
     "Charge",
-    "Geant3ID",
     "Corsika7ID",
+    "Geant3ID",
     "Inv",
     "InvalidParticle",
     "PDGID",

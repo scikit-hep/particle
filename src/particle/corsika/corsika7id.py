@@ -49,6 +49,12 @@ class Corsika7ID(int):
     """
     Holds a Corsika7 ID.
 
+    All arithmetic operation on the class (like `-Corsika7ID(5)`) will
+    return an integer. This is unlike for example `-PDGID(13)`, which will
+    return `PDGID(-13)`. But since negative values have no direct meaning
+    as a Corsika7ID, (in the output file they are used to indicate mother-particles)
+    we omit this feature.
+
     Examples
     --------
     >>> cid = Corsika7ID(6)
@@ -96,7 +102,7 @@ class Corsika7ID(int):
             return cls(cid), ismother
 
         # This catches the cases of nuclei with no known PDG ID
-        if cid >= 200 and cid < 5699:
+        if 200 <= cid < 5699:
             return cls(cid), ismother
 
         if cid in _bimap:
@@ -107,15 +113,30 @@ class Corsika7ID(int):
         )
 
     @classmethod
-    def _is_non_particle_id(cls: type[Self], id: int) -> bool:
+    def _is_non_particle_id(cls: type[Self], corsikaid: int) -> bool:
         """
         Returns True if the ID is valid but does not correspond to a particle, False otherwise.
         """
-        return id in _non_particles or id // 1000 == 8888 or id == 9900
+        return (
+            corsikaid in _non_particles
+            or corsikaid // 1000 == 8888
+            or corsikaid == 9900
+        )
 
     def is_particle(self) -> bool:
         """
-        Returns if the corsikaid really belongs to a particle, since some are for example additional information.
+        Returns True if the corsikaid really belongs to a particle, since some are for example additional information.
+
+        Examples
+        --------
+        >>> mu_minux = Corsika7ID(6)
+        >>> mu_minus.is_particle()
+        True
+        >>> mu_info = Corsika7ID(76)
+        >>> mu_info.is_particle()
+        False
+        >>> mu_info.name()
+        'μ− add. info.'
         """
         iid = int(self)
 
@@ -131,6 +152,24 @@ class Corsika7ID(int):
         ParticleNotFound
             If it is a 'valid' PDG particle, but unknown.
             This for example happens with strange nuclei, which are not in the nuclei list.
+
+        Examples
+        --------
+        >>> mu_minus = Corsika7ID(6)
+        >>> mu_minus.is_particle()
+        True
+        >>> mu_minus.name() # For a particle, this returns the same name as `Particle.name`
+        'mu'
+        >>> mu_info = Corsika7ID(76)
+        >>> mu_info.is_particle()
+        False
+        >>> mu_info.name()
+        'μ− add. info.'
+        >>> ch_photons_of = Corsika7ID(9900)
+        >>> ch_photons_of.is_particle()
+        False
+        >>> ch_photons_of.name()
+        'Cherenkov photons on particle output file'
         """
         from ..particle.particle import Particle
 
@@ -155,7 +194,15 @@ class Corsika7ID(int):
         Raises
         ------
         InvalidParticle
-            If it is a valid Corsika particle, but not a valid PDGid particle.
+            If it is a valid Corsika particle, but not a valid PDGID.
+
+        Examples
+        --------
+        >>> Corsika7ID(6).to_pdgid()
+        <PDGID: 13>
+        >>> Corsika7ID(76).to_pdgid()
+        ...
+        InvalidParticle: The  Corsika7ID <Corsika7ID: 76> is not a valid PDGID.
         """
         from ..particle.particle import InvalidParticle
 
