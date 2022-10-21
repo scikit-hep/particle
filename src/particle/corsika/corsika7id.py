@@ -85,7 +85,7 @@ class Corsika7ID(int):
         A tuple with
         
         Corsika7ID: The Corsika7 id
-        bool:       If the particle is a (grand)motherparticle.
+        bool:       If the particle is a (grand)mother particle.
         """
         cid = abs(particle_description) // 1000
         ismother = particle_description < 0
