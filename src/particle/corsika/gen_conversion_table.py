@@ -147,7 +147,7 @@ def gen_conversion_table(file: pathlib.Path | None = None) -> None:
     """
     Genertates the conversation from pdgid to corsika7id under '../data/pdgid_to_corsika7id.csv' (if file is None, else the specified path)
     """
-    # Loop over all thinkable values and only add them if the PDGid exists
+    # Loop over all thinkable values and only add them if the PDG ID exists
     for a in range(2, 56 + 1):
         for z in range(0, a + 1):
             corsikaid = a * 100 + z
