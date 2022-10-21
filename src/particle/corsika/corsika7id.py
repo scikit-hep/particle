@@ -83,7 +83,7 @@ class Corsika7ID(int):
         Returns
         -------
         A tuple with
-        
+
         Corsika7ID: The Corsika7 id
         bool:       If the particle is a (grand)mother particle.
         """
