@@ -339,7 +339,7 @@ Possible use cases are the following:
 Corsika7
 ^^^^^^^^
 
-The ``Corsika7ID`` class implements some features to make it easier to work with Corsika7 output.
+The ``Corsika7ID`` class implements features to make it easier to work with Corsika7 output.
 For a full featureset, look into the ``particle.corsika`` module.
 
 ``Corsika7ID.from_particle_description(from_particle_description: int)`` returns ``(Corsika7ID, bool)``
