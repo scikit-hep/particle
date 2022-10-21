@@ -340,7 +340,7 @@ Corsika7
 ^^^^^^^^
 
 The ``Corsika7ID`` class implements features to make it easier to work with Corsika7 output.
-For a full featureset, look into the ``particle.corsika`` module.
+For a full feature set, please refer to the ``particle.corsika`` submodule.
 
 ``Corsika7ID.from_particle_description(from_particle_description: int)`` returns ``(Corsika7ID, bool)``
 to automatically parse the ``particle_description`` from the Corsika7 particle data sub-block.
