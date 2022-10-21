@@ -121,7 +121,7 @@ class Corsika7ID(int):
 
     def name(self) -> str:
         """
-        Returns a human readable name of the Corsika ID.
+        Returns a human readable name of the Corsika7ID.
         This also works for non-particles (is_particle()==false).
 
         Raises
