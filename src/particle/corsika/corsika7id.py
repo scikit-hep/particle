@@ -101,7 +101,7 @@ class Corsika7ID(int):
             return cls(cid), ismother
 
         raise MatchingIDNotFound(
-            f"Non-existent Corsika7ID for particle_description {particle_description}!"
+            f"Non-existent Corsika7ID for particle description {particle_description}!"
         )
 
     @classmethod
