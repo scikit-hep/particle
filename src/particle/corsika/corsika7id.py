@@ -30,7 +30,7 @@ with data.basepath.joinpath("pdgid_to_corsika7id.csv").open() as _f:
         for v in csv.DictReader(line for line in _f if not line.startswith("#"))
     }
 
-# Some Corsika ID's are not really particles
+# Some Corsika7 ID's are not really particles
 _non_particles = {
     71: "η → γγ",
     72: "η → 3π◦",
@@ -60,6 +60,8 @@ class Corsika7ID(int):
     >>> p.name
     'mu-'
     """
+    
+    __slots__ = ()  # Keep Corsika7ID a slots based class
 
     @classmethod
     def from_pdgid(cls: type[Self], pdgid: int) -> Self:
@@ -93,7 +95,7 @@ class Corsika7ID(int):
         if cls._is_non_particle_id(cid):
             return cls(cid), ismother
 
-        # this catches the case, of nuclei with no known PDGid
+        # This catches the cases of nuclei with no known PDG ID
         if cid >= 200 and cid < 5699:
             return cls(cid), ismother
 
@@ -107,7 +109,7 @@ class Corsika7ID(int):
     @classmethod
     def _is_non_particle_id(cls: type[Self], id: int) -> bool:
         """
-        returns True if the id is a valid id, but not a particle, False otherwise.
+        Returns True if the ID is valid but does not correspond to a particle, False otherwise.
         """
         return id in _non_particles or id // 1000 == 8888 or id == 9900
 
@@ -159,7 +161,7 @@ class Corsika7ID(int):
 
         if self not in _bimap:
             raise InvalidParticle(
-                f"The Corsika7Id {self} is not a valid PDGID particle."
+                f"The  Corsika7ID {self} is not a valid PDGID."
             )
         return PDGID(_bimap[self])
 

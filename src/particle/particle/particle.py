@@ -1025,10 +1025,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         l_strange: int = 0,
     ) -> Self:
         """
-        Get a nucleus particle from the neutron and proton count.
+        Get a nucleus particle from the proton Z and atomic mass A numbers.
         As described here https://pdg.lbl.gov/2007/reviews/montecarlorpp.pdf:
-        "To avoid ambiguities,nuclear codes should not be applied to a single hadron, like p, n
-        or Λ0, where quark-contents-based codes already exist."
+        "To avoid ambiguities, nucleus codes should not be applied to a single hadron, such as the p, n
+        or the Λ, where quark-contents-based codes already exist."
         Number of neutrons is equal to a-z.
         PDGid format is ±10LZZZAAAI.
 
