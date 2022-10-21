@@ -60,7 +60,7 @@ class Corsika7ID(int):
     >>> p.name
     'mu-'
     """
-    
+
     __slots__ = ()  # Keep Corsika7ID a slots based class
 
     @classmethod
@@ -160,9 +160,7 @@ class Corsika7ID(int):
         from ..particle.particle import InvalidParticle
 
         if self not in _bimap:
-            raise InvalidParticle(
-                f"The  Corsika7ID {self} is not a valid PDGID."
-            )
+            raise InvalidParticle(f"The  Corsika7ID {self} is not a valid PDGID.")
         return PDGID(_bimap[self])
 
     def __repr__(self) -> str:
