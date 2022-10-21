@@ -1059,7 +1059,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         """
         if l_strange < 0 or l_strange > 9:
             raise InvalidParticle(
-                f"Number of strange quark l={l_strange} is invalid. Must be 0 <= l <= 9."
+                f"Number of strange quarks l={l_strange} is invalid. Must be 0 <= l <= 9."
             )
         if z < 0 or z > 999:
             raise InvalidParticle(
