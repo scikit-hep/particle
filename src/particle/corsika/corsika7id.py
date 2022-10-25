@@ -201,13 +201,14 @@ class Corsika7ID(int):
         >>> Corsika7ID(6).to_pdgid()
         <PDGID: 13>
         >>> Corsika7ID(76).to_pdgid()
-        ...
-        InvalidParticle: The Corsika7ID <Corsika7ID: 76> is not a valid PDGID.
+        InvalidParticle: The Corsika7ID <Corsika7ID: 76> does not correspond to a particle and thus has no equivalent PDGID.
         """
         from ..particle.particle import InvalidParticle
 
         if self not in _bimap:
-            raise InvalidParticle(f"The Corsika7ID {self} is not a valid PDGID.")
+            raise InvalidParticle(
+                f"The Corsika7ID {self} does not correspond to a particle and thus has no equivalent PDGID."
+            )
         return PDGID(_bimap[self])
 
     def __repr__(self) -> str:
