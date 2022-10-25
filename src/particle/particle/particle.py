@@ -1026,11 +1026,14 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     ) -> Self:
         """
         Get a nucleus particle from the proton Z and atomic mass A numbers.
+
         As described in the PDG numbering scheme:
         "To avoid ambiguities, nucleus codes should not be applied to a single hadron, such as the p, n
         or the Λ, where quark-contents-based codes already exist."
+
         Number of neutrons is equal to a-z.
-        PDGid format is ±10LZZZAAAI (see https://github.com/scikit-hep/particle/blob/master/src/particle/pdgid/functions.py#L232).
+        The PDG ID format is ±10LZZZAAAI, see the `is_nucleus()` function in submodule
+        `particle.pdgid.functions.py`.
 
         Parameters
         ----------
