@@ -49,7 +49,7 @@ class Corsika7ID(int):
     """
     Holds a Corsika7 ID.
 
-    All arithmetic operation on the class (like `-Corsika7ID(5)`) will
+    All arithmetic operations on the class (like `-Corsika7ID(5)`) will
     return an integer. This is unlike for example `-PDGID(13)`, which will
     return `PDGID(-13)`. But since negative values have no direct meaning
     as a Corsika7ID, (in the output file they are used to indicate mother-particles)
@@ -125,7 +125,7 @@ class Corsika7ID(int):
 
     def is_particle(self) -> bool:
         """
-        Returns True if the corsikaid really belongs to a particle, since some are for example additional information.
+        Returns True if the ID really belongs to a particle, since some are for example additional information.
 
         Examples
         --------
@@ -202,12 +202,12 @@ class Corsika7ID(int):
         <PDGID: 13>
         >>> Corsika7ID(76).to_pdgid()
         ...
-        InvalidParticle: The  Corsika7ID <Corsika7ID: 76> is not a valid PDGID.
+        InvalidParticle: The Corsika7ID <Corsika7ID: 76> is not a valid PDGID.
         """
         from ..particle.particle import InvalidParticle
 
         if self not in _bimap:
-            raise InvalidParticle(f"The  Corsika7ID {self} is not a valid PDGID.")
+            raise InvalidParticle(f"The Corsika7ID {self} is not a valid PDGID.")
         return PDGID(_bimap[self])
 
     def __repr__(self) -> str:
