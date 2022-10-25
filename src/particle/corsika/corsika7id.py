@@ -171,7 +171,7 @@ class Corsika7ID(int):
         >>> ch_photons_of.name()
         'Cherenkov photons on particle output file'
         """
-        from ..particle.particle import Particle
+        from ..particle.particle import Particle  # pylint: disable=C0415
 
         if self.is_particle():
             return str(Particle.from_pdgid(self.to_pdgid()).name)
@@ -203,7 +203,7 @@ class Corsika7ID(int):
         >>> Corsika7ID(76).to_pdgid()
         InvalidParticle: The Corsika7ID <Corsika7ID: 76> does not correspond to a particle and thus has no equivalent PDGID.
         """
-        from ..particle.particle import InvalidParticle
+        from ..particle.particle import InvalidParticle  # pylint: disable=C0415
 
         if self not in _bimap:
             raise InvalidParticle(
