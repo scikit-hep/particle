@@ -4,7 +4,7 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 """
-Function to generate pdgid_to_corsika7id.csv conversion table from Corsika7ID to PDGID and vice-versa.
+Script to generate the pdgid_to_corsika7id.csv conversion table from Corsika7ID to PDGID and vice-versa.
 This script should be kept, so the table won't need to be hand-edited in the future.
 """
 from __future__ import annotations
@@ -16,8 +16,8 @@ import pathlib
 from particle import Particle, ParticleNotFound
 from particle.shared_literals import common_particles
 
-# Paris of matching (Corsika7ID, PDGID), if
-# the Corsika7ID has a matching PDGID, if not
+# Pairs of matching (Corsika7ID, PDGID),
+# if the Corsika7ID has a matching PDGID, if not
 # then (Corsika7ID, str), with the string from
 # the corsika user guide
 corsica_pdg_id = [

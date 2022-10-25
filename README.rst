@@ -315,7 +315,7 @@ Possible use cases are the following:
 .. code-block:: python
 
     >>> from particle import Particle
-    >>> from particle import Geant3ID, PythiaID, Corsika7ID
+    >>> from particle import Corsika7ID, Geant3ID, PythiaID
     >>>
     >>> g3id = Geant3ID(8)
     >>> p = Particle.from_pdgid(g3id.to_pdgid())
@@ -345,7 +345,7 @@ For a full feature set, please refer to the ``particle.corsika`` submodule.
 ``Corsika7ID.from_particle_description(from_particle_description: int)`` returns ``(Corsika7ID, bool)``
 to automatically parse the ``particle_description`` from the Corsika7 particle data sub-block.
 
-``Corsika7ID.is_particle()`` checks if the id refers to an actual particle or something else (like additional information).
+``Corsika7ID.is_particle()`` checks if the ID refers to an actual particle or something else (like additional information).
 
 ``Corsika7ID.to_pdgid()`` converts the ``Corsika7ID`` to a ``PDGID`` if possible.
 
