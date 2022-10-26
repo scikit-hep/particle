@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+title: Particle
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+abstract: "Particle is a Python library for PDG particle data and identification codes."
+authors:
+  - family-names: Rodrigues
+    given-names: Eduardo
+    affiliation: University of Liverpool
+    orcid: "https://orcid.org/0000-0003-2846-7625"
+  - family-names: Schreiner
+    given-names: Henry
+    affiliation: Princeton University
+    orcid: "https://orcid.org/0000-0002-7833-783X"
+doi: 10.5281/zenodo.2552429
+repository-code: "https://github.com/scikit-hep/particle"
+keywords:
+  - python
+  - PDG particle data
+  - MC identification codes
+  - scikit-hep
+license: "BSD-3-Clause"
