@@ -147,6 +147,27 @@ def test_pdg_convert():
     assert int(p.pdgid) == 211
 
 
+def test_nucleus_convert():
+    p = Particle.from_nucleus_info(1, 2)
+    assert p.pdgid == 1000010020
+    p = Particle.from_nucleus_info(92, 235)
+    assert p.pdgid == 1000922350
+    p = Particle.from_nucleus_info(1, 2, anti=True)
+    assert p.pdgid == -1000010020
+    # No exited nuclei in database
+    try:
+        p = Particle.from_nucleus_info(1, 2, i=1)
+        assert p.pdgid == 1000010021
+    except ParticleNotFound:
+        pass
+    # No strange nuclei in database and strange PDGID not implemented
+    try:
+        p = Particle.from_nucleus_info(1, 2, l_strange=1)
+        assert p.pdgid == 1100010020
+    except ParticleNotFound and InvalidParticle:
+        pass
+
+
 def test_sorting():
     assert Particle.from_pdgid(211) < Particle.from_pdgid(311)
     assert Particle.from_pdgid(211) < Particle.from_pdgid(-311)
