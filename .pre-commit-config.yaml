@@ -29,7 +29,7 @@ repos:
   - id: black-jupyter
 
 - repo: https://github.com/asottile/pyupgrade
-  rev: v3.1.0
+  rev: v3.2.0
   hooks:
   - id: pyupgrade
     args: ["--py37-plus"]
