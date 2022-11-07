@@ -1,7 +1,7 @@
 Particle Data folder contents
 -----------------------------
 
-You can ``import particle.data``, then use ``particle.data.basepath / "particle2021.csv"``
+You can ``import particle.data``, then use ``particle.data.basepath / "particle2022.csv"``
 to access data reliably regardless of how you have installed or are running the package (even from a zip file!).
 
 
@@ -20,15 +20,16 @@ An extension file for the extended PDG data file, prepared by this package's mai
 It contains entries necessary to provide extended information for the particles in the standard .mcd file.
 
 
-``mass_width_2021.mcd``
+``mass_width_2022.mcd``
 =======================
 
-The latest version of the PDG particle data file, downloaded from the PDG website,
+The latest version of the PDG particle data file, downloaded from the PDG website
+(renamed from .txt to the .mcd extension as in previous years),
 with much less information, but with more particles and more up to date.
 A few older years are included, too.
 
 
-``particle2021.csv``
+``particle2022.csv``
 ====================
 
 The combined data file, in a format that is easy for the ``Particle`` class to read and easy for physicists to extend or edit.
