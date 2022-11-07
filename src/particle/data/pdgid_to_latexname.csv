@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - pdgid_to_latexname.csv - version 10 - 2021-08-12
+# (c) Scikit-HEP project - Particle package data file - pdgid_to_latexname.csv - version 11 - 2022-11-06
 PDGID,LATEXNAME
 1,d
 2,u
@@ -6,24 +6,24 @@ PDGID,LATEXNAME
 4,c
 5,b
 6,t
-7,b^{\prime}
-8,t^{\prime}
+7,b^\prime
+8,t^\prime
 11,e^{-}
 12,\nu_{e}
 13,\mu^{-}
 14,\nu_{\mu}
 15,\tau^{-}
 16,\nu_{\tau}
-17,\tau^{\prime-}
-18,\nu_{\tau^{\prime}}
+17,\tau^{\prime -}
+18,\nu_{\tau^\prime}
 21,g
 22,\gamma
 23,Z^{0}
 24,W^{+}
 25,H^{0}
-32,Z^{\prime0}
-33,Z^{\prime\prime0}
-34,W^{\prime+}
+32,Z^{\prime 0}
+33,Z^{\prime\prime 0}
+34,W^{\prime +}
 35,H_{2}^{0}
 36,H_{3}^{0}
 37,H^{+}
@@ -40,7 +40,7 @@ PDGID,LATEXNAME
 84,c-hadron
 85,b-hadron
 86,t-hadron
-87,b^{\prime}-hadron
+87,b^\prime-hadron
 88,junction
 90,system
 91,cluster
@@ -79,9 +79,9 @@ PDGID,LATEXNAME
 325,K_{2}^{*}(1430)^{+}
 327,K_{3}^{*}(1780)^{+}
 329,K_{4}^{*}(2045)^{+}
-331,\eta^{\prime}(958)
+331,\eta^\prime(958)
 333,\phi(1020)
-335,f_{2}^{\prime}(1525)
+335,f_{2}^\prime(1525)
 337,\phi_{3}(1850)
 350,B_{sL}^{0}
 411,D^{+}
@@ -183,9 +183,9 @@ PDGID,LATEXNAME
 4232,\Xi_{c}^{+}
 4301,(cs)_{0}
 4303,(cs)_{1}
-4312,\Xi_{c}^{\prime0}
+4312,\Xi_{c}^{\prime 0}
 4314,\Xi_{c}(2645)^{0}
-4322,\Xi_{c}^{\prime+}
+4322,\Xi_{c}^{\prime +}
 4324,\Xi_{c}(2645)^{+}
 4332,\Omega_{c}^{0}
 4334,\Omega_{c}(2770)^{0}
@@ -215,20 +215,20 @@ PDGID,LATEXNAME
 5242,\Xi_{bc}^{+}
 5301,(bs)_{0}
 5303,(bs)_{1}
-5312,\Xi_{b}^{\prime-}
+5312,\Xi_{b}^{\prime -}
 5314,\Xi_{b}^{*-}
-5322,\Xi_{b}^{\prime0}
+5322,\Xi_{b}^{\prime 0}
 5324,\Xi_{b}^{*0}
 5332,\Omega_{b}^{-}
 5334,\Omega_{b}^{*-}
 5342,\Omega_{bc}^{0}
 5401,(bc)_{0}
 5403,(bc)_{1}
-5412,\Xi_{bc}^{\prime0}
+5412,\Xi_{bc}^{\prime 0}
 5414,\Xi_{bc}^{*0}
-5422,\Xi_{bc}^{\prime+}
+5422,\Xi_{bc}^{\prime +}
 5424,\Xi_{bc}^{*+}
-5432,\Omega_{bc}^{\prime0}
+5432,\Omega_{bc}^{\prime 0}
 5434,\Omega_{bc}^{*0}
 5442,\Omega_{bcc}^{+}
 5444,\Omega_{bcc}^{*+}
@@ -469,7 +469,7 @@ PDGID,LATEXNAME
 3000113,\rho_{tc}^{0}
 3000211,\pi_{tc}^{+}
 3000213,\rho_{tc}^{+}
-3000221,\pi_{tc}^{\prime0}
+3000221,\pi_{tc}^{\prime 0}
 3000223,\omega_{tc}
 3000331,\eta_{tc}
 3100021,V_{8}

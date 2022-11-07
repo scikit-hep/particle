@@ -15,16 +15,16 @@ from collections import Counter
 from particle import data
 from particle.particle.convert import produce_files
 
-FILES = ["particle2020.csv", "particle2021.csv"]
+FILES = ["particle2021.csv", "particle2022.csv"]
 
 
 def test_generate(tmp_path):
     "This verifies that the input and output files match."
 
-    particle2020 = tmp_path / "particle2020.csv"
     particle2021 = tmp_path / "particle2021.csv"
+    particle2022 = tmp_path / "particle2022.csv"
 
-    produce_files(particle2020, particle2021, "DUMMY", "2021")
+    produce_files(particle2021, particle2022, "DUMMY", "2022")
 
     """
     # No longer test this file, which eventually will be removed
@@ -35,8 +35,8 @@ def test_generate(tmp_path):
         assert src == res
     """
 
-    particle2021_data = data.basepath / "particle2021.csv"
-    with particle2021.open() as src, particle2021_data.open() as res:
+    particle2022_data = data.basepath / "particle2022.csv"
+    with particle2022.open() as src, particle2022_data.open() as res:
         src = [line for line in src.readlines() if not line.startswith("#")]
         res = [line for line in res.readlines() if not line.startswith("#")]
         assert src == res
