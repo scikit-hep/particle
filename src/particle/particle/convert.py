@@ -358,7 +358,7 @@ def update_from_mcd(
 
     Example
     -------
-    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2021.mcd')    # doctest: +SKIP
+    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2022.mcd')    # doctest: +SKIP
     """
 
     full_table = full_table.copy()
@@ -372,7 +372,7 @@ def update_from_mcd(
 
 def produce_files(
     particle2008: str | Path,  # pylint: disable=unused-argument
-    particle2021: str | Path,
+    particle2022: str | Path,
     version: str,
     year: str,
 ) -> None:
@@ -415,8 +415,8 @@ def produce_files(
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    with open(particle2021, "w", newline="\n", encoding="utf-8") as f:
-        f.write(version_header(str(particle2021), version))
+    with open(particle2022, "w", newline="\n", encoding="utf-8") as f:
+        f.write(version_header(str(particle2022), version))
         new_table.to_csv(f, float_format="%.12g")
 
 
