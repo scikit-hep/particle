@@ -43,7 +43,7 @@ If you'd like to append to this file, write a similar file with the same header,
 to read in the original table and then the new file you've written.
 
 This file was created from ``pdgid_to_latexname.csv``, ``mass_width_2008.fwf``,
-``mass_width_2008_ext.fwf`` and ``mass_width_2021.mcd``.
+``mass_width_2008_ext.fwf`` and ``mass_width_2022.mcd``.
 The 2008 version of the file was created with only the first two.
 
 
