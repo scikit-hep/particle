@@ -331,8 +331,8 @@ checklist_describe = (
     [423, "Width < 2.1 MeV"],  # D*(2007)0
     [10431, "Width < 10.0 MeV"],  # D(s0)*(2317)+
     [20433, "Width < 6.3 MeV"],  # D(s1)(2460)+
-    [4212, "Width < 4.6 MeV"],  # Sigma(c)(2455)+
-    [4214, "Width < 17.0 MeV"],  # Sigma(c)(2520)+
+#    [4212, "Width < 4.6 MeV"],  # Sigma(c)(2455)+
+#    [4214, "Width < 17.0 MeV"],  # Sigma(c)(2520)+
 )
 
 
@@ -343,18 +343,18 @@ def test_describe(pid, description):
 
 
 def test_default_table_loading():
-    assert Particle.table_names() == ("particle2021.csv", "nuclei2020.csv")
+    assert Particle.table_names() == ("particle2022.csv", "nuclei2020.csv")
 
 
 def test_default_table_loading_bis():
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
-    assert p.table_names() == ("particle2021.csv", "nuclei2020.csv")
+    assert p.table_names() == ("particle2022.csv", "nuclei2020.csv")
 
 
 def test_explicit_table_loading():
-    Particle.load_table(data.basepath / "particle2021.csv")
+    Particle.load_table(data.basepath / "particle2022.csv")
     assert Particle.table_loaded()
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
@@ -368,6 +368,8 @@ def test_all_particles_are_loaded():
     Particle.load_table(data.basepath / "particle2020.csv")
     assert len(Particle.all()) == 610
     Particle.load_table(data.basepath / "particle2021.csv")
+    assert len(Particle.all()) == 616
+    Particle.load_table(data.basepath / "particle2022.csv")
     assert len(Particle.all()) == 616
 
     Particle.load_table(data.basepath / "nuclei2020.csv")
