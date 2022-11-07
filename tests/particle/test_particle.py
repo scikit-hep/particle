@@ -331,8 +331,6 @@ checklist_describe = (
     [423, "Width < 2.1 MeV"],  # D*(2007)0
     [10431, "Width < 10.0 MeV"],  # D(s0)*(2317)+
     [20433, "Width < 6.3 MeV"],  # D(s1)(2460)+
-    #    [4212, "Width < 4.6 MeV"],  # Sigma(c)(2455)+
-    #    [4214, "Width < 17.0 MeV"],  # Sigma(c)(2520)+
 )
 
 
