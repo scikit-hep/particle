@@ -36,9 +36,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: excitedleigh/setup-nox@main
-      with:
-        python-version: 3.7
+    - uses: wntrblm/nox@2022.8.7
 
     - name: Make ZipApp
       run: nox -s zipapp
