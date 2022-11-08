@@ -1,6 +1,30 @@
 Changelog
 =========
 
+Version 0.21.0
+--------------
+
+- Data files:
+  - Added the 2022 PDG data table file, now default.
+  - Version 11 of package CSV data files:
+      - Since PDG 2022 information now the default.
+- Classes for MC particle identification codes and converters:
+  - New `Corsika7ID` class.
+  - New `Corsika72PDGIDBiMap` bi-directional map between PDG and Corsika7 IDs.
+- `Particle` class, `PDGID` like classes and related standalone functions:
+  - New method `Particle.from_nucleus()`.
+  - Extra documentation.
+- Miscellaneous:
+  - Added a CITATION.cff file.
+  - Moved over to using hatchling.
+  - Added support for Python 3.11 and dropped support for Python 3.6.
+  - Adapted to Pandas 1.5 series (removal of deprecation warnings).
+- Documentation:
+   - Minor README updates.
+- Tests:
+  - Updates to pre-commit hooks and CI YAML files.
+  - Various improvements to the CI.
+
 Version 0.20.1
 --------------
 
