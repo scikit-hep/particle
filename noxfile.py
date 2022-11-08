@@ -47,7 +47,7 @@ def build(session: nox.Session) -> None:
     )
 
 
-@nox.session
+@nox.session(python="3.7")
 def zipapp(session: nox.Session) -> None:
     tmpdir = session.create_tmp()
 
