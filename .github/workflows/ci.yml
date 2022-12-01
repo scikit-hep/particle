@@ -92,7 +92,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: wntrblm/nox@2022.8.7
+    - uses: wntrblm/nox@2022.11.21
 
     - name: Make ZipApp
       run: nox -s zipapp
