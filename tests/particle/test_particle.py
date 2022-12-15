@@ -147,25 +147,37 @@ def test_pdg_convert():
     assert int(p.pdgid) == 211
 
 
-def test_nucleus_convert():
+def test_from_nucleus_info():
     p = Particle.from_nucleus_info(1, 2)
     assert p.pdgid == 1000010020
     p = Particle.from_nucleus_info(92, 235)
     assert p.pdgid == 1000922350
     p = Particle.from_nucleus_info(1, 2, anti=True)
     assert p.pdgid == -1000010020
-    # No exited nuclei in database
-    try:
-        p = Particle.from_nucleus_info(1, 2, i=1)
-        assert p.pdgid == 1000010021
-    except ParticleNotFound:
-        pass
-    # No strange nuclei in database and strange PDGID not implemented
-    try:
-        p = Particle.from_nucleus_info(1, 2, l_strange=1)
-        assert p.pdgid == 1100010020
-    except ParticleNotFound and InvalidParticle:
-        pass
+
+
+def test_from_nucleus_info_ParticleNotFound():
+    with pytest.raises(ParticleNotFound):
+        _ = Particle.from_nucleus_info(z=999, a=999)
+        
+        # No exited nuclei in database
+        _ = Particle.from_nucleus_info(1, 2, i=1)
+
+
+def test_from_nucleus_info_InvalidParticle():
+    with pytest.raises(InvalidParticle):
+        _ = Particle.from_nucleus_info(z=2, a=1)
+
+        _ = Particle.from_nucleus_info(z=1, a=1000)
+        
+        _ = Particle.from_nucleus_info(z=1000, a=1)
+
+        _ = Particle.from_nucleus_info(z=1, a=1, l_strange=999)
+
+        _ = Particle.from_nucleus_info(z=1, a=1, i=999)
+
+        # No strange nuclei in database and strange PDGID not implemented
+        _ = Particle.from_nucleus_info(1, 2, l_strange=1)
 
 
 def test_sorting():
