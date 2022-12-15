@@ -133,7 +133,7 @@ def greek_letter_name_to_unicode(letter: str) -> str:
     case = "SMALL" if letter == letter.lower() else "CAPITAL"
     name = letter.upper()
 
-    return unicodedata.lookup(f"GREEK {case} LETTER '{name}'")
+    return unicodedata.lookup(f"GREEK {case} LETTER {name}")
 
 
 def latex_name_unicode(name: str) -> str:
