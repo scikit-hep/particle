@@ -183,6 +183,7 @@ def test_from_nucleus_info_InvalidParticle():
         # No strange nuclei in database and strange PDGID not implemented
     with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(1, 2, l_strange=1)
+    assert str(e.value) == "Input PDGID 1000110020 is invalid!"
 
 
 def test_sorting():
