@@ -1239,12 +1239,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         )
 
     @classmethod
-    def find(cls: type[Self], *args: Any, **search_terms: Any) -> Self:
-        raise AttributeError(
-            "Method has been removed post versions 0.16. Please use finditer or findall instead."
-        )
-
-    @classmethod
     def from_string(cls: type[Self], name: str) -> Self:
         "Get a particle from a PDG style name - returns the best match."
         matches = cls.from_string_list(name)
