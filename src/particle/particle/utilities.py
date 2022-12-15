@@ -118,19 +118,22 @@ def greek_letter_name_to_unicode(letter: str) -> str:
     Return a greek letter name as a Unicode character,
     the same as the input if no match is found.
 
+    Raises
+    ------
+    KeyError
+        If no matching greek letter name is found in the `unicodedata` module.
+        Typical case: "lambda" since `unicodedata` uses "lamda" :S!
+
     Examples
     --------
-    Lamda -> Λ    (Unicodedata library uses "lamda" for "lambda" :S!)
+    Lamda -> Λ    (Unicodedata library uses "lamda" for "lambda"!)
     Omega -> Ω
     omega -> ω
     """
     case = "SMALL" if letter == letter.lower() else "CAPITAL"
     name = letter.upper()
 
-    try:
-        return unicodedata.lookup(f"GREEK {case} LETTER {name}")
-    except KeyError:  # Unicodedata library uses "lamda" for "lambda", so that's an obvious miss
-        return letter
+    return unicodedata.lookup(f"GREEK {case} LETTER '{name}'")
 
 
 def latex_name_unicode(name: str) -> str:
