@@ -165,18 +165,23 @@ def test_from_nucleus_info_ParticleNotFound():
 
 
 def test_from_nucleus_info_InvalidParticle():
-    with pytest.raises(InvalidParticle):
+    with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(z=2, a=1)
 
+    with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(z=1, a=1000)
 
+    with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(z=1000, a=1)
 
+    with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(z=1, a=1, l_strange=999)
 
+    with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(z=1, a=1, i=999)
 
         # No strange nuclei in database and strange PDGID not implemented
+    with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(1, 2, l_strange=1)
 
 
