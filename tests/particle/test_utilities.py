@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import pytest
 
-from particle.particle.utilities import str_with_unc
+from particle.particle.utilities import latex_name_unicode, str_with_unc
 
 possibilities = (
     (1.234567, 0.01, None, "1.235 ± 0.010"),
@@ -22,6 +22,8 @@ possibilities = (
     (1234.5, 0.03, 0.03, "1234.50 ± 0.03"),
     (1234.5, 5, 5, "1234 ± 5"),
     (1234.5, 2, 2, "1234.5 ± 2.0"),
+    (1234.5, None, None, "1234.5"),
+    (1234.5, None, 2, "1234.5"),
 )
 
 
@@ -29,3 +31,17 @@ possibilities = (
 def test_unc_printout(value, err_u, err_l, test_str):
 
     assert str_with_unc(value, err_u, err_l) == test_str
+
+
+possibilities = (
+    ("\\omega", "ω"),
+    ("\\Omega", "Ω"),
+    ("\\Lambda", "Λ"),
+    ("\\alpha_{x}^{0}\\beta\\Gamma(1234)\\Omega", "α_{x}^{0}βΓ(1234)Ω"),
+)
+
+
+@pytest.mark.parametrize("name,unicode_name", possibilities)
+def test_latex_name_unicode(name, unicode_name):
+
+    assert latex_name_unicode(name) == unicode_name

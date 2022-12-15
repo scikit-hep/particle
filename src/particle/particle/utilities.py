@@ -94,7 +94,7 @@ _list_name_greek_letters = [
     "Gamma",
     "Iota",
     "Kappa",
-    "Lambda",
+    "Lamda",  # unicodedata library uses "lamda" for "lambda" :S!
     "Mu",
     "Nu",
     "Omega",
@@ -145,6 +145,8 @@ def latex_name_unicode(name: str) -> str:
     \Lambda(1520)
     >>> latex_name_unicode(n)
     'Λ(1520)'
+    >>> latex_name_unicode("\\alpha_{x}^{0}\\beta\\Gamma(1234)\\Omega")
+    'α_{x}^{0}βΓ(1234)Ω'
     """
     # Make sure "Lambda" and "lambda" are naturally deal with given that the
     # unicodedata library uses "lamda" for "lambda" :S!
@@ -163,6 +165,8 @@ def latex_to_html_name(name: str) -> str:
     name = re.sub(r"\\mathrm\{(.*?)\}", r"\1", name)
     name = re.sub(r"\\left\[(.*?)\\right\]", r"[\1] ", name)
     for gl in _list_name_greek_letters:
+        # Deal with unicode name "feature", see _list_name_greek_letters
+        gl = gl.replace("amda", "ambda")
         # Special formatting since for example
         # f"{hex(html.entities.name2codepoint['Delta'])}" gives '0x394' whereas HTML needs 'x0394',
         # as in '&#x0394;', equivalent to '&Delta;'
