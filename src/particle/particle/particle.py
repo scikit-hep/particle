@@ -991,7 +991,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         Raises
         ------
         ParticleNotFound
-            If no particle matches the input name.
+            If no particle matches the input name uniquely and exactly.
         """
         try:
             (particle,) = cls.finditer(

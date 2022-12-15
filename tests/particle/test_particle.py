@@ -147,6 +147,20 @@ def test_pdg_convert():
     assert int(p.pdgid) == 211
 
 
+def test_from_name():
+    p = Particle.from_name("pi+")
+    assert p.name == "pi+"
+
+
+def test_from_name_ParticleNotFound():
+    """
+    Exception raised because the name given matches all pions,
+    e.g. pi+, pi-, pi(2)(1670)+, etc.
+    """
+    with pytest.raises(ParticleNotFound):
+        _ = Particle.from_name("pi")
+
+
 def test_from_nucleus_info():
     p = Particle.from_nucleus_info(1, 2)
     assert p.pdgid == 1000010020
@@ -724,3 +738,8 @@ decfile_style_names = (
 @pytest.mark.parametrize("name,pid", decfile_style_names)
 def test_decfile_style_names(name, pid):
     assert Particle.from_evtgen_name(name).pdgid == pid
+
+
+@pytest.mark.parametrize("name,pid", decfile_style_names)
+def test_evtgen_name(name, pid):
+    assert Particle.from_evtgen_name(name).evtgen_name == name
