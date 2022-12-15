@@ -277,6 +277,63 @@ If you want a non-default data file distributed with the package just proceed as
     >>> Particle.table_names()  # list the loaded tables
 
 
+Advanced: how to create user-defined particles
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are situations where it may be handy to create user-defined particles.
+But do so with care and having in mind the limitations, many of which are discussed or exemplified below!
+
+The simplest "particle" one may create is effectively a placeholder with no real information stored:
+
+.. code-block:: python
+
+    >>> # A Particle instance the simplest possible. Contains basically no info
+    >>> p = Particle.empty()
+    >>> p
+    <Particle: name="Unknown", pdgid=0, mass=None>
+    >>>
+    >>> print(p.describe())
+    Name: Unknown
+
+A more useful particle definition will likely involve at least a name and a PDG ID.
+It is important to keep in mind that a meaningful PDG ID encodes by construction internal quantum numbers
+and other information. As such, the definition of a particle with a "random" PDG ID
+will result in a particle with undefined and/or wrong properties such as quantum numbers or the quality of being a meson.
+
+.. code-block:: python
+
+    >>> p2 = Particle(9912345, 'MyPentaquark')
+    >>> p2
+    <Particle: name="MyPentaquark", pdgid=9912345, mass=None>
+    >>>
+    >>> p2.pdgid.is_pentaquark
+    False
+    >>> print(p2.describe())  # J=2 is an example of something effectively encoded in the PDG ID.
+    Name: MyPentaquark   ID: 9912345      Latex: $Unknown$
+    Mass  = None
+    Width = None
+    Q (charge)        = None    J (total angular) = 2.0      P (space parity) = None
+    C (charge parity) = None    I (isospin)       = None     G (G-parity)     = None
+        Antiparticle name: MyPentaquark (antiparticle status: Same)
+
+A yet more sophisticated definition:
+
+.. code-block:: python
+
+    >>> p3 = Particle(pdgid=9221132,pdg_name='Theta',three_charge=3,latex_name='\Theta^{+}')
+    >>> p3
+    <Particle: name="Theta", pdgid=9221132, mass=None>
+    >>>
+    >>> print(p3.describe())
+    Name: Theta          ID: 9221132      Latex: $\Theta^{+}$
+    Mass  = None
+    Width = None
+    Q (charge)        = +       J (total angular) = 0.5      P (space parity) = None
+    C (charge parity) = None    I (isospin)       = None     G (G-parity)     = None
+        SpinType: SpinType.NonDefined
+        Antiparticle name: Theta (antiparticle status: Same)
+
+
 Advanced: Conversion
 ^^^^^^^^^^^^^^^^^^^^
 
