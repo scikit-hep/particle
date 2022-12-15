@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import pytest
 
-from particle.particle.utilities import str_with_unc, latex_name_unicode
+from particle.particle.utilities import latex_name_unicode, str_with_unc
 
 possibilities = (
     (1.234567, 0.01, None, "1.235 ± 0.010"),
