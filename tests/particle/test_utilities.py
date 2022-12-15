@@ -36,7 +36,6 @@ possibilities = (
     ("omega", "ω"),
     ("Omega", "Ω"),
     ("Lamda", "Λ"),
-    ("lambda", "lambda"),
 )
 
 
