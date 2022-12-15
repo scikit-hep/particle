@@ -94,7 +94,7 @@ _list_name_greek_letters = [
     "Gamma",
     "Iota",
     "Kappa",
-    "Lambda",
+    "Lamda",  # unicodedata library uses "lamda" for "lambda" :S!
     "Mu",
     "Nu",
     "Omega",
@@ -145,6 +145,8 @@ def latex_name_unicode(name: str) -> str:
     \Lambda(1520)
     >>> latex_name_unicode(n)
     'Λ(1520)'
+    >>> latex_name_unicode("\\alpha_{x}^{0}\\beta\\Gamma(1234)\\Omega")
+    'α_{x}^{0}βΓ(1234)Ω'
     """
     # Make sure "Lambda" and "lambda" are naturally deal with given that the
     # unicodedata library uses "lamda" for "lambda" :S!
