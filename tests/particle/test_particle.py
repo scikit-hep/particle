@@ -147,6 +147,59 @@ def test_pdg_convert():
     assert int(p.pdgid) == 211
 
 
+def test_from_name():
+    p = Particle.from_name("pi+")
+    assert p.name == "pi+"
+
+
+def test_from_name_ParticleNotFound():
+    """
+    Exception raised because the name given matches all pions,
+    e.g. pi+, pi-, pi(2)(1670)+, etc.
+    """
+    with pytest.raises(ParticleNotFound):
+        _ = Particle.from_name("pi")
+
+
+def test_from_nucleus_info():
+    p = Particle.from_nucleus_info(1, 2)
+    assert p.pdgid == 1000010020
+    p = Particle.from_nucleus_info(92, 235)
+    assert p.pdgid == 1000922350
+    p = Particle.from_nucleus_info(1, 2, anti=True)
+    assert p.pdgid == -1000010020
+
+
+def test_from_nucleus_info_ParticleNotFound():
+    with pytest.raises(ParticleNotFound):
+        _ = Particle.from_nucleus_info(z=999, a=999)
+
+        # No exited nuclei in database
+        _ = Particle.from_nucleus_info(1, 2, i=1)
+
+
+def test_from_nucleus_info_InvalidParticle():
+    with pytest.raises(InvalidParticle) as e:
+        _ = Particle.from_nucleus_info(z=2, a=1)
+
+    with pytest.raises(InvalidParticle) as e:
+        _ = Particle.from_nucleus_info(z=1, a=1000)
+
+    with pytest.raises(InvalidParticle) as e:
+        _ = Particle.from_nucleus_info(z=1000, a=1)
+
+    with pytest.raises(InvalidParticle) as e:
+        _ = Particle.from_nucleus_info(z=1, a=1, l_strange=999)
+
+    with pytest.raises(InvalidParticle) as e:
+        _ = Particle.from_nucleus_info(z=1, a=1, i=999)
+
+        # No strange nuclei in database and strange PDGID not implemented
+    with pytest.raises(InvalidParticle) as e:
+        _ = Particle.from_nucleus_info(1, 2, l_strange=1)
+    assert str(e.value) == "Input PDGID 1000110020 is invalid!"
+
+
 def test_sorting():
     assert Particle.from_pdgid(211) < Particle.from_pdgid(311)
     assert Particle.from_pdgid(211) < Particle.from_pdgid(-311)
@@ -313,8 +366,6 @@ checklist_describe = (
     [423, "Width < 2.1 MeV"],  # D*(2007)0
     [10431, "Width < 10.0 MeV"],  # D(s0)*(2317)+
     [20433, "Width < 6.3 MeV"],  # D(s1)(2460)+
-    [4212, "Width < 4.6 MeV"],  # Sigma(c)(2455)+
-    [4214, "Width < 17.0 MeV"],  # Sigma(c)(2520)+
 )
 
 
@@ -325,18 +376,18 @@ def test_describe(pid, description):
 
 
 def test_default_table_loading():
-    assert Particle.table_names() == ("particle2021.csv", "nuclei2020.csv")
+    assert Particle.table_names() == ("particle2022.csv", "nuclei2020.csv")
 
 
 def test_default_table_loading_bis():
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
-    assert p.table_names() == ("particle2021.csv", "nuclei2020.csv")
+    assert p.table_names() == ("particle2022.csv", "nuclei2020.csv")
 
 
 def test_explicit_table_loading():
-    Particle.load_table(data.basepath / "particle2021.csv")
+    Particle.load_table(data.basepath / "particle2022.csv")
     assert Particle.table_loaded()
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
@@ -350,6 +401,8 @@ def test_all_particles_are_loaded():
     Particle.load_table(data.basepath / "particle2020.csv")
     assert len(Particle.all()) == 610
     Particle.load_table(data.basepath / "particle2021.csv")
+    assert len(Particle.all()) == 616
+    Particle.load_table(data.basepath / "particle2022.csv")
     assert len(Particle.all()) == 616
 
     Particle.load_table(data.basepath / "nuclei2020.csv")
@@ -664,3 +717,8 @@ decfile_style_names = (
 @pytest.mark.parametrize("name,pid", decfile_style_names)
 def test_decfile_style_names(name, pid):
     assert Particle.from_evtgen_name(name).pdgid == pid
+
+
+@pytest.mark.parametrize("name,pid", decfile_style_names)
+def test_evtgen_name(name, pid):
+    assert Particle.from_evtgen_name(name).evtgen_name == name

@@ -36,9 +36,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: excitedleigh/setup-nox@main
-      with:
-        python-version: 3.7
+    - uses: wntrblm/nox@2022.11.21
 
     - name: Make ZipApp
       run: nox -s zipapp
@@ -60,7 +58,7 @@ jobs:
         name: artifact
         path: dist
 
-    - uses: pypa/gh-action-pypi-publish@v1.5.1
+    - uses: pypa/gh-action-pypi-publish@v1.5.2
       with:
         password: ${{ secrets.pypi_password }}
 

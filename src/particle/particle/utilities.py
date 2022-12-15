@@ -94,7 +94,7 @@ _list_name_greek_letters = [
     "Gamma",
     "Iota",
     "Kappa",
-    "Lambda",
+    "Lamda",  # unicodedata library uses "lamda" for "lambda" :S!
     "Mu",
     "Nu",
     "Omega",
@@ -118,6 +118,12 @@ def greek_letter_name_to_unicode(letter: str) -> str:
     Return a greek letter name as a Unicode character,
     the same as the input if no match is found.
 
+    Raises
+    ------
+    KeyError
+        If the input letter name is unknown to the `unicodedata` library,
+        e.g. "lambda" since `unicodedata` uses "lamda" for "lambda"!
+
     Examples
     --------
     Lamda -> Λ    (Unicodedata library uses "lamda" for "lambda" :S!)
@@ -127,10 +133,7 @@ def greek_letter_name_to_unicode(letter: str) -> str:
     case = "SMALL" if letter == letter.lower() else "CAPITAL"
     name = letter.upper()
 
-    try:
-        return unicodedata.lookup(f"GREEK {case} LETTER {name}")
-    except KeyError:  # Unicodedata library uses "lamda" for "lambda", so that's an obvious miss
-        return letter
+    return unicodedata.lookup(f"GREEK {case} LETTER {name}")
 
 
 def latex_name_unicode(name: str) -> str:
@@ -145,6 +148,8 @@ def latex_name_unicode(name: str) -> str:
     \Lambda(1520)
     >>> latex_name_unicode(n)
     'Λ(1520)'
+    >>> latex_name_unicode("\\alpha_{x}^{0}\\beta\\Gamma(1234)\\Omega")
+    'α_{x}^{0}βΓ(1234)Ω'
     """
     # Make sure "Lambda" and "lambda" are naturally deal with given that the
     # unicodedata library uses "lamda" for "lambda" :S!
@@ -163,6 +168,8 @@ def latex_to_html_name(name: str) -> str:
     name = re.sub(r"\\mathrm\{(.*?)\}", r"\1", name)
     name = re.sub(r"\\left\[(.*?)\\right\]", r"[\1] ", name)
     for gl in _list_name_greek_letters:
+        # Deal with unicode name "feature", see _list_name_greek_letters
+        gl = gl.replace("amda", "ambda")
         # Special formatting since for example
         # f"{hex(html.entities.name2codepoint['Delta'])}" gives '0x394' whereas HTML needs 'x0394',
         # as in '&#x0394;', equivalent to '&Delta;'

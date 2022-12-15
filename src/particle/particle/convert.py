@@ -8,7 +8,7 @@ This is a conversion file, not part of the public API.
 
 The default CSV files can be updated directly using the command:
 
-    >>> python -m particle.particle.convert regenerate 2021 <version_number>    # doctest: +SKIP
+    >>> python -m particle.particle.convert regenerate 2022 <version_number>    # doctest: +SKIP
 
 A custom fwf file and LaTeX file can be converted into the CSV format using:
 
@@ -33,7 +33,7 @@ combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
 
 You can also read in a modern "standard" file (this will produce fewer columns):
 
-    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2021.mcd')
+    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2022.mcd')
 
 A utility is even provided to use the modern table to update the full table:
 
@@ -267,11 +267,11 @@ def sort_particles(table: pd.DataFrame) -> None:
 
 def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
     """
-    Reads in a current-style PDG .mcd file (mass_width_2021.mcd file tested).
+    Reads in a current-style PDG .mcd file (mass_width_2022.mcd file tested).
 
     Example
     -------
-    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2021.mcd')
+    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2022.mcd')
     """
 
     # The format here includes the space before a column
@@ -358,7 +358,7 @@ def update_from_mcd(
 
     Example
     -------
-    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2021.mcd')    # doctest: +SKIP
+    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2022.mcd')    # doctest: +SKIP
     """
 
     full_table = full_table.copy()
@@ -372,7 +372,7 @@ def update_from_mcd(
 
 def produce_files(
     particle2008: str | Path,  # pylint: disable=unused-argument
-    particle2021: str | Path,
+    particle2022: str | Path,
     version: str,
     year: str,
 ) -> None:
@@ -415,8 +415,8 @@ def produce_files(
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    with open(particle2021, "w", newline="\n", encoding="utf-8") as f:
-        f.write(version_header(str(particle2021), version))
+    with open(particle2022, "w", newline="\n", encoding="utf-8") as f:
+        f.write(version_header(str(particle2022), version))
         new_table.to_csv(f, float_format="%.12g")
 
 
