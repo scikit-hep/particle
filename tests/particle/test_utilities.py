@@ -7,8 +7,11 @@ from __future__ import annotations
 
 import pytest
 
-from particle.particle.utilities import greek_letter_name_to_unicode
-from particle.particle.utilities import latex_name_unicode, str_with_unc
+from particle.particle.utilities import (
+    greek_letter_name_to_unicode,
+    latex_name_unicode,
+    str_with_unc,
+)
 
 possibilities = (
     (1.234567, 0.01, None, "1.235 ± 0.010"),
