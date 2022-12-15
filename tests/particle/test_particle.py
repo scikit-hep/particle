@@ -159,7 +159,7 @@ def test_from_nucleus_info():
 def test_from_nucleus_info_ParticleNotFound():
     with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(z=999, a=999)
-        
+
         # No exited nuclei in database
         _ = Particle.from_nucleus_info(1, 2, i=1)
 
@@ -169,7 +169,7 @@ def test_from_nucleus_info_InvalidParticle():
         _ = Particle.from_nucleus_info(z=2, a=1)
 
         _ = Particle.from_nucleus_info(z=1, a=1000)
-        
+
         _ = Particle.from_nucleus_info(z=1000, a=1)
 
         _ = Particle.from_nucleus_info(z=1, a=1, l_strange=999)
