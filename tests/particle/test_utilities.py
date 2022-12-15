@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import pytest
 
+from particle.particle.utilities import greek_letter_name_to_unicode
 from particle.particle.utilities import latex_name_unicode, str_with_unc
 
 possibilities = (
@@ -45,3 +46,13 @@ possibilities = (
 def test_latex_name_unicode(name, unicode_name):
 
     assert latex_name_unicode(name) == unicode_name
+
+
+def test_greek_letter_name_to_unicode():
+    """
+    Test the one exception that is not verified
+    in the test "test_latex_name_unicode" above.
+    """
+    with pytest.raises(KeyError):
+        _ = greek_letter_name_to_unicode("Lambda")
+        _ = greek_letter_name_to_unicode("NonExistent")
