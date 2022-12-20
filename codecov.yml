@@ -4,3 +4,4 @@ codecov:
 ignore:
   - "src/particle/particle/convert.py"
   - "src/particle/__main__.py"
+  - "src/particle/typing.py"
