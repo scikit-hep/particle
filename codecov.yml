@@ -2,6 +2,8 @@ codecov:
   require_ci_to_pass: true
 
 ignore:
-  - "src/particle/particle/convert.py"
   - "src/particle/__main__.py"
+  - "src/particle/__init__.py"
   - "src/particle/typing.py"
+  - "src/particle/particle/convert.py"
+  - "src/particle/*/__init__.py"
