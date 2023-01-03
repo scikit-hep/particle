@@ -51,13 +51,13 @@ class Location(IntEnum):
 
 def is_valid(pdgid: PDGID_TYPE) -> bool:
     """Is it a valid PDG ID?"""
+    if is_gauge_boson_or_higgs(pdgid):  # test first since quickest check
+        return True
     if _fundamental_id(pdgid) != 0:  # function always returns a number >= 0
         return True
     if is_meson(pdgid):
         return True
     if is_baryon(pdgid):
-        return True
-    if is_gauge_boson_or_higgs(pdgid):
         return True
     if is_pentaquark(pdgid):
         return True
@@ -690,12 +690,12 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
         return None
     if _fundamental_id(pdgid) > 0:
         fund = _fundamental_id(pdgid)
-        if 0 < fund < 7:
-            return 2  # 4th generation quarks not dealt with !
-        if fund == 9:
+        if 0 < fund < 7:  # 4th generation quarks not dealt with !
+            return 2
+        if fund == 9:  # Alternative ID for the gluon in codes for glueballs to allow a notation in close analogy with that of hadrons
             return 3
-        if 10 < fund < 17:
-            return 2  # 4th generation leptons not dealt with !
+        if 10 < fund < 17:  # 4th generation leptons not dealt with !
+            return 2
         if 20 < fund < 25:
             return 3
         return None

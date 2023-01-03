@@ -89,27 +89,15 @@ def test_three_charge(PDGIDs):
 
 
 def test_is_valid(PDGIDs):
-    assert is_valid(PDGIDs.Photon)
-    assert is_valid(PDGIDs.Gluon)
-    assert is_valid(PDGIDs.Electron)
-    assert is_valid(PDGIDs.AntiMuon)
-    assert is_valid(PDGIDs.jpsi)
-    assert is_valid(PDGIDs.Upsilon_1S)
-    assert is_valid(PDGIDs.PiPlus)
-    assert is_valid(PDGIDs.KMinus)
-    assert is_valid(PDGIDs.D0)
-    assert is_valid(PDGIDs.DPlus)
-    assert is_valid(PDGIDs.DsPlus)
-    assert is_valid(PDGIDs.B0)
-    assert is_valid(PDGIDs.Bs)
-    assert is_valid(PDGIDs.BcPlus)
-    assert is_valid(PDGIDs.Proton)
-    assert is_valid(PDGIDs.LcPlus)
-    assert is_valid(PDGIDs.Lb)
-    assert is_valid(PDGIDs.DD1)
-    assert is_valid(PDGIDs.SD0)
-    assert not is_valid(PDGIDs.Invalid1)
-    assert not is_valid(PDGIDs.Invalid2)
+    _invalid = (
+        PDGIDs.Invalid1,
+        PDGIDs.Invalid2,
+    )
+    _valid = [i for i in PDGIDs if i not in _invalid]
+    for i in _valid:
+        assert is_valid(i)
+    for i in _invalid:
+        assert not is_valid(i)
 
 
 def test_is_quark(PDGIDs):
@@ -716,6 +704,8 @@ def test_J_non_mesons(PDGIDs):
         assert j_spin(id) is None
     for id in _J_eq_None:
         assert j_spin(id) is None
+    # Alternative ID=9 for the gluon in codes for glueballs to allow a notation in close analogy with that of hadrons
+    assert j_spin(9) == 3
 
 
 def test_S_non_mesons(PDGIDs):
