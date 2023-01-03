@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from sys import version_info
 
 import pytest
@@ -75,70 +77,72 @@ def test_api_lhcb_data():
 @python37plus_only
 def test_api_particle():
     assert dir(particle.particle) == [
-    "Charge",
-    "Inv",
-    "InvalidParticle",
-    "Parity",
-    "Particle",
-    "ParticleNotFound",
-    "SpinType",
-    "Status",
-    "latex_name_unicode",
-    "latex_to_html_name",
-    "lifetime_to_width",
-    "programmatic_name",
-    "width_to_lifetime",
+        "Charge",
+        "Inv",
+        "InvalidParticle",
+        "Parity",
+        "Particle",
+        "ParticleNotFound",
+        "SpinType",
+        "Status",
+        "latex_name_unicode",
+        "latex_to_html_name",
+        "lifetime_to_width",
+        "programmatic_name",
+        "width_to_lifetime",
     ]
 
 
 @python37plus_only
 def test_api_pdgid():
-    assert dir(particle.pdgid) == sorted([
-        "PDGID",
-        #
-        "is_valid",
-        "abspid",
-        # #
-        "is_Qball",
-        "is_Rhadron",
-        "is_SUSY",
-        "is_baryon",
-        "is_diquark",
-        "is_dyon",
-        "is_excited_quark_or_lepton",
-        "is_gauge_boson_or_higgs",
-        "is_generator_specific",
-        "is_hadron",
-        "is_lepton",
-        "is_meson",
-        "is_nucleus",
-        "is_pentaquark",
-        "is_quark",
-        "is_sm_gauge_boson_or_higgs",
-        "is_sm_lepton",
-        "is_sm_quark",
-        "is_special_particle",
-        "is_technicolor",
-        #
-        "has_down",
-        "has_up",
-        "has_strange",
-        "has_charm",
-        "has_bottom",
-        "has_top",
-        "has_fundamental_anti",
-        #
-        "charge",
-        "three_charge",
-        "j_spin",
-        "J",
-        "s_spin",
-        "S",
-        "l_spin",
-        "L",
-        "A",
-        "Z",
-    ])
+    assert dir(particle.pdgid) == sorted(
+        [
+            "PDGID",
+            #
+            "is_valid",
+            "abspid",
+            # #
+            "is_Qball",
+            "is_Rhadron",
+            "is_SUSY",
+            "is_baryon",
+            "is_diquark",
+            "is_dyon",
+            "is_excited_quark_or_lepton",
+            "is_gauge_boson_or_higgs",
+            "is_generator_specific",
+            "is_hadron",
+            "is_lepton",
+            "is_meson",
+            "is_nucleus",
+            "is_pentaquark",
+            "is_quark",
+            "is_sm_gauge_boson_or_higgs",
+            "is_sm_lepton",
+            "is_sm_quark",
+            "is_special_particle",
+            "is_technicolor",
+            #
+            "has_down",
+            "has_up",
+            "has_strange",
+            "has_charm",
+            "has_bottom",
+            "has_top",
+            "has_fundamental_anti",
+            #
+            "charge",
+            "three_charge",
+            "j_spin",
+            "J",
+            "s_spin",
+            "S",
+            "l_spin",
+            "L",
+            "A",
+            "Z",
+        ]
+    )
 
 
 @python37plus_only
