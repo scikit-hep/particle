@@ -34,7 +34,7 @@ from ..shared_literals import common_particles
 from .particle import Particle
 
 
-def __dir__() -> list[str]:
+def __dir__() -> list[str]:  # pragma: no cover
     return list(common_particles)
 
 
