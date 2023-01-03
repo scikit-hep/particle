@@ -10,3 +10,7 @@ import particle
 
 def test_package_import():
     assert particle is not None
+
+
+def test_load_version():
+    assert particle.__version__
