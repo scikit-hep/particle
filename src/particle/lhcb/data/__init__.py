@@ -13,6 +13,11 @@ else:
     from importlib import resources
 
 
-__all__ = ["basepath"]
+__all__ = ("basepath",)
+
 
 basepath = resources.files(__name__)
+
+
+def __dir__() -> tuple[str, ...]:
+    return __all__
