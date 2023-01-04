@@ -300,7 +300,16 @@ def test_is_sm_gauge_boson_or_higgs(PDGIDs):
 
 
 def test_is_generator_specific(PDGIDs):
-    _generator_specific = (PDGIDs.AntiCHadron,)
+    _generator_specific = (
+        PDGIDs.AntiCHadron,
+        PDGIDs.GenSpecific910,
+        PDGIDs.GenSpecific999,
+        PDGIDs.GenSpecific1910,
+        PDGIDs.GenSpecific2910,
+        PDGIDs.GenSpecific3910,
+        PDGIDs.OpticalPhoton,
+        PDGIDs.Geantino,
+    )
     _non_generator_specific = [id for id in PDGIDs if id not in _generator_specific]
     for id in _generator_specific:
         assert is_generator_specific(id)
@@ -315,6 +324,13 @@ def test_is_special_particle(PDGIDs):
         PDGIDs.Pomeron,
         PDGIDs.Odderon,
         PDGIDs.AntiCHadron,
+        PDGIDs.GenSpecific910,
+        PDGIDs.GenSpecific999,
+        PDGIDs.GenSpecific1910,
+        PDGIDs.GenSpecific2910,
+        PDGIDs.GenSpecific3910,
+        PDGIDs.OpticalPhoton,
+        PDGIDs.Geantino,
     )
     _non_special_particle = [id for id in PDGIDs if id not in _special_particle]
     for id in _special_particle:
