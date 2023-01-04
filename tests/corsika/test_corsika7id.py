@@ -23,19 +23,23 @@ def test_from_pdgid():
     assert Corsika7ID.from_pdgid(PDGID(-13)) == 5
     assert Corsika7ID.from_pdgid(PDGID(13)) == Corsika7ID(6)
 
+
+def test_from_pdgid_non_matching():
     with pytest.raises(MatchingIDNotFound):
-        assert Corsika7ID.from_pdgid(55)
+        _ = Corsika7ID.from_pdgid(55)
 
 
 def test_to_pdgid():
-    from particle.particle import InvalidParticle  # pylint: disable=C0415
-
     cid = Corsika7ID(5)
     assert cid.to_pdgid() == -13
     assert cid.to_pdgid() == PDGID(-13)
 
+
+def test_to_pdgid_invalid():
+    from particle.particle import InvalidParticle  # pylint: disable=C0415
+
     with pytest.raises(InvalidParticle):
-        assert Corsika7ID(75).to_pdgid()
+        _ = Corsika7ID(75).to_pdgid()
 
 
 def test_is_particle():
@@ -53,11 +57,13 @@ def test_from_particle_description():
     assert not is_mother
     assert not cid.is_particle()
 
-    # nucleus in Corsika ID format 201 is deuteron
+    # Corsika ID 201 is deuteron
     assert Corsika7ID.from_particle_description(-201000)[0].name() == "D2"
 
+
+def test_from_particle_description_non_valid():
     with pytest.raises(MatchingIDNotFound):
-        Corsika7ID.from_particle_description(0)
+        _ = Corsika7ID.from_particle_description(0)
 
 
 def test__is_non_particle_id():
@@ -74,8 +80,6 @@ def test__is_non_particle_id():
 
 
 def test_name():
-    from particle.particle import InvalidParticle  # pylint: disable=C0415
-
     # check name from pdgid module
     cid = Corsika7ID(5)
     assert cid.name() == "mu+"
@@ -90,5 +94,9 @@ def test_name():
     cid = Corsika7ID(85)
     assert cid.name() == "decaying μ+ at start"
 
+
+def test_name_invalid():
+    from particle.particle import InvalidParticle  # pylint: disable=C0415
+
     with pytest.raises(InvalidParticle):
-        Corsika7ID(0).name()
+        _ = Corsika7ID(0).name()
