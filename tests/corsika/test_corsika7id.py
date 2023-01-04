@@ -35,7 +35,7 @@ def test_to_pdgid():
     assert cid.to_pdgid() == PDGID(-13)
 
     with pytest.raises(InvalidParticle):
-        assert Corsika7ID(75).to_pdgid()
+        _ = Corsika7ID(75).to_pdgid()
 
 
 def test_is_particle():
@@ -57,7 +57,7 @@ def test_from_particle_description():
     assert Corsika7ID.from_particle_description(-201000)[0].name() == "D2"
 
     with pytest.raises(MatchingIDNotFound):
-        Corsika7ID.from_particle_description(0)
+        _ = Corsika7ID.from_particle_description(0)
 
 
 def test__is_non_particle_id():
@@ -91,4 +91,4 @@ def test_name():
     assert cid.name() == "decaying μ+ at start"
 
     with pytest.raises(InvalidParticle):
-        Corsika7ID(0).name()
+        _ = Corsika7ID(0).name()
