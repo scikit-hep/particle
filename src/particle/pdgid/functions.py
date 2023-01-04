@@ -254,9 +254,9 @@ def is_nucleus(pdgid: PDGID_TYPE) -> bool:
         A_pdgid = A(pdgid)
         Z_pdgid = Z(pdgid)
 
-        if A_pdgid is None or Z_pdgid is None:
-            return False
-        if A_pdgid >= abs(Z_pdgid):
+        # At this point neither A_pdgid nor Z_pdgid can be None,
+        # see the definitions of the A and Z functions
+        if not (A_pdgid is None or Z_pdgid is None) and (A_pdgid >= abs(Z_pdgid)):
             return True
     return False
 
