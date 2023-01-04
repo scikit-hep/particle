@@ -697,7 +697,9 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
         fund = _fundamental_id(pdgid)
         if 0 < fund < 7:  # 4th generation quarks not dealt with !
             return 2
-        if fund == 9:  # Alternative ID for the gluon in codes for glueballs to allow a notation in close analogy with that of hadrons
+        if (
+            fund == 9
+        ):  # Alternative ID for the gluon in codes for glueballs to allow a notation in close analogy with that of hadrons
             return 3
         if 10 < fund < 17:  # 4th generation leptons not dealt with !
             return 2
