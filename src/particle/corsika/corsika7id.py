@@ -176,21 +176,19 @@ class Corsika7ID(int):
         """
         from ..particle.particle import Particle  # pylint: disable=C0415
 
-        if self.is_particle():
-            return str(Particle.from_pdgid(self.to_pdgid()).name)
+        if not self.is_particle():
+            iid = int(self)
 
-        iid = int(self)
+            if iid in _non_particles:
+                return _non_particles[iid]
 
-        if iid in _non_particles:
-            return _non_particles[iid]
+            if iid // 1000 == 8888:
+                return "weights of preceding particle (MULTITHIN option)"
 
-        if iid // 1000 == 8888:
-            return "weights of preceding particle (MULTITHIN option)"
+            if iid == 9900:
+                return "Cherenkov photons on particle output file"
 
-        if iid == 9900:
-            return "Cherenkov photons on particle output file"
-
-        raise RuntimeError("This should be unreachable.")
+        return str(Particle.from_pdgid(self.to_pdgid()).name)
 
     def to_pdgid(self) -> PDGID:
         """
