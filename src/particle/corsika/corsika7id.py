@@ -154,7 +154,7 @@ class Corsika7ID(int):
             This for example happens with strange nuclei, which are not in the nuclei list.
 
         InvalidParticle
-            If the Corsika7ID itself is not valid
+            If the Corsika7ID itself is not valid.
 
         Examples
         --------
