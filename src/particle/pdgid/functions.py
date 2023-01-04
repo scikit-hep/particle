@@ -158,19 +158,23 @@ def is_meson(pdgid: PDGID_TYPE) -> bool:
     """Does this PDG ID correspond to a meson?"""
     if _extra_bits(pdgid) > 0:
         return False
-    if abspid(pdgid) <= 100:
+    aid = abspid(pdgid)
+    if aid <= 100:
         return False
     if 0 < int(_fundamental_id(pdgid)) <= 100:
         return False
     # Special IDs - K(L)0, ???, K(S)0
-    if abspid(pdgid) in {130, 210, 310}:
+    if aid in {130, 210, 310}:
         return True
     # Special IDs - B(L)0, B(sL)0, B(H)0, B(sH)0
-    if abspid(pdgid) in {150, 350, 510, 530}:
+    if aid in {150, 350, 510, 530}:
         return True
     # Special particles - reggeon, pomeron, odderon
     if int(pdgid) in {110, 990, 9990}:
         return True
+    # Generator-specific "particles" for GEANT tracking purposes
+    if aid in {998, 999}:
+        return False
     if (
         _digit(pdgid, Location.Nj) > 0
         and _digit(pdgid, Location.Nq3) > 0
@@ -188,11 +192,12 @@ def is_meson(pdgid: PDGID_TYPE) -> bool:
 
 def is_baryon(pdgid: PDGID_TYPE) -> bool:
     """Does this PDG ID correspond to a baryon?"""
-    if abspid(pdgid) <= 100:
+    aid = abspid(pdgid)
+    if aid <= 100:
         return False
     # Special case of proton and neutron:
     # needs to be checked first since _extra_bits(pdgid) > 0 for nuclei
-    if abs(int(pdgid)) in {1000000010, 1000010010}:
+    if aid in {1000000010, 1000010010}:
         return True
 
     if _extra_bits(pdgid) > 0:
@@ -202,7 +207,7 @@ def is_baryon(pdgid: PDGID_TYPE) -> bool:
         return False
 
     # Old codes for diffractive p and n (MC usage)
-    if abspid(pdgid) in {2110, 2210}:
+    if aid in {2110, 2210}:
         return True
 
     return (
