@@ -153,13 +153,16 @@ class Corsika7ID(int):
             If it is a 'valid' PDG particle, but unknown.
             This for example happens with strange nuclei, which are not in the nuclei list.
 
+        InvalidParticle
+            If the Corsika7ID itself is not valid
+
         Examples
         --------
         >>> mu_minus = Corsika7ID(6)
         >>> mu_minus.is_particle()
         True
         >>> mu_minus.name() # For a particle, this returns the same name as `Particle.name`
-        'mu'
+        'mu-'
         >>> mu_info = Corsika7ID(76)
         >>> mu_info.is_particle()
         False
