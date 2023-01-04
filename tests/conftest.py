@@ -124,6 +124,13 @@ class PDGIDsEnum(IntEnum):
     AntiElectronStar = -4000011
     # Generator specific pseudoparticles or concepts
     AntiCHadron = -84
+    GenSpecific910 = 910
+    GenSpecific999 = 999
+    GenSpecific1910 = 1910
+    GenSpecific2910 = 2910
+    GenSpecific3910 = 3910
+    OpticalPhoton = 20022
+    Geantino = 480000000
     # Invalid ID
     Invalid1 = 0  # illegal ID
     Invalid2 = 99999999  # general form is a 7-digit number
