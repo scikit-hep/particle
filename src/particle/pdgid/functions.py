@@ -651,9 +651,7 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
     if _extra_bits(pdgid) > 0:
         if is_nucleus(pdgid):  # ion
             Z_pdgid = Z(pdgid)
-            if Z_pdgid is None:
-                return None
-            return 3 * Z_pdgid
+            return None if Z_pdgid is None else 3 * Z_pdgid
         if is_Qball(pdgid):  # Qball
             charge = 3 * ((aid // 10) % 10000)
         else:  # this should never be reached in the present numbering scheme

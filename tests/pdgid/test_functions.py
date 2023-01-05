@@ -84,8 +84,10 @@ def test_three_charge(PDGIDs):
     assert three_charge(PDGIDs.Lb) == 0
     assert three_charge(PDGIDs.DD1) == -2
     assert three_charge(PDGIDs.SD0) == -2
+    assert three_charge(PDGIDs.R0_1000017) == 0
     assert three_charge(PDGIDs.Invalid1) is None
     assert three_charge(PDGIDs.Invalid2) is None
+    assert three_charge(5100061) == 6  # special particle, see three_charge
 
 
 def test_is_valid(PDGIDs):
@@ -393,7 +395,7 @@ def test_is_dyon(PDGIDs):
 
 
 def test_is_SUSY(PDGIDs):
-    _susy = (PDGIDs.Gluino, PDGIDs.Gravitino, PDGIDs.STildeL, PDGIDs.CTildeR)
+    _susy = (PDGIDs.Gluino, PDGIDs.Gravitino, PDGIDs.STildeL, PDGIDs.CTildeR, PDGIDs.R0_1000017)
     _non_susy = [id for id in PDGIDs if id not in _susy]
     for id in _susy:
         assert is_SUSY(id)
@@ -564,6 +566,7 @@ def test_has_fundamental_anti(PDGIDs):
         PDGIDs.STildeL,
         PDGIDs.CTildeR,
         PDGIDs.AntiCHadron,
+        PDGIDs.R0_1000017,
     )
     _nope = [id for id in PDGIDs if id not in _yep]
     for id in _yep:

@@ -97,6 +97,7 @@ class PDGIDsEnum(IntEnum):
     STildeL = 1000003
     CTildeR = 2000004
     # R-hadrons
+    R0_1000017 = 1000017
     RPlus_TTildeDbar = 1000612
     R0_GTildeG = 1000993
     RPlusPlus_GTildeUUU = 1092224
@@ -109,6 +110,8 @@ class PDGIDsEnum(IntEnum):
     # Di-quarks
     DD1 = 1103
     SD0 = 3101
+    # Hidden Valley particles
+    HV_gv = 4900021
     # Nuclei
     HydrogenNucleus = 1000010010
     Carbon12 = 1000060120
