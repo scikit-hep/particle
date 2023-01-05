@@ -153,13 +153,16 @@ class Corsika7ID(int):
             If it is a 'valid' PDG particle, but unknown.
             This for example happens with strange nuclei, which are not in the nuclei list.
 
+        InvalidParticle
+            If the Corsika7ID itself is not valid.
+
         Examples
         --------
         >>> mu_minus = Corsika7ID(6)
         >>> mu_minus.is_particle()
         True
         >>> mu_minus.name() # For a particle, this returns the same name as `Particle.name`
-        'mu'
+        'mu-'
         >>> mu_info = Corsika7ID(76)
         >>> mu_info.is_particle()
         False
@@ -173,21 +176,19 @@ class Corsika7ID(int):
         """
         from ..particle.particle import Particle  # pylint: disable=C0415
 
-        if self.is_particle():
-            return str(Particle.from_pdgid(self.to_pdgid()).name)
+        if not self.is_particle():
+            iid = int(self)
 
-        iid = int(self)
+            if iid in _non_particles:
+                return _non_particles[iid]
 
-        if iid in _non_particles:
-            return _non_particles[iid]
+            if iid // 1000 == 8888:
+                return "weights of preceding particle (MULTITHIN option)"
 
-        if iid // 1000 == 8888:
-            return "weights of preceding particle (MULTITHIN option)"
+            if iid == 9900:
+                return "Cherenkov photons on particle output file"
 
-        if iid == 9900:
-            return "Cherenkov photons on particle output file"
-
-        raise RuntimeError("This should be unreachable.")
+        return str(Particle.from_pdgid(self.to_pdgid()).name)
 
     def to_pdgid(self) -> PDGID:
         """

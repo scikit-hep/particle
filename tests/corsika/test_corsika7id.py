@@ -26,13 +26,20 @@ def test_from_pdgid():
 
 def test_from_pdgid_non_matching():
     with pytest.raises(MatchingIDNotFound):
-        Corsika7ID.from_pdgid(55)
+        _ = Corsika7ID.from_pdgid(55)
 
 
 def test_to_pdgid():
     cid = Corsika7ID(5)
     assert cid.to_pdgid() == -13
     assert cid.to_pdgid() == PDGID(-13)
+
+
+def test_to_pdgid_invalid():
+    from particle.particle import InvalidParticle  # pylint: disable=C0415
+
+    with pytest.raises(InvalidParticle):
+        _ = Corsika7ID(75).to_pdgid()
 
 
 def test_is_particle():
@@ -49,3 +56,47 @@ def test_from_particle_description():
     cid, is_mother = Corsika7ID.from_particle_description(75001)
     assert not is_mother
     assert not cid.is_particle()
+
+    # Corsika ID 201 is deuteron
+    assert Corsika7ID.from_particle_description(-201000)[0].name() == "D2"
+
+
+def test_from_particle_description_non_valid():
+    with pytest.raises(MatchingIDNotFound):
+        _ = Corsika7ID.from_particle_description(0)
+
+
+def test__is_non_particle_id():
+    # Muons
+    assert not Corsika7ID._is_non_particle_id(5)
+    assert not Corsika7ID._is_non_particle_id(6)
+    # Additional muon info, which is not a particle
+    assert Corsika7ID._is_non_particle_id(75)
+    assert Corsika7ID._is_non_particle_id(76)
+    # Weights of the MULTITHIN option
+    assert Corsika7ID._is_non_particle_id(8888420)
+    # Cherenkov photons on output file
+    assert Corsika7ID._is_non_particle_id(9900)
+
+
+def test_name():
+    # check name from pdgid module
+    cid = Corsika7ID(5)
+    assert cid.name() == "mu+"
+
+    # check name for non-particles
+    cid = Corsika7ID(8888420)
+    assert cid.name() == "weights of preceding particle (MULTITHIN option)"
+
+    cid = Corsika7ID(9900)
+    assert cid.name() == "Cherenkov photons on particle output file"
+
+    cid = Corsika7ID(85)
+    assert cid.name() == "decaying μ+ at start"
+
+
+def test_name_invalid():
+    from particle.particle import InvalidParticle  # pylint: disable=C0415
+
+    with pytest.raises(InvalidParticle):
+        _ = Corsika7ID(0).name()
