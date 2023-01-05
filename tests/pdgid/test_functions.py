@@ -395,7 +395,13 @@ def test_is_dyon(PDGIDs):
 
 
 def test_is_SUSY(PDGIDs):
-    _susy = (PDGIDs.Gluino, PDGIDs.Gravitino, PDGIDs.STildeL, PDGIDs.CTildeR, PDGIDs.R0_1000017)
+    _susy = (
+        PDGIDs.Gluino,
+        PDGIDs.Gravitino,
+        PDGIDs.STildeL,
+        PDGIDs.CTildeR,
+        PDGIDs.R0_1000017,
+    )
     _non_susy = [id for id in PDGIDs if id not in _susy]
     for id in _susy:
         assert is_SUSY(id)
