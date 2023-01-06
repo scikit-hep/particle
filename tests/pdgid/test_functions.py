@@ -222,7 +222,7 @@ def _get_mesons(PDGIDs):
         PDGIDs.Pomeron,
         PDGIDs.Odderon,
         PDGIDs.RPlus_TTildeDbar,
-        PDGIDs.R0_GTildeG
+        PDGIDs.R0_GTildeG,
     )
     return _mesons
 
@@ -654,7 +654,7 @@ def _mesons_JSL_states_list(PDGIDs, jsl):
         "404": (PDGIDs.rho_10219_plus,),
         "413": (PDGIDs.f_4_2050,),
         "414": (PDGIDs.K4_20219_minus,),
-        "415": (PDGIDs.K4_30329_plus,)
+        "415": (PDGIDs.K4_30329_plus,),
     }
     return _states[jsl]
 
@@ -678,7 +678,6 @@ def test_JSL_mesons(PDGIDs):
     _JSL_eq_413 = _mesons_JSL_states_list(PDGIDs, "413")
     _JSL_eq_414 = _mesons_JSL_states_list(PDGIDs, "414")
     _JSL_eq_415 = _mesons_JSL_states_list(PDGIDs, "415")
-
 
     for id in _JSL_eq_000:
         assert J(id) == 0
