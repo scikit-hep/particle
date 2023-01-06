@@ -215,7 +215,6 @@ def is_baryon(pdgid: PDGID_TYPE) -> bool:
         and _digit(pdgid, Location.Nq1) > 0
     )
 
-
 def is_diquark(pdgid: PDGID_TYPE) -> bool:
     """
     Does this PDG ID correspond to a diquark?
