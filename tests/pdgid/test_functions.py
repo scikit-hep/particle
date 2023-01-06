@@ -679,7 +679,6 @@ def test_JSL_mesons(PDGIDs):
     _JSL_eq_414 = _mesons_JSL_states_list(PDGIDs, "414")
     _JSL_eq_415 = _mesons_JSL_states_list(PDGIDs, "415")
 
-
     for pid in _JSL_eq_000:
         assert J(pid) == 0
         assert S(pid) == 0
