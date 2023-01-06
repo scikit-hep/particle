@@ -294,6 +294,13 @@ def test_is_pentaquark(PDGIDs):
         assert not is_pentaquark(pid)
 
 
+def test_pentaquarks_are_baryons(PDGIDs):
+    """Obviously all pentaquarks are baryons!"""
+    _pentaquarks = (PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
+    for pid in _pentaquarks:
+        assert is_baryon(pid)
+
+
 def test_is_gauge_boson_or_higgs(PDGIDs):
     _gb_and_higgs = (
         PDGIDs.Gluon,

@@ -69,8 +69,6 @@ def is_valid(pdgid: PDGID_TYPE) -> bool:
         return True
     if is_diquark(pdgid):
         return True
-    if is_pentaquark(pdgid):
-        return True
     if is_generator_specific(pdgid):
         return True
     if is_technicolor(pdgid):
@@ -149,8 +147,8 @@ def is_hadron(pdgid: PDGID_TYPE) -> bool:
         return True
     if is_baryon(pdgid):
         return True
-    if is_pentaquark(pdgid):
-        return True
+    # Irrelevant test since all pentaquarks are baryons!
+    # if is_pentaquark(pdgid): return True
     return bool(is_Rhadron(pdgid))
 
 
@@ -217,9 +215,13 @@ def is_baryon(pdgid: PDGID_TYPE) -> bool:
         and _digit(pdgid, Location.Nq1) > 0
     )
 
-
 def is_diquark(pdgid: PDGID_TYPE) -> bool:
-    """Does this PDG ID correspond to a diquark?"""
+    """
+    Does this PDG ID correspond to a diquark?
+
+    Diquark IDs have 4-digit numbers +/- Nq1 Nq2 Nq3 Nj
+    with Nq1 >= Nq2 and Nq3 = 0.
+    """
     if _extra_bits(pdgid) > 0:
         return False
     if abspid(pdgid) <= 100:
@@ -266,7 +268,7 @@ def is_pentaquark(pdgid: PDGID_TYPE) -> bool:
     Does the PDG ID correspond to a pentaquark?
 
     Pentaquark IDs are of the form +/- 9 Nr Nl Nq1 Nq2 Nq3 Nj, where Nj = 2J + 1 gives the spin
-    and Nr Nl Nq1 Nq2 Nq3 denote the quark numbers in order Nr >= Nl >= Nq1 >= Nq2
+    and Nr Nl Nq1 Nq2 Nq3 denote the 5 quark numbers in order Nr >= Nl >= Nq1 >= Nq2
     and Nq3 gives the antiquark number.
     """
     if _extra_bits(pdgid) > 0:
@@ -454,7 +456,8 @@ def is_excited_quark_or_lepton(pdgid: PDGID_TYPE) -> bool:
     """
     Does this PDG ID correspond to an excited (composite) quark or lepton?
 
-    Excited (composite) quarks and leptons have N = 4 and Nr = 0.
+    Excited (composite) quarks and leptons have N = 4 and Nr = 0,
+    hence numbers of the form +/- 4 0 Nl Nq1 Nq2 Nq3 Nj.
     """
     if _extra_bits(pdgid) > 0:
         return False
@@ -926,12 +929,14 @@ def _has_quark_q(pdgid: PDGID_TYPE, q: int) -> bool:
             return True  # Nuclei by construction contain up and down quarks
         if q == 3 and pdgid not in {2112, 2212}:
             return _digit(pdgid, Location.N8) > 0
-    if _extra_bits(pdgid) > 0:
-        return False
-    if _fundamental_id(pdgid) > 0:
-        return False
 
     if is_dyon(pdgid):
+        return False
+
+    if _extra_bits(pdgid) > 0:
+        return False
+
+    if _fundamental_id(pdgid) > 0:
         return False
 
     if is_Rhadron(pdgid):
