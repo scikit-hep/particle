@@ -43,8 +43,11 @@ class PDGIDsEnum(IntEnum):
     # Quarkonia
     jpsi = 443
     psi_2S = 100443
+    psi_3770 = 30443
     Upsilon_1S = 553
     Upsilon_4S = 300553
+    Upsilon_3_2D = 100557
+    h_b_3P = 210553
     # Light hadrons
     Pi0 = 111
     PiPlus = 211
@@ -55,13 +58,22 @@ class PDGIDsEnum(IntEnum):
     KS = 310
     KMinus = -321
     rho_770_minus = -213
+    rho_10219_plus = 10219  # unknown particle added for testing purposes
     phi = 333
     omega = 223
     K1_1270_0 = 10313
     K1_1400_0 = 20313
+    K2_1770_minus = -10325
+    K2_1820_0_bar = -20315
+    K3_10317_0 = 10317  # unknown particle added for testing purposes
+    K3_20317_plus = 20317  # unknown particle added for testing purposes
+    K3_30317_0 = 30317  # unknown particle added for testing purposes
+    K4_20219_minus = -20219  # unknown particle added for testing purposes
+    K4_30329_plus = 30329  # unknown particle added for testing purposes
     rho_1700_0 = 30113
     a2_1320_minus = -215
     omega_3_1670 = 227
+    f_2_30225 = 30225  # unknown particle added for testing purposes
     f_4_2050 = 229
     f_4_2300 = 9010229  # example of a not-well-known meson
     Proton = 2212
