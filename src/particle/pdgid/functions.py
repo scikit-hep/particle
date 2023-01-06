@@ -729,7 +729,7 @@ def S(pdgid: PDGID_TYPE) -> int | None:
     - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
       and None is returned too.
     """
-    if not (is_meson(pdgid) or is_valid(pdgid)):
+    if not is_meson(pdgid):
         return None
 
     if (abspid(pdgid) // 1000000) % 10 == 9:
@@ -775,7 +775,7 @@ def L(pdgid: PDGID_TYPE) -> int | None:
     - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally well-known particles
       and None is returned too.
     """
-    if not (is_meson(pdgid) or is_valid(pdgid)):
+    if not is_meson(pdgid):
         return None
 
     if (abspid(pdgid) // 1000000) % 10 == 9:
