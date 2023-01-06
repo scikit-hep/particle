@@ -527,6 +527,7 @@ def test_is_unflavoured_meson(PDGIDs):
         PDGIDs.rho_1700_0,
         PDGIDs.a2_1320_minus,
         PDGIDs.omega_3_1670,
+        PDGIDs.f_4_2050,
         PDGIDs.f_4_2300,
         PDGIDs.jpsi,
         PDGIDs.psi_2S,
