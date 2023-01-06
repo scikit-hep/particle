@@ -732,9 +732,6 @@ def S(pdgid: PDGID_TYPE) -> int | None:
     if not is_meson(pdgid):
         return None
 
-    if not is_valid(pdgid):
-        return None
-
     if (abspid(pdgid) // 1000000) % 10 == 9:
         return None  # no knowledge so far
 
@@ -779,9 +776,6 @@ def L(pdgid: PDGID_TYPE) -> int | None:
       and None is returned too.
     """
     if not is_meson(pdgid):
-        return None
-
-    if not is_valid(pdgid):
         return None
 
     if (abspid(pdgid) // 1000000) % 10 == 9:
