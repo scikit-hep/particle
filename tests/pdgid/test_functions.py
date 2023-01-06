@@ -171,12 +171,16 @@ def test_is_sm_lepton(PDGIDs):
         assert not is_sm_lepton(id)
 
 
-def test_is_meson(PDGIDs):
+def _get_mesons(PDGIDs):
+    """Trivial helper to collect and return all mesons."""
     _mesons = (
         PDGIDs.jpsi,
         PDGIDs.psi_2S,
+        PDGIDs.psi_3770,
         PDGIDs.Upsilon_1S,
         PDGIDs.Upsilon_4S,
+        PDGIDs.Upsilon_3_2D,
+        PDGIDs.h_b_3P,
         PDGIDs.Pi0,
         PDGIDs.PiPlus,
         PDGIDs.eta,
@@ -188,11 +192,21 @@ def test_is_meson(PDGIDs):
         PDGIDs.phi,
         PDGIDs.omega,
         PDGIDs.rho_770_minus,
+        PDGIDs.rho_10219_plus,
         PDGIDs.K1_1270_0,
         PDGIDs.K1_1400_0,
+        PDGIDs.K2_1770_minus,
+        PDGIDs.K2_1820_0_bar,
+        PDGIDs.K3_10317_0,
+        PDGIDs.K3_20317_plus,
+        PDGIDs.K3_30317_0,
+        PDGIDs.K4_20219_minus,
+        PDGIDs.K4_30329_plus,
         PDGIDs.rho_1700_0,
         PDGIDs.a2_1320_minus,
         PDGIDs.omega_3_1670,
+        PDGIDs.f_2_30225,
+        PDGIDs.f_4_2050,
         PDGIDs.f_4_2300,
         PDGIDs.D0,
         PDGIDs.DPlus,
@@ -208,12 +222,20 @@ def test_is_meson(PDGIDs):
         PDGIDs.Pomeron,
         PDGIDs.Odderon,
         PDGIDs.RPlus_TTildeDbar,
-        PDGIDs.R0_GTildeG,
+        PDGIDs.R0_GTildeG
     )
-    _non_mesons = [id for id in PDGIDs if id not in _mesons]
-    for id in _mesons:
+    return _mesons
+
+
+def _get_non_mesons(PDGIDs):
+    """Trivial helper to collect and return all non-mesons."""
+    return [id for id in PDGIDs if id not in _get_mesons(PDGIDs)]
+
+
+def test_is_meson(PDGIDs):
+    for id in _get_mesons(PDGIDs):
         assert is_meson(id)
-    for id in _non_mesons:
+    for id in _get_non_mesons(PDGIDs):
         assert not is_meson(id)
 
 
@@ -235,6 +257,9 @@ def test_is_baryon(PDGIDs):
         PDGIDs.Xi0,
         PDGIDs.AntiXiMinus,
         PDGIDs.OmegaMinus,
+        PDGIDs.N1650Plus,
+        PDGIDs.N1900BarMinus,
+        PDGIDs.Lambda1810,
         PDGIDs.LcPlus,
         PDGIDs.Lb,
         PDGIDs.LtPlus,
@@ -445,6 +470,8 @@ def test_has_down(PDGIDs):
     assert not has_down(PDGIDs.Bs)
     assert not has_down(PDGIDs.BcPlus)
     assert has_down(PDGIDs.Proton)
+    assert has_down(PDGIDs.N1650Plus)
+    assert has_down(PDGIDs.Lambda1810)
     assert has_down(PDGIDs.LcPlus)
     assert has_down(PDGIDs.Lb)
     assert has_down(PDGIDs.DD1)
@@ -469,6 +496,8 @@ def test_has_up(PDGIDs):
     assert not has_up(PDGIDs.Bs)
     assert not has_up(PDGIDs.BcPlus)
     assert has_up(PDGIDs.Proton)
+    assert has_up(PDGIDs.N1900BarMinus)
+    assert has_up(PDGIDs.Lambda1810)
     assert has_up(PDGIDs.LcPlus)
     assert has_up(PDGIDs.Lb)
     assert not has_up(PDGIDs.DD1)
@@ -493,6 +522,8 @@ def test_has_strange(PDGIDs):
     assert has_strange(PDGIDs.Bs)
     assert not has_strange(PDGIDs.BcPlus)
     assert not has_strange(PDGIDs.Proton)
+    assert not has_strange(PDGIDs.N1650Plus)
+    assert has_strange(PDGIDs.Lambda1810)
     assert not has_strange(PDGIDs.LcPlus)
     assert not has_strange(PDGIDs.Lb)
     assert not has_strange(PDGIDs.DD1)
@@ -505,6 +536,7 @@ def test_has_charm(PDGIDs):
     _with_charm_content = (
         PDGIDs.jpsi,
         PDGIDs.psi_2S,
+        PDGIDs.psi_3770,
         PDGIDs.D0,
         PDGIDs.DPlus,
         PDGIDs.DsPlus,
@@ -524,6 +556,8 @@ def test_has_bottom(PDGIDs):
     _with_bottom_content = (
         PDGIDs.Upsilon_1S,
         PDGIDs.Upsilon_4S,
+        PDGIDs.Upsilon_3_2D,
+        PDGIDs.h_b_3P,
         PDGIDs.B0,
         PDGIDs.BPlus,
         PDGIDs.Bs,
@@ -581,7 +615,11 @@ def test_has_fundamental_anti(PDGIDs):
         assert not has_fundamental_anti(id)
 
 
-def mesons_JSL_states_list(PDGIDs, jsl):
+def _mesons_JSL_states_list(PDGIDs, jsl):
+    """
+    Trivial helper to organise mesons to be tested
+    according to their J, S and L quantum numbers.
+    """
     _states = {
         "000": (
             PDGIDs.Pi0,
@@ -601,35 +639,46 @@ def mesons_JSL_states_list(PDGIDs, jsl):
             PDGIDs.T0,
         ),
         "011": (PDGIDs.a_0_1450_plus,),
-        "101": (PDGIDs.K1_1270_0,),
-        "110": (PDGIDs.rho_770_minus,),
+        "101": (PDGIDs.K1_1270_0, PDGIDs.h_b_3P),
+        "110": (PDGIDs.rho_770_minus, PDGIDs.jpsi, PDGIDs.Upsilon_4S),
         "111": (PDGIDs.K1_1400_0,),
-        "112": (PDGIDs.rho_1700_0,),
-        # '202': (),
+        "112": (PDGIDs.rho_1700_0, PDGIDs.psi_3770),
+        "202": (PDGIDs.K2_1770_minus,),
         "211": (PDGIDs.a2_1320_minus,),
-        # '212': (),
-        # '213': (),
-        # '303': (),
-        "312": (PDGIDs.omega_3_1670,),
-        # '313': (),
-        # '314': (),
-        # '404': (),
-        # '413': (),
-        # '414': (),
-        # '415': ()
+        "212": (PDGIDs.K2_1820_0_bar,),
+        "213": (PDGIDs.f_2_30225,),
+        "303": (PDGIDs.K3_10317_0,),
+        "312": (PDGIDs.omega_3_1670, PDGIDs.Upsilon_3_2D),
+        "313": (PDGIDs.K3_20317_plus,),
+        "314": (PDGIDs.K3_30317_0,),
+        "404": (PDGIDs.rho_10219_plus,),
+        "413": (PDGIDs.f_4_2050,),
+        "414": (PDGIDs.K4_20219_minus,),
+        "415": (PDGIDs.K4_30329_plus,)
     }
     return _states[jsl]
 
 
 def test_JSL_mesons(PDGIDs):
-    _JSL_eq_000 = mesons_JSL_states_list(PDGIDs, "000")
-    _JSL_eq_011 = mesons_JSL_states_list(PDGIDs, "011")
-    _JSL_eq_101 = mesons_JSL_states_list(PDGIDs, "101")
-    _JSL_eq_110 = mesons_JSL_states_list(PDGIDs, "110")
-    _JSL_eq_111 = mesons_JSL_states_list(PDGIDs, "111")
-    _JSL_eq_112 = mesons_JSL_states_list(PDGIDs, "112")
-    _JSL_eq_211 = mesons_JSL_states_list(PDGIDs, "211")
-    _JSL_eq_312 = mesons_JSL_states_list(PDGIDs, "312")
+    _JSL_eq_000 = _mesons_JSL_states_list(PDGIDs, "000")
+    _JSL_eq_011 = _mesons_JSL_states_list(PDGIDs, "011")
+    _JSL_eq_101 = _mesons_JSL_states_list(PDGIDs, "101")
+    _JSL_eq_110 = _mesons_JSL_states_list(PDGIDs, "110")
+    _JSL_eq_111 = _mesons_JSL_states_list(PDGIDs, "111")
+    _JSL_eq_112 = _mesons_JSL_states_list(PDGIDs, "112")
+    _JSL_eq_202 = _mesons_JSL_states_list(PDGIDs, "202")
+    _JSL_eq_211 = _mesons_JSL_states_list(PDGIDs, "211")
+    _JSL_eq_212 = _mesons_JSL_states_list(PDGIDs, "212")
+    _JSL_eq_213 = _mesons_JSL_states_list(PDGIDs, "213")
+    _JSL_eq_303 = _mesons_JSL_states_list(PDGIDs, "303")
+    _JSL_eq_312 = _mesons_JSL_states_list(PDGIDs, "312")
+    _JSL_eq_313 = _mesons_JSL_states_list(PDGIDs, "313")
+    _JSL_eq_314 = _mesons_JSL_states_list(PDGIDs, "314")
+    _JSL_eq_404 = _mesons_JSL_states_list(PDGIDs, "404")
+    _JSL_eq_413 = _mesons_JSL_states_list(PDGIDs, "413")
+    _JSL_eq_414 = _mesons_JSL_states_list(PDGIDs, "414")
+    _JSL_eq_415 = _mesons_JSL_states_list(PDGIDs, "415")
+
 
     for id in _JSL_eq_000:
         assert J(id) == 0
@@ -655,14 +704,54 @@ def test_JSL_mesons(PDGIDs):
         assert J(id) == 1
         assert S(id) == 1
         assert L(id) == 2
+    for id in _JSL_eq_202:
+        assert J(id) == 2
+        assert S(id) == 0
+        assert L(id) == 2
     for id in _JSL_eq_211:
         assert J(id) == 2
         assert S(id) == 1
         assert L(id) == 1
+    for id in _JSL_eq_212:
+        assert J(id) == 2
+        assert S(id) == 1
+        assert L(id) == 2
+    for id in _JSL_eq_213:
+        assert J(id) == 2
+        assert S(id) == 1
+        assert L(id) == 3
+    for id in _JSL_eq_303:
+        assert J(id) == 3
+        assert S(id) == 0
+        assert L(id) == 3
     for id in _JSL_eq_312:
         assert J(id) == 3
         assert S(id) == 1
         assert L(id) == 2
+    for id in _JSL_eq_313:
+        assert J(id) == 3
+        assert S(id) == 1
+        assert L(id) == 3
+    for id in _JSL_eq_314:
+        assert J(id) == 3
+        assert S(id) == 1
+        assert L(id) == 4
+    for id in _JSL_eq_404:
+        assert J(id) == 4
+        assert S(id) == 0
+        assert L(id) == 4
+    for id in _JSL_eq_413:
+        assert J(id) == 4
+        assert S(id) == 1
+        assert L(id) == 3
+    for id in _JSL_eq_414:
+        assert J(id) == 4
+        assert S(id) == 1
+        assert L(id) == 4
+    for id in _JSL_eq_415:
+        assert J(id) == 4
+        assert S(id) == 1
+        assert L(id) == 5
 
 
 def test_JSL_badly_known_mesons(PDGIDs):
@@ -734,14 +823,12 @@ def test_J_non_mesons(PDGIDs):
 
 
 def test_S_non_mesons(PDGIDs):
-    _S_eq_None = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
-    for id in _S_eq_None:
+    for id in _get_non_mesons(PDGIDs):
         assert S(id) is None
 
 
 def test_L_non_mesons(PDGIDs):
-    _L_eq_None = (PDGIDs.Gluon, PDGIDs.Photon, PDGIDs.Z0)
-    for id in _L_eq_None:
+    for id in _get_non_mesons(PDGIDs):
         assert L(id) is None
 
 

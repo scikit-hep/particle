@@ -531,8 +531,11 @@ def test_is_unflavoured_meson(PDGIDs):
         PDGIDs.f_4_2300,
         PDGIDs.jpsi,
         PDGIDs.psi_2S,
+        PDGIDs.psi_3770,
         PDGIDs.Upsilon_1S,
         PDGIDs.Upsilon_4S,
+        PDGIDs.Upsilon_3_2D,
+        PDGIDs.h_b_3P,
     )
     _non_unflavoured_mesons = [pid for pid in PDGIDs if pid not in _unflavoured_mesons]
     for pid in _unflavoured_mesons:
