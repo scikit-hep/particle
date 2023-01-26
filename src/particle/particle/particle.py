@@ -206,7 +206,7 @@ class Particle:
     latex_name: str = attr.ib("Unknown")
 
     def __repr__(self) -> str:
-        return f'<{self.__class__.__name__}: name="{self}", pdgid={int(self.pdgid)}, mass={self._str_mass()}>'
+        return f'<{self.__class__.__name__}: name="{self}", pdgid={int(self.pdgid)}, mass={self._str_mass()}>'  # noqa: B907
 
     # Ordered loaded table of entries
     _table: list[Particle] | None = None
@@ -999,7 +999,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             )  # throws an error if < 1 or > 1 particle is found
             return particle
         except ValueError:
-            raise ParticleNotFound(f'Could not find name "{name}"') from None
+            raise ParticleNotFound(f"Could not find name {name!r}") from None
 
     @classmethod
     def from_evtgen_name(cls: type[Self], name: str) -> Self:
