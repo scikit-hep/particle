@@ -462,8 +462,11 @@ similarly to what is available in the standard (i.e. non-experiment-specific) co
 Acknowledgements
 ----------------
 
-Support for this work was provided by the National Science Foundation
-cooperative agreement OAC-1450377 (DIANA/HEP) and OAC-1836650 (IRIS-HEP).
+The UK Science and Technology Facilities Council (STFC) and the University of Liverpool
+provide funding for Eduardo Rodrigues (2020-) to work on this project part-time.
+
+Support for this work was provided by the National Science Foundation cooperative agreement OAC-1450377 (DIANA/HEP) in 2016-2019
+and has been provided by OAC-1836650 (IRIS-HEP) since 2019.
 Any opinions, findings, conclusions or recommendations expressed in this material
 are those of the authors and do not necessarily reflect the views of the National Science Foundation.
 
