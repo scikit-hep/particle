@@ -1,6 +1,19 @@
 Changelog
 =========
 
+Version 0.21.2
+--------------
+
+January 30th, 2023
+
+- Classes for MC particle identification codes and converters:
+  - Improvements and fixes in Corsika7 module.
+  - Full test coverage for Corsika7 module.
+  - Better test coverage for PDG ID related functions.
+- Tests:
+  - Updates to pre-commit hooks.
+
+
 Version 0.21.1
 --------------
 
@@ -16,6 +29,7 @@ January 4th, 2023
 - Tests:
   - Various improvements to the CI.
   - Updates to pre-commit hooks and CI YAML files.
+
 
 Version 0.21.0
 --------------
@@ -42,6 +56,7 @@ November 8th, 2022
 - Tests:
   - Updates to pre-commit hooks and CI YAML files.
   - Various improvements to the CI.
+
 
 Version 0.20.1
 --------------
