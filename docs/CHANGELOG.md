@@ -5,10 +5,12 @@ Version under preparation
 -------------------------
 
 - Data CSV files:
-    - Version 12 of package data files made default:
-        - Information on nuclei updated based on masses taken from package `periodictable` version 1.6.1.
-        - Several Corsika7 IDs corrected.
-        - Otherwise same as version 11 files.
+  - Version 12 of package data files made default:
+    - Information on nuclei updated based on masses taken from package `periodictable` version 1.6.1.
+    - Several Corsika7 IDs corrected.
+    - Otherwise same as version 11 files.
+- Tests:
+  - Doctests run separately in the CI.
 
 
 Version 0.21.2
