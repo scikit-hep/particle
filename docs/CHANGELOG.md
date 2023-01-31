@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Version under preparation
+-------------------------
+
+- Data CSV files:
+    - Version 12 of package data files:
+        - Information on nuclei updated based on masses taken from package `periodictable` version 1.6.1.
+        - Several Corsika7 IDs corrected.
+
+
 Version 0.21.2
 --------------
 
