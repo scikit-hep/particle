@@ -79,4 +79,5 @@ def test_nucleon_properties(id_particle, id_nucleus):
     p_particle = Particle.from_pdgid(id_particle)
     p_nucleus = Particle.from_pdgid(id_nucleus)
 
-    assert p_particle.describe() == p_nucleus.describe()
+    # Trivial replacement of IDs to avoid obvious irrelevant differences
+    assert p_particle.describe().replace(f"{id_particle:<12}",f"{id_particle:<12}") == p_nucleus.describe().replace(f"{id_nucleus:<12}",f"{id_particle:<12}")
