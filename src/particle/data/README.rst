@@ -47,6 +47,13 @@ This file was created from ``pdgid_to_latexname.csv``, ``mass_width_2008.fwf``,
 The 2008 version of the file was created with only the first two.
 
 
+``nuclei2022.csv``
+==================
+
+Information on nuclei extracted and adapted from package ``periodictable``,
+available in the same format as that of ``particle2022.csv``.
+
+
 ``conversions.csv``
 ===================
 

@@ -10,7 +10,7 @@ def test_load_particle_table(benchmark):
 def test_load_nuclei_append(benchmark):
     def load_two():
         Particle.load_table(data.basepath / "particle2022.csv")
-        Particle.load_table(data.basepath / "nuclei2020.csv", append=True)
+        Particle.load_table(data.basepath / "nuclei2022.csv", append=True)
 
     benchmark(load_two)
 
