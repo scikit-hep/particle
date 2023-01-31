@@ -63,6 +63,8 @@ jobs:
       uses: codecov/codecov-action@v3
 
     - name: Test docstrings with doctest
+      runs-on: ubuntu-latest
+      if: "matrix.python-version == 3.11"
       run: python -m pytest --doctest-modules src/particle --ignore-glob="src/particle/particle/convert.py"
 
   notebooks:
