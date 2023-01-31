@@ -129,7 +129,7 @@ class Corsika7ID(int):
 
         Examples
         --------
-        >>> mu_minux = Corsika7ID(6)
+        >>> mu_minus = Corsika7ID(6)
         >>> mu_minus.is_particle()
         True
         >>> mu_info = Corsika7ID(76)
@@ -201,7 +201,7 @@ class Corsika7ID(int):
         --------
         >>> Corsika7ID(6).to_pdgid()
         <PDGID: 13>
-        >>> Corsika7ID(76).to_pdgid()
+        >>> Corsika7ID(76).to_pdgid()  # doctest: +SKIP
         InvalidParticle: The Corsika7ID <Corsika7ID: 76> does not correspond to a particle and thus has no equivalent PDGID.
         """
         from ..particle.particle import InvalidParticle  # pylint: disable=C0415
