@@ -69,7 +69,7 @@ check_nucleons = (
 
 
 @pytest.mark.parametrize("id_particle,id_nucleus", check_nucleons)
-def test_nucleon_properties(id_particle,id_nucleus):
+def test_nucleon_properties(id_particle, id_nucleus):
     """
     Protons and neutrons are both available in the particles table and in the nuclei table
     under IDs 2212 and 2112, and 1000010010 and 1000000010, respectively.
