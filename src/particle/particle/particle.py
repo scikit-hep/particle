@@ -1220,8 +1220,8 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
            >>> # Returns proton only
            >>> Particle.findall(pdg_name='p ', particle=True)    # doctest: +NORMALIZE_WHITESPACE
-           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
-           <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>]
+           [<Particle: name="p", pdgid=2212, mass=938.2720882 ± 0.000003 MeV>,
+           <Particle: name="p", pdgid=1000010010, mass=938.2720882 ± 0.000003 MeV>]
 
         Versatile searches require a (lambda) function as argument:
 
