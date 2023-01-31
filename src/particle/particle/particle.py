@@ -347,14 +347,14 @@ class Particle:
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'], particle=False)
         >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
-        =======  ======  ===============  ========
-          pdgid  name               mass    charge
-        =======  ======  ===============  ========
-            -11  e+         0.5109989461         1
-            -13  mu+      105.6583745            1
-            -15  tau+    1776.86                 1
-            -17  tau'+                           1
-        =======  ======  ===============  ========
+        =======  ======  =============  ========
+          pdgid  name             mass    charge
+        =======  ======  =============  ========
+            -11  e+         0.51099895         1
+            -13  mu+      105.6583755          1
+            -15  tau+    1776.86               1
+            -17  tau'+                         1
+        =======  ======  =============  ========
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton, pdg_name='tau', exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
         >>> print(tabulate(query_as_list, headers='firstrow'))
@@ -1213,13 +1213,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
            >>> # Returns proton and antiproton only
            >>> Particle.findall(pdg_name='p')    # doctest: +NORMALIZE_WHITESPACE
-           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
-            <Particle: name="p~", pdgid=-2212, mass=938.272081 ± 0.000006 MeV>,
-            <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>,
-            <Particle: name="p~", pdgid=-1000010010, mass=938.272081 ± 0.000006 MeV>]
+           [<Particle: name="p", pdgid=2212, mass=938.2720882 ± 0.000003 MeV>,
+            <Particle: name="p~", pdgid=-2212, mass=938.2720882 ± 0.000003 MeV>,
+            <Particle: name="p", pdgid=1000010010, mass=938.2720882 ± 0.000003 MeV>,
+            <Particle: name="p~", pdgid=-1000010010, mass=938.2720882 ± 0.000003 MeV>]
 
            >>> # Returns proton only
-           >>> Particle.findall(pdg_name='p', particle=True)    # doctest: +NORMALIZE_WHITESPACE
+           >>> Particle.findall(pdg_name='p ', particle=True)    # doctest: +NORMALIZE_WHITESPACE
            [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
            <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>]
 
