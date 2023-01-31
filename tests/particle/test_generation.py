@@ -13,6 +13,7 @@ pd = pytest.importorskip("pandas")
 from collections import Counter
 
 from particle import data
+from particle.particle import Particle
 from particle.particle.convert import produce_files
 
 FILES = ["particle2021.csv", "particle2022.csv"]
@@ -57,3 +58,28 @@ def test_csv_file_has_latex(filename):
     p = pd.read_csv(particle_data, comment="#")
 
     assert p[p.Latex == ""].empty
+
+
+check_nucleons = (
+    (2212, 1000010010),
+    (-2212, -1000010010),
+    (2112, 1000000010),
+    (-2112, -1000000010),
+)
+
+
+@pytest.mark.parametrize("id_particle,id_nucleus", check_nucleons)
+def test_nucleon_properties(id_particle, id_nucleus):
+    """
+    Protons and neutrons are both available in the particles table and in the nuclei table
+    under IDs 2212 and 2112, and 1000010010 and 1000000010, respectively.
+    This trivial test checks most of what is likely to change between PDG updates,
+    to ensure consistency.
+    """
+    p_particle = Particle.from_pdgid(id_particle)
+    p_nucleus = Particle.from_pdgid(id_nucleus)
+
+    # Trivial replacement of IDs to avoid obvious irrelevant differences
+    assert p_particle.describe().replace(
+        f"{id_particle:<12}", f"{id_particle:<12}"
+    ) == p_nucleus.describe().replace(f"{id_nucleus:<12}", f"{id_particle:<12}")

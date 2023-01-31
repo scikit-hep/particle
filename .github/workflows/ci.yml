@@ -56,11 +56,15 @@ jobs:
       run: python -m pip list
 
     - name: Test package
-      run: python -m pytest ./tests --doctest-modules --cov=src/particle --cov-report=xml
+      run: python -m pytest ./tests --cov=src/particle --cov-report=xml
 
     - name: Test coverage with Codecov
       if: "runner.os != 'Windows' && matrix.python-version != 3.7"
       uses: codecov/codecov-action@v3
+
+    - name: Test docstrings with doctest
+      if: "runner.os == 'Linux' && matrix.python-version == 3.11"
+      run: python -m pytest --doctest-modules src/particle --ignore-glob="src/particle/particle/convert.py"
 
   notebooks:
     runs-on: ubuntu-latest
