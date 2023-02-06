@@ -57,11 +57,10 @@ def zipapp(session: nox.Session) -> None:
         "-m",
         "pip",
         "install",
+        "--no-compile",
         ".",
-        "attrs",
-        "hepunits",
         "importlib_resources",
-        "deprecated",
+        "typing_extensions",
         f"--target={tmpdir}",
     )
 
