@@ -1191,7 +1191,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         particle: bool | None = None,
         **search_terms: Any,
     ) -> list[Self]:
-
         """
         Search for a particle, returning a list of candidates.
 
@@ -1283,7 +1282,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def _from_group_dict_list(cls: type[Self], mat: dict[str, Any]) -> list[Self]:
-
         kw: dict[str, Any] = {
             "particle": False
             if mat["bar"] is not None

@@ -33,7 +33,6 @@ possibilities = (
 
 @pytest.mark.parametrize("value,err_u,err_l,test_str", possibilities)
 def test_unc_printout(value, err_u, err_l, test_str):
-
     assert str_with_unc(value, err_u, err_l) == test_str
 
 
@@ -47,7 +46,6 @@ possibilities = (
 
 @pytest.mark.parametrize("name,unicode_name", possibilities)
 def test_latex_name_unicode(name, unicode_name):
-
     assert latex_name_unicode(name) == unicode_name
 
 

@@ -281,7 +281,6 @@ def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
     # in the particle names, as well!
 
     with filter_file(filename) as file_object:
-
         nar = pd.read_fwf(
             file_object,
             colspecs=(
