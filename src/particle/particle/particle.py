@@ -1325,6 +1325,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             vals = [val for val in vals if mat["mass"] in val.latex_name]
 
         if len(vals) > 1:
-            vals = sorted(vals)
+            return sorted(vals)
 
-        return vals  # noqa: RET504 (https://github.com/charliermarsh/ruff/issues/2950)
+        return vals
