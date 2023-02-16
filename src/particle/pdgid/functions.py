@@ -680,7 +680,7 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
             charge = 6
     elif _digit(pdgid, Location.Nj) == 0:  # KL, KS, or undefined
         return 0
-    elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9):  # mesons
+    elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9):  # noqa: RET505  # mesons
         if q2 in {3, 5}:
             charge = ch100[q3 - 1] - ch100[q2 - 1]
         else:

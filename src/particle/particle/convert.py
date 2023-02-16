@@ -114,7 +114,7 @@ def filter_file(fileobject: StringOrIO) -> TextIO:
     stream = StringIO()
     for line in fileobject:
         # We need to strip the unicode byte ordering if present before checking for *
-        if not line.lstrip("\ufeff").lstrip().startswith("*"):
+        if not line.lstrip("\ufeff").lstrip().startswith("*"):  # noqa: B005
             stream.write(line)
     stream.seek(0)
 
@@ -321,7 +321,7 @@ def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
             | nar.duplicated(subset=["ID4"], keep=False) & nar["ID4"].notna()
         )
         if nar[duplicated_ids].shape[0] > 0:
-            print("DUPLICATES:\n", nar[duplicated_ids])
+            print("DUPLICATES:\n", nar[duplicated_ids])  # noqa: T201
         assert (
             nar[duplicated_ids].shape[0] == 0
         ), f"Duplicate entries found in {filename} !"
@@ -371,14 +371,14 @@ def update_from_mcd(
 
 
 def produce_files(
-    particle2008: str | Path,  # pylint: disable=unused-argument
+    particle2008: str | Path,  # noqa: ARG001
     particle2022: str | Path,
     version: str,
     year: str,
 ) -> None:
     "This produces listed output files from all input files."
 
-    with data.basepath.joinpath("mass_width_2008.fwf").open() as fwf_f:
+    with data.basepath.joinpath("mass_width_2008.fwf").open() as fwf_f:  # noqa: SIM117
         with data.basepath.joinpath("pdgid_to_latexname.csv").open() as csv_f:
             full_table = get_from_pdg_extended(fwf_f, [csv_f])
 
@@ -397,9 +397,10 @@ def produce_files(
     with data.basepath.joinpath("mass_width_" + year + ".mcd").open() as mcd_f:
         ext_table = get_from_pdg_mcd(mcd_f)
 
-    with data.basepath.joinpath("mass_width_2008_ext.fwf").open() as fwf_f:
-        with data.basepath.joinpath("pdgid_to_latexname.csv").open() as csv_f:
-            addons = get_from_pdg_extended(fwf_f, [csv_f])
+    with data.basepath.joinpath(
+        "mass_width_2008_ext.fwf"
+    ).open() as fwf_f, data.basepath.joinpath("pdgid_to_latexname.csv").open() as csv_f:
+        addons = get_from_pdg_extended(fwf_f, [csv_f])
 
     # Only keep rows present in the .mcd file specified by year
     full_table = full_table[

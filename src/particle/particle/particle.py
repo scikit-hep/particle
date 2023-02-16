@@ -559,7 +559,7 @@ class Particle:
         else:
             cls._table_names.append(str(filename))
             assert not isinstance(filename, Traversable)
-            open_file = open(filename, encoding="utf_8")
+            open_file = open(filename, encoding="utf_8")  # noqa: SIM115
 
         with open_file as f:
             r = csv.DictReader(line for line in f if not line.startswith("#"))
@@ -1327,4 +1327,4 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         if len(vals) > 1:
             vals = sorted(vals)
 
-        return vals
+        return vals  # noqa: RET504 (https://github.com/charliermarsh/ruff/issues/2950)

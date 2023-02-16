@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+import contextlib
+
 import pytest
 from hepunits import meter, second
 from pytest import approx
@@ -174,7 +176,8 @@ def test_from_nucleus_info_ParticleNotFound():
     with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(z=999, a=999)
 
-        # No exited nuclei in database
+    # No exited nuclei in database
+    with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(1, 2, i=1)
 
 
@@ -281,11 +284,10 @@ def test_P_consistency_mesons():
     well-known particles and P is undefined.
     """
     for p in Particle.all():
-        if not p.is_unflavoured_meson:
+        if not p.is_unflavoured_meson or _digit(p.pdgid, Location.N) == 9:
             continue
-        elif _digit(p.pdgid, Location.N) == 9:
-            continue
-        elif p.pdgid == 22:  # Special case of the photon
+
+        if p.pdgid == 22:  # Special case of the photon
             assert -1 == p.P
         else:
             assert (-1) ** (p.L + 1) == p.P
@@ -298,7 +300,9 @@ def test_P_consistency_baryons():
     As for baryons with undefined parity, that of the antibaryon
     is equally undefined, of course.
     """
-    pdgid = lambda p: p.pdgid  # noqa: E731
+
+    def pdgid(p):
+        return p.pdgid
 
     pdgids_baryons_defined_P = [
         pdgid(b)
@@ -333,9 +337,9 @@ def test_C_consistency():
     for p in Particle.all():
         if not (p.is_unflavoured_meson and p.three_charge == 0):
             continue
-        elif _digit(p.pdgid, Location.N) == 9:
+        if _digit(p.pdgid, Location.N) == 9:
             continue
-        elif p.pdgid == 22:  # Special case of the photon
+        if p.pdgid == 22:  # Special case of the photon
             assert -1 == p.C
         elif p.pdgid in [130, 310]:  # Special case of the KS and KL
             assert Parity.u == p.C
@@ -539,15 +543,11 @@ def test_is_unflavoured_meson(PDGIDs):
     )
     _non_unflavoured_mesons = [pid for pid in PDGIDs if pid not in _unflavoured_mesons]
     for pid in _unflavoured_mesons:
-        try:
+        with contextlib.suppress(ParticleNotFound, InvalidParticle):
             assert Particle.from_pdgid(pid).is_unflavoured_meson
-        except (ParticleNotFound, InvalidParticle):
-            pass
     for pid in _non_unflavoured_mesons:
-        try:
+        with contextlib.suppress(ParticleNotFound, InvalidParticle):
             assert not Particle.from_pdgid(pid).is_unflavoured_meson
-        except (ParticleNotFound, InvalidParticle):
-            pass
 
 
 spin_type_classification = (
@@ -745,5 +745,5 @@ def test_decfile_style_names(name, pid):
 
 
 @pytest.mark.parametrize(("name", "pid"), decfile_style_names)
-def test_evtgen_name(name, pid):
+def test_evtgen_name(name, pid):  # noqa: ARG001
     assert Particle.from_evtgen_name(name).evtgen_name == name

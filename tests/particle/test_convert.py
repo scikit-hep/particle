@@ -18,6 +18,7 @@ DIR = Path(__file__).parent.resolve()
 
 
 def test_get_from_pdg_mcd():
-    with (DIR / "../data/test_PDG_mcd_file_duplicates.mcd").open() as f:
-        with pytest.raises(AssertionError):
-            get_from_pdg_mcd(f)
+    with (DIR / "../data/test_PDG_mcd_file_duplicates.mcd").open() as f, pytest.raises(
+        AssertionError
+    ):
+        get_from_pdg_mcd(f)

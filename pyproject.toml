@@ -137,6 +137,7 @@ messages_control.disable = [
     "too-many-statements",
     "unsubscriptable-object",
     "unsupported-assignment-operation",
+    "unused-argument", # Handled by Ruff
     "wrong-import-position",
 ]
 
@@ -168,6 +169,7 @@ ignore = [
     "RUF001", # Ambiguous unicode
     "RUF002", # Ambiguous unicode docstring
     "PLR",    # Design related pylint codes
+    "PT013",  # Importing approx from pytest is fine
 ]
 target-version = "py37"
 src = ["src"]

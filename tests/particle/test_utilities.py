@@ -58,4 +58,5 @@ def test_greek_letter_name_to_unicode():
     """
     with pytest.raises(KeyError):
         _ = greek_letter_name_to_unicode("Lambda")
+    with pytest.raises(KeyError):
         _ = greek_letter_name_to_unicode("NonExistent")
