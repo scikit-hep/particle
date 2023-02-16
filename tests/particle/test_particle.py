@@ -89,7 +89,7 @@ def test_keyword_style_search_with_except_catch():
 
 
 def test_keyword_lambda_style_search():
-    particles = Particle.findall(pdg_name=lambda x: "p" == x)
+    particles = Particle.findall(pdg_name=lambda x: x == "p")
     assert len(particles) == 4
     assert 2212 in particles
     assert -2212 in particles
@@ -211,10 +211,10 @@ def test_int_compare():
     assert Particle.from_pdgid(211) >= 0
     assert Particle.from_pdgid(-211) <= 0
 
-    assert 0 < Particle.from_pdgid(211)
-    assert 0 > Particle.from_pdgid(-211)
-    assert 0 <= Particle.from_pdgid(211)
-    assert 0 >= Particle.from_pdgid(-211)
+    assert Particle.from_pdgid(211) > 0
+    assert Particle.from_pdgid(-211) < 0
+    assert Particle.from_pdgid(211) >= 0
+    assert Particle.from_pdgid(-211) <= 0
 
 
 def test_string():
@@ -286,9 +286,9 @@ def test_P_consistency_mesons():
         elif _digit(p.pdgid, Location.N) == 9:
             continue
         elif p.pdgid == 22:  # Special case of the photon
-            assert p.P == -1
+            assert -1 == p.P
         else:
-            assert p.P == (-1) ** (p.L + 1)
+            assert (-1) ** (p.L + 1) == p.P
 
 
 def test_P_consistency_baryons():
@@ -303,19 +303,19 @@ def test_P_consistency_baryons():
     pdgids_baryons_defined_P = [
         pdgid(b)
         for b in Particle.findall(
-            lambda p: p.P != Parity.u and p.pdgid.is_baryon and p.pdgid > 0
+            lambda p: Parity.u != p.P and p.pdgid.is_baryon and p.pdgid > 0
         )
     ]
 
     pdgids_baryons_undefined_P = [
         pdgid(b)
         for b in Particle.findall(
-            lambda p: p.P == Parity.u and p.pdgid.is_baryon and p.pdgid > 0
+            lambda p: Parity.u == p.P and p.pdgid.is_baryon and p.pdgid > 0
         )
     ]
 
     for pdgid in pdgids_baryons_defined_P:
-        assert Particle.from_pdgid(pdgid).P == -Particle.from_pdgid(-pdgid).P
+        assert -Particle.from_pdgid(-pdgid).P == Particle.from_pdgid(pdgid).P
 
     for pdgid in pdgids_baryons_undefined_P:
         assert Particle.from_pdgid(pdgid).P == Particle.from_pdgid(-pdgid).P
@@ -336,11 +336,11 @@ def test_C_consistency():
         elif _digit(p.pdgid, Location.N) == 9:
             continue
         elif p.pdgid == 22:  # Special case of the photon
-            assert p.C == -1
+            assert -1 == p.C
         elif p.pdgid in [130, 310]:  # Special case of the KS and KL
-            assert p.C == Parity.u
+            assert Parity.u == p.C
         else:
-            assert p.C == (-1) ** (p.L + p.S)
+            assert (-1) ** (p.L + p.S) == p.C
 
 
 checklist_describe = (
@@ -366,7 +366,7 @@ checklist_describe = (
 )
 
 
-@pytest.mark.parametrize("pid,description", checklist_describe)
+@pytest.mark.parametrize(("pid", "description"), checklist_describe)
 def test_describe(pid, description):
     part = Particle.from_pdgid(pid)
     assert description in part.describe()
@@ -438,7 +438,7 @@ checklist_html_name = (
 )
 
 
-@pytest.mark.parametrize("pid,html_name", checklist_html_name)
+@pytest.mark.parametrize(("pid", "html_name"), checklist_html_name)
 def test_html_name(pid, html_name):
     particle = Particle.from_pdgid(pid)
 
@@ -463,7 +463,7 @@ checklist_is_self_conjugate = (
 )
 
 
-@pytest.mark.parametrize("pid,is_self_conjugate", checklist_is_self_conjugate)
+@pytest.mark.parametrize(("pid", "is_self_conjugate"), checklist_is_self_conjugate)
 def test_is_self_conjugate(pid, is_self_conjugate):
     particle = Particle.from_pdgid(pid)
 
@@ -507,7 +507,7 @@ checklist_is_name_barred = (
 )
 
 
-@pytest.mark.parametrize("pid,has_bar", checklist_is_name_barred)
+@pytest.mark.parametrize(("pid", "has_bar"), checklist_is_name_barred)
 def test_is_name_barred(pid, has_bar):
     particle = Particle.from_pdgid(pid)
 
@@ -582,7 +582,7 @@ spin_type_classification = (
 )
 
 
-@pytest.mark.parametrize("pid,stype", spin_type_classification)
+@pytest.mark.parametrize(("pid", "stype"), spin_type_classification)
 def test_spin_type(pid, stype):
     particle = Particle.from_pdgid(pid)
 
@@ -612,11 +612,11 @@ checklist_isospin = (
 )
 
 
-@pytest.mark.parametrize("pid,isospin", checklist_isospin)
+@pytest.mark.parametrize(("pid", "isospin"), checklist_isospin)
 def test_isospin(pid, isospin):
     particle = Particle.from_pdgid(pid)
 
-    assert particle.I == isospin  # noqa: E741
+    assert isospin == particle.I
 
 
 def test_default_particle():
@@ -678,7 +678,7 @@ ampgen_style_names = (
 )
 
 
-@pytest.mark.parametrize("name,pid", ampgen_style_names)
+@pytest.mark.parametrize(("name", "pid"), ampgen_style_names)
 def test_ampgen_style_names(name, pid):
     particle = Particle.from_string(name)
 
@@ -739,11 +739,11 @@ decfile_style_names = (
 )
 
 
-@pytest.mark.parametrize("name,pid", decfile_style_names)
+@pytest.mark.parametrize(("name", "pid"), decfile_style_names)
 def test_decfile_style_names(name, pid):
     assert Particle.from_evtgen_name(name).pdgid == pid
 
 
-@pytest.mark.parametrize("name,pid", decfile_style_names)
+@pytest.mark.parametrize(("name", "pid"), decfile_style_names)
 def test_evtgen_name(name, pid):
     assert Particle.from_evtgen_name(name).evtgen_name == name

@@ -149,20 +149,20 @@ def get_from_pdg_extended(
         return lambda x: mapping[x.strip()]
 
     # Convert each column from text to appropriate data type
-    PDG_converters = dict(
-        Charge=unmap(Charge_mapping),
-        G=unmap(Parity_mapping),
-        P=unmap(Parity_mapping),
-        C=unmap(Parity_mapping),
-        Anti=unmap(Inv_mapping),
-        Rank=lambda x: int(x.strip()) if x.strip() else 0,
-        ID=lambda x: int(x.strip()) if x.strip() else -1,
-        Status=unmap(Status_mapping),
-        Name=lambda x: x.strip(),
-        I=lambda x: x.strip(),  # noqa: E741
-        J=lambda x: x.strip(),
-        Quarks=lambda x: x.strip(),
-    )
+    PDG_converters = {
+        "Charge": unmap(Charge_mapping),
+        "G": unmap(Parity_mapping),
+        "P": unmap(Parity_mapping),
+        "C": unmap(Parity_mapping),
+        "Anti": unmap(Inv_mapping),
+        "Rank": lambda x: int(x.strip()) if x.strip() else 0,
+        "ID": lambda x: int(x.strip()) if x.strip() else -1,
+        "Status": unmap(Status_mapping),
+        "Name": lambda x: x.strip(),
+        "I": lambda x: x.strip(),
+        "J": lambda x: x.strip(),
+        "Quarks": lambda x: x.strip(),
+    }
 
     with filter_file(filename) as file_object:
         # Read in the table, apply the converters, add names, ignore comments

@@ -514,9 +514,15 @@ def has_fundamental_anti(pdgid: PDGID_TYPE) -> bool:
 
     # Check PDGIDs from 1 to 79
     _cp_conjugates = {21, 22, 23, 25, 32, 33, 35, 36, 39, 40, 43}
-    _unassigned = (
-        [9, 10, 19, 20, 26] + list(range(26, 32)) + list(range(45, 80))
-    )  # not in conversion.csv
+    _unassigned = [
+        9,
+        10,
+        19,
+        20,
+        26,
+        *list(range(26, 32)),
+        *list(range(45, 80)),
+    ]  # not in conversion.csv
     if (1 <= fid <= 79) and fid not in _cp_conjugates:
         return fid not in _unassigned
 
@@ -945,9 +951,8 @@ def _has_quark_q(pdgid: PDGID_TYPE, q: int) -> bool:
         for loc in range(6, 1, -1):
             if _digit(pdgid, loc) == 0:
                 iz = loc
-            elif loc != iz - 1:
-                if _digit(pdgid, loc) == q:
-                    return True
+            elif loc != iz - 1 and _digit(pdgid, loc) == q:
+                return True
             # ignore squark or gluino
         return False
 
