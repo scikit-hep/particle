@@ -173,7 +173,7 @@ def test_is_sm_lepton(PDGIDs):
 
 def _get_mesons(PDGIDs):
     """Trivial helper to collect and return all mesons."""
-    _mesons = (
+    return (
         PDGIDs.jpsi,
         PDGIDs.psi_2S,
         PDGIDs.psi_3770,
@@ -224,7 +224,6 @@ def _get_mesons(PDGIDs):
         PDGIDs.RPlus_TTildeDbar,
         PDGIDs.R0_GTildeG,
     )
-    return _mesons
 
 
 def _get_non_mesons(PDGIDs):

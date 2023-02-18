@@ -70,10 +70,6 @@ Homepage = "https://github.com/scikit-hep/particle"
 version.source = "vcs"
 build.hooks.vcs.version-file = "src/particle/version.py"
 
-[tool.isort]
-profile = "black"
-add_imports = ["from __future__ import annotations"]
-
 
 [tool.mypy]
 warn_unused_configs = true
@@ -141,5 +137,50 @@ messages_control.disable = [
     "too-many-statements",
     "unsubscriptable-object",
     "unsupported-assignment-operation",
+    "unused-argument", # Handled by Ruff
     "wrong-import-position",
 ]
+
+
+[tool.ruff]
+select = [
+    "E", "F", "W", # flake8
+    "B", "B904",   # flake8-bugbear
+    "I",           # isort
+    "ARG",         # flake8-unused-arguments
+    "C4",          # flake8-comprehensions
+    "ICN",         # flake8-import-conventions
+    "ISC",         # flake8-implicit-str-concat
+    "PGH",         # pygrep-hooks
+    "PIE",         # flake8-pie
+    "PL",          # pylint
+    "PT",          # flake8-pytest-style
+    "RET",         # flake8-return
+    "RUF",         # Ruff-specific
+    "SIM",         # flake8-simplify
+    "T20",         # flake8-print
+    "UP",          # pyupgrade
+    "YTT",         # flake8-2020
+]
+ignore = [
+    "B905",
+    "E402",
+    "E501",
+    "RUF001", # Ambiguous unicode
+    "RUF002", # Ambiguous unicode docstring
+    "PLR",    # Design related pylint codes
+    "PT013",  # Importing approx from pytest is fine
+]
+target-version = "py37"
+src = ["src"]
+unfixable = [
+  "T20",  # Removes print statements
+  "F841", # Removes unused variables
+]
+isort.required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.mccabe]
+max-complexity = 24
+
+[tool.ruff.per-file-ignores]
+"src/particle/__main__.py" = ["T20"]

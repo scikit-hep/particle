@@ -514,9 +514,15 @@ def has_fundamental_anti(pdgid: PDGID_TYPE) -> bool:
 
     # Check PDGIDs from 1 to 79
     _cp_conjugates = {21, 22, 23, 25, 32, 33, 35, 36, 39, 40, 43}
-    _unassigned = (
-        [9, 10, 19, 20, 26] + list(range(26, 32)) + list(range(45, 80))
-    )  # not in conversion.csv
+    _unassigned = [
+        9,
+        10,
+        19,
+        20,
+        26,
+        *list(range(26, 32)),
+        *list(range(45, 80)),
+    ]  # not in conversion.csv
     if (1 <= fid <= 79) and fid not in _cp_conjugates:
         return fid not in _unassigned
 
@@ -674,7 +680,7 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
             charge = 6
     elif _digit(pdgid, Location.Nj) == 0:  # KL, KS, or undefined
         return 0
-    elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9):  # mesons
+    elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9):  # noqa: RET505  # mesons
         if q2 in {3, 5}:
             charge = ch100[q3 - 1] - ch100[q2 - 1]
         else:
@@ -945,9 +951,8 @@ def _has_quark_q(pdgid: PDGID_TYPE, q: int) -> bool:
         for loc in range(6, 1, -1):
             if _digit(pdgid, loc) == 0:
                 iz = loc
-            elif loc != iz - 1:
-                if _digit(pdgid, loc) == q:
-                    return True
+            elif loc != iz - 1 and _digit(pdgid, loc) == q:
+                return True
             # ignore squark or gluino
         return False
 

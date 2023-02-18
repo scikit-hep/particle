@@ -9,6 +9,7 @@ This script should be kept, so the table won't need to be hand-edited in the fut
 """
 from __future__ import annotations
 
+import contextlib
 import csv
 import datetime as dt
 import pathlib
@@ -158,12 +159,10 @@ def dump_pdgid_to_corsika7(file: pathlib.Path | None = None) -> None:
     for a in range(2, 56 + 1):
         for z in range(0, a + 1):
             corsikaid = a * 100 + z
-            try:
+            with contextlib.suppress(ParticleNotFound):
                 corsica_pdg_id.append(
                     (corsikaid, int(Particle.from_nucleus_info(a=a, z=z).pdgid))
                 )
-            except ParticleNotFound:
-                pass
 
     if file is None:
         file = (

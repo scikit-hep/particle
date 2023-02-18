@@ -206,7 +206,7 @@ class Particle:
     latex_name: str = attr.ib("Unknown")
 
     def __repr__(self) -> str:
-        return f'<{self.__class__.__name__}: name="{self}", pdgid={int(self.pdgid)}, mass={self._str_mass()}>'  # noqa: B907
+        return f'<{self.__class__.__name__}: name="{self}", pdgid={int(self.pdgid)}, mass={self._str_mass()}>'
 
     # Ordered loaded table of entries
     _table: list[Particle] | None = None
@@ -559,7 +559,7 @@ class Particle:
         else:
             cls._table_names.append(str(filename))
             assert not isinstance(filename, Traversable)
-            open_file = open(filename, encoding="utf_8")
+            open_file = open(filename, encoding="utf_8")  # noqa: SIM115
 
         with open_file as f:
             r = csv.DictReader(line for line in f if not line.startswith("#"))
@@ -718,9 +718,9 @@ class Particle:
 
         J = int(self.J)
         if J in {0, 1, 2}:
-            if self.P == Parity.p:
+            if Parity.p == self.P:
                 return (SpinType.Scalar, SpinType.Axial, SpinType.Tensor)[J]
-            if self.P == Parity.m:
+            if Parity.m == self.P:
                 spin_types = (
                     SpinType.PseudoScalar,
                     SpinType.Vector,
@@ -1323,6 +1323,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             vals = [val for val in vals if mat["mass"] in val.latex_name]
 
         if len(vals) > 1:
-            vals = sorted(vals)
+            return sorted(vals)
 
         return vals
