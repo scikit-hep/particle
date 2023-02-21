@@ -114,7 +114,7 @@ def filter_file(fileobject: StringOrIO) -> TextIO:
     stream = StringIO()
     for line in fileobject:
         # We need to strip the unicode byte ordering if present before checking for *
-        if not line.lstrip("\ufeff").lstrip().startswith("*"):  # noqa: B005
+        if not line.lstrip("\ufeff").lstrip().startswith("*"):
             stream.write(line)
     stream.seek(0)
 
