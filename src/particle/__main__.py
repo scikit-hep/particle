@@ -45,7 +45,7 @@ def main() -> None:
     if "particle" in opts:
         for cand in opts.particle:
             if hasattr(cand, "decode"):
-                cand = cand.decode("utf-8")
+                cand = cand.decode("utf-8")  # noqa: PLW2901
 
             try:
                 value = int(cand)
