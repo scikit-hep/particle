@@ -167,9 +167,9 @@ def latex_to_html_name(name: str) -> str:
     name = re.sub(r"\\prime(.*?)", r"&#8242;", name)
     name = re.sub(r"\\mathrm\{(.*?)\}", r"\1", name)
     name = re.sub(r"\\left\[(.*?)\\right\]", r"[\1] ", name)
-    for gl in _list_name_greek_letters:
+    for gl_orig in _list_name_greek_letters:
         # Deal with unicode name "feature", see _list_name_greek_letters
-        gl = gl.replace("amda", "ambda")
+        gl = gl_orig.replace("amda", "ambda")
         # Special formatting since for example
         # f"{hex(html.entities.name2codepoint['Delta'])}" gives '0x394' whereas HTML needs 'x0394',
         # as in '&#x0394;', equivalent to '&Delta;'

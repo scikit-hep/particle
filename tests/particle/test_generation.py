@@ -38,9 +38,9 @@ def test_generate(tmp_path):
 
     particle2022_data = data.basepath / "particle2022.csv"
     with particle2022.open() as src, particle2022_data.open() as res:
-        src = [line for line in src.readlines() if not line.startswith("#")]
-        res = [line for line in res.readlines() if not line.startswith("#")]
-        assert src == res
+        src_filtered = [line for line in src.readlines() if not line.startswith("#")]
+        res_filtered = [line for line in res.readlines() if not line.startswith("#")]
+        assert src_filtered == res_filtered
 
 
 @pytest.mark.parametrize("filename", FILES)
