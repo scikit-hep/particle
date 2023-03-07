@@ -83,7 +83,7 @@ For the sake of example, quarkonia can be specified with the following user-defi
 .. code-block:: python
 
     >>> is_heavy_flavor = lambda x: has_charm(x) or has_bottom(x) or has_top(x)
-    >>> is_quarkonium = lambda x: is_meson(x) and three_charge(x)==0 and is_heavy_flavor(x).
+    >>> is_quarkonium = lambda x: is_meson(x) and is_heavy_flavor(x) and Particle.from_pdgid(x).is_self_conjugate
 
 PDG ID literals provide (``PDGID`` class) aliases for all particles loaded, with easily recognisable names.
 For example:
