@@ -148,7 +148,7 @@ select = [
     "B", "B904",   # flake8-bugbear
     "I",           # isort
     "ARG",         # flake8-unused-arguments
-    "C4",          # flake8-comprehensions
+    "C40",         # flake8-comprehensions
     "ICN",         # flake8-import-conventions
     "ISC",         # flake8-implicit-str-concat
     "PGH",         # pygrep-hooks

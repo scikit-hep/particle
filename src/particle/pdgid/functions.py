@@ -694,7 +694,7 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
 
     if charge is not None and int(pdgid) < 0:
         charge = -charge
-    return charge  # noqa: RET504
+    return charge
 
 
 def j_spin(pdgid: PDGID_TYPE) -> int | None:

@@ -57,7 +57,7 @@ def test_csv_file_has_latex(filename):
     particle_data = data.basepath / filename
     p = pd.read_csv(particle_data, comment="#")
 
-    assert p[p.Latex == ""].empty
+    assert p[p.Latex == ""].empty  # noqa: PLC1901
 
 
 check_nucleons = (
