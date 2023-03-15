@@ -12,6 +12,7 @@ import csv
 from copy import copy
 from functools import total_ordering
 from typing import Any, Callable, Iterable, Iterator, Sequence, SupportsInt, TypeVar
+from deprecated import deprecated
 
 # External dependencies
 import attr
@@ -1242,7 +1243,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         version="0.21",
         reason="This method is deprecated and will be removed from version 0.22.0. Use finditer or findall instead.",
     )
-    def from_string(cls: type[Self], name: str) -> list[Self]:
+    def from_string(cls: type[Self], name: str) -> Self:
         "Get a particle from a PDG style name - returns the best match."
         matches = cls.from_string_list(name)
         if matches:
