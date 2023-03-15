@@ -12,10 +12,10 @@ import csv
 from copy import copy
 from functools import total_ordering
 from typing import Any, Callable, Iterable, Iterator, Sequence, SupportsInt, TypeVar
-from deprecated import deprecated
 
 # External dependencies
 import attr
+from deprecated import deprecated
 from hepunits.constants import c_light
 
 from .. import data
