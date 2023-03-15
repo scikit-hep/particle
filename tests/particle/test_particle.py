@@ -682,7 +682,8 @@ ampgen_style_names = (
 
 @pytest.mark.parametrize(("name", "pid"), ampgen_style_names)
 def test_ampgen_style_names(name, pid):
-    particle = Particle.from_string(name)
+    with pytest.deprecated_call():
+        particle = Particle.from_string(name)
 
     assert particle.pdgid == pid
     assert particle == pid
