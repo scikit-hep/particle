@@ -1,8 +1,52 @@
 Changelog
 =========
 
+Version under preparation
+-------------------------
+
+- Data CSV files:
+  - Version 12 of package data files made default:
+    - Information on nuclei updated based on masses taken from package `periodictable` version 1.6.1.
+    - Several Corsika7 IDs corrected.
+    - Otherwise same as version 11 files.
+- Tests:
+  - Doctests run separately in the CI.
+
+
+Version 0.21.2
+--------------
+
+January 30th, 2023
+
+- Classes for MC particle identification codes and converters:
+  - Improvements and fixes in Corsika7 module.
+  - Full test coverage for Corsika7 module.
+  - Better test coverage for PDG ID related functions.
+- Tests:
+  - Updates to pre-commit hooks.
+
+
+Version 0.21.1
+--------------
+
+January 4th, 2023
+
+- `Particle` class and submodules:
+  - Better test coverage.
+- `PDGID` class method and related standalone functions:
+  - Minor code simplifications.
+  - Significant improvements to test coverage.
+- Documentation:
+  - README: info added on how to create user-defined particles.
+- Tests:
+  - Various improvements to the CI.
+  - Updates to pre-commit hooks and CI YAML files.
+
+
 Version 0.21.0
 --------------
+
+November 8th, 2022
 
 - Data files:
   - Added the 2022 PDG data table file, now default.
@@ -25,8 +69,11 @@ Version 0.21.0
   - Updates to pre-commit hooks and CI YAML files.
   - Various improvements to the CI.
 
+
 Version 0.20.1
 --------------
+
+March 29th, 2022
 
 - `Particle` class:
   - More tests of PDGID functions for special particles.
@@ -41,6 +88,8 @@ Version 0.20.1
 
 Version 0.20.0
 --------------
+
+January 15th, 2022
 
 **First Python 3 (3.6+) only version.**
 

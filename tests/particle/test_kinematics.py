@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -20,9 +20,9 @@ def test_valid_width_lifetime_conversions():
 
 
 def test_invalid_width_lifetime_conversions():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Input provided, -1 <= 0!"):
         lifetime_to_width(-1)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Input provided, -1 <= 0!"):
         width_to_lifetime(-1)
 
     assert lifetime_to_width(0) == float("inf")

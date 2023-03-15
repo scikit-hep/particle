@@ -83,7 +83,7 @@ For the sake of example, quarkonia can be specified with the following user-defi
 .. code-block:: python
 
     >>> is_heavy_flavor = lambda x: has_charm(x) or has_bottom(x) or has_top(x)
-    >>> is_quarkonium = lambda x: is_meson(x) and three_charge(x)==0 and is_heavy_flavor(x).
+    >>> is_quarkonium = lambda x: is_meson(x) and is_heavy_flavor(x) and Particle.from_pdgid(x).is_self_conjugate
 
 PDG ID literals provide (``PDGID`` class) aliases for all particles loaded, with easily recognisable names.
 For example:
@@ -273,8 +273,65 @@ If you want a non-default data file distributed with the package just proceed as
 
     >>> from particle import data
     >>> Particle.load_table(data.basepath / "particle2018.csv"))
-    >>> Particle.load_table(data.basepath / "nuclei2020.csv"), append=True)  # I still want nuclei info
+    >>> Particle.load_table(data.basepath / "nuclei2022.csv"), append=True)  # I still want nuclei info
     >>> Particle.table_names()  # list the loaded tables
+
+
+Advanced: how to create user-defined particles
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+There are situations where it may be handy to create user-defined particles.
+But do so with care and having in mind the limitations, many of which are discussed or exemplified below!
+
+The simplest "particle" one may create is effectively a placeholder with no real information stored:
+
+.. code-block:: python
+
+    >>> # A Particle instance the simplest possible. Contains basically no info
+    >>> p = Particle.empty()
+    >>> p
+    <Particle: name="Unknown", pdgid=0, mass=None>
+    >>>
+    >>> print(p.describe())
+    Name: Unknown
+
+A more useful particle definition will likely involve at least a name and a PDG ID.
+It is important to keep in mind that a meaningful PDG ID encodes by construction internal quantum numbers
+and other information. As such, the definition of a particle with a "random" PDG ID
+will result in a particle with undefined and/or wrong properties such as quantum numbers or the quality of being a meson.
+
+.. code-block:: python
+
+    >>> p2 = Particle(9912345, 'MyPentaquark')
+    >>> p2
+    <Particle: name="MyPentaquark", pdgid=9912345, mass=None>
+    >>>
+    >>> p2.pdgid.is_pentaquark
+    False
+    >>> print(p2.describe())  # J=2 is an example of something effectively encoded in the PDG ID.
+    Name: MyPentaquark   ID: 9912345      Latex: $Unknown$
+    Mass  = None
+    Width = None
+    Q (charge)        = None    J (total angular) = 2.0      P (space parity) = None
+    C (charge parity) = None    I (isospin)       = None     G (G-parity)     = None
+        Antiparticle name: MyPentaquark (antiparticle status: Same)
+
+A yet more sophisticated definition:
+
+.. code-block:: python
+
+    >>> p3 = Particle(pdgid=9221132,pdg_name='Theta',three_charge=3,latex_name='\Theta^{+}')
+    >>> p3
+    <Particle: name="Theta", pdgid=9221132, mass=None>
+    >>>
+    >>> print(p3.describe())
+    Name: Theta          ID: 9221132      Latex: $\Theta^{+}$
+    Mass  = None
+    Width = None
+    Q (charge)        = +       J (total angular) = 0.5      P (space parity) = None
+    C (charge parity) = None    I (isospin)       = None     G (G-parity)     = None
+        SpinType: SpinType.NonDefined
+        Antiparticle name: Theta (antiparticle status: Same)
 
 
 Advanced: Conversion
@@ -405,8 +462,11 @@ similarly to what is available in the standard (i.e. non-experiment-specific) co
 Acknowledgements
 ----------------
 
-Support for this work was provided by the National Science Foundation
-cooperative agreement OAC-1450377 (DIANA/HEP) and OAC-1836650 (IRIS-HEP).
+The UK Science and Technology Facilities Council (STFC) and the University of Liverpool
+provide funding for Eduardo Rodrigues (2020-) to work on this project part-time.
+
+Support for this work was provided by the National Science Foundation cooperative agreement OAC-1450377 (DIANA/HEP) in 2016-2019
+and has been provided by OAC-1836650 (IRIS-HEP) since 2019.
 Any opinions, findings, conclusions or recommendations expressed in this material
 are those of the authors and do not necessarily reflect the views of the National Science Foundation.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -9,6 +9,7 @@ This script should be kept, so the table won't need to be hand-edited in the fut
 """
 from __future__ import annotations
 
+import contextlib
 import csv
 import datetime as dt
 import pathlib
@@ -92,18 +93,18 @@ corsica_pdg_id = [
     (157, common_particles["Omega_c_0_bar"]),
     (119, common_particles["D_0_bar"]),
     (120, common_particles["D_s_plus"]),
-    (161, common_particles["Sigma_c_2455_pp"]),
+    (161, common_particles["Sigma_c_2520_pp"]),
     (121, common_particles["D_s_minus"]),
-    (162, common_particles["Sigma_c_2455_plus"]),
+    (162, common_particles["Sigma_c_2520_plus"]),
     (122, common_particles["eta_c_1S"]),
-    (163, common_particles["Sigma_c_2455_0"]),
+    (163, common_particles["Sigma_c_2520_0"]),
     (123, common_particles["Dst_2007_0"]),
     (124, common_particles["Dst_2010_plus"]),
-    (171, common_particles["Sigma_c_2455_mm_bar"]),
+    (171, common_particles["Sigma_c_2520_mm_bar"]),
     (125, common_particles["Dst_2010_minus"]),
-    (172, common_particles["Sigma_c_2455_minus_bar"]),
+    (172, common_particles["Sigma_c_2520_minus_bar"]),
     (126, common_particles["Dst_2007_0_bar"]),
-    (173, common_particles["Sigma_c_2455_0_bar"]),
+    (173, common_particles["Sigma_c_2520_0_bar"]),
     (127, common_particles["D_sst_plus"]),
     (128, common_particles["D_sst_minus"]),
     (176, common_particles["B_0"]),
@@ -135,7 +136,7 @@ corsica_pdg_id = [
     (190, common_particles["Lambda_b_0_bar"]),
     (144, common_particles["Xi_cp_0"]),
     (191, common_particles["Sigma_b_plus_bar"]),
-    (145, common_particles["Sigma_c_2455_0"]),
+    (145, common_particles["Omega_c_0"]),
     (192, common_particles["Sigma_b_minus_bar"]),
     (193, common_particles["Xi_b_0_bar"]),
     (149, common_particles["Lambda_c_minus_bar"]),
@@ -158,12 +159,10 @@ def dump_pdgid_to_corsika7(file: pathlib.Path | None = None) -> None:
     for a in range(2, 56 + 1):
         for z in range(0, a + 1):
             corsikaid = a * 100 + z
-            try:
+            with contextlib.suppress(ParticleNotFound):
                 corsica_pdg_id.append(
                     (corsikaid, int(Particle.from_nucleus_info(a=a, z=z).pdgid))
                 )
-            except ParticleNotFound:
-                pass
 
     if file is None:
         file = (

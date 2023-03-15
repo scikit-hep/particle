@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -347,14 +347,14 @@ class Particle:
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'], particle=False)
         >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
-        =======  ======  ===============  ========
-          pdgid  name               mass    charge
-        =======  ======  ===============  ========
-            -11  e+         0.5109989461         1
-            -13  mu+      105.6583745            1
-            -15  tau+    1776.86                 1
-            -17  tau'+                           1
-        =======  ======  ===============  ========
+        =======  ======  =============  ========
+          pdgid  name             mass    charge
+        =======  ======  =============  ========
+            -11  e+         0.51099895         1
+            -13  mu+      105.6583755          1
+            -15  tau+    1776.86               1
+            -17  tau'+                         1
+        =======  ======  =============  ========
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton, pdg_name='tau', exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
         >>> print(tabulate(query_as_list, headers='firstrow'))
@@ -546,8 +546,8 @@ class Particle:
         if filename is None:
             with data.basepath.joinpath("particle2022.csv").open() as fa:
                 cls.load_table(fa, append=append, _name="particle2022.csv")
-            with data.basepath.joinpath("nuclei2020.csv").open() as fb:
-                cls.load_table(fb, append=True, _name="nuclei2020.csv")
+            with data.basepath.joinpath("nuclei2022.csv").open() as fb:
+                cls.load_table(fb, append=True, _name="nuclei2022.csv")
             return
         if isinstance(filename, HasRead):
             tmp_name = _name or filename.name
@@ -559,7 +559,7 @@ class Particle:
         else:
             cls._table_names.append(str(filename))
             assert not isinstance(filename, Traversable)
-            open_file = open(filename, encoding="utf_8")
+            open_file = open(filename, encoding="utf_8")  # noqa: SIM115
 
         with open_file as f:
             r = csv.DictReader(line for line in f if not line.startswith("#"))
@@ -718,9 +718,9 @@ class Particle:
 
         J = int(self.J)
         if J in {0, 1, 2}:
-            if self.P == Parity.p:
+            if Parity.p == self.P:
                 return (SpinType.Scalar, SpinType.Axial, SpinType.Tensor)[J]
-            if self.P == Parity.m:
+            if Parity.m == self.P:
                 spin_types = (
                     SpinType.PseudoScalar,
                     SpinType.Vector,
@@ -999,7 +999,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             )  # throws an error if < 1 or > 1 particle is found
             return particle
         except ValueError:
-            raise ParticleNotFound(f'Could not find name "{name}"') from None
+            raise ParticleNotFound(f"Could not find name {name!r}") from None
 
     @classmethod
     def from_evtgen_name(cls: type[Self], name: str) -> Self:
@@ -1191,7 +1191,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         particle: bool | None = None,
         **search_terms: Any,
     ) -> list[Self]:
-
         """
         Search for a particle, returning a list of candidates.
 
@@ -1213,15 +1212,15 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
            >>> # Returns proton and antiproton only
            >>> Particle.findall(pdg_name='p')    # doctest: +NORMALIZE_WHITESPACE
-           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
-            <Particle: name="p~", pdgid=-2212, mass=938.272081 ± 0.000006 MeV>,
-            <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>,
-            <Particle: name="p~", pdgid=-1000010010, mass=938.272081 ± 0.000006 MeV>]
+           [<Particle: name="p", pdgid=2212, mass=938.2720882 ± 0.0000003 MeV>,
+            <Particle: name="p~", pdgid=-2212, mass=938.2720882 ± 0.0000003 MeV>,
+            <Particle: name="p", pdgid=1000010010, mass=938.2720882 ± 0.0000003 MeV>,
+            <Particle: name="p~", pdgid=-1000010010, mass=938.2720882 ± 0.0000003 MeV>]
 
            >>> # Returns proton only
            >>> Particle.findall(pdg_name='p', particle=True)    # doctest: +NORMALIZE_WHITESPACE
-           [<Particle: name="p", pdgid=2212, mass=938.272081 ± 0.000006 MeV>,
-           <Particle: name="p", pdgid=1000010010, mass=938.272081 ± 0.000006 MeV>]
+           [<Particle: name="p", pdgid=2212, mass=938.2720882 ± 0.0000003 MeV>,
+           <Particle: name="p", pdgid=1000010010, mass=938.2720882 ± 0.0000003 MeV>]
 
         Versatile searches require a (lambda) function as argument:
 
@@ -1291,7 +1290,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def _from_group_dict_list(cls: type[Self], mat: dict[str, Any]) -> list[Self]:
-
         kw: dict[str, Any] = {
             "particle": False
             if mat["bar"] is not None
@@ -1333,6 +1331,6 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             vals = [val for val in vals if mat["mass"] in val.latex_name]
 
         if len(vals) > 1:
-            vals = sorted(vals)
+            return sorted(vals)
 
         return vals

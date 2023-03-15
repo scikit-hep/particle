@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -45,7 +45,7 @@ def main() -> None:
     if "particle" in opts:
         for cand in opts.particle:
             if hasattr(cand, "decode"):
-                cand = cand.decode("utf-8")
+                cand = cand.decode("utf-8")  # noqa: PLW2901
 
             try:
                 value = int(cand)

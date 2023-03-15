@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -51,13 +51,13 @@ class Location(IntEnum):
 
 def is_valid(pdgid: PDGID_TYPE) -> bool:
     """Is it a valid PDG ID?"""
+    if is_gauge_boson_or_higgs(pdgid):  # test first since quickest check
+        return True
     if _fundamental_id(pdgid) != 0:  # function always returns a number >= 0
         return True
     if is_meson(pdgid):
         return True
     if is_baryon(pdgid):
-        return True
-    if is_gauge_boson_or_higgs(pdgid):
         return True
     if is_pentaquark(pdgid):
         return True
@@ -68,8 +68,6 @@ def is_valid(pdgid: PDGID_TYPE) -> bool:
     if is_dyon(pdgid):
         return True
     if is_diquark(pdgid):
-        return True
-    if is_pentaquark(pdgid):
         return True
     if is_generator_specific(pdgid):
         return True
@@ -149,8 +147,8 @@ def is_hadron(pdgid: PDGID_TYPE) -> bool:
         return True
     if is_baryon(pdgid):
         return True
-    if is_pentaquark(pdgid):
-        return True
+    # Irrelevant test since all pentaquarks are baryons!
+    # if is_pentaquark(pdgid): return True
     return bool(is_Rhadron(pdgid))
 
 
@@ -158,19 +156,23 @@ def is_meson(pdgid: PDGID_TYPE) -> bool:
     """Does this PDG ID correspond to a meson?"""
     if _extra_bits(pdgid) > 0:
         return False
-    if abspid(pdgid) <= 100:
+    aid = abspid(pdgid)
+    if aid <= 100:
         return False
     if 0 < int(_fundamental_id(pdgid)) <= 100:
         return False
     # Special IDs - K(L)0, ???, K(S)0
-    if abspid(pdgid) in {130, 210, 310}:
+    if aid in {130, 210, 310}:
         return True
     # Special IDs - B(L)0, B(sL)0, B(H)0, B(sH)0
-    if abspid(pdgid) in {150, 350, 510, 530}:
+    if aid in {150, 350, 510, 530}:
         return True
     # Special particles - reggeon, pomeron, odderon
     if int(pdgid) in {110, 990, 9990}:
         return True
+    # Generator-specific "particles" for GEANT tracking purposes
+    if aid in {998, 999}:
+        return False
     if (
         _digit(pdgid, Location.Nj) > 0
         and _digit(pdgid, Location.Nq3) > 0
@@ -188,11 +190,12 @@ def is_meson(pdgid: PDGID_TYPE) -> bool:
 
 def is_baryon(pdgid: PDGID_TYPE) -> bool:
     """Does this PDG ID correspond to a baryon?"""
-    if abspid(pdgid) <= 100:
+    aid = abspid(pdgid)
+    if aid <= 100:
         return False
     # Special case of proton and neutron:
     # needs to be checked first since _extra_bits(pdgid) > 0 for nuclei
-    if abs(int(pdgid)) in {1000000010, 1000010010}:
+    if aid in {1000000010, 1000010010}:
         return True
 
     if _extra_bits(pdgid) > 0:
@@ -202,7 +205,7 @@ def is_baryon(pdgid: PDGID_TYPE) -> bool:
         return False
 
     # Old codes for diffractive p and n (MC usage)
-    if abspid(pdgid) in {2110, 2210}:
+    if aid in {2110, 2210}:
         return True
 
     return (
@@ -214,7 +217,12 @@ def is_baryon(pdgid: PDGID_TYPE) -> bool:
 
 
 def is_diquark(pdgid: PDGID_TYPE) -> bool:
-    """Does this PDG ID correspond to a diquark?"""
+    """
+    Does this PDG ID correspond to a diquark?
+
+    Diquark IDs have 4-digit numbers +/- Nq1 Nq2 Nq3 Nj
+    with Nq1 >= Nq2 and Nq3 = 0.
+    """
     if _extra_bits(pdgid) > 0:
         return False
     if abspid(pdgid) <= 100:
@@ -249,9 +257,9 @@ def is_nucleus(pdgid: PDGID_TYPE) -> bool:
         A_pdgid = A(pdgid)
         Z_pdgid = Z(pdgid)
 
-        if A_pdgid is None or Z_pdgid is None:
-            return False
-        if A_pdgid >= abs(Z_pdgid):
+        # At this point neither A_pdgid nor Z_pdgid can be None,
+        # see the definitions of the A and Z functions
+        if not (A_pdgid is None or Z_pdgid is None) and (A_pdgid >= abs(Z_pdgid)):
             return True
     return False
 
@@ -261,7 +269,7 @@ def is_pentaquark(pdgid: PDGID_TYPE) -> bool:
     Does the PDG ID correspond to a pentaquark?
 
     Pentaquark IDs are of the form +/- 9 Nr Nl Nq1 Nq2 Nq3 Nj, where Nj = 2J + 1 gives the spin
-    and Nr Nl Nq1 Nq2 Nq3 denote the quark numbers in order Nr >= Nl >= Nq1 >= Nq2
+    and Nr Nl Nq1 Nq2 Nq3 denote the 5 quark numbers in order Nr >= Nl >= Nq1 >= Nq2
     and Nq3 gives the antiquark number.
     """
     if _extra_bits(pdgid) > 0:
@@ -449,7 +457,8 @@ def is_excited_quark_or_lepton(pdgid: PDGID_TYPE) -> bool:
     """
     Does this PDG ID correspond to an excited (composite) quark or lepton?
 
-    Excited (composite) quarks and leptons have N = 4 and Nr = 0.
+    Excited (composite) quarks and leptons have N = 4 and Nr = 0,
+    hence numbers of the form +/- 4 0 Nl Nq1 Nq2 Nq3 Nj.
     """
     if _extra_bits(pdgid) > 0:
         return False
@@ -505,9 +514,15 @@ def has_fundamental_anti(pdgid: PDGID_TYPE) -> bool:
 
     # Check PDGIDs from 1 to 79
     _cp_conjugates = {21, 22, 23, 25, 32, 33, 35, 36, 39, 40, 43}
-    _unassigned = (
-        [9, 10, 19, 20, 26] + list(range(26, 32)) + list(range(45, 80))
-    )  # not in conversion.csv
+    _unassigned = [
+        9,
+        10,
+        19,
+        20,
+        26,
+        *list(range(26, 32)),
+        *list(range(45, 80)),
+    ]  # not in conversion.csv
     if (1 <= fid <= 79) and fid not in _cp_conjugates:
         return fid not in _unassigned
 
@@ -646,9 +661,7 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
     if _extra_bits(pdgid) > 0:
         if is_nucleus(pdgid):  # ion
             Z_pdgid = Z(pdgid)
-            if Z_pdgid is None:
-                return None
-            return 3 * Z_pdgid
+            return None if Z_pdgid is None else 3 * Z_pdgid
         if is_Qball(pdgid):  # Qball
             charge = 3 * ((aid // 10) % 10000)
         else:  # this should never be reached in the present numbering scheme
@@ -690,12 +703,14 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
         return None
     if _fundamental_id(pdgid) > 0:
         fund = _fundamental_id(pdgid)
-        if 0 < fund < 7:
-            return 2  # 4th generation quarks not dealt with !
-        if fund == 9:
+        if 0 < fund < 7:  # 4th generation quarks not dealt with !
+            return 2
+        if (
+            fund == 9
+        ):  # Alternative ID for the gluon in codes for glueballs to allow a notation in close analogy with that of hadrons
             return 3
-        if 10 < fund < 17:
-            return 2  # 4th generation leptons not dealt with !
+        if 10 < fund < 17:  # 4th generation leptons not dealt with !
+            return 2
         if 20 < fund < 25:
             return 3
         return None
@@ -725,9 +740,6 @@ def S(pdgid: PDGID_TYPE) -> int | None:
       and None is returned too.
     """
     if not is_meson(pdgid):
-        return None
-
-    if not is_valid(pdgid):
         return None
 
     if (abspid(pdgid) // 1000000) % 10 == 9:
@@ -774,9 +786,6 @@ def L(pdgid: PDGID_TYPE) -> int | None:
       and None is returned too.
     """
     if not is_meson(pdgid):
-        return None
-
-    if not is_valid(pdgid):
         return None
 
     if (abspid(pdgid) // 1000000) % 10 == 9:
@@ -927,12 +936,14 @@ def _has_quark_q(pdgid: PDGID_TYPE, q: int) -> bool:
             return True  # Nuclei by construction contain up and down quarks
         if q == 3 and pdgid not in {2112, 2212}:
             return _digit(pdgid, Location.N8) > 0
-    if _extra_bits(pdgid) > 0:
-        return False
-    if _fundamental_id(pdgid) > 0:
-        return False
 
     if is_dyon(pdgid):
+        return False
+
+    if _extra_bits(pdgid) > 0:
+        return False
+
+    if _fundamental_id(pdgid) > 0:
         return False
 
     if is_Rhadron(pdgid):
@@ -940,9 +951,8 @@ def _has_quark_q(pdgid: PDGID_TYPE, q: int) -> bool:
         for loc in range(6, 1, -1):
             if _digit(pdgid, loc) == 0:
                 iz = loc
-            elif loc != iz - 1:
-                if _digit(pdgid, loc) == q:
-                    return True
+            elif loc != iz - 1 and _digit(pdgid, loc) == q:
+                return True
             # ignore squark or gluino
         return False
 

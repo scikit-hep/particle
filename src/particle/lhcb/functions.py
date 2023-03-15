@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -17,7 +17,7 @@ def to_lhcb_name(p: Particle) -> str:
     --------
     >>> p = Particle.from_pdgid(-531)
     >>> p
-    <Particle: name="B(s)~0", pdgid=-531, mass=5366.88 ± 0.14 MeV>
+    <Particle: name="B(s)~0", pdgid=-531, mass=5366.92 ± 0.10 MeV>
     >>> to_lhcb_name(p)
     'B_s~0'
     """
@@ -31,7 +31,7 @@ def from_lhcb_name(name: str) -> Particle:
     Examples
     --------
     >>> from_lhcb_name("B_s~0")
-    <Particle: name="B(s)~0", pdgid=-531, mass=5366.88 ± 0.14 MeV>
+    <Particle: name="B(s)~0", pdgid=-531, mass=5366.92 ± 0.10 MeV>
 
     Raises
     ------

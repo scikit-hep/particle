@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -31,9 +31,8 @@ possibilities = (
 )
 
 
-@pytest.mark.parametrize("value,err_u,err_l,test_str", possibilities)
+@pytest.mark.parametrize(("value", "err_u", "err_l", "test_str"), possibilities)
 def test_unc_printout(value, err_u, err_l, test_str):
-
     assert str_with_unc(value, err_u, err_l) == test_str
 
 
@@ -45,9 +44,8 @@ possibilities = (
 )
 
 
-@pytest.mark.parametrize("name,unicode_name", possibilities)
+@pytest.mark.parametrize(("name", "unicode_name"), possibilities)
 def test_latex_name_unicode(name, unicode_name):
-
     assert latex_name_unicode(name) == unicode_name
 
 
@@ -58,4 +56,5 @@ def test_greek_letter_name_to_unicode():
     """
     with pytest.raises(KeyError):
         _ = greek_letter_name_to_unicode("Lambda")
+    with pytest.raises(KeyError):
         _ = greek_letter_name_to_unicode("NonExistent")

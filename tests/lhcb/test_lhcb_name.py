@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -25,11 +25,11 @@ lhcb_style_names = (
 )
 
 
-@pytest.mark.parametrize("name,pid", lhcb_style_names)
+@pytest.mark.parametrize(("name", "pid"), lhcb_style_names)
 def test_from_lhcb_name(name, pid):
     assert from_lhcb_name(name).pdgid == pid
 
 
-@pytest.mark.parametrize("name,pid", lhcb_style_names)
+@pytest.mark.parametrize(("name", "pid"), lhcb_style_names)
 def test_to_lhcb_name(name, pid):
     assert to_lhcb_name(Particle.from_pdgid(pid)) == name

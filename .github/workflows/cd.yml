@@ -58,11 +58,11 @@ jobs:
         name: artifact
         path: dist
 
-    - uses: pypa/gh-action-pypi-publish@v1.5.2
+    - uses: pypa/gh-action-pypi-publish@v1.6.4
       with:
         password: ${{ secrets.pypi_password }}
 
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: zipapp
         path: zipapp

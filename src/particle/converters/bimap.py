@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -85,7 +85,7 @@ class BiMap(Generic[A, B]):
         elif isinstance(filename, HasOpen):
             file_object = filename.open()
         else:
-            file_object = open(filename, encoding="utf_8")  # type: ignore[arg-type]
+            file_object = open(filename, encoding="utf_8")  # type: ignore[arg-type]  # noqa: SIM115
 
         with file_object as _f:
             self._to_map = {
@@ -175,7 +175,7 @@ def DirectionalMaps(
     elif isinstance(filename, HasRead):
         file_object = filename
     else:
-        file_object = open(filename, encoding="utf_8")  # type: ignore[arg-type]
+        file_object = open(filename, encoding="utf_8")  # type: ignore[arg-type]  # noqa: SIM115
 
     with file_object as _f:
         skipinitialspace = True
