@@ -225,9 +225,8 @@ def test_string():
         pi = Particle.from_string("pi+")
     assert pi.pdgid == 211
 
-    with pytest.raises(ParticleNotFound):
-        with pytest.deprecated_call():
-            Particle.from_string("unknown")
+    with pytest.raises(ParticleNotFound), pytest.deprecated_call():
+        Particle.from_string("unknown")
 
 
 def test_fuzzy_string():
