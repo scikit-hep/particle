@@ -1238,7 +1238,11 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         )
 
     @classmethod
-    def from_string(cls: type[Self], name: str) -> Self:
+    @deprecated(
+        version="0.21",
+        reason="This method is deprecated and will be removed from version 0.22.0. Use finditer or findall instead.",
+    )
+    def from_string(cls: type[Self], name: str) -> list[Self]:
         "Get a particle from a PDG style name - returns the best match."
         matches = cls.from_string_list(name)
         if matches:
@@ -1246,6 +1250,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         raise ParticleNotFound(f"{name} not found in particle table")
 
     @classmethod
+    @deprecated(
+        version="0.21",
+        reason="This method is deprecated and will be removed from version 0.22.0. Use finditer or findall instead.",
+    )
     def from_string_list(cls: type[Self], name: str) -> list[Self]:
         "Get a list of particles from a PDG style name."
 
