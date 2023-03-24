@@ -44,6 +44,7 @@ dependencies = [
     "hepunits>=2.0.0",
     "importlib-resources>=2.0;python_version<\"3.9\"",
     "typing-extensions;python_version<\"3.8\"",
+    "deprecated"
 ]
 dynamic = ["version"]
 

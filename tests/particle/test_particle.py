@@ -221,10 +221,11 @@ def test_int_compare():
 
 
 def test_string():
-    pi = Particle.from_string("pi+")
+    with pytest.deprecated_call():
+        pi = Particle.from_string("pi+")
     assert pi.pdgid == 211
 
-    with pytest.raises(ParticleNotFound):
+    with pytest.raises(ParticleNotFound), pytest.deprecated_call():
         Particle.from_string("unknown")
 
 
@@ -233,7 +234,8 @@ def test_fuzzy_string():
     The input name is not specific enough, in which case the search is done
     by pdg_name after failing a match by name.
     """
-    p = Particle.from_string("a(0)(980)")  # all 3 charge stages match
+    with pytest.deprecated_call():
+        p = Particle.from_string("a(0)(980)")  # all 3 charge stages match
     assert p.pdgid == 9000111
 
 
@@ -680,7 +682,8 @@ ampgen_style_names = (
 
 @pytest.mark.parametrize(("name", "pid"), ampgen_style_names)
 def test_ampgen_style_names(name, pid):
-    particle = Particle.from_string(name)
+    with pytest.deprecated_call():
+        particle = Particle.from_string(name)
 
     assert particle.pdgid == pid
     assert particle == pid
