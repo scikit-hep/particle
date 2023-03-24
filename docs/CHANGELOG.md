@@ -1,16 +1,27 @@
 Changelog
 =========
 
-Version under preparation
--------------------------
+Version 0.22.0
+--------------
 
+March 24th, 2023
+
+- `Particle` class and submodules:
+  - Deprecated functions only used to find particles by AmpGen style of names.
+    Functionality moved to the DecayLanguage package, the only place where it is needed.
 - Data CSV files:
   - Version 12 of package data files made default:
     - Information on nuclei updated based on masses taken from package `periodictable` version 1.6.1.
     - Several Corsika7 IDs corrected.
     - Otherwise same as version 11 files.
+- Miscellaneous:
+  - Moved to Ruff for configuration.
+- Documentation:
+  - Various fixes in docstrings, notably because of particle property updates.
+  - README: minor updates/fixes.
 - Tests:
   - Doctests run separately in the CI.
+  - Updates to pre-commit hooks.
 
 
 Version 0.21.2
