@@ -15,22 +15,23 @@ from collections import Counter
 from particle import data
 from particle.particle import Particle
 from particle.particle.convert import produce_files
-from particle.pdgid import (is_Qball,
-                            is_Rhadron,
-                            is_SUSY,
-                            is_diquark,
-                            is_dyon,
-                            is_excited_quark_or_lepton,
-                            is_generator_specific,
-                            is_lepton,
-                            is_meson,
-                            is_pentaquark,
-                            is_quark,
-                            is_sm_lepton,
-                            is_special_particle,
-                            is_technicolor,
-                            three_charge
-                            )
+from particle.pdgid import (
+    is_diquark,
+    is_dyon,
+    is_excited_quark_or_lepton,
+    is_generator_specific,
+    is_lepton,
+    is_meson,
+    is_pentaquark,
+    is_Qball,
+    is_quark,
+    is_Rhadron,
+    is_sm_lepton,
+    is_special_particle,
+    is_SUSY,
+    is_technicolor,
+    three_charge,
+)
 
 FILES = ["particle2021.csv", "particle2022.csv"]
 
@@ -78,26 +79,34 @@ def test_csv_file_has_latex(filename):
 
 def test_None_masses():
     "Only certain specific particles should have None masses."
-    none_masses = {100321, -100321,  # K(1460)+
-                   }
+    none_masses = {
+        100321,
+        -100321,  # K(1460)+
+    }
     for p in Particle.all():
         pdgid = p.pdgid
-        if pdgid in none_masses: continue
+        if pdgid in none_masses:
+            continue
 
-        if (is_Qball(pdgid) or
-            is_Rhadron(pdgid) or
-            is_SUSY(pdgid) or
-            is_diquark(pdgid) or
-            is_dyon(pdgid) or
-            is_excited_quark_or_lepton(pdgid) or
-            is_generator_specific(pdgid) or
-            (is_lepton(pdgid) and three_charge(pdgid)==0) or  # neutrinos
-            (is_lepton(pdgid) and not is_sm_lepton(pdgid)) or  # 4-th generation leptons
-            (is_meson(pdgid) and (abs(pdgid) // 1000000 % 10 == 9)) or  # Mesons with PDGIDs of the kind 9XXXXXX are not experimentally well-known
-            is_pentaquark(pdgid) or
-            is_quark(pdgid) or
-            is_special_particle(pdgid) or
-            is_technicolor(pdgid)
+        if (
+            is_Qball(pdgid)
+            or is_Rhadron(pdgid)
+            or is_SUSY(pdgid)
+            or is_diquark(pdgid)
+            or is_dyon(pdgid)
+            or is_excited_quark_or_lepton(pdgid)
+            or is_generator_specific(pdgid)
+            or (is_lepton(pdgid) and three_charge(pdgid) == 0)
+            or (is_lepton(pdgid) and not is_sm_lepton(pdgid))  # neutrinos
+            or (  # 4-th generation leptons
+                is_meson(pdgid) and (abs(pdgid) // 1000000 % 10 == 9)
+            )
+            or is_pentaquark(  # Mesons with PDGIDs of the kind 9XXXXXX are not experimentally well-known
+                pdgid
+            )
+            or is_quark(pdgid)
+            or is_special_particle(pdgid)
+            or is_technicolor(pdgid)
         ):
             continue
 
