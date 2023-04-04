@@ -230,9 +230,9 @@ def get_from_pdg_extended(
         inplace=True,
     )
     pdg_table_inv.Latex = (
-        pdg_table_inv.Latex.str.replace(r"+", r"%", regex=True)
-        .str.replace(r"-", r"+")
-        .str.replace(r"%", r"-")
+        pdg_table_inv.Latex.str.replace(r"+", r"%", regex=False)
+        .str.replace(r"-", r"+", regex=False)
+        .str.replace(r"%", r"-", regex=False)
     )
 
     # Make a combined table with + and - ID numbers
