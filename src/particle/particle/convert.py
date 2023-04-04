@@ -385,7 +385,6 @@ def produce_files(
     # 30221 - the f(0)(1370) since it was renumbered
     # 100223 - the omega(1420) since it was renumbered
     # 5132 and 5232 - the Xi_b baryons got their IDs swapped at some stage
-    # 30553 - the Upsilon(2)(1D) was wrongly assigned its ID, and has been renumbered
     full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
 
     # No longer write out the particle2008.csv file, which nobody should use
