@@ -703,17 +703,21 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
         return None
     if _fundamental_id(pdgid) > 0:
         fund = _fundamental_id(pdgid)
-        if 0 < fund < 7:  # 4th generation quarks not dealt with !
-            return 2
-        if (
-            fund == 9
-        ):  # Alternative ID for the gluon in codes for glueballs to allow a notation in close analogy with that of hadrons
-            return 3
-        if 10 < fund < 17:  # 4th generation leptons not dealt with !
-            return 2
-        if 20 < fund < 25:
-            return 3
-        return None
+        if is_SUSY(pdgid):  # susy particles
+            if 0 < fund < 15:
+                return 0
+        else:  # other particles
+            if 0 < fund < 7:  # 4th generation quarks not dealt with !
+                return 2
+            if (
+                fund == 9
+            ):  # Alternative ID for the gluon in codes for glueballs to allow a notation in close analogy with that of hadrons
+                return 3
+            if 10 < fund < 17:  # 4th generation leptons not dealt with !
+                return 2
+            if 20 < fund < 25:
+                return 3
+            return None
     if abs(int(pdgid)) in {1000000010, 1000010010}:  # neutron, proton
         return 2
     if _extra_bits(pdgid) > 0:
