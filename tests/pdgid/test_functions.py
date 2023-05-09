@@ -431,6 +431,8 @@ def test_is_SUSY(PDGIDs):
         PDGIDs.Gravitino,
         PDGIDs.STildeL,
         PDGIDs.CTildeR,
+        PDGIDs.Chargino_1,
+        PDGIDs.Neutralino_1,
         PDGIDs.R0_1000017,
     )
     _non_susy = [pid for pid in PDGIDs if pid not in _susy]
@@ -611,6 +613,7 @@ def test_has_fundamental_anti(PDGIDs):
         PDGIDs.AntiElectronStar,
         PDGIDs.STildeL,
         PDGIDs.CTildeR,
+        PDGIDs.Chargino_1,
         PDGIDs.AntiCHadron,
         PDGIDs.R0_1000017,
     )
@@ -805,6 +808,8 @@ def test_J_non_mesons(PDGIDs):
         PDGIDs.Lb,
         PDGIDs.LtPlus,
         PDGIDs.Gluino,
+        PDGIDs.Neutralino_1,
+        PDGIDs.Chargino_1,
     )
     _J_eq_3over2 = (PDGIDs.OmegaMinus,)
     _invalid_pdgids = (PDGIDs.Invalid1, PDGIDs.Invalid2)
