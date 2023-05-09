@@ -704,8 +704,12 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
     if _fundamental_id(pdgid) > 0:
         fund = _fundamental_id(pdgid)
         if is_SUSY(pdgid):  # susy particles
-            if 0 < fund < 15:
+            if 0 < fund < 17:
                 return 0
+            if fund == 21:
+                return 2
+            if 22 <= fund < 38:
+                return 2
         else:  # other particles
             if 0 < fund < 7:  # 4th generation quarks not dealt with !
                 return 2
