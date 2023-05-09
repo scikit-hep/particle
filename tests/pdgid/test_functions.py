@@ -767,7 +767,8 @@ def test_JSL_badly_known_mesons(PDGIDs):
 
 def test_J_non_mesons(PDGIDs):
     # TODO:  test special particles, supersymmetric particles, R-hadrons, di-quarks, nuclei and pentaquarks
-    _J_eq_0 = ()
+    _J_eq_0 = (PDGIDs.STildeL, PDGIDs.CTildeR)
+
     _J_eq_1 = (
         PDGIDs.Gluon,
         PDGIDs.Photon,
@@ -803,8 +804,7 @@ def test_J_non_mesons(PDGIDs):
         PDGIDs.LcPlus,
         PDGIDs.Lb,
         PDGIDs.LtPlus,
-        PDGIDs.STildeL,
-        PDGIDs.CTildeR,
+        PDGIDs.Gluino,
     )
     _J_eq_3over2 = (PDGIDs.OmegaMinus,)
     _invalid_pdgids = (PDGIDs.Invalid1, PDGIDs.Invalid2)

@@ -705,7 +705,7 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
         fund = _fundamental_id(pdgid)
         if is_SUSY(pdgid):  # susy particles
             if 0 < fund < 17:
-                return 0
+                return 1
             if fund == 21:
                 return 2
             if 22 <= fund < 38:
