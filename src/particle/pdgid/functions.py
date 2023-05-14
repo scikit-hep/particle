@@ -710,6 +710,8 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
                 return 2
             if 22 <= fund < 38:
                 return 2
+            if fund == 39:
+                return 4
         else:  # other particles
             if 0 < fund < 7:  # 4th generation quarks not dealt with !
                 return 2

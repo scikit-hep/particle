@@ -811,7 +811,7 @@ def test_J_non_mesons(PDGIDs):
         PDGIDs.Neutralino_1,
         PDGIDs.Chargino_1,
     )
-    _J_eq_3over2 = (PDGIDs.OmegaMinus,)
+    _J_eq_3over2 = (PDGIDs.OmegaMinus, PDGIDs.Gravitino)
     _invalid_pdgids = (PDGIDs.Invalid1, PDGIDs.Invalid2)
     # cases not dealt with in the code, where None is returned
     _J_eq_None = (PDGIDs.TauPrime, PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark)
