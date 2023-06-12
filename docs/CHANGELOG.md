@@ -1,6 +1,18 @@
 Changelog
 =========
 
+Version 0.22.1
+--------------
+
+June 12th, 2023
+
+- `Particle` class and submodules:
+  - Added support for providing spin for SUSY particles, with tests.
+- Tests:
+  - Test added for particles that should be assigned None masses.
+  - Updates to pre-commit hooks.
+
+
 Version 0.22.0
 --------------
 
