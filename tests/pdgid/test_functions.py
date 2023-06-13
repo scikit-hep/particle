@@ -240,7 +240,7 @@ def test_is_meson(PDGIDs):
 
 def test_is_meson_B_mass_eigenstates():
     # Test special IDs of B(L)0, B(sL)0, B(H)0, B(sH)0
-    for pdgid in {150, 350, 510, 530}:
+    for pdgid in [150, 350, 510, 530]:
         assert is_meson(pdgid)
 
 
