@@ -53,10 +53,10 @@ When you are done, you can save one or more of the tables:
 from __future__ import annotations
 
 import os
+import warnings
 from datetime import date
 from io import StringIO
 from pathlib import Path
-import warnings
 from typing import Any, Callable, Iterable, TextIO, TypeVar
 
 import numpy as np
@@ -408,13 +408,18 @@ def produce_files(
     # Check it there are rows only present in the .mcd file specified by year,
     # in which case we need to update our curated files!
     ext_table_excl = pd.DataFrame(
-         ext_table[~(ext_table.index.isin(full_table.index) | ext_table.index.isin(addons.index))]
-         ,
-         columns= full_table.columns,
-         )
+        ext_table[
+            ~(
+                ext_table.index.isin(full_table.index)
+                | ext_table.index.isin(addons.index)
+            )
+        ],
+        columns=full_table.columns,
+    )
     if len(ext_table_excl) > 0:
         mcd_year = "mass_width_" + year + ".mcd"
-        warnings.warn(f"""{mcd_year!r} contains the following {len(ext_table_excl)} new entries:"
+        warnings.warn(
+            f"""{mcd_year!r} contains the following {len(ext_table_excl)} new entries:"
     {ext_table_excl.index.to_list()}
     Curation needs an update!""", stacklevel=1)
 
