@@ -33,19 +33,19 @@ from particle.pdgid import (
     three_charge,
 )
 
-FILES = ["particle2021.csv", "particle2022.csv"]
+FILES = ["particle2022.csv", "particle2023.csv"]
 
 
 def test_generate(tmp_path):
     "This verifies that the input and output files match."
 
-    particle2021 = tmp_path / "particle2021.csv"
     particle2022 = tmp_path / "particle2022.csv"
+    particle2023 = tmp_path / "particle2023.csv"
 
-    produce_files(particle2021, particle2022, "DUMMY", "2022")
+    produce_files(particle2022, particle2023, "DUMMY", "2023")
 
-    particle2022_data = data.basepath / "particle2022.csv"
-    with particle2022.open() as src, particle2022_data.open() as res:
+    particle2023_data = data.basepath / "particle2023.csv"
+    with particle2023.open() as src, particle2023_data.open() as res:
         src_filtered = [line for line in src.readlines() if not line.startswith("#")]
         res_filtered = [line for line in res.readlines() if not line.startswith("#")]
         assert src_filtered == res_filtered
