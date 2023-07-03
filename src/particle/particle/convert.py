@@ -56,6 +56,7 @@ import os
 from datetime import date
 from io import StringIO
 from pathlib import Path
+import warnings
 from typing import Any, Callable, Iterable, TextIO, TypeVar
 
 import numpy as np
@@ -383,9 +384,8 @@ def produce_files(
 
     # Entries to remove, see comments in file mass_width_2008_ext.fwf:
     # 30221 - the f(0)(1370) since it was renumbered
-    # 100223 - the omega(1420) since it was renumbered
     # 5132 and 5232 - the Xi_b baryons got their IDs swapped at some stage
-    full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
+    full_table.drop([30221, 5132, 5232], axis=0, inplace=True)
 
     # No longer write out the particle2008.csv file, which nobody should use
     # with open(particle2008, "w", newline="\n", encoding="utf-8") as f:
@@ -404,6 +404,19 @@ def produce_files(
     full_table = full_table[
         full_table.index.isin(ext_table.index) | full_table.index.isin(-ext_table.index)
     ]
+
+    # Check it there are rows only present in the .mcd file specified by year,
+    # in which case we need to update our curated files!
+    ext_table_excl = pd.DataFrame(
+         ext_table[~(ext_table.index.isin(full_table.index) | ext_table.index.isin(addons.index))]
+         ,
+         columns= full_table.columns,
+         )
+    if len(ext_table_excl) > 0:
+        mcd_year = "mass_width_" + year + ".mcd"
+        warnings.warn(f"""{mcd_year!r} contains the following {len(ext_table_excl)} new entries:"
+    {ext_table_excl.index.to_list()}
+    Curation needs an update!""")
 
     full_table = pd.concat([full_table, addons])
 
