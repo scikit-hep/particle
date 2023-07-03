@@ -421,7 +421,9 @@ def produce_files(
         warnings.warn(
             f"""{mcd_year!r} contains the following {len(ext_table_excl)} new entries:"
     {ext_table_excl.index.to_list()}
-    Curation needs an update!""", stacklevel=1)
+    Curation needs an update!""",
+            stacklevel=1,
+        )
 
     full_table = pd.concat([full_table, addons])
 
