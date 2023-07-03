@@ -44,15 +44,6 @@ def test_generate(tmp_path):
 
     produce_files(particle2021, particle2022, "DUMMY", "2022")
 
-    """
-    # No longer test this file, which eventually will be removed
-    particle2018_data = data.basepath / "particle2018.csv"
-    with particle2018.open() as src, particle2018_data as res:
-        src = [l for l in src.readlines() if not l.startswith("#")]
-        res = [l for l in res.readlines() if not l.startswith("#")]
-        assert src == res
-    """
-
     particle2022_data = data.basepath / "particle2022.csv"
     with particle2022.open() as src, particle2022_data.open() as res:
         src_filtered = [line for line in src.readlines() if not line.startswith("#")]
