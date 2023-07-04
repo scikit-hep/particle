@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - pdgid_to_latexname.csv - version 12 - 2023-01-31
+# (c) Scikit-HEP project - Particle package data file - pdgid_to_latexname.csv - version 13 - 2023-07-03
 PDGID,LATEXNAME
 1,d
 2,u
@@ -386,6 +386,7 @@ PDGID,LATEXNAME
 100211,\pi(1300)^{+}
 100213,\rho(1450)^{+}
 100221,\eta(1295)
+100223,\omega(1420)
 100311,K(1460)^{0}
 100313,K^{*}(1410)^{0}
 100321,K(1460)^{+}
@@ -452,7 +453,6 @@ PDGID,LATEXNAME
 1000035,\tilde{\chi}_{4}^{0}
 1000037,\tilde{\chi}_{2}^{+}
 1000039,\tilde{G}
-1000223,\omega(1420)
 2000001,\tilde{d}_{R}
 2000002,\tilde{u}_{R}
 2000003,\tilde{s}_{R}

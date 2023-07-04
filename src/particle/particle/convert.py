@@ -8,7 +8,7 @@ This is a conversion file, not part of the public API.
 
 The default CSV files can be updated directly using the command:
 
-    >>> python -m particle.particle.convert regenerate 2022 <version_number>    # doctest: +SKIP
+    >>> python -m particle.particle.convert regenerate 2023 <version_number>    # doctest: +SKIP
 
 A custom fwf file and LaTeX file can be converted into the CSV format using:
 
@@ -33,7 +33,7 @@ combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
 
 You can also read in a modern "standard" file (this will produce fewer columns):
 
-    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2022.mcd')
+    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2023.mcd')
 
 A utility is even provided to use the modern table to update the full table:
 
@@ -53,6 +53,7 @@ When you are done, you can save one or more of the tables:
 from __future__ import annotations
 
 import os
+import warnings
 from datetime import date
 from io import StringIO
 from pathlib import Path
@@ -267,11 +268,11 @@ def sort_particles(table: pd.DataFrame) -> None:
 
 def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
     """
-    Reads in a current-style PDG .mcd file (mass_width_2022.mcd file tested).
+    Reads in a current-style PDG .mcd file (mass_width_2023.mcd file tested).
 
     Example
     -------
-    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2022.mcd')
+    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2023.mcd')
     """
 
     # The format here includes the space before a column
@@ -357,7 +358,7 @@ def update_from_mcd(
 
     Example
     -------
-    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2022.mcd')    # doctest: +SKIP
+    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2023.mcd')    # doctest: +SKIP
     """
 
     full_table = full_table.copy()
@@ -371,7 +372,7 @@ def update_from_mcd(
 
 def produce_files(
     particle2008: str | Path,  # noqa: ARG001
-    particle2022: str | Path,
+    particle2023: str | Path,
     version: str,
     year: str,
 ) -> None:
@@ -383,9 +384,8 @@ def produce_files(
 
     # Entries to remove, see comments in file mass_width_2008_ext.fwf:
     # 30221 - the f(0)(1370) since it was renumbered
-    # 100223 - the omega(1420) since it was renumbered
     # 5132 and 5232 - the Xi_b baryons got their IDs swapped at some stage
-    full_table.drop([30221, 100223, 5132, 5232], axis=0, inplace=True)
+    full_table.drop([30221, 5132, 5232], axis=0, inplace=True)
 
     # No longer write out the particle2008.csv file, which nobody should use
     # with open(particle2008, "w", newline="\n", encoding="utf-8") as f:
@@ -405,6 +405,26 @@ def produce_files(
         full_table.index.isin(ext_table.index) | full_table.index.isin(-ext_table.index)
     ]
 
+    # Check it there are rows only present in the .mcd file specified by year,
+    # in which case we need to update our curated files!
+    ext_table_excl = pd.DataFrame(
+        ext_table[
+            ~(
+                ext_table.index.isin(full_table.index)
+                | ext_table.index.isin(addons.index)
+            )
+        ],
+        columns=full_table.columns,
+    )
+    if len(ext_table_excl) > 0:
+        mcd_year = "mass_width_" + year + ".mcd"
+        warnings.warn(
+            f"""{mcd_year!r} contains the following {len(ext_table_excl)} new entries:"
+    {ext_table_excl.index.to_list()}
+    Curation needs an update!""",
+            stacklevel=1,
+        )
+
     full_table = pd.concat([full_table, addons])
 
     # Allow replacement of particles by the ext file
@@ -414,8 +434,8 @@ def produce_files(
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    with open(particle2022, "w", newline="\n", encoding="utf-8") as f:
-        f.write(version_header(str(particle2022), version))
+    with open(particle2023, "w", newline="\n", encoding="utf-8") as f:
+        f.write(version_header(str(particle2023), version))
         new_table.to_csv(f, float_format="%.12g")
 
 

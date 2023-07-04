@@ -176,5 +176,4 @@ def latex_to_html_name(name: str) -> str:
         name = name.replace(rf"\{gl}", f"&#x{name2codepoint[gl]:04x};")
     name = re.sub(r"\\tilde\{(.*?)\}", r"\1&#771;", name)
     name = re.sub(r"\\overline\{(.*?)\}", r"\1&#773;", name)
-    name = re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)
-    return name
+    return re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)

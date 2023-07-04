@@ -240,7 +240,7 @@ def test_is_meson(PDGIDs):
 
 def test_is_meson_B_mass_eigenstates():
     # Test special IDs of B(L)0, B(sL)0, B(H)0, B(sH)0
-    for pdgid in {150, 350, 510, 530}:
+    for pdgid in [150, 350, 510, 530]:
         assert is_meson(pdgid)
 
 
@@ -431,6 +431,8 @@ def test_is_SUSY(PDGIDs):
         PDGIDs.Gravitino,
         PDGIDs.STildeL,
         PDGIDs.CTildeR,
+        PDGIDs.Chargino_1,
+        PDGIDs.Neutralino_1,
         PDGIDs.R0_1000017,
     )
     _non_susy = [pid for pid in PDGIDs if pid not in _susy]
@@ -611,6 +613,7 @@ def test_has_fundamental_anti(PDGIDs):
         PDGIDs.AntiElectronStar,
         PDGIDs.STildeL,
         PDGIDs.CTildeR,
+        PDGIDs.Chargino_1,
         PDGIDs.AntiCHadron,
         PDGIDs.R0_1000017,
     )
@@ -767,7 +770,8 @@ def test_JSL_badly_known_mesons(PDGIDs):
 
 def test_J_non_mesons(PDGIDs):
     # TODO:  test special particles, supersymmetric particles, R-hadrons, di-quarks, nuclei and pentaquarks
-    _J_eq_0 = ()
+    _J_eq_0 = (PDGIDs.STildeL, PDGIDs.CTildeR)
+
     _J_eq_1 = (
         PDGIDs.Gluon,
         PDGIDs.Photon,
@@ -803,10 +807,11 @@ def test_J_non_mesons(PDGIDs):
         PDGIDs.LcPlus,
         PDGIDs.Lb,
         PDGIDs.LtPlus,
-        PDGIDs.STildeL,
-        PDGIDs.CTildeR,
+        PDGIDs.Gluino,
+        PDGIDs.Neutralino_1,
+        PDGIDs.Chargino_1,
     )
-    _J_eq_3over2 = (PDGIDs.OmegaMinus,)
+    _J_eq_3over2 = (PDGIDs.OmegaMinus, PDGIDs.Gravitino)
     _invalid_pdgids = (PDGIDs.Invalid1, PDGIDs.Invalid2)
     # cases not dealt with in the code, where None is returned
     _J_eq_None = (PDGIDs.TauPrime, PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark)

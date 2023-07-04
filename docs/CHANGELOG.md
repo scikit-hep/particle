@@ -1,6 +1,32 @@
 Changelog
 =========
 
+Version 0.23.0
+--------------
+
+July 4th, 2023
+
+- Data files:
+  - Added the 2023 PDG data table file, now default.
+  - Version 13 of package CSV data files:
+      - Since PDG 2023 information now the default.
+  - Removed superseded data files from 2018-2020.
+- Tests:
+  - Updates to pre-commit hooks.
+
+
+Version 0.22.1
+--------------
+
+June 12th, 2023
+
+- `Particle` class and submodules:
+  - Added support for providing spin for SUSY particles, with tests.
+- Tests:
+  - Test added for particles that should be assigned None masses.
+  - Updates to pre-commit hooks.
+
+
 Version 0.22.0
 --------------
 

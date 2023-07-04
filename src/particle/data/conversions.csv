@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - conversions.csv - version 12 - 2023-01-31
+# (c) Scikit-HEP project - Particle package data file - conversions.csv - version 13 - 2023-07-03
       PDGID,   PYTHIAID,   GEANT3ID,            PDGNAME,            EVTGENNAME,                          LATEXNAME
           1,          1,        303,                  d,                     d,                                  d
          -1,         -1,        304,                 d~,                anti-d,                       \overline{d}
@@ -693,6 +693,7 @@
      100213,          0,        809,         rho(1450)+,              rho(2S)+,                     \rho(1450)^{+}
     -100213,          0,        810,         rho(1450)-,              rho(2S)-,                     \rho(1450)^{-}
      100221,          0,        811,          eta(1295),               eta(2S),                         \eta(1295)
+     100223,          0,        812,        omega(1420),             omega(2S),                       \omega(1420)
      100311,          0,        814,           K(1460)0,              K(1460)0,                        K(1460)^{0}
     -100311,          0,        815,          K(1460)~0,         anti-K(1460)0,             \overline{K}(1460)^{0}
      100313,          0,        816,          K*(1410)0,                  K'*0,                    K^{*}(1410)^{0}
@@ -797,7 +798,6 @@
     1000037,    1000037,        890,           ~chi(2)+,               unknown,               \tilde{\chi}_{2}^{+}
    -1000037,   -1000037,        891,           ~chi(2)-,               unknown,               \tilde{\chi}_{2}^{-}
     1000039,    1000039,        892,         ~Gravitino,               unknown,                          \tilde{G}
-    1000223,          0,        812,        omega(1420),             omega(2S),                       \omega(1420)
     2000001,    2000001,        893,              ~d(R),               unknown,                      \tilde{d}_{R}
    -2000001,   -2000001,        894,             ~d(R)~,               unknown,           \overline{\tilde{d}}_{R}
     2000002,    2000002,        895,              ~u(R),               unknown,                      \tilde{u}_{R}

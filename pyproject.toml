@@ -172,7 +172,6 @@ ignore = [
     "PLR",    # Design related pylint codes
     "PT013",  # Importing approx from pytest is fine
 ]
-target-version = "py37"
 src = ["src"]
 unfixable = [
   "T20",  # Removes print statements

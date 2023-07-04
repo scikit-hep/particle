@@ -36,7 +36,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: wntrblm/nox@2022.11.21
+    - uses: wntrblm/nox@2023.04.22
 
     - name: Make ZipApp
       run: nox -s zipapp
@@ -58,7 +58,7 @@ jobs:
         name: artifact
         path: dist
 
-    - uses: pypa/gh-action-pypi-publish@v1.8.3
+    - uses: pypa/gh-action-pypi-publish@release/v1
       with:
         password: ${{ secrets.pypi_password }}
 
