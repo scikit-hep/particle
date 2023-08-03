@@ -849,7 +849,7 @@ def test_A(PDGIDs):
         PDGIDs.HydrogenNucleus: 1,
         PDGIDs.Carbon12: 12,
     }
-    _non_nuclei = [pid for pid in PDGIDs if pid not in _nuclei.keys()]
+    _non_nuclei = [pid for pid in PDGIDs if pid not in _nuclei]
     for pid, a in _nuclei.items():
         assert A(pid) == a
     for pid in _non_nuclei:
@@ -863,7 +863,7 @@ def test_Z(PDGIDs):
         PDGIDs.HydrogenNucleus: 1,
         PDGIDs.Carbon12: 6,
     }
-    _non_nuclei = [pid for pid in PDGIDs if pid not in _nuclei.keys()]
+    _non_nuclei = [pid for pid in PDGIDs if pid not in _nuclei]
     for pid, z in _nuclei.items():
         assert Z(pid) == z
     for pid in _non_nuclei:
