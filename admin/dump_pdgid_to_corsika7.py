@@ -157,7 +157,7 @@ def dump_pdgid_to_corsika7(file: pathlib.Path | None = None) -> None:
     """
     # Loop over all thinkable values and only add them if the PDG ID exists
     for a in range(2, 56 + 1):
-        for z in range(0, a + 1):
+        for z in range(a + 1):
             corsikaid = a * 100 + z
             with contextlib.suppress(ParticleNotFound):
                 corsica_pdg_id.append(
