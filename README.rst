@@ -410,7 +410,7 @@ to automatically parse the ``particle_description`` from the Corsika7 particle d
 Getting started: experiment-specific modules
 --------------------------------------------
 
-Experiment-specific submodules are welcome if they tie in nicely with the functionality of the package while prodiving
+Experiment-specific submodules are welcome if they tie in nicely with the functionality of the package while providing
 add-ons of particular relevance to experiments.
 
 LHCb-specific module
