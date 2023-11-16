@@ -64,7 +64,7 @@ jobs:
 
     - name: Test docstrings with doctest
       if: "runner.os == 'Linux' && matrix.python-version == 3.11"
-      run: python -m pytest --doctest-modules src/particle --ignore-glob="src/particle/particle/convert.py"
+      run: python -m pytest --doctest-modules src/particle --ignore=src/particle/particle/convert.py
 
   notebooks:
     runs-on: ubuntu-latest
