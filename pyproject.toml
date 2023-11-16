@@ -77,7 +77,6 @@ warn_unused_ignores = true
 python_version = "3.9"
 files = "src"
 strict = true
-show_error_codes = true
 warn_unreachable = true
 enable_error_code = [
     "ignore-without-code",
@@ -98,6 +97,7 @@ minversion = "6.0"
 testpaths = ["tests"]
 junit_family = "xunit2"
 log_cli_level = "info"
+xfail_strict = true
 addopts = [
     "--benchmark-disable",
     "-ra",
@@ -143,9 +143,11 @@ messages_control.disable = [
 
 
 [tool.ruff]
-select = [
-    "E", "F", "W", # flake8
-    "B", "B904",   # flake8-bugbear
+src = ["src"]
+
+[tool.ruff.lint]
+extend-select = [
+    "B",            # flake8-bugbear
     "I",           # isort
     "ARG",         # flake8-unused-arguments
     "C4",          # flake8-comprehensions
@@ -163,23 +165,23 @@ select = [
     "YTT",         # flake8-2020
 ]
 ignore = [
-    "B905",
-    "E402",
-    "E501",
-    "RUF001", # Ambiguous unicode
-    "RUF002", # Ambiguous unicode docstring
-    "PLR",    # Design related pylint codes
-    "PT013",  # Importing approx from pytest is fine
-]
-src = ["src"]
-unfixable = [
-  "T20",  # Removes print statements
-  "F841", # Removes unused variables
+    "RUF001",  # Ambiguous unicode
+    "RUF002",  # Ambiguous unicode docstring
+    "PLR2004", # Magic value used in comparison
+    "PLR09",   # Too many X
+    "ISC001",  # Conflicts with the formatter
+    "E741",    # Ambiguous variable name
 ]
 isort.required-imports = ["from __future__ import annotations"]
+mccabe.max-complexity = 24
 
-[tool.ruff.mccabe]
-max-complexity = 24
-
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "src/particle/__main__.py" = ["T20"]
+"tests/**.py" = [
+    "PT013",  # Importing approx from pytest is fine
+    "E402",   # Module level import not at top of file (doesn't recognise pytest.importorskip)
+]
+
+
+[tool.repo-review]
+ignore = ["RTD"]

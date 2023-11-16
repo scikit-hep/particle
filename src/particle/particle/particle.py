@@ -194,7 +194,7 @@ class Particle:
         minus_one, converter=_none_or_positive_converter
     )
     _three_charge: Charge | None = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    I: float | None = attr.ib(none_float, converter=_isospin_converter)  # noqa: E741
+    I: float | None = attr.ib(none_float, converter=_isospin_converter)
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity

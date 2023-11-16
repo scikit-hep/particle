@@ -7,7 +7,7 @@
 
 |Scikit-HEP| |PyPI version| |Conda-forge version| |Zenodo DOI|
 
-|GitHub Actions Status: CI| |Code Coverage| |Code style: black|
+|GitHub Actions Status: CI| |Code Coverage|
 
 |Binder|
 
@@ -488,9 +488,6 @@ are those of the authors and do not necessarily reflect the views of the Nationa
 
 .. |Code Coverage| image:: https://codecov.io/gh/scikit-hep/particle/graph/badge.svg?branch=master
    :target: https://codecov.io/gh/scikit-hep/particle?branch=master
-
-.. |Code style: black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
-   :target: https://github.com/psf/black
 
 .. |Binder| image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/scikit-hep/particle/master?urlpath=lab/tree/notebooks/ParticleDemo.ipynb
