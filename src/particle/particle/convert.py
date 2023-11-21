@@ -63,8 +63,9 @@ import numpy as np
 import pandas as pd
 
 from .. import data
+from .._compat.typing import Traversable
 from ..pdgid import PDGID, is_baryon
-from ..typing import StringOrIO, Traversable
+from ..typing import StringOrIO
 from .enums import (
     Charge,
     Charge_mapping,
