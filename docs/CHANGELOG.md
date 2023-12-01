@@ -1,6 +1,16 @@
 Changelog
 =========
 
+Version 0.23.1
+--------------
+
+December 1st, 2023
+
+- Miscellaneous:
+  - Modernisation of Ruff configuration in pyproject.toml.
+- CI and tests:
+  - Updates to pre-commit hooks and CI YAML files.
+
 Version 0.23.0
 --------------
 
