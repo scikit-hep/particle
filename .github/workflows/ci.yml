@@ -104,7 +104,7 @@ jobs:
     - name: Make ZipApp
       run: nox -s zipapp
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: zipapp
         path: particle.pyz

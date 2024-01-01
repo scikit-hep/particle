@@ -21,7 +21,7 @@ jobs:
     - name: Build wheel and SDist
       run: pipx run build
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         path: dist/*
 
@@ -41,7 +41,7 @@ jobs:
     - name: Make ZipApp
       run: nox -s zipapp
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: zipapp
         path: particle.pyz
