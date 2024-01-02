@@ -21,7 +21,7 @@ jobs:
     - name: Build wheel and SDist
       run: pipx run build
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         path: dist/*
 
@@ -41,7 +41,7 @@ jobs:
     - name: Make ZipApp
       run: nox -s zipapp
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: zipapp
         path: particle.pyz
@@ -53,7 +53,7 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
 
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: artifact
         path: dist
@@ -62,7 +62,7 @@ jobs:
       with:
         password: ${{ secrets.pypi_password }}
 
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: zipapp
         path: zipapp
