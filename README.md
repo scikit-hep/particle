@@ -437,18 +437,28 @@ similarly to what is available in the standard (i.e. non-experiment-specific) co
 We hereby acknowledge the contributors that made this project possible ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <table>
-  <tbody>
-    <tr>
-        <td align="center" valign="top" width="14.28%"><a href="http://cern.ch/eduardo.rodrigues"><img src="https://avatars.githubusercontent.com/u/5013581?v=4?s=100" width="100px;" alt="Eduardo Rodrigues"/><br /><sub><b>Eduardo Rodrigues</b></sub></a><br /><a href="#maintenance-eduardo-rodrigues" title="Maintenance">🚧</a> <a href="https://github.com/scikit-hep/decaylanguage/commits?author=eduardo-rodrigues" title="Code">💻</a> <a href="https://github.com/scikit-hep/decaylanguage/commits?author=eduardo-rodrigues" title="Documentation">📖</a></td>
-        <td align="center" valign="top" width="14.28%"><a href="http://iscinumpy.dev"><img src="https://avatars.githubusercontent.com/u/4616906?v=4?s=100" width="100px;" alt="Henry Schreiner"/><br /><sub><b>Henry Schreiner</b></sub></a><br /><a href="#maintenance-henryiii" title="Maintenance">🚧</a> <a href="https://github.com/scikit-hep/decaylanguage/commits?author=henryiii" title="Code">💻</a> <a href="https://github.com/scikit-hep/decaylanguage/commits?author=henryiii" title="Documentation">📖</a></td>
-        <td align="center" valign="top" width="14.28%"><a href="https://github.com/chrisburr"><img src="https://avatars.githubusercontent.com/u/5220533?v=4?s=100" width="100px;" alt="Chris Burr"/><br /><sub><b>Chris Burr</b></sub></a><br /><a href="https://github.com/scikit-hep/decaylanguage/commits?author=chrisburr" title="Documentation">📖</a></td>
-    </tr>
-    <tr>
-        <td align="center" valign="top" width="14.28%"><a href="https://gitlab.cern.ch/users/admorris"><img src="https://avatars.githubusercontent.com/u/15155249?v=4?s=100" width="100px;" alt="Adam Morris"/><br /><sub><b>Adam Morris</b></sub></a><br /><a href="https://github.com/scikit-hep/decaylanguage/commits?author=admorris" title="Code">💻</a></td>
-        <td align="center" valign="top" width="14.28%"><a href="https://github.com/HDembinski"><img src="https://avatars.githubusercontent.com/u/2631586?v=4?s=100" width="100px;" alt="Hans Dembinski"/><br /><sub><b>Adam Morris</b></sub></a><br /><a href="https://github.com/scikit-hep/decaylanguage/commits?author=admorris" title="Code">💻</a></td>
-    </tr>
-  </tbody>
-</table>
+        <tbody>
+            <tr> 
+              <td align="center" valign="top" width="14.28%"><a href="http://cern.ch/eduardo.rodrigues"><img src="https://avatars.githubusercontent.com/u/5013581?v=4?s=100" width="100px;" alt="Eduardo Rodrigues"/><br /><sub><b>Eduardo Rodrigues</b></sub></a><br /><a href="#maintenance-eduardo-rodrigues" title="Maintenance">🚧</a> <a href="https://github.com/scikit-hep/particle/commits?author=eduardo-rodrigues" title="Code">💻</a> <a href="https://github.com/scikit-hep/particle/commits?author=eduardo-rodrigues" title="Documentation">📖</a></td>
+              <td align="center" valign="top" width="14.28%"><a href="http://iscinumpy.dev"><img src="https://avatars.githubusercontent.com/u/4616906?v=4?s=100" width="100px;" alt="Henry Schreiner"/><br /><sub><b>Henry Schreiner</b></sub></a><br /><a href="#maintenance-henryiii" title="Maintenance">🚧</a> <a href="https://github.com/scikit-hep/particle/commits?author=henryiii" title="Code">💻</a> <a href="https://github.com/scikit-hep/particle/commits?author=henryiii" title="Documentation">📖</a></td>
+              <td align="center" valign="top" width="14.28%"><a href="https://github.com/chrisburr"><img src="https://avatars.githubusercontent.com/u/5220533?v=4?s=100" width="100px;" alt="Chris Burr"/><br /><sub><b>Chris Burr</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=chrisburr" title="Documentation"></a></td>
+              <td align="center" valign="top" width="14.28%"><a href="https://gitlab.cern.ch/users/admorris"><img src="https://avatars.githubusercontent.com/u/15155249?v=4?s=100" width="100px;" alt="Adam Morris"/><br /><sub><b>Adam Morris</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=admorris" title="Code"></a></td>
+              <td align="center" valign="top" width="14.28%"><a href="https://github.com/HDembinski"><img src="https://avatars.githubusercontent.com/u/2631586?v=4?s=100" width="100px;" alt="Hans Dembinski"/><br /><sub><b>Hans Dembinski </b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=HDembinski" title="Code"></a></td>
+              <td align="center" valign="top" width="14.28%"><a href="https://github.com/The-Ludwig"><img src="https://avatars.githubusercontent.com/u/31670556?v=4?s=100" width="100px;" alt="Ludwig Neste"/><br /><sub><b>Ludwig Neste </b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=Ludwig Neste" title="Code"></a></td>
+              <td align="center" valign="top" width="14.28%"><a href="https://github.com/tamasgal"><img src="https://avatars.githubusercontent.com/u/1730350?v=4?s=100" width="100px;" alt="Tamas Gal"/><br /><sub><b>Tamas Gal</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=tamasgal" title="Code"></a></td>
+            </tr>
+            <tr>
+                <td align="center" valign="top" width="14.28%"><a href="https://github.com/APN-Pucky"><img src="https://avatars.githubusercontent.com/u/4533248?v=4?s=100" width="100px;" alt="Alexander Puck Neuwirth"/><br /><sub><b>Alexander Puck Neuwirth </b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=APN-Pucky" title="Code"></a></td>
+                <td align="center" valign="top" width="14.28%"><a href="https://github.com/matthewfeickert"><img src="https://avatars.githubusercontent.com/u/5142394?v=4?s=100" width="100px;" alt="Matthew Feickert"/><br /><sub><b>Matthew Feickert </b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=matthewfeickert" title="Code"></a></td>
+                <td align="center" valign="top" width="14.28%"><a href="https://github.com/doronbehar"><img src="https://avatars.githubusercontent.com/u/10998835?v=4?s=100" width="100px;" alt="Doron Behar"/><br /><sub><b>Doron Behar </b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=doronbehar" title="Code"></a></td>
+                <td align="center" valign="top" width="14.28%"><a href="https://github.com/JostMigenda"><img src="https://avatars.githubusercontent.com/u/16189747?v=4?s=100" width="100px;" alt="Jost Migenda"/><br /><sub><b>Jost Migenda </b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=JostMigenda" title="Code"></a></td>
+                <td align="center" valign="top" width="14.28%"><a href="https://github.com/jonas-eschle"><img src="https://avatars.githubusercontent.com/u/17454848?v=4?s=100" width="100px;" alt="Jonas Eschle"/><br /><sub><b>Jonas Eschle </b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=jonas-eschle" title="Code"></a></td>
+                <td align="center" valign="top" width="14.28%"><a href="https://github.com/amanmdesai"><img src="https://avatars.githubusercontent.com/u/98302868?v=4?s=100" width="100px;" alt="Aman Desai"/><br /><sub><b>Aman Desai </b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=amanmdesai" title="Code"></a></td>
+            </tr>
+        <!-- template -->
+       <!-- <td align="center" valign="top" width="14.28%"><a href="https://github.com/contributors"><img src="contributors_url?s=100" width="100px;" alt="contributors"/><br /><sub><b>contributors </b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=contributors" title="Code"></a></td> -->
+        </tbody>
+      </table>
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
 
