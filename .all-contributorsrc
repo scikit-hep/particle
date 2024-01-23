@@ -37,6 +37,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "The-Ludwig",
+      "name": "Ludwig Neste",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31670556?v=4",
+      "profile": "https://ludwigneste.space",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
