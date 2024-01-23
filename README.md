@@ -241,7 +241,7 @@ C (charge parity) = ?       I (isospin)       = 1/2      G (G-parity)     = ?
 
 ```
 
-## Advanced: Loading custom tables
+### Advanced: Loading custom tables
 
 You can control the particle data tables if you so desire. You can append a new data table using the following syntax:
 
@@ -261,7 +261,7 @@ If you want a non-default data file distributed with the package just proceed as
 >>> Particle.table_names()  # list the loaded tables
 ```
 
-## Advanced: how to create user-defined particles
+### Advanced: how to create user-defined particles
 
 There are situations where it may be handy to create user-defined particles.
 But do so with care and having in mind the limitations, many of which are discussed or exemplified below!
@@ -316,7 +316,7 @@ C (charge parity) = None    I (isospin)       = None     G (G-parity)     = None
     Antiparticle name: Theta (antiparticle status: Same)
 ```
 
-## Advanced: Conversion
+### Advanced: Conversion
 
 You can convert and update the particle tables with the utilities in `particle.particle.convert`. This requires the
 `pandas` package, and is only tested with Python 3. Run the following command for more help:
@@ -372,7 +372,7 @@ Possible use cases are the following:
 'mu+'
 ```
 
-## Corsika7
+### Corsika7
 
 The `Corsika7ID` class implements features to make it easier to work with Corsika7 output.
 For a full feature set, please refer to the `particle.corsika` submodule.
@@ -389,7 +389,7 @@ to automatically parse the `particle_description` from the Corsika7 particle dat
 Experiment-specific submodules are welcome if they tie in nicely with the functionality of the package while providing
 add-ons of particular relevance to experiments.
 
-## LHCb-specific module
+### LHCb-specific module
 
 Available via
 
@@ -423,7 +423,7 @@ similarly to what is available in the standard (i.e. non-experiment-specific) co
 
 ```python
 
- >>> name = LHCbName2PDGIDBiMap[PDGID(-531)]
+>>> name = LHCbName2PDGIDBiMap[PDGID(-531)]
 >>> name
 'B_s~0'
 
