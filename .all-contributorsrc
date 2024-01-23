@@ -101,6 +101,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "doronbehar",
+      "name": "Doron Behar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10998835?v=4",
+      "profile": "http://doronbehar.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
