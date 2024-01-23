@@ -443,6 +443,7 @@ We hereby acknowledge the contributors that made this project possible ([emoji k
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://cern.ch/eduardo.rodrigues"><img src="https://avatars.githubusercontent.com/u/5013581?v=4?s=100" width="100px;" alt="Eduardo Rodrigues"/><br /><sub><b>Eduardo Rodrigues</b></sub></a><br /><a href="#maintenance-eduardo-rodrigues" title="Maintenance">🚧</a> <a href="https://github.com/scikit-hep/particle/commits?author=eduardo-rodrigues" title="Code">💻</a> <a href="https://github.com/scikit-hep/particle/commits?author=eduardo-rodrigues" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://iscinumpy.dev"><img src="https://avatars.githubusercontent.com/u/4616906?v=4?s=100" width="100px;" alt="Henry Schreiner"/><br /><sub><b>Henry Schreiner</b></sub></a><br /><a href="#maintenance-henryiii" title="Maintenance">🚧</a> <a href="https://github.com/scikit-hep/particle/commits?author=henryiii" title="Code">💻</a> <a href="https://github.com/scikit-hep/particle/commits?author=henryiii" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/HDembinski"><img src="https://avatars.githubusercontent.com/u/2631586?v=4?s=100" width="100px;" alt="Hans Dembinski"/><br /><sub><b>Hans Dembinski</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=HDembinski" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
