@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "particle"
 description = "Extended PDG particle data and MC identification codes"
-readme = "README.rst"
+readme = "README.md"
 requires-python = ">=3.7"
 authors = [
     { name = "Eduardo Rodrigues", email = "eduardo.rodrigues@cern.ch" },
