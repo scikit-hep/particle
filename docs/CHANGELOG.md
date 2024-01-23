@@ -1,6 +1,10 @@
 Changelog
 =========
 
+- Miscellaneous:
+  - Started using AllContributors to acknowledge contributions explicitly.
+
+
 Version 0.23.1
 --------------
 
