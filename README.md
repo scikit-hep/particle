@@ -302,7 +302,7 @@ Antiparticle name: MyPentaquark (antiparticle status: Same)
 A yet more sophisticated definition:
 
 ```python
- >>> p3 = Particle(pdgid=9221132,pdg_name='Theta',three_charge=3,latex_name='\Theta^{+}')
+>>> p3 = Particle(pdgid=9221132,pdg_name='Theta',three_charge=3,latex_name='\Theta^{+}')
 >>> p3
 <Particle: name="Theta", pdgid=9221132, mass=None>
 >>>
