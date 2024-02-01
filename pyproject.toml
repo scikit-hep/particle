@@ -107,6 +107,7 @@ addopts = [
 ]
 filterwarnings = [
     "error",
+    '''ignore:\s*Pyarrow will become a required dependency of pandas:DeprecationWarning''',
 ]
 
 [tool.pylint]
