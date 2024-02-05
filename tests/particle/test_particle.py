@@ -220,25 +220,6 @@ def test_int_compare():
     assert Particle.from_pdgid(-211) <= 0
 
 
-def test_string():
-    with pytest.deprecated_call():
-        pi = Particle.from_string("pi+")
-    assert pi.pdgid == 211
-
-    with pytest.raises(ParticleNotFound), pytest.deprecated_call():
-        Particle.from_string("unknown")
-
-
-def test_fuzzy_string():
-    """
-    The input name is not specific enough, in which case the search is done
-    by pdg_name after failing a match by name.
-    """
-    with pytest.deprecated_call():
-        p = Particle.from_string("a(0)(980)")  # all 3 charge stages match
-    assert p.pdgid == 9000111
-
-
 def test_str():
     pi = Particle.from_pdgid(211)
     assert str(pi) == "pi+"
@@ -290,7 +271,7 @@ def test_P_consistency_mesons():
             continue
 
         if p.pdgid == 22:  # Special case of the photon
-            assert -1 == p.P
+            assert p.P == -1
         else:
             assert (-1) ** (p.L + 1) == p.P
 
@@ -342,7 +323,7 @@ def test_C_consistency():
         if _digit(p.pdgid, Location.N) == 9:
             continue
         if p.pdgid == 22:  # Special case of the photon
-            assert -1 == p.C
+            assert p.C == -1
         elif p.pdgid in [130, 310]:  # Special case of the KS and KL
             assert Parity.u == p.C
         else:
@@ -658,31 +639,6 @@ def test_to_dict():
     )
 
     assert set(query_as_dict["name"]) == {"e+", "mu+", "tau+", "tau'+"}
-
-
-ampgen_style_names = (
-    ("b", 5),
-    ("b~", -5),
-    ("pi+", 211),
-    ("pi-", -211),
-    ("K~*0", -313),
-    ("K*(892)bar0", -313),
-    ("a(1)(1260)+", 20213),
-    ("rho(1450)0", 100113),
-    ("rho(770)0", 113),
-    ("K(1)(1270)bar-", -10323),
-    # ("K(1460)bar-", -100321),
-    ("K(2)*(1430)bar-", -325),
-)
-
-
-@pytest.mark.parametrize(("name", "pid"), ampgen_style_names)
-def test_ampgen_style_names(name, pid):
-    with pytest.deprecated_call():
-        particle = Particle.from_string(name)
-
-    assert particle.pdgid == pid
-    assert particle == pid
 
 
 decfile_style_names = (

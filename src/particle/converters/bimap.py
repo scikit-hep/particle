@@ -10,7 +10,16 @@ import contextlib
 import csv
 import sys
 from collections.abc import Mapping
-from typing import Any, Callable, Generic, Iterator, TextIO, TypeVar, Union, overload
+from typing import (
+    IO,
+    Any,
+    Callable,
+    Generic,
+    Iterator,
+    TypeVar,
+    Union,
+    overload,
+)
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
@@ -76,7 +85,7 @@ class BiMap(Generic[A, B]):
         name_A = self.class_A.__name__.upper()
         name_B = self.class_B.__name__.upper()
 
-        file_object: TextIO
+        file_object: IO[str]
         if filename is None:
             filename = f"{name_A.lower()}_to_{name_B.lower()}.csv"
             file_object = data.basepath.joinpath(filename).open()
@@ -167,7 +176,7 @@ def DirectionalMaps(
     name_B = name_B.upper()
 
     fieldnames = None
-    file_object: TextIO
+    file_object: IO[str]
     if filename is None:
         file_object = data.basepath.joinpath("conversions.csv").open()
     elif isinstance(filename, HasOpen):
