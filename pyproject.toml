@@ -107,6 +107,7 @@ addopts = [
 ]
 filterwarnings = [
     "error",
+    '''ignore:\s*A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method:FutureWarning''',
 ]
 
 [tool.pylint]
