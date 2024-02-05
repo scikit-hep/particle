@@ -241,7 +241,7 @@ def get_from_pdg_extended(
     full = pd.concat([pdg_table, pdg_table_inv])
 
     # This will override any negative values
-    full.Latex.update(latex_series)
+    full.Latex = full.Latex.update(latex_series)
 
     # These items are not very important - can be reconstructed from the PDG ID
     # TODO: maybe first check the consistency between what is read in and what the PDG ID provides (being maniac)?
