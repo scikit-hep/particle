@@ -19,7 +19,6 @@ from hepunits.constants import c_light
 
 from .. import data
 from .._compat.typing import Traversable
-from .._compat.warnings import deprecated
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
 from ..pdgid import PDGID, is_valid
 from ..pdgid.functions import Location, _digit
@@ -1238,99 +1237,3 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return list(
             cls.finditer(filter_fn=filter_fn, particle=particle, **search_terms)
         )
-
-    @classmethod
-    @deprecated(
-        "This method is deprecated and will be removed from version 0.23.0. Use finditer or findall instead.",
-    )
-    def from_string(cls: type[Self], name: str) -> Self:
-        "Get a particle from a PDG style name - returns the best match."
-        matches = cls.from_string_list(name)
-        if matches:
-            return matches[0]
-        raise ParticleNotFound(f"{name} not found in particle table")
-
-    @classmethod
-    @deprecated(
-        "This method is deprecated and will be removed from version 0.23.0. Use finditer or findall instead.",
-    )
-    def from_string_list(cls: type[Self], name: str) -> list[Self]:
-        "Get a list of particles from a PDG style name."
-
-        # Forcible override
-        particle = None
-
-        short_name = name
-        if "~" in name:
-            short_name = name.replace("~", "")
-            particle = False
-
-        # Try the simplest searches first
-        list_can = cls.findall(name=name, particle=particle)
-        if list_can:
-            return list_can
-        list_can = cls.findall(pdg_name=short_name, particle=particle)
-        if list_can:
-            return list_can
-
-        mat_str = getname.match(short_name)
-
-        if mat_str is None:
-            return []
-
-        mat = mat_str.groupdict()
-
-        if particle is False:
-            mat["bar"] = "bar"
-
-        try:
-            return cls._from_group_dict_list(mat)
-        except ParticleNotFound:
-            return []
-
-    @classmethod
-    def _from_group_dict_list(cls: type[Self], mat: dict[str, Any]) -> list[Self]:
-        kw: dict[str, Any] = {
-            "particle": False
-            if mat["bar"] is not None
-            else True
-            if mat["charge"] == "0"
-            else None
-        }
-
-        name = mat["name"]
-
-        if mat["family"]:
-            if "_" in mat["family"]:
-                mat["family"] = mat["family"].strip("_")
-            name += f'({mat["family"]})'
-        if mat["state"]:
-            name += f'({mat["state"]})'
-
-        if "prime" in mat and mat["prime"]:
-            name += "'"
-
-        if mat["star"]:
-            name += "*"
-
-        if mat["state"] is not None:
-            kw["J"] = float(mat["state"])
-
-        maxname = name + f'({mat["mass"]})' if mat["mass"] else name
-        if "charge" in mat and mat["charge"] is not None:
-            kw["three_charge"] = Charge_mapping[mat["charge"]]
-
-        vals = cls.findall(name=lambda x: maxname in x, **kw)
-        if not vals:
-            vals = cls.findall(name=lambda x: name in x, **kw)
-
-        if not vals:
-            raise ParticleNotFound(f"Could not find particle {maxname} or {name}")
-
-        if len(vals) > 1 and mat["mass"] is not None:
-            vals = [val for val in vals if mat["mass"] in val.latex_name]
-
-        if len(vals) > 1:
-            return sorted(vals)
-
-        return vals
