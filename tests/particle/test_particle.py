@@ -271,7 +271,7 @@ def test_P_consistency_mesons():
             continue
 
         if p.pdgid == 22:  # Special case of the photon
-            assert -1 == p.P
+            assert p.P == -1
         else:
             assert (-1) ** (p.L + 1) == p.P
 
@@ -323,7 +323,7 @@ def test_C_consistency():
         if _digit(p.pdgid, Location.N) == 9:
             continue
         if p.pdgid == 22:  # Special case of the photon
-            assert -1 == p.C
+            assert p.C == -1
         elif p.pdgid in [130, 310]:  # Special case of the KS and KL
             assert Parity.u == p.C
         else:
