@@ -6,7 +6,7 @@
 
 from __future__ import annotations
 
-from typing import Any, TextIO, Union
+from typing import IO, Any, Union
 
 from ._compat.typing import Protocol, Traversable, runtime_checkable
 
@@ -17,7 +17,7 @@ __all__ = (
 )
 
 
-StringOrIO = Union[Traversable, str, TextIO]
+StringOrIO = Union[Traversable, IO[str], str]
 
 
 @runtime_checkable
