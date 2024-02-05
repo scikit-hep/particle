@@ -25,7 +25,6 @@ from ..pdgid.functions import Location, _digit
 from ..typing import HasOpen, HasRead, StringOrIO
 from .enums import (
     Charge,
-    Charge_mapping,
     Charge_undo,
     Inv,
     Parity,
@@ -34,7 +33,6 @@ from .enums import (
     Status,
 )
 from .kinematics import width_to_lifetime
-from .regex import getname
 from .utilities import latex_to_html_name, programmatic_name, str_with_unc
 
 __all__ = ("Particle", "ParticleNotFound", "InvalidParticle")
