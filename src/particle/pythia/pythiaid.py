@@ -7,7 +7,6 @@
 Class representing a Pythia ID.
 """
 
-
 from __future__ import annotations
 
 import csv

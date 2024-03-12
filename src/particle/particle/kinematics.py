@@ -7,7 +7,6 @@
 Functions relevant to particle kinematics.
 """
 
-
 from __future__ import annotations
 
 from hepunits.constants import hbar

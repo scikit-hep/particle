@@ -10,7 +10,6 @@ for all particles in the loaded "database" CSV file, excluding nuclei.
 See the particle.literals and the pdgid.literals submodules for the actually exposed aliases.
 """
 
-
 from __future__ import annotations
 
 from .particle import Particle

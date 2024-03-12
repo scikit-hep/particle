@@ -7,6 +7,7 @@
 Script to generate the pdgid_to_corsika7id.csv conversion table from Corsika7ID to PDGID and vice-versa.
 This script should be kept, so the table won't need to be hand-edited in the future.
 """
+
 from __future__ import annotations
 
 import contextlib

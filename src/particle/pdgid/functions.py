@@ -23,7 +23,6 @@ References
 - HepPDT and HepPID versions 3.04.01.
 """
 
-
 from __future__ import annotations
 
 from enum import IntEnum

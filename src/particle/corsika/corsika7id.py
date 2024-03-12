@@ -11,7 +11,6 @@ Note
 Corsika8 uses Geant3 Particle IDs.
 """
 
-
 from __future__ import annotations
 
 import csv
