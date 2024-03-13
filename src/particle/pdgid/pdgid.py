@@ -9,7 +9,6 @@ Class representing a PDG ID.
 All methods of HepPID are implemented in a Pythonic version, see the functions module.
 """
 
-
 from __future__ import annotations
 
 from inspect import isfunction

@@ -58,7 +58,6 @@ Useful definitions:
 
 """
 
-
 from __future__ import annotations
 
 from .functions import (
