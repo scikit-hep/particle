@@ -36,7 +36,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: wntrblm/nox@2023.04.22
+    - uses: wntrblm/nox@2024.03.02
 
     - name: Make ZipApp
       run: nox -s zipapp
