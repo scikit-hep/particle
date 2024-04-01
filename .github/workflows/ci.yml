@@ -36,12 +36,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
         include:
-          - {os: macos-latest, python-version: '3.7'}
-          - {os: macos-latest, python-version: '3.11'}
-          - {os: windows-latest, python-version: '3.7'}
-          - {os: windows-latest, python-version: '3.11'}
+          - {os: macos-latest, python-version: '3.8'}
+          - {os: macos-latest, python-version: '3.12'}
+          - {os: windows-latest, python-version: '3.8'}
+          - {os: windows-latest, python-version: '3.12'}
 
     steps:
     - uses: actions/checkout@v4
@@ -62,11 +62,10 @@ jobs:
       run: python -m pytest ./tests --cov=src/particle --cov-report=xml
 
     - name: Test coverage with Codecov
-      if: "runner.os != 'Windows' && matrix.python-version != 3.7"
       uses: codecov/codecov-action@v4
 
     - name: Test docstrings with doctest
-      if: "runner.os == 'Linux' && matrix.python-version == 3.11"
+      if: "runner.os == 'Linux' && matrix.python-version == 3.12"
       run: python -m pytest --doctest-modules src/particle --ignore=src/particle/particle/convert.py
 
   notebooks:
@@ -101,7 +100,7 @@ jobs:
 
     - uses: wntrblm/nox@2024.03.02
       with:
-        python-versions: 3.7
+        python-versions: "3.8"
 
     - name: Make ZipApp
       run: nox -s zipapp

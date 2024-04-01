@@ -2,7 +2,7 @@ name: particle_demo
 channels:
   - conda-forge
 dependencies:
-  - python>=3.7
+  - python>=3.8
   # Setting recent versions to make the conda solve faster
   - numpy>=1.16
   - pandas>=0.24
