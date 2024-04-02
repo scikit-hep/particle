@@ -6,9 +6,9 @@
 
 from __future__ import annotations
 
-from typing import IO, Any, Union
+from typing import IO, Any, Protocol, Union, runtime_checkable
 
-from ._compat.typing import Protocol, Traversable, runtime_checkable
+from ._compat.typing import Traversable
 
 __all__ = (
     "StringOrIO",

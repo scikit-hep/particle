@@ -8,11 +8,6 @@ from __future__ import annotations
 
 import sys
 
-if sys.version_info < (3, 8):
-    from typing_extensions import Protocol, runtime_checkable
-else:
-    from typing import Protocol, runtime_checkable
-
 if sys.version_info < (3, 9):
     from importlib_resources.abc import Traversable
 elif sys.version_info < (3, 11):
@@ -21,8 +16,4 @@ else:
     from importlib.resources.abc import Traversable
 
 
-__all__ = (
-    "Protocol",
-    "runtime_checkable",
-    "Traversable",
-)
+__all__ = ("Traversable",)
