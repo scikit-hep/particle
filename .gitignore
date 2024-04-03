@@ -74,3 +74,4 @@ docs/_build
 /pip-wheel-metadata
 
 *.pyz
+*.pixi

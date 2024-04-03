@@ -186,3 +186,22 @@ mccabe.max-complexity = 24
 
 [tool.repo-review]
 ignore = ["RTD"]
+
+
+[tool.pixi.project]
+name = "particle"
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
+
+[tool.pixi.pypi-dependencies]
+particle  = { path = ".", editable = true}
+
+[tool.pixi.dependencies]
+numpy = ">=1.16"
+pandas = ">=1"
+attrs = ">=19"
+jupyterlab = ">=4"
+tabulate = "*"
+
+[tool.pixi.tasks]
+lab = "jupyter lab"
