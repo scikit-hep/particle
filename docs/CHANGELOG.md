@@ -1,9 +1,20 @@
 Changelog
 =========
 
-- Miscellaneous:
-  - Started using AllContributors to acknowledge contributions explicitly.
 
+Version 0.24.0
+--------------
+
+- `Particle` class and submodules:
+  - Removed deprecated methods.
+- Data files:
+  - Fixed typo in the LaTeX name of Lambda(1405).
+- Miscellaneous:
+  - Added support for Python 3.12 and dropped support for Python 3.7.
+  - Started using AllContributors to acknowledge contributions explicitly.
+- CI and tests:
+  - Updates to pre-commit hooks and CI YAML files.
+  - Added support for pixi.
 
 Version 0.23.1
 --------------
