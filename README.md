@@ -458,6 +458,9 @@ We hereby acknowledge the contributors that made this project possible ([emoji k
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/amanmdesai"><img src="https://avatars.githubusercontent.com/u/98302868?v=4?s=100" width="100px;" alt="Aman Desai"/><br /><sub><b>Aman Desai</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=amanmdesai" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://jonathantellechea.com"><img src="https://avatars.githubusercontent.com/u/49012693?v=4?s=100" width="100px;" alt="Jonathan Tellechea"/><br /><sub><b>Jonathan Tellechea</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=JOTELLECHEA" title="Documentation">📖</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/redeboer"><img src="https://avatars.githubusercontent.com/u/29308176?v=4?s=100" width="100px;" alt="Remco de Boer"/><br /><sub><b>Remco de Boer</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=redeboer" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 
