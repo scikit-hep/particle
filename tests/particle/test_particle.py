@@ -378,8 +378,6 @@ def test_explicit_table_loading():
 
 
 def test_all_particles_are_loaded():
-    Particle.load_table(data.basepath / "particle2021.csv")
-    assert len(Particle.all()) == 616
     Particle.load_table(data.basepath / "particle2022.csv")
     assert len(Particle.all()) == 616
     Particle.load_table(data.basepath / "particle2023.csv")
