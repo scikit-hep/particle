@@ -401,7 +401,7 @@ checklist_html_name = (
     (111, "&#x03c0;<SUP>0</SUP>"),  # pi0
     (-211, "&#x03c0;<SUP>-</SUP>"),  # pi-
     (-213, "&#x03c1;(770)<SUP>-</SUP>"),  # rho(770)-
-    (331, "&#x03b7;<SUP>&#8242;</SUP>(958)"), # eta_prime
+    (331, "&#x03b7;<SUP>&#8242;</SUP>(958)"),  # eta_prime
     (335, "f<SUB>2</SUB><SUP>&#8242;</SUP>(1525)"),  # f2'(1525)
     (20213, "a<SUB>1</SUB>(1260)<SUP>+</SUP>"),  # a_1(1260)+
     (321, "K<SUP>+</SUP>"),  # K+
