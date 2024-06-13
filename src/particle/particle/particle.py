@@ -938,7 +938,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @property
     def evtgen_name(self) -> str:
-        "This is the name used in EvtGen."
+        "The particle name as used in EvtGen."
         return EvtGenName2PDGIDBiMap[self.pdgid]
 
     @property
@@ -948,7 +948,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @property
     def html_name(self) -> str:
-        "This is the name in HTML."
+        "The particle name in HTML."
         return latex_to_html_name(self.latex_name)
 
     @classmethod
