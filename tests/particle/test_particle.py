@@ -397,9 +397,12 @@ checklist_html_name = (
     (11, "e<SUP>-</SUP>"),  # e-
     (-13, "&#x03bc;<SUP>+</SUP>"),  # mu+
     (-14, "&#x03bd;&#773;<SUB>&#x03bc;</SUB>"),  # nu_mu_bar
+    (18, "&#x03bd;<SUB>&#x03c4;<SUP>&#8242;</SUP></SUB>"),  # nu_tau_prime
     (111, "&#x03c0;<SUP>0</SUP>"),  # pi0
     (-211, "&#x03c0;<SUP>-</SUP>"),  # pi-
     (-213, "&#x03c1;(770)<SUP>-</SUP>"),  # rho(770)-
+    (331, "&#x03b7;<SUP>&#8242;</SUP>(958)"), # eta_prime
+    (335, "f<SUB>2</SUB><SUP>&#8242;</SUP>(1525)"),  # f2'(1525)
     (20213, "a<SUB>1</SUB>(1260)<SUP>+</SUP>"),  # a_1(1260)+
     (321, "K<SUP>+</SUP>"),  # K+
     (130, "K<SUB>L</SUB><SUP>0</SUP>"),  # K_L
@@ -415,6 +418,7 @@ checklist_html_name = (
     (-2224, "&#x0394;&#773;(1232)<SUP>--</SUP>"),  # Delta_bar(1232)--
     (3322, "&#x039e;<SUP>0</SUP>"),  # Xi0
     (-3322, "&#x039e;&#773;<SUP>0</SUP>"),  # Xi0_bar
+    (4312, "&#x039e;<SUB>c</SUB><SUP>&#8242; 0</SUP>"),  # Xi_c'0
     (-5122, "&#x039b;&#773;<SUB>b</SUB><SUP>0</SUP>"),  # Lb0_bar
 )
 
