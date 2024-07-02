@@ -105,10 +105,8 @@ from .pdgid import PDGID
 
 __all__ = (
     "PDGID",
-    #
     "is_valid",
     "abspid",
-    #
     "is_Qball",
     "is_Rhadron",
     "is_SUSY",
@@ -129,7 +127,6 @@ __all__ = (
     "is_sm_quark",
     "is_special_particle",
     "is_technicolor",
-    #
     "has_down",
     "has_up",
     "has_strange",
@@ -137,7 +134,6 @@ __all__ = (
     "has_bottom",
     "has_top",
     "has_fundamental_anti",
-    #
     "charge",
     "three_charge",
     "j_spin",

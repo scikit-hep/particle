@@ -81,7 +81,6 @@ def test_api_pdgid():
     assert dir(particle.pdgid) == sorted(
         [
             "PDGID",
-            #
             "is_valid",
             "abspid",
             # #
@@ -105,7 +104,6 @@ def test_api_pdgid():
             "is_sm_quark",
             "is_special_particle",
             "is_technicolor",
-            #
             "has_down",
             "has_up",
             "has_strange",
@@ -113,7 +111,6 @@ def test_api_pdgid():
             "has_bottom",
             "has_top",
             "has_fundamental_anti",
-            #
             "charge",
             "three_charge",
             "j_spin",
