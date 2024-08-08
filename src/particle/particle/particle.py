@@ -543,8 +543,8 @@ class Particle:
         assert cls._table_names is not None
 
         if filename is None:
-            with data.basepath.joinpath("particle2023.csv").open() as fa:
-                cls.load_table(fa, append=append, _name="particle2023.csv")
+            with data.basepath.joinpath("particle2024.csv").open() as fa:
+                cls.load_table(fa, append=append, _name="particle2024.csv")
             with data.basepath.joinpath("nuclei2022.csv").open() as fb:
                 cls.load_table(fb, append=True, _name="nuclei2022.csv")
             return
