@@ -20,7 +20,7 @@
 *       1 -  8 \ Monte Carlo particle numbers as described in the "Review of
 *       9 - 16 | Particle Physics". Charge states appear, as appropriate,
 *      17 - 24 | from left-to-right in the order -, 0, +, ++.
-*      25 - 32 / 
+*      25 - 32 /
 *           33   blank
 *      34 - 51   central value of the mass (double precision)
 *           52   blank
