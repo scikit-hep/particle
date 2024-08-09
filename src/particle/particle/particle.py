@@ -351,7 +351,7 @@ class Particle:
         =======  ======  =============  ========
             -11  e+         0.51099895         1
             -13  mu+      105.6583755          1
-            -15  tau+    1776.86               1
+            -15  tau+    1776.93               1
             -17  tau'+                         1
         =======  ======  =============  ========
 
@@ -359,8 +359,8 @@ class Particle:
         >>> print(tabulate(query_as_list, headers='firstrow'))
           pdgid  name       mass    charge
         -------  ------  -------  --------
-             15  tau-    1776.86        -1
-            -15  tau+    1776.86         1
+             15  tau-    1776.93        -1
+            -15  tau+    1776.93         1
 
         Save it to a file:
 
@@ -492,7 +492,7 @@ class Particle:
         =======  ======  ===============  ========
              11  e-         0.5109989461        -1
              13  mu-      105.6583745           -1
-             15  tau-    1776.86                -1
+             15  tau-    1776.93                -1
              17  tau'-                          -1
         =======  ======  ===============  ========
 
@@ -500,8 +500,8 @@ class Particle:
         >>> print(tabulate(query_as_dict, headers='keys'))    # doctest: +SKIP
           pdgid  name       mass    charge
         -------  ------  -------  --------
-             15  tau-    1776.86        -1
-            -15  tau+    1776.86         1
+             15  tau-    1776.93        -1
+            -15  tau+    1776.93         1
 
         Save it to a file:
 
@@ -543,8 +543,8 @@ class Particle:
         assert cls._table_names is not None
 
         if filename is None:
-            with data.basepath.joinpath("particle2023.csv").open() as fa:
-                cls.load_table(fa, append=append, _name="particle2023.csv")
+            with data.basepath.joinpath("particle2024.csv").open() as fa:
+                cls.load_table(fa, append=append, _name="particle2024.csv")
             with data.basepath.joinpath("nuclei2022.csv").open() as fb:
                 cls.load_table(fb, append=True, _name="nuclei2022.csv")
             return
