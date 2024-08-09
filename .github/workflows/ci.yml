@@ -63,6 +63,8 @@ jobs:
 
     - name: Test coverage with Codecov
       uses: codecov/codecov-action@v4
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Test docstrings with doctest
       if: "runner.os == 'Linux' && matrix.python-version == 3.12"
