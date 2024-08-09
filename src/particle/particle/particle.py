@@ -359,8 +359,8 @@ class Particle:
         >>> print(tabulate(query_as_list, headers='firstrow'))
           pdgid  name       mass    charge
         -------  ------  -------  --------
-             15  tau-    1776.86        -1
-            -15  tau+    1776.86         1
+             15  tau-    1776.93        -1
+            -15  tau+    1776.93         1
 
         Save it to a file:
 
@@ -492,7 +492,7 @@ class Particle:
         =======  ======  ===============  ========
              11  e-         0.5109989461        -1
              13  mu-      105.6583745           -1
-             15  tau-    1776.86                -1
+             15  tau-    1776.93                -1
              17  tau'-                          -1
         =======  ======  ===============  ========
 
@@ -500,8 +500,8 @@ class Particle:
         >>> print(tabulate(query_as_dict, headers='keys'))    # doctest: +SKIP
           pdgid  name       mass    charge
         -------  ------  -------  --------
-             15  tau-    1776.86        -1
-            -15  tau+    1776.86         1
+             15  tau-    1776.93        -1
+            -15  tau+    1776.93         1
 
         Save it to a file:
 
