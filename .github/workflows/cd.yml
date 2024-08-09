@@ -72,11 +72,6 @@ jobs:
         path: zipapp
 
     - name: Upload ZipApp
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v2
       with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./zipapp/particle.pyz
-        asset_name: particle.pyz
-        asset_content_type: application/zip
+        files: ./zipapp/particle.pyz
