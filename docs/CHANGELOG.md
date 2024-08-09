@@ -1,9 +1,27 @@
 Changelog
 =========
 
+Version 0.25.0
+--------------
+
+August 8th, 2024
+
+- Data files:
+  - Added the 2024 PDG data table file, now default.
+  - Version 14 of package CSV data files:
+      - Since PDG 2024 information now the default.
+  - Removed superseded data files from 2021.
+- `Particle` class and submodules:
+  - Minor fix in conversion to particle names in HTML.
+- CI and tests:
+  - Use the PyPI trusted publisher.
+  - Updates to pre-commit hooks and CI YAML files.
+
 
 Version 0.24.0
 --------------
+
+April 23rd, 2024
 
 - `Particle` class and submodules:
   - Removed deprecated methods.
