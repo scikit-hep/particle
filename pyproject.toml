@@ -173,6 +173,7 @@ ignore = [
     "ISC001",  # Conflicts with the formatter
     "E741",    # Ambiguous variable name
     "SIM103",
+    "T201",
 ]
 isort.required-imports = ["from __future__ import annotations"]
 mccabe.max-complexity = 24
