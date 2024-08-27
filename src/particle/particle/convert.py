@@ -322,7 +322,7 @@ def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
             | nar.duplicated(subset=["ID4"], keep=False) & nar["ID4"].notna()
         )
         if nar[duplicated_ids].shape[0] > 0:
-            print("DUPLICATES:\n", nar[duplicated_ids])  # noqa: T201
+            print("DUPLICATES:\n", nar[duplicated_ids])
         assert (
             nar[duplicated_ids].shape[0] == 0
         ), f"Duplicate entries found in {filename} !"
