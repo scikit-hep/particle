@@ -793,7 +793,7 @@ class Particle:
 
     name = property(
         __str__,
-        doc="The nice name, with charge added, and a tilde for an antiparticle, if relevant.",
+        doc="The PDG particle name, with charge added, and a tilde for an antiparticle, if relevant.",
     )
 
     def _repr_latex_(self) -> str:
