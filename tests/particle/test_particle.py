@@ -175,6 +175,7 @@ def test_from_nucleus_info_special_cases():
     """
     The proton and the neutron should return the preferred quark representation
     rather than the representation as a nucleus.
+    """
     assert Particle.from_nucleus_info(a=1, z=1).pdgid == 2212
     assert Particle.from_nucleus_info(a=1, z=0).pdgid == 2112
 
