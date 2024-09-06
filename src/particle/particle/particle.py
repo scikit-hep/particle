@@ -50,6 +50,20 @@ class InvalidParticle(RuntimeError):
     pass
 
 
+# the neutron, proton and their anti-particles have two possible pdgid representations
+# a) the bag of quarks b) the nucleus
+_NON_UNIQUE_PDGIDS = {
+    2112: 1000000010,
+    2212: 1000010010,
+}
+for pdgid1, pdgid2 in list(_NON_UNIQUE_PDGIDS.items()):
+    # add reverse lookup
+    _NON_UNIQUE_PDGIDS[pdgid2] = pdgid1
+    # add anti-particles
+    _NON_UNIQUE_PDGIDS[-pdgid1] = -pdgid2
+    _NON_UNIQUE_PDGIDS[-pdgid2] = -pdgid1
+
+
 def _isospin_converter(isospin: str) -> float | None:
     vals: dict[str | None, float | None] = {
         "0": 0.0,
@@ -605,11 +619,16 @@ class Particle:
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Particle):
-            return self.pdgid == other.pdgid
+            other = other.pdgid
+
+        if self.pdgid in _NON_UNIQUE_PDGIDS:
+            return other in {self.pdgid, _NON_UNIQUE_PDGIDS[self.pdgid]}
+
         return self.pdgid == other
 
-    # Only one particle can exist per PDGID number
     def __hash__(self) -> int:
+        if self.pdgid in _NON_UNIQUE_PDGIDS:
+            return hash(min(_NON_UNIQUE_PDGIDS[self.pdgid], self.pdgid))
         return hash(self.pdgid)
 
     # Shared with PDGID
