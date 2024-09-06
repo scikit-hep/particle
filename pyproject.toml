@@ -53,6 +53,7 @@ dev = [
     "pytest-benchmark",
     "pytest>=6",
     "tabulate",
+    "pre-commit",
 ]
 test = [
     "pandas",
@@ -60,6 +61,9 @@ test = [
     "pytest-cov",
     "pytest>=6",
     "tabulate",
+]
+all = [
+  "particle[dev,test]",
 ]
 
 [project.urls]
