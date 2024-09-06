@@ -747,8 +747,8 @@ def test_eq_non_unique_pdgids(pdgid1, pdgid2):
 def test_from_name_non_unique_pdgids(name, pdgid):
     """
     Test that Particle.from_name works for p and n, returning the preferred quark representation
-     rather than the representation as a nucleus.
-     """
+    rather than the representation as a nucleus.
+    """
 
     p = Particle.from_name(name)
     assert p.name == name
