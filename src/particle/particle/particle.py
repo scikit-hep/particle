@@ -50,8 +50,8 @@ class InvalidParticle(RuntimeError):
     pass
 
 
-# the neutron, proton and their anti-particles have two possible pdgid representations
-# a) the bag of quarks b) the nucleus
+# The proton and the neutron (and their anti-particles) have two possible PDG ID representations,
+# a) a particle ("bag of quarks") or b) a nucleus.
 _NON_UNIQUE_PDGIDS = {
     2112: 1000000010,
     2212: 1000010010,
@@ -626,6 +626,12 @@ class Particle:
         return int(self.pdgid) < other
 
     def __eq__(self, other: object) -> bool:
+    """
+    Note
+    ----
+    Ensure the comparison also works for the special cases of the proton and the neutron,
+    which have two PDG ID representations as particles or nuclei."""
+    """
         if isinstance(other, Particle):
             other = other.pdgid
 
