@@ -171,7 +171,10 @@ def test_from_nucleus_info():
     p = Particle.from_nucleus_info(1, 2, anti=True)
     assert p.pdgid == -1000010020
 
-    # proton and neutron should return the preferred quark representation
+def test_from_nucleus_info_special_cases():
+    """
+    The proton and the neutron should return the preferred quark representation
+    rather than the representation as a nucleus.
     assert Particle.from_nucleus_info(a=1, z=1).pdgid == 2212
     assert Particle.from_nucleus_info(a=1, z=0).pdgid == 2112
 
@@ -722,7 +725,7 @@ def test_evtgen_name(name, pid):  # noqa: ARG001
     ],
 )
 def test_eq_non_unique_pdgids(pdgid1, pdgid2):
-    """The proton and the neutron have two pdgid representations, make sure they still compare equal"""
+    """The proton and the neutron have two PDG ID representations. Make sure they still compare equal."""
 
     p1 = Particle.from_pdgid(pdgid1)
     p2 = Particle.from_pdgid(pdgid2)
@@ -742,7 +745,10 @@ def test_eq_non_unique_pdgids(pdgid1, pdgid2):
     ],
 )
 def test_from_name_non_unique_pdgids(name, pdgid):
-    """Test that Particle.fromn_name works for p and n, returning the preferred version"""
+    """
+    Test that Particle.from_name works for p and n, returning the preferred quark representation
+     rather than the representation as a nucleus.
+     """
 
     p = Particle.from_name(name)
     assert p.name == name
