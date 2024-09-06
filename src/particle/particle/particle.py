@@ -627,12 +627,12 @@ class Particle:
 
     def __eq__(self, other: object) -> bool:
     """
-    Compare with another Particle instance based in PDG IDs.
+    Compare with another Particle instance based on PDG IDs.
 
     Note
     ----
     Ensure the comparison also works for the special cases of the proton and the neutron,
-    which have two PDG ID representations as particles or nuclei."""
+    which have two PDG ID representations as particles or nuclei.
     """
         if isinstance(other, Particle):
             other = other.pdgid
