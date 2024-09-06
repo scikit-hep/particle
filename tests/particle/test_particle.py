@@ -711,10 +711,10 @@ def test_evtgen_name(name, pid):  # noqa: ARG001
 @pytest.mark.parametrize(
     ("pdgid1", "pdgid2"),
     [
-        pytest.param(2212, 1000010010, id="proton"),
-        pytest.param(2112, 1000000010, id="neutron"),
-        pytest.param(-2212, -1000010010, id="anti-proton"),
-        pytest.param(-2112, -1000000010, id="anti-neutron"),
+        pytest.param(2212, 1000010010, id="p"),
+        pytest.param(2112, 1000000010, id="n"),
+        pytest.param(-2212, -1000010010, id="p~"),
+        pytest.param(-2112, -1000000010, id="n~"),
     ],
 )
 def test_eq_non_unique_pdgids(pdgid1, pdgid2):
@@ -725,3 +725,20 @@ def test_eq_non_unique_pdgids(pdgid1, pdgid2):
     assert p1.pdgid != p2.pdgid
     assert p1 == p2
     assert hash(p1) == hash(p2)
+
+
+@pytest.mark.parametrize(
+    ("name", "pdgid"),
+    [
+        pytest.param("p", 2212, id="p"),
+        pytest.param("n", 2112, id="n"),
+        pytest.param("p~", -2212, id="p~"),
+        pytest.param("n~", -2112, id="n~"),
+    ],
+)
+def test_from_name_non_unique_pdgids(name, pdgid):
+    """The proton and the neutron have two pdgid representations, make sure they still compare equal"""
+
+    p = Particle.from_name(name)
+    assert p.name == name
+    assert p.pdgid == pdgid

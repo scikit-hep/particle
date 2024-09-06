@@ -63,6 +63,14 @@ for pdgid1, pdgid2 in list(_NON_UNIQUE_PDGIDS.items()):
     _NON_UNIQUE_PDGIDS[-pdgid1] = -pdgid2
     _NON_UNIQUE_PDGIDS[-pdgid2] = -pdgid1
 
+# lookup for hash and from_name which representation is the preferred one
+# this results in the "bag-of-quarks" representation
+_PREFERRED_PDGID = {}
+for pdgid1, pdgid2 in _NON_UNIQUE_PDGIDS.items():
+    sign = -1 if pdgid1 < 0 else 1
+    _PREFERRED_PDGID[pdgid1] = sign * min(abs(pdgid1), abs(pdgid2))
+    _PREFERRED_PDGID[pdgid2] = _PREFERRED_PDGID[pdgid1]
+
 
 def _isospin_converter(isospin: str) -> float | None:
     vals: dict[str | None, float | None] = {
@@ -627,8 +635,8 @@ class Particle:
         return self.pdgid == other
 
     def __hash__(self) -> int:
-        if self.pdgid in _NON_UNIQUE_PDGIDS:
-            return hash(min(_NON_UNIQUE_PDGIDS[self.pdgid], self.pdgid))
+        if self.pdgid in _PREFERRED_PDGID:
+            return hash(_PREFERRED_PDGID[self.pdgid])
         return hash(self.pdgid)
 
     # Shared with PDGID
@@ -1011,6 +1019,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         ParticleNotFound
             If no particle matches the input name uniquely and exactly.
         """
+        # special handling for the particles with two possible pdgids
+        if name in {"p", "n", "p~", "n~"}:
+
+            def find_preferred_id(p: Self) -> bool:
+                return int(p.pdgid) in _PREFERRED_PDGID.values()
+
+            return next(filter(find_preferred_id, cls.finditer(name=name)))
         try:
             (particle,) = cls.finditer(
                 name=name
