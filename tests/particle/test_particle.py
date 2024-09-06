@@ -741,7 +741,7 @@ def test_eq_non_unique_pdgids(pdgid1, pdgid2):
     ],
 )
 def test_from_name_non_unique_pdgids(name, pdgid):
-    """The proton and the neutron have two pdgid representations, make sure they still compare equal"""
+    """Test that Particle.fromn_name works for p and n, returning the preferred version"""
 
     p = Particle.from_name(name)
     assert p.name == name
