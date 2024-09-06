@@ -742,3 +742,25 @@ def test_from_name_non_unique_pdgids(name, pdgid):
     p = Particle.from_name(name)
     assert p.name == name
     assert p.pdgid == pdgid
+
+
+@pytest.mark.parametrize("sign", [1, -1])
+def test_particle_hash(sign):
+    proton1 = Particle.from_pdgid(sign * 2212)
+    proton2 = Particle.from_pdgid(sign * 1000010010)
+    neutron1 = Particle.from_pdgid(sign * 2112)
+    neutron2 = Particle.from_pdgid(sign * 1000000010)
+
+    s1 = {proton1, neutron1}
+
+    assert proton1 in s1
+    assert proton2 in s1
+    assert neutron1 in s1
+    assert neutron2 in s1
+
+    assert len({proton1, proton2}) == 1
+    assert len({neutron1, neutron2}) == 1
+
+    d = {proton1: 5, neutron2: 3}
+    assert d[proton2] == 5
+    assert d[neutron1] == 3
