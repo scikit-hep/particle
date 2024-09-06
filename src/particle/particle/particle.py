@@ -1117,7 +1117,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         pdgid = int(1e9 + l_strange * 1e5 + z * 1e4 + a * 10 + i)
 
         if anti:
-            return cls.from_pdgid(-pdgid)
+            pdgid = -pdgid
+
+        # replace nucleon ids of single hadrons with quark version
+        pdgid = _PREFERRED_PDGID.get(pdgid, pdgid)
 
         return cls.from_pdgid(pdgid)
 

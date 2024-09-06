@@ -171,6 +171,10 @@ def test_from_nucleus_info():
     p = Particle.from_nucleus_info(1, 2, anti=True)
     assert p.pdgid == -1000010020
 
+    # proton and neutron should return the preferred quark representation
+    assert Particle.from_nucleus_info(a=1, z=1).pdgid == 2212
+    assert Particle.from_nucleus_info(a=1, z=0).pdgid == 2112
+
 
 def test_from_nucleus_info_ParticleNotFound():
     with pytest.raises(ParticleNotFound):
