@@ -171,6 +171,7 @@ def test_from_nucleus_info():
     p = Particle.from_nucleus_info(1, 2, anti=True)
     assert p.pdgid == -1000010020
 
+
 def test_from_nucleus_info_special_cases():
     """
     The proton and the neutron should return the preferred quark representation
