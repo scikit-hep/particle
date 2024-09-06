@@ -728,6 +728,7 @@ def test_eq_non_unique_pdgids(pdgid1, pdgid2):
     p2 = Particle.from_pdgid(pdgid2)
     assert p1.pdgid != p2.pdgid
     assert p1 == p2
+    assert p2 == p1
     assert hash(p1) == hash(p2)
 
 
