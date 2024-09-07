@@ -172,6 +172,15 @@ def test_from_nucleus_info():
     assert p.pdgid == -1000010020
 
 
+def test_from_nucleus_info_special_cases():
+    """
+    The proton and the neutron should return the preferred quark representation
+    rather than the representation as a nucleus.
+    """
+    assert Particle.from_nucleus_info(a=1, z=1).pdgid == 2212
+    assert Particle.from_nucleus_info(a=1, z=0).pdgid == 2112
+
+
 def test_from_nucleus_info_ParticleNotFound():
     with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(z=999, a=999)
@@ -706,3 +715,65 @@ def test_decfile_style_names(name, pid):
 @pytest.mark.parametrize(("name", "pid"), decfile_style_names)
 def test_evtgen_name(name, pid):  # noqa: ARG001
     assert Particle.from_evtgen_name(name).evtgen_name == name
+
+
+@pytest.mark.parametrize(
+    ("pdgid1", "pdgid2"),
+    [
+        pytest.param(2212, 1000010010, id="p"),
+        pytest.param(2112, 1000000010, id="n"),
+        pytest.param(-2212, -1000010010, id="p~"),
+        pytest.param(-2112, -1000000010, id="n~"),
+    ],
+)
+def test_eq_non_unique_pdgids(pdgid1, pdgid2):
+    """The proton and the neutron have two PDG ID representations. Make sure they still compare equal."""
+
+    p1 = Particle.from_pdgid(pdgid1)
+    p2 = Particle.from_pdgid(pdgid2)
+    assert p1.pdgid != p2.pdgid
+    assert p1 == p2
+    assert p2 == p1
+    assert hash(p1) == hash(p2)
+
+
+@pytest.mark.parametrize(
+    ("name", "pdgid"),
+    [
+        pytest.param("p", 2212, id="p"),
+        pytest.param("n", 2112, id="n"),
+        pytest.param("p~", -2212, id="p~"),
+        pytest.param("n~", -2112, id="n~"),
+    ],
+)
+def test_from_name_non_unique_pdgids(name, pdgid):
+    """
+    Test that Particle.from_name works for p and n, returning the preferred quark representation
+    rather than the representation as a nucleus.
+    """
+
+    p = Particle.from_name(name)
+    assert p.name == name
+    assert p.pdgid == pdgid
+
+
+@pytest.mark.parametrize("sign", [1, -1])
+def test_particle_hash(sign):
+    proton1 = Particle.from_pdgid(sign * 2212)
+    proton2 = Particle.from_pdgid(sign * 1000010010)
+    neutron1 = Particle.from_pdgid(sign * 2112)
+    neutron2 = Particle.from_pdgid(sign * 1000000010)
+
+    s1 = {proton1, neutron1}
+
+    assert proton1 in s1
+    assert proton2 in s1
+    assert neutron1 in s1
+    assert neutron2 in s1
+
+    assert len({proton1, proton2}) == 1
+    assert len({neutron1, neutron2}) == 1
+
+    d = {proton1: 5, neutron2: 3}
+    assert d[proton2] == 5
+    assert d[neutron1] == 3

@@ -50,6 +50,28 @@ class InvalidParticle(RuntimeError):
     pass
 
 
+# The proton and the neutron (and their anti-particles) have two possible PDG ID representations,
+# a) a particle ("bag of quarks") or b) a nucleus.
+_NON_UNIQUE_PDGIDS = {
+    2112: 1000000010,
+    2212: 1000010010,
+}
+for pdgid1, pdgid2 in list(_NON_UNIQUE_PDGIDS.items()):
+    # add reverse lookup
+    _NON_UNIQUE_PDGIDS[pdgid2] = pdgid1
+    # add anti-particles
+    _NON_UNIQUE_PDGIDS[-pdgid1] = -pdgid2
+    _NON_UNIQUE_PDGIDS[-pdgid2] = -pdgid1
+
+# lookup for hash and from_name which representation is the preferred one
+# this results in the "bag-of-quarks" representation
+_PREFERRED_PDGID = {}
+for pdgid1, pdgid2 in _NON_UNIQUE_PDGIDS.items():
+    sign = -1 if pdgid1 < 0 else 1
+    _PREFERRED_PDGID[pdgid1] = sign * min(abs(pdgid1), abs(pdgid2))
+    _PREFERRED_PDGID[pdgid2] = _PREFERRED_PDGID[pdgid1]
+
+
 def _isospin_converter(isospin: str) -> float | None:
     vals: dict[str | None, float | None] = {
         "0": 0.0,
@@ -604,12 +626,25 @@ class Particle:
         return int(self.pdgid) < other
 
     def __eq__(self, other: object) -> bool:
+        """
+        Compare with another Particle instance based on PDG IDs.
+
+        Note
+        ----
+        Ensure the comparison also works for the special cases of the proton and the neutron,
+        which have two PDG ID representations as particles or nuclei.
+        """
         if isinstance(other, Particle):
-            return self.pdgid == other.pdgid
+            other = other.pdgid
+
+        if self.pdgid in _NON_UNIQUE_PDGIDS:
+            return other in {self.pdgid, _NON_UNIQUE_PDGIDS[self.pdgid]}
+
         return self.pdgid == other
 
-    # Only one particle can exist per PDGID number
     def __hash__(self) -> int:
+        if self.pdgid in _PREFERRED_PDGID:
+            return hash(_PREFERRED_PDGID[self.pdgid])
         return hash(self.pdgid)
 
     # Shared with PDGID
@@ -992,6 +1027,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         ParticleNotFound
             If no particle matches the input name uniquely and exactly.
         """
+        # special handling for the particles with two possible pdgids
+        if name in {"p", "n", "p~", "n~"}:
+
+            def find_preferred_id(p: Self) -> bool:
+                return int(p.pdgid) in _PREFERRED_PDGID.values()
+
+            return next(filter(find_preferred_id, cls.finditer(name=name)))
         try:
             (particle,) = cls.finditer(
                 name=name
@@ -1083,7 +1125,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         pdgid = int(1e9 + l_strange * 1e5 + z * 1e4 + a * 10 + i)
 
         if anti:
-            return cls.from_pdgid(-pdgid)
+            pdgid = -pdgid
+
+        # replace nucleon ids of single hadrons with quark version
+        pdgid = _PREFERRED_PDGID.get(pdgid, pdgid)
 
         return cls.from_pdgid(pdgid)
 
