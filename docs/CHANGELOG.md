@@ -1,6 +1,21 @@
 Changelog
 =========
 
+Version 0.25.1
+--------------
+
+September 11th, 2024
+
+- `Particle` class and submodules:
+  - Ensure the proton and neutron are correctly handled whether using
+    the particle representation (PDG IDs 2212 and 2112) or their representation as a nucleus.
+- Data files:
+  - Added internal quantum numbers for several mesons.
+- CI and tests:
+  - Codecov back working again - required tokens.
+  - Fix for ZipApp.
+  - Updates to pre-commit hooks and CI YAML files.
+
 Version 0.25.0
 --------------
 
