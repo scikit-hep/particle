@@ -36,12 +36,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
         include:
           - {os: macos-13, python-version: '3.8'}
-          - {os: macos-13, python-version: '3.12'}
+          - {os: macos-13, python-version: '3.13'}
           - {os: windows-latest, python-version: '3.8'}
-          - {os: windows-latest, python-version: '3.12'}
+          - {os: windows-latest, python-version: '3.13'}
 
     steps:
     - uses: actions/checkout@v4
@@ -51,6 +51,7 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+        allow-prereleases: true
 
     - name: Install package
       run: python -m pip install -e .[test]
