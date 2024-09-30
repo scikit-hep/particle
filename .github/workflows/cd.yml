@@ -53,10 +53,12 @@ jobs:
     needs: [dist]
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
-    environment: pypi
+    environment:
+      name: pypi
+      url: https://pypi.org/p/particle
     permissions:
       id-token: write
-
+      attestations: write
 
     steps:
     - uses: actions/download-artifact@v4
@@ -64,7 +66,15 @@ jobs:
         name: artifact
         path: dist
 
-    - uses: pypa/gh-action-pypi-publish@release/v1
+    - name: Generate artifact attestation for sdist and wheel
+      uses: actions/attest-build-provenance@1c608d11d69870c2092266b3f9a6f3abbf17002c # v1.4.3
+      with:
+        subject-path: "dist/particle*"
+
+    - name: Upload package to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        attestations: true
 
     - uses: actions/download-artifact@v4
       with:
@@ -75,3 +85,8 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: ./zipapp/particle.pyz
+
+    - name: Generate artifact attestation for zipapp
+      uses: actions/attest-build-provenance@1c608d11d69870c2092266b3f9a6f3abbf17002c # v1.4.3
+      with:
+        subject-path: zipapp/particle.pyz
