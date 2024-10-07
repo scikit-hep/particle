@@ -1,6 +1,19 @@
 Changelog
 =========
 
+Version 0.25.2
+--------------
+
+October 7th, 2024
+
+- Miscellaneous:
+  - Added support for Python 3.13.
+  - Added attestations.
+- CI and tests:
+  - Faster CI with `uv`.
+  - Updates to pre-commit hooks and CI YAML files.
+
+
 Version 0.25.1
 --------------
 
