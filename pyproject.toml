@@ -116,10 +116,10 @@ filterwarnings = [
 ]
 
 [tool.pylint]
-master.py-version = "3.8"
+py-version = "3.8"
 reports.output-format = "colorized"
 similarities.ignore-imports = "yes"
-master.jobs = "0"
+jobs = "0"
 messages_control.enable = [
     "useless-suppression",
 ]

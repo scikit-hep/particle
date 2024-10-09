@@ -449,8 +449,8 @@ def version_header(filename: str, version_number: str) -> str:
 
 def main(version: str, year: str) -> None:
     "Regenerate output files - run directly inside the package"
-    master_dir = os.path.dirname(FILE_DIR)
-    data_dir = os.path.join(master_dir, "data")
+    main_dir = os.path.dirname(FILE_DIR)
+    data_dir = os.path.join(main_dir, "data")
     particle2008 = os.path.join(data_dir, "particle2008.csv")
     particlenew = os.path.join(data_dir, "particle" + year + ".csv")
 

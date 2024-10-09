@@ -557,7 +557,7 @@ November 19th, 2019
 - MC particle identification code converters:
     - Introduced directional maps `PDG2EvtGenNameMap` and
         `EvtGen2PDGNameMap` between PDG and EvtGen names.
-    - Conversions master file `data/conversions.csv` added.
+    - Conversions main file `data/conversions.csv` added.
     - Content of converters CSV files are now ordered.
 - Documentation:
     - README updated with new package functionality.

@@ -1,4 +1,4 @@
-<img alt="Particle Logo" src="https://github.com/scikit-hep/particle/raw/master/docs/ParticleLogo300.png"/>
+<img alt="Particle Logo" src="https://github.com/scikit-hep/particle/raw/main/docs/ParticleLogo300.png"/>
 
 # Particle: PDG particle data and identification codes
 
@@ -8,9 +8,9 @@
 [![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2552429.svg)](https://doi.org/10.5281/zenodo.2552429)
 
 [![GitHub Actions Status: CI](https://github.com/scikit-hep/particle/workflows/CI/badge.svg)](https://github.com/scikit-hep/particle/actions)
-[![Code Coverage](https://codecov.io/gh/scikit-hep/particle/graph/badge.svg?branch=master)](https://codecov.io/gh/scikit-hep/particle?branch=master)
+[![Code Coverage](https://codecov.io/gh/scikit-hep/particle/graph/badge.svg?branch=main)](https://codecov.io/gh/scikit-hep/particle?branch=main)
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/scikit-hep/particle/master?urlpath=lab/tree/notebooks/ParticleDemo.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/scikit-hep/particle/main?urlpath=lab/tree/notebooks/ParticleDemo.ipynb)
 
 Particle provides a pythonic interface to the [Particle Data Group](http://pdg.lbl.gov/) (PDG)
 particle data tables and particle identification codes,
@@ -43,7 +43,7 @@ or similar (use `--user`, `virtualenv`, etc. if you wish).
 
 ## Changelog
 
-See the [changelog](https://github.com/scikit-hep/particle/blob/master/docs/CHANGELOG.md) for a history of notable changes.
+See the [changelog](https://github.com/scikit-hep/particle/blob/main/docs/CHANGELOG.md) for a history of notable changes.
 
 ## Getting started: PDG IDs
 
