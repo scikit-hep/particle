@@ -80,9 +80,9 @@ FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 __all__ = (
     "convert",
+    "get_from_latex",
     "get_from_pdg_extended",
     "get_from_pdg_mcd",
-    "get_from_latex",
     "update_from_mcd",
 )
 

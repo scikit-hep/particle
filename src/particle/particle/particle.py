@@ -35,7 +35,7 @@ from .enums import (
 from .kinematics import width_to_lifetime
 from .utilities import latex_to_html_name, programmatic_name, str_with_unc
 
-__all__ = ("Particle", "ParticleNotFound", "InvalidParticle")
+__all__ = ("InvalidParticle", "Particle", "ParticleNotFound")
 
 
 def __dir__() -> tuple[str, ...]:
