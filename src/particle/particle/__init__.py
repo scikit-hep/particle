@@ -14,17 +14,17 @@ from .utilities import latex_name_unicode, latex_to_html_name, programmatic_name
 __all__ = (
     "Charge",
     "Inv",
-    "Parity",
-    "SpinType",
-    "Status",
-    "lifetime_to_width",
-    "width_to_lifetime",
     "InvalidParticle",
+    "Parity",
     "Particle",
     "ParticleNotFound",
+    "SpinType",
+    "Status",
     "latex_name_unicode",
     "latex_to_html_name",
+    "lifetime_to_width",
     "programmatic_name",
+    "width_to_lifetime",
 )
 
 

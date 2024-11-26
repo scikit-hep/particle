@@ -9,9 +9,9 @@ from .converters import LHCbName2PDGIDBiMap
 from .functions import from_lhcb_name, to_lhcb_name
 
 __all__ = (
+    "LHCbName2PDGIDBiMap",
     "from_lhcb_name",
     "to_lhcb_name",
-    "LHCbName2PDGIDBiMap",
 )
 
 

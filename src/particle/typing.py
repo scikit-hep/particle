@@ -11,9 +11,9 @@ from typing import IO, Any, Protocol, Union, runtime_checkable
 from ._compat.typing import Traversable
 
 __all__ = (
-    "StringOrIO",
     "HasOpen",
     "HasRead",
+    "StringOrIO",
 )
 
 

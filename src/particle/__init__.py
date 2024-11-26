@@ -37,22 +37,22 @@ from .version import version as __version__
 sys.modules["particle.literals"] = literals
 
 __all__ = (
+    "PDGID",
     "Charge",
     "Corsika7ID",
     "Geant3ID",
     "Inv",
     "InvalidParticle",
-    "PDGID",
     "Parity",
     "Particle",
     "ParticleNotFound",
     "PythiaID",
     "SpinType",
     "Status",
+    "__version__",
     "latex_to_html_name",
     "lifetime_to_width",
     "width_to_lifetime",
-    "__version__",
 )
 
 

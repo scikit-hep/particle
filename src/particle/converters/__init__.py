@@ -12,12 +12,12 @@ from .geant import Geant2PDGIDBiMap
 from .pythia import Pythia2PDGIDBiMap
 
 __all__ = (
+    "Corsika72PDGIDBiMap",
     "EvtGen2PDGNameMap",
     "EvtGenName2PDGIDBiMap",
-    "PDG2EvtGenNameMap",
     "Geant2PDGIDBiMap",
+    "PDG2EvtGenNameMap",
     "Pythia2PDGIDBiMap",
-    "Corsika72PDGIDBiMap",
 )
 
 
