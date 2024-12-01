@@ -53,13 +53,13 @@ jobs:
         python-version: ${{ matrix.python-version }}
         allow-prereleases: true
 
-    - uses: astral-sh/setup-uv@v3
+    - uses: astral-sh/setup-uv@v4
 
     - name: Test package
       run: uvx nox -s tests --force-python=${{ matrix.python-version }}
 
     - name: Test coverage with Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
@@ -79,7 +79,7 @@ jobs:
       with:
         python-version: "3.x"
 
-    - uses: astral-sh/setup-uv@v3
+    - uses: astral-sh/setup-uv@v4
 
     - name: Install package
       run: uv pip install --system -e .[test]
