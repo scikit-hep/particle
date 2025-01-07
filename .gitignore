@@ -75,3 +75,5 @@ docs/_build
 
 *.pyz
 *.pixi
+
+*/__pycache__/*
