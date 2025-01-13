@@ -323,9 +323,9 @@ def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
         )
         if nar[duplicated_ids].shape[0] > 0:
             print("DUPLICATES:\n", nar[duplicated_ids])
-        assert (
-            nar[duplicated_ids].shape[0] == 0
-        ), f"Duplicate entries found in {filename} !"
+        assert nar[duplicated_ids].shape[0] == 0, (
+            f"Duplicate entries found in {filename} !"
+        )
 
     ds_list = []
     for i in range(4):
