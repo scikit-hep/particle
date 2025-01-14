@@ -123,6 +123,6 @@ class PDGID(int):
 
 # Verify the PDGID class has all relevant functions defined in the pdgid.functions module
 for _n in _fnames:
-    assert _n in dir(
-        PDGID
-    ), f"{_n} missing from PDGID class! Update the list in pdgid.py"
+    assert _n in dir(PDGID), (
+        f"{_n} missing from PDGID class! Update the list in pdgid.py"
+    )
