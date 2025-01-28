@@ -39,7 +39,7 @@ repos:
   hooks:
   - id: codespell
     exclude: ^(src/particle/data/.*\.csv|src/particle/data/.*\.fwf)$
-    args: ["-L", "Lamda,lamda"]
+    args: ["-L", "Lamda,lamda,HEP"]
 
 - repo: https://github.com/pre-commit/pygrep-hooks
   rev: v1.10.0
