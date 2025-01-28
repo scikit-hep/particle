@@ -19,7 +19,7 @@ repos:
   - id: end-of-file-fixer
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: "v0.9.2"
+  rev: "v0.9.3"
   hooks:
     - id: ruff
       args: ["--fix", "--show-fixes"]
@@ -35,11 +35,11 @@ repos:
     args: [--show-error-codes]
 
 - repo: https://github.com/codespell-project/codespell
-  rev: v2.3.0
+  rev: v2.4.0
   hooks:
   - id: codespell
     exclude: ^(src/particle/data/.*\.csv|src/particle/data/.*\.fwf)$
-    args: ["-L", "Lamda,lamda"]
+    args: ["-L", "Lamda,lamda,HEP"]
 
 - repo: https://github.com/pre-commit/pygrep-hooks
   rev: v1.10.0
