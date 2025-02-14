@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -8,7 +8,7 @@ This is a conversion file, not part of the public API.
 
 The default CSV files can be updated directly using the command:
 
-    >>> python -m particle.particle.convert regenerate 2023 <version_number>    # doctest: +SKIP
+    >>> python -m particle.particle.convert regenerate 2024 <version_number>    # doctest: +SKIP
 
 A custom fwf file and LaTeX file can be converted into the CSV format using:
 
@@ -33,7 +33,7 @@ combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
 
 You can also read in a modern "standard" file (this will produce fewer columns):
 
-    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2023.mcd')
+    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2024.mcd')
 
 A utility is even provided to use the modern table to update the full table:
 
@@ -63,8 +63,9 @@ import numpy as np
 import pandas as pd
 
 from .. import data
+from .._compat.typing import Traversable
 from ..pdgid import PDGID, is_baryon
-from ..typing import StringOrIO, Traversable
+from ..typing import StringOrIO
 from .enums import (
     Charge,
     Charge_mapping,
@@ -79,9 +80,9 @@ FILE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 __all__ = (
     "convert",
+    "get_from_latex",
     "get_from_pdg_extended",
     "get_from_pdg_mcd",
-    "get_from_latex",
     "update_from_mcd",
 )
 
@@ -268,11 +269,11 @@ def sort_particles(table: pd.DataFrame) -> None:
 
 def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
     """
-    Reads in a current-style PDG .mcd file (mass_width_2023.mcd file tested).
+    Reads in a current-style PDG .mcd file (mass_width_2024.mcd file tested).
 
     Example
     -------
-    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2023.mcd')
+    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2024.mcd')
     """
 
     # The format here includes the space before a column
@@ -321,10 +322,10 @@ def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
             | nar.duplicated(subset=["ID4"], keep=False) & nar["ID4"].notna()
         )
         if nar[duplicated_ids].shape[0] > 0:
-            print("DUPLICATES:\n", nar[duplicated_ids])  # noqa: T201
-        assert (
-            nar[duplicated_ids].shape[0] == 0
-        ), f"Duplicate entries found in {filename} !"
+            print("DUPLICATES:\n", nar[duplicated_ids])
+        assert nar[duplicated_ids].shape[0] == 0, (
+            f"Duplicate entries found in {filename} !"
+        )
 
     ds_list = []
     for i in range(4):
@@ -358,7 +359,7 @@ def update_from_mcd(
 
     Example
     -------
-    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2023.mcd')    # doctest: +SKIP
+    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2024.mcd')    # doctest: +SKIP
     """
 
     full_table = full_table.copy()
@@ -372,7 +373,7 @@ def update_from_mcd(
 
 def produce_files(
     particle2008: str | Path,  # noqa: ARG001
-    particle2023: str | Path,
+    particle2024: str | Path,
     version: str,
     year: str,
 ) -> None:
@@ -434,8 +435,8 @@ def produce_files(
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    with open(particle2023, "w", newline="\n", encoding="utf-8") as f:
-        f.write(version_header(str(particle2023), version))
+    with open(particle2024, "w", newline="\n", encoding="utf-8") as f:
+        f.write(version_header(str(particle2024), version))
         new_table.to_csv(f, float_format="%.12g")
 
 
@@ -448,8 +449,8 @@ def version_header(filename: str, version_number: str) -> str:
 
 def main(version: str, year: str) -> None:
     "Regenerate output files - run directly inside the package"
-    master_dir = os.path.dirname(FILE_DIR)
-    data_dir = os.path.join(master_dir, "data")
+    main_dir = os.path.dirname(FILE_DIR)
+    data_dir = os.path.join(main_dir, "data")
     particle2008 = os.path.join(data_dir, "particle2008.csv")
     particlenew = os.path.join(data_dir, "particle" + year + ".csv")
 

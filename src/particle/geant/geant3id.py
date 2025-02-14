@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -11,7 +11,6 @@ Note
 No equivalent Geant4 ID class is available/necessary given that Geant4
 follows the PDG rules, hence uses the standard PDG IDs.
 """
-
 
 from __future__ import annotations
 

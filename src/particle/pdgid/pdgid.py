@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -8,7 +8,6 @@ Class representing a PDG ID.
 
 All methods of HepPID are implemented in a Pythonic version, see the functions module.
 """
-
 
 from __future__ import annotations
 
@@ -124,6 +123,6 @@ class PDGID(int):
 
 # Verify the PDGID class has all relevant functions defined in the pdgid.functions module
 for _n in _fnames:
-    assert _n in dir(
-        PDGID
-    ), f"{_n} missing from PDGID class! Update the list in pdgid.py"
+    assert _n in dir(PDGID), (
+        f"{_n} missing from PDGID class! Update the list in pdgid.py"
+    )

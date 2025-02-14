@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -58,7 +58,6 @@ Useful definitions:
 
 """
 
-
 from __future__ import annotations
 
 from .functions import (
@@ -106,10 +105,20 @@ from .pdgid import PDGID
 
 __all__ = (
     "PDGID",
-    #
-    "is_valid",
+    "A",
+    "J",
+    "L",
+    "S",
+    "Z",
     "abspid",
-    #
+    "charge",
+    "has_bottom",
+    "has_charm",
+    "has_down",
+    "has_fundamental_anti",
+    "has_strange",
+    "has_top",
+    "has_up",
     "is_Qball",
     "is_Rhadron",
     "is_SUSY",
@@ -130,25 +139,11 @@ __all__ = (
     "is_sm_quark",
     "is_special_particle",
     "is_technicolor",
-    #
-    "has_down",
-    "has_up",
-    "has_strange",
-    "has_charm",
-    "has_bottom",
-    "has_top",
-    "has_fundamental_anti",
-    #
-    "charge",
-    "three_charge",
+    "is_valid",
     "j_spin",
-    "J",
-    "s_spin",
-    "S",
     "l_spin",
-    "L",
-    "A",
-    "Z",
+    "s_spin",
+    "three_charge",
 )
 
 

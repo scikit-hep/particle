@@ -1,6 +1,77 @@
 Changelog
 =========
 
+Version 0.25.2
+--------------
+
+October 7th, 2024
+
+- Miscellaneous:
+  - Added support for Python 3.13.
+  - Added attestations.
+- CI and tests:
+  - Faster CI with `uv`.
+  - Updates to pre-commit hooks and CI YAML files.
+
+
+Version 0.25.1
+--------------
+
+September 11th, 2024
+
+- `Particle` class and submodules:
+  - Ensure the proton and neutron are correctly handled whether using
+    the particle representation (PDG IDs 2212 and 2112) or their representation as a nucleus.
+- Data files:
+  - Added internal quantum numbers for several mesons.
+- CI and tests:
+  - Codecov back working again - required tokens.
+  - Fix for ZipApp.
+  - Updates to pre-commit hooks and CI YAML files.
+
+Version 0.25.0
+--------------
+
+August 8th, 2024
+
+- Data files:
+  - Added the 2024 PDG data table file, now default.
+  - Version 14 of package CSV data files:
+      - Since PDG 2024 information now the default.
+  - Removed superseded data files from 2021.
+- `Particle` class and submodules:
+  - Minor fix in conversion to particle names in HTML.
+- CI and tests:
+  - Use the PyPI trusted publisher.
+  - Updates to pre-commit hooks and CI YAML files.
+
+
+Version 0.24.0
+--------------
+
+April 23rd, 2024
+
+- `Particle` class and submodules:
+  - Removed deprecated methods.
+- Data files:
+  - Fixed typo in the LaTeX name of Lambda(1405).
+- Miscellaneous:
+  - Added support for Python 3.12 and dropped support for Python 3.7.
+  - Started using AllContributors to acknowledge contributions explicitly.
+- CI and tests:
+  - Updates to pre-commit hooks and CI YAML files.
+  - Added support for pixi.
+
+Version 0.23.1
+--------------
+
+December 1st, 2023
+
+- Miscellaneous:
+  - Modernisation of Ruff configuration in pyproject.toml.
+- CI and tests:
+  - Updates to pre-commit hooks and CI YAML files.
+
 Version 0.23.0
 --------------
 
@@ -486,7 +557,7 @@ November 19th, 2019
 - MC particle identification code converters:
     - Introduced directional maps `PDG2EvtGenNameMap` and
         `EvtGen2PDGNameMap` between PDG and EvtGen names.
-    - Conversions master file `data/conversions.csv` added.
+    - Conversions main file `data/conversions.csv` added.
     - Content of converters CSV files are now ordered.
 - Documentation:
     - README updated with new package functionality.

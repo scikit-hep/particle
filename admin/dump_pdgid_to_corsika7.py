@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -7,6 +7,7 @@
 Script to generate the pdgid_to_corsika7id.csv conversion table from Corsika7ID to PDGID and vice-versa.
 This script should be kept, so the table won't need to be hand-edited in the future.
 """
+
 from __future__ import annotations
 
 import contextlib
@@ -157,7 +158,7 @@ def dump_pdgid_to_corsika7(file: pathlib.Path | None = None) -> None:
     """
     # Loop over all thinkable values and only add them if the PDG ID exists
     for a in range(2, 56 + 1):
-        for z in range(0, a + 1):
+        for z in range(a + 1):
             corsikaid = a * 100 + z
             with contextlib.suppress(ParticleNotFound):
                 corsica_pdg_id.append(

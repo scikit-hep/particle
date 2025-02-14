@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
       - main
   release:
     types:
@@ -14,14 +13,14 @@ jobs:
   dist:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
     - name: Build wheel and SDist
       run: pipx run build
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         path: dist/*
 
@@ -32,16 +31,18 @@ jobs:
     name: ZipApp
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - uses: wntrblm/nox@2023.04.22
+    - uses: wntrblm/nox@2024.10.09
+      with:
+        python-versions: "3.8"
 
     - name: Make ZipApp
       run: nox -s zipapp
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: zipapp
         path: particle.pyz
@@ -51,28 +52,40 @@ jobs:
     needs: [dist]
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
+    environment:
+      name: pypi
+      url: https://pypi.org/p/particle
+    permissions:
+      id-token: write
+      attestations: write
 
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: artifact
         path: dist
 
-    - uses: pypa/gh-action-pypi-publish@release/v1
+    - name: Generate artifact attestation for sdist and wheel
+      uses: actions/attest-build-provenance@520d128f165991a6c774bcb264f323e3d70747f4 # v2.2.0
       with:
-        password: ${{ secrets.pypi_password }}
+        subject-path: "dist/particle*"
 
-    - uses: actions/download-artifact@v3
+    - name: Upload package to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        attestations: true
+
+    - uses: actions/download-artifact@v4
       with:
         name: zipapp
         path: zipapp
 
     - name: Upload ZipApp
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v2
       with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./zipapp/particle.pyz
-        asset_name: particle.pyz
-        asset_content_type: application/zip
+        files: ./zipapp/particle.pyz
+
+    - name: Generate artifact attestation for zipapp
+      uses: actions/attest-build-provenance@520d128f165991a6c774bcb264f323e3d70747f4 # v2.2.0
+      with:
+        subject-path: zipapp/particle.pyz

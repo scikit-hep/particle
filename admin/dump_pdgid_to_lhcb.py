@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -14,7 +14,7 @@ import requests
 
 
 def download_table(
-    url="https://gitlab.cern.ch/lhcb-conddb/DDDB/-/raw/master/param/ParticleTable.txt",
+    url="https://gitlab.cern.ch/lhcb-conddb/DDDB/-/raw/main/param/ParticleTable.txt",
 ):
     r = requests.get(url)
     r.raise_for_status()

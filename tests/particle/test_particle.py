@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -172,6 +172,15 @@ def test_from_nucleus_info():
     assert p.pdgid == -1000010020
 
 
+def test_from_nucleus_info_special_cases():
+    """
+    The proton and the neutron should return the preferred quark representation
+    rather than the representation as a nucleus.
+    """
+    assert Particle.from_nucleus_info(a=1, z=1).pdgid == 2212
+    assert Particle.from_nucleus_info(a=1, z=0).pdgid == 2112
+
+
 def test_from_nucleus_info_ParticleNotFound():
     with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(z=999, a=999)
@@ -218,25 +227,6 @@ def test_int_compare():
     assert Particle.from_pdgid(-211) < 0
     assert Particle.from_pdgid(211) >= 0
     assert Particle.from_pdgid(-211) <= 0
-
-
-def test_string():
-    with pytest.deprecated_call():
-        pi = Particle.from_string("pi+")
-    assert pi.pdgid == 211
-
-    with pytest.raises(ParticleNotFound), pytest.deprecated_call():
-        Particle.from_string("unknown")
-
-
-def test_fuzzy_string():
-    """
-    The input name is not specific enough, in which case the search is done
-    by pdg_name after failing a match by name.
-    """
-    with pytest.deprecated_call():
-        p = Particle.from_string("a(0)(980)")  # all 3 charge stages match
-    assert p.pdgid == 9000111
 
 
 def test_str():
@@ -290,7 +280,7 @@ def test_P_consistency_mesons():
             continue
 
         if p.pdgid == 22:  # Special case of the photon
-            assert -1 == p.P
+            assert p.P == -1
         else:
             assert (-1) ** (p.L + 1) == p.P
 
@@ -342,7 +332,7 @@ def test_C_consistency():
         if _digit(p.pdgid, Location.N) == 9:
             continue
         if p.pdgid == 22:  # Special case of the photon
-            assert -1 == p.C
+            assert p.C == -1
         elif p.pdgid in [130, 310]:  # Special case of the KS and KL
             assert Parity.u == p.C
         else:
@@ -364,7 +354,7 @@ checklist_describe = (
     [5332, "Lifetime = 1.65e-03 + 1.8e-04 - 1.8e-04 ns"],  # Omega_b-
     [211, "Lifetime = 26.033 ± 0.005 ns"],  # pion
     # Test print-out of asymmetric lifetime errors
-    [4332, "Lifetime = 2.7e-04 + 3e-05 - 3e-05 ns"],  # Omega_c^0
+    [4332, "Lifetime = 2.73e-04 ± 1.3e-05 ns"],  # Omega_c^0
     # Test particles with at present an upper limit on their width
     [423, "Width < 2.1 MeV"],  # D*(2007)0
     [10431, "Width < 10.0 MeV"],  # D(s0)*(2317)+
@@ -379,30 +369,30 @@ def test_describe(pid, description):
 
 
 def test_default_table_loading():
-    assert Particle.table_names() == ("particle2023.csv", "nuclei2022.csv")
+    assert Particle.table_names() == ("particle2024.csv", "nuclei2022.csv")
 
 
 def test_default_table_loading_bis():
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
-    assert p.table_names() == ("particle2023.csv", "nuclei2022.csv")
+    assert p.table_names() == ("particle2024.csv", "nuclei2022.csv")
 
 
 def test_explicit_table_loading():
-    Particle.load_table(data.basepath / "particle2023.csv")
+    Particle.load_table(data.basepath / "particle2024.csv")
     assert Particle.table_loaded()
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
 
 
 def test_all_particles_are_loaded():
-    Particle.load_table(data.basepath / "particle2021.csv")
-    assert len(Particle.all()) == 616
-    Particle.load_table(data.basepath / "particle2022.csv")
-    assert len(Particle.all()) == 616
+    Particle.load_table(data.basepath / "particle2024.csv")
+    assert len(Particle.all()) == 625
     Particle.load_table(data.basepath / "particle2023.csv")
     assert len(Particle.all()) == 622
+    Particle.load_table(data.basepath / "particle2022.csv")
+    assert len(Particle.all()) == 616
 
     Particle.load_table(data.basepath / "nuclei2022.csv")
     assert len(Particle.all()) == 5880
@@ -418,9 +408,12 @@ checklist_html_name = (
     (11, "e<SUP>-</SUP>"),  # e-
     (-13, "&#x03bc;<SUP>+</SUP>"),  # mu+
     (-14, "&#x03bd;&#773;<SUB>&#x03bc;</SUB>"),  # nu_mu_bar
+    (18, "&#x03bd;<SUB>&#x03c4;<SUP>&#8242;</SUP></SUB>"),  # nu_tau_prime
     (111, "&#x03c0;<SUP>0</SUP>"),  # pi0
     (-211, "&#x03c0;<SUP>-</SUP>"),  # pi-
     (-213, "&#x03c1;(770)<SUP>-</SUP>"),  # rho(770)-
+    (331, "&#x03b7;<SUP>&#8242;</SUP>(958)"),  # eta_prime
+    (335, "f<SUB>2</SUB><SUP>&#8242;</SUP>(1525)"),  # f2'(1525)
     (20213, "a<SUB>1</SUB>(1260)<SUP>+</SUP>"),  # a_1(1260)+
     (321, "K<SUP>+</SUP>"),  # K+
     (130, "K<SUB>L</SUB><SUP>0</SUP>"),  # K_L
@@ -436,6 +429,7 @@ checklist_html_name = (
     (-2224, "&#x0394;&#773;(1232)<SUP>--</SUP>"),  # Delta_bar(1232)--
     (3322, "&#x039e;<SUP>0</SUP>"),  # Xi0
     (-3322, "&#x039e;&#773;<SUP>0</SUP>"),  # Xi0_bar
+    (4312, "&#x039e;<SUB>c</SUB><SUP>&#8242; 0</SUP>"),  # Xi_c'0
     (-5122, "&#x039b;&#773;<SUB>b</SUB><SUP>0</SUP>"),  # Lb0_bar
 )
 
@@ -660,31 +654,6 @@ def test_to_dict():
     assert set(query_as_dict["name"]) == {"e+", "mu+", "tau+", "tau'+"}
 
 
-ampgen_style_names = (
-    ("b", 5),
-    ("b~", -5),
-    ("pi+", 211),
-    ("pi-", -211),
-    ("K~*0", -313),
-    ("K*(892)bar0", -313),
-    ("a(1)(1260)+", 20213),
-    ("rho(1450)0", 100113),
-    ("rho(770)0", 113),
-    ("K(1)(1270)bar-", -10323),
-    # ("K(1460)bar-", -100321),
-    ("K(2)*(1430)bar-", -325),
-)
-
-
-@pytest.mark.parametrize(("name", "pid"), ampgen_style_names)
-def test_ampgen_style_names(name, pid):
-    with pytest.deprecated_call():
-        particle = Particle.from_string(name)
-
-    assert particle.pdgid == pid
-    assert particle == pid
-
-
 decfile_style_names = (
     ("s", 3),
     ("anti-b", -5),
@@ -746,3 +715,65 @@ def test_decfile_style_names(name, pid):
 @pytest.mark.parametrize(("name", "pid"), decfile_style_names)
 def test_evtgen_name(name, pid):  # noqa: ARG001
     assert Particle.from_evtgen_name(name).evtgen_name == name
+
+
+@pytest.mark.parametrize(
+    ("pdgid1", "pdgid2"),
+    [
+        pytest.param(2212, 1000010010, id="p"),
+        pytest.param(2112, 1000000010, id="n"),
+        pytest.param(-2212, -1000010010, id="p~"),
+        pytest.param(-2112, -1000000010, id="n~"),
+    ],
+)
+def test_eq_non_unique_pdgids(pdgid1, pdgid2):
+    """The proton and the neutron have two PDG ID representations. Make sure they still compare equal."""
+
+    p1 = Particle.from_pdgid(pdgid1)
+    p2 = Particle.from_pdgid(pdgid2)
+    assert p1.pdgid != p2.pdgid
+    assert p1 == p2
+    assert p2 == p1
+    assert hash(p1) == hash(p2)
+
+
+@pytest.mark.parametrize(
+    ("name", "pdgid"),
+    [
+        pytest.param("p", 2212, id="p"),
+        pytest.param("n", 2112, id="n"),
+        pytest.param("p~", -2212, id="p~"),
+        pytest.param("n~", -2112, id="n~"),
+    ],
+)
+def test_from_name_non_unique_pdgids(name, pdgid):
+    """
+    Test that Particle.from_name works for p and n, returning the preferred quark representation
+    rather than the representation as a nucleus.
+    """
+
+    p = Particle.from_name(name)
+    assert p.name == name
+    assert p.pdgid == pdgid
+
+
+@pytest.mark.parametrize("sign", [1, -1])
+def test_particle_hash(sign):
+    proton1 = Particle.from_pdgid(sign * 2212)
+    proton2 = Particle.from_pdgid(sign * 1000010010)
+    neutron1 = Particle.from_pdgid(sign * 2112)
+    neutron2 = Particle.from_pdgid(sign * 1000000010)
+
+    s1 = {proton1, neutron1}
+
+    assert proton1 in s1
+    assert proton2 in s1
+    assert neutron1 in s1
+    assert neutron2 in s1
+
+    assert len({proton1, proton2}) == 1
+    assert len({neutron1, neutron2}) == 1
+
+    d = {proton1: 5, neutron2: 3}
+    assert d[proton2] == 5
+    assert d[neutron1] == 3

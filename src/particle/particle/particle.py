@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -15,17 +15,16 @@ from typing import Any, Callable, Iterable, Iterator, Sequence, SupportsInt, Typ
 
 # External dependencies
 import attr
-from deprecated import deprecated
 from hepunits.constants import c_light
 
 from .. import data
+from .._compat.typing import Traversable
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
 from ..pdgid import PDGID, is_valid
 from ..pdgid.functions import Location, _digit
-from ..typing import HasOpen, HasRead, StringOrIO, Traversable
+from ..typing import HasOpen, HasRead, StringOrIO
 from .enums import (
     Charge,
-    Charge_mapping,
     Charge_undo,
     Inv,
     Parity,
@@ -34,10 +33,9 @@ from .enums import (
     Status,
 )
 from .kinematics import width_to_lifetime
-from .regex import getname
 from .utilities import latex_to_html_name, programmatic_name, str_with_unc
 
-__all__ = ("Particle", "ParticleNotFound", "InvalidParticle")
+__all__ = ("InvalidParticle", "Particle", "ParticleNotFound")
 
 
 def __dir__() -> tuple[str, ...]:
@@ -50,6 +48,28 @@ class ParticleNotFound(RuntimeError):
 
 class InvalidParticle(RuntimeError):
     pass
+
+
+# The proton and the neutron (and their anti-particles) have two possible PDG ID representations,
+# a) a particle ("bag of quarks") or b) a nucleus.
+_NON_UNIQUE_PDGIDS = {
+    2112: 1000000010,
+    2212: 1000010010,
+}
+for pdgid1, pdgid2 in list(_NON_UNIQUE_PDGIDS.items()):
+    # add reverse lookup
+    _NON_UNIQUE_PDGIDS[pdgid2] = pdgid1
+    # add anti-particles
+    _NON_UNIQUE_PDGIDS[-pdgid1] = -pdgid2
+    _NON_UNIQUE_PDGIDS[-pdgid2] = -pdgid1
+
+# lookup for hash and from_name which representation is the preferred one
+# this results in the "bag-of-quarks" representation
+_PREFERRED_PDGID = {}
+for pdgid1, pdgid2 in _NON_UNIQUE_PDGIDS.items():
+    sign = -1 if pdgid1 < 0 else 1
+    _PREFERRED_PDGID[pdgid1] = sign * min(abs(pdgid1), abs(pdgid2))
+    _PREFERRED_PDGID[pdgid2] = _PREFERRED_PDGID[pdgid1]
 
 
 def _isospin_converter(isospin: str) -> float | None:
@@ -193,7 +213,7 @@ class Particle:
         minus_one, converter=_none_or_positive_converter
     )
     _three_charge: Charge | None = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    I: float | None = attr.ib(none_float, converter=_isospin_converter)  # noqa: E741
+    I: float | None = attr.ib(none_float, converter=_isospin_converter)
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity
@@ -353,7 +373,7 @@ class Particle:
         =======  ======  =============  ========
             -11  e+         0.51099895         1
             -13  mu+      105.6583755          1
-            -15  tau+    1776.86               1
+            -15  tau+    1776.93               1
             -17  tau'+                         1
         =======  ======  =============  ========
 
@@ -361,8 +381,8 @@ class Particle:
         >>> print(tabulate(query_as_list, headers='firstrow'))
           pdgid  name       mass    charge
         -------  ------  -------  --------
-             15  tau-    1776.86        -1
-            -15  tau+    1776.86         1
+             15  tau-    1776.93        -1
+            -15  tau+    1776.93         1
 
         Save it to a file:
 
@@ -494,7 +514,7 @@ class Particle:
         =======  ======  ===============  ========
              11  e-         0.5109989461        -1
              13  mu-      105.6583745           -1
-             15  tau-    1776.86                -1
+             15  tau-    1776.93                -1
              17  tau'-                          -1
         =======  ======  ===============  ========
 
@@ -502,8 +522,8 @@ class Particle:
         >>> print(tabulate(query_as_dict, headers='keys'))    # doctest: +SKIP
           pdgid  name       mass    charge
         -------  ------  -------  --------
-             15  tau-    1776.86        -1
-            -15  tau+    1776.86         1
+             15  tau-    1776.93        -1
+            -15  tau+    1776.93         1
 
         Save it to a file:
 
@@ -545,8 +565,8 @@ class Particle:
         assert cls._table_names is not None
 
         if filename is None:
-            with data.basepath.joinpath("particle2023.csv").open() as fa:
-                cls.load_table(fa, append=append, _name="particle2023.csv")
+            with data.basepath.joinpath("particle2024.csv").open() as fa:
+                cls.load_table(fa, append=append, _name="particle2024.csv")
             with data.basepath.joinpath("nuclei2022.csv").open() as fb:
                 cls.load_table(fb, append=True, _name="nuclei2022.csv")
             return
@@ -606,12 +626,25 @@ class Particle:
         return int(self.pdgid) < other
 
     def __eq__(self, other: object) -> bool:
+        """
+        Compare with another Particle instance based on PDG IDs.
+
+        Note
+        ----
+        Ensure the comparison also works for the special cases of the proton and the neutron,
+        which have two PDG ID representations as particles or nuclei.
+        """
         if isinstance(other, Particle):
-            return self.pdgid == other.pdgid
+            other = other.pdgid
+
+        if self.pdgid in _NON_UNIQUE_PDGIDS:
+            return other in {self.pdgid, _NON_UNIQUE_PDGIDS[self.pdgid]}
+
         return self.pdgid == other
 
-    # Only one particle can exist per PDGID number
     def __hash__(self) -> int:
+        if self.pdgid in _PREFERRED_PDGID:
+            return hash(_PREFERRED_PDGID[self.pdgid])
         return hash(self.pdgid)
 
     # Shared with PDGID
@@ -795,7 +828,7 @@ class Particle:
 
     name = property(
         __str__,
-        doc="The nice name, with charge added, and a tilde for an antiparticle, if relevant.",
+        doc="The PDG particle name, with charge added, and a tilde for an antiparticle, if relevant.",
     )
 
     def _repr_latex_(self) -> str:
@@ -940,7 +973,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @property
     def evtgen_name(self) -> str:
-        "This is the name used in EvtGen."
+        "The particle name as used in EvtGen."
         return EvtGenName2PDGIDBiMap[self.pdgid]
 
     @property
@@ -950,7 +983,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @property
     def html_name(self) -> str:
-        "This is the name in HTML."
+        "The particle name in HTML."
         return latex_to_html_name(self.latex_name)
 
     @classmethod
@@ -994,6 +1027,13 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         ParticleNotFound
             If no particle matches the input name uniquely and exactly.
         """
+        # special handling for the particles with two possible pdgids
+        if name in {"p", "n", "p~", "n~"}:
+
+            def find_preferred_id(p: Self) -> bool:
+                return int(p.pdgid) in _PREFERRED_PDGID.values()
+
+            return next(filter(find_preferred_id, cls.finditer(name=name)))
         try:
             (particle,) = cls.finditer(
                 name=name
@@ -1085,7 +1125,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         pdgid = int(1e9 + l_strange * 1e5 + z * 1e4 + a * 10 + i)
 
         if anti:
-            return cls.from_pdgid(-pdgid)
+            pdgid = -pdgid
+
+        # replace nucleon ids of single hadrons with quark version
+        pdgid = _PREFERRED_PDGID.get(pdgid, pdgid)
 
         return cls.from_pdgid(pdgid)
 
@@ -1237,101 +1280,3 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return list(
             cls.finditer(filter_fn=filter_fn, particle=particle, **search_terms)
         )
-
-    @classmethod
-    @deprecated(
-        version="0.22",
-        reason="This method is deprecated and will be removed from version 0.23.0. Use finditer or findall instead.",
-    )
-    def from_string(cls: type[Self], name: str) -> Self:
-        "Get a particle from a PDG style name - returns the best match."
-        matches = cls.from_string_list(name)
-        if matches:
-            return matches[0]
-        raise ParticleNotFound(f"{name} not found in particle table")
-
-    @classmethod
-    @deprecated(
-        version="0.22",
-        reason="This method is deprecated and will be removed from version 0.23.0. Use finditer or findall instead.",
-    )
-    def from_string_list(cls: type[Self], name: str) -> list[Self]:
-        "Get a list of particles from a PDG style name."
-
-        # Forcible override
-        particle = None
-
-        short_name = name
-        if "~" in name:
-            short_name = name.replace("~", "")
-            particle = False
-
-        # Try the simplest searches first
-        list_can = cls.findall(name=name, particle=particle)
-        if list_can:
-            return list_can
-        list_can = cls.findall(pdg_name=short_name, particle=particle)
-        if list_can:
-            return list_can
-
-        mat_str = getname.match(short_name)
-
-        if mat_str is None:
-            return []
-
-        mat = mat_str.groupdict()
-
-        if particle is False:
-            mat["bar"] = "bar"
-
-        try:
-            return cls._from_group_dict_list(mat)
-        except ParticleNotFound:
-            return []
-
-    @classmethod
-    def _from_group_dict_list(cls: type[Self], mat: dict[str, Any]) -> list[Self]:
-        kw: dict[str, Any] = {
-            "particle": False
-            if mat["bar"] is not None
-            else True
-            if mat["charge"] == "0"
-            else None
-        }
-
-        name = mat["name"]
-
-        if mat["family"]:
-            if "_" in mat["family"]:
-                mat["family"] = mat["family"].strip("_")
-            name += f'({mat["family"]})'
-        if mat["state"]:
-            name += f'({mat["state"]})'
-
-        if "prime" in mat and mat["prime"]:
-            name += "'"
-
-        if mat["star"]:
-            name += "*"
-
-        if mat["state"] is not None:
-            kw["J"] = float(mat["state"])
-
-        maxname = name + f'({mat["mass"]})' if mat["mass"] else name
-        if "charge" in mat and mat["charge"] is not None:
-            kw["three_charge"] = Charge_mapping[mat["charge"]]
-
-        vals = cls.findall(name=lambda x: maxname in x, **kw)
-        if not vals:
-            vals = cls.findall(name=lambda x: name in x, **kw)
-
-        if not vals:
-            raise ParticleNotFound(f"Could not find particle {maxname} or {name}")
-
-        if len(vals) > 1 and mat["mass"] is not None:
-            vals = [val for val in vals if mat["mass"] in val.latex_name]
-
-        if len(vals) > 1:
-            return sorted(vals)
-
-        return vals

@@ -1,0 +1,166 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "eduardo-rodrigues",
+      "name": "Eduardo Rodrigues",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5013581?v=4",
+      "profile": "http://cern.ch/eduardo.rodrigues",
+      "contributions": [
+        "maintenance",
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "henryiii",
+      "name": "Henry Schreiner",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4616906?v=4",
+      "profile": "http://iscinumpy.dev",
+      "contributions": [
+        "maintenance",
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "HDembinski",
+      "name": "Hans Dembinski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2631586?v=4",
+      "profile": "https://github.com/HDembinski",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "The-Ludwig",
+      "name": "Ludwig Neste",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31670556?v=4",
+      "profile": "https://ludwigneste.space",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    },
+    {
+      "login": "tamasgal",
+      "name": "Tamas Gal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1730350?v=4",
+      "profile": "http://www.tamasgal.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "matthewfeickert",
+      "name": "Matthew Feickert",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5142394?v=4",
+      "profile": "http://www.matthewfeickert.com/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "JostMigenda",
+      "name": "Jost Migenda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/16189747?v=4",
+      "profile": "https://github.com/JostMigenda",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "jonas-eschle",
+      "name": "Jonas Eschle",
+      "avatar_url": "https://avatars.githubusercontent.com/u/17454848?v=4",
+      "profile": "https://github.com/jonas-eschle",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "chrisburr",
+      "name": "Chris Burr",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5220533?v=4",
+      "profile": "https://github.com/chrisburr",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "admorris",
+      "name": "Adam Morris",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15155249?v=4",
+      "profile": "https://gitlab.cern.ch/users/admorris",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "doronbehar",
+      "name": "Doron Behar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10998835?v=4",
+      "profile": "http://doronbehar.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "APN-Pucky",
+      "name": "Alexander Puck Neuwirth",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4533248?v=4",
+      "profile": "https://github.com/APN-Pucky",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "amanmdesai",
+      "name": "Aman Desai",
+      "avatar_url": "https://avatars.githubusercontent.com/u/98302868?v=4",
+      "profile": "https://github.com/amanmdesai",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "JOTELLECHEA",
+      "name": "Jonathan Tellechea",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49012693?v=4",
+      "profile": "http://jonathantellechea.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "redeboer",
+      "name": "Remco de Boer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29308176?v=4",
+      "profile": "https://github.com/redeboer",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "maxnoe",
+      "name": "Maximilian Linhoff",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5488440?v=4",
+      "profile": "https://github.com/maxnoe",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "particle",
+  "projectOwner": "scikit-hep"
+}

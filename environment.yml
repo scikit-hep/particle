@@ -2,14 +2,12 @@ name: particle_demo
 channels:
   - conda-forge
 dependencies:
-  - python>=3.7
+  - python>=3.8
   # Setting recent versions to make the conda solve faster
   - numpy>=1.16
-  - pandas>=0.24
-  - attrs>=19.0
-  - pip>=10.0
-  - jupyterlab>=1.0
+  - pandas>=1
+  - attrs>=19
+  - jupyterlab>=4
   - tabulate
-  - RISE
   - pip:
     - .

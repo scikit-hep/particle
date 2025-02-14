@@ -1,17 +1,8 @@
 from __future__ import annotations
 
-from sys import version_info
-
-import pytest
-
 import particle
 
-python37plus_only = pytest.mark.skipif(
-    version_info < (3, 7), reason="requires Python3.7+"
-)
 
-
-@python37plus_only
 def test_top_level_api():
     assert dir(particle) == [
         "Charge",
@@ -33,7 +24,6 @@ def test_top_level_api():
     ]
 
 
-@python37plus_only
 def test_api_converters():
     assert dir(particle.converters) == [
         "Corsika72PDGIDBiMap",
@@ -45,22 +35,18 @@ def test_api_converters():
     ]
 
 
-@python37plus_only
 def test_api_corsika():
     assert dir(particle.corsika) == ["Corsika7ID"]
 
 
-@python37plus_only
 def test_api_data():
     assert dir(particle.data) == ["basepath"]
 
 
-@python37plus_only
 def test_api_geant():
     assert dir(particle.geant) == ["Geant3ID"]
 
 
-@python37plus_only
 def test_api_lhcb():
     assert dir(particle.lhcb) == [
         "LHCbName2PDGIDBiMap",
@@ -69,12 +55,10 @@ def test_api_lhcb():
     ]
 
 
-@python37plus_only
 def test_api_lhcb_data():
     assert dir(particle.lhcb.data) == ["basepath"]
 
 
-@python37plus_only
 def test_api_particle():
     assert dir(particle.particle) == [
         "Charge",
@@ -93,12 +77,10 @@ def test_api_particle():
     ]
 
 
-@python37plus_only
 def test_api_pdgid():
     assert dir(particle.pdgid) == sorted(
         [
             "PDGID",
-            #
             "is_valid",
             "abspid",
             # #
@@ -122,7 +104,6 @@ def test_api_pdgid():
             "is_sm_quark",
             "is_special_particle",
             "is_technicolor",
-            #
             "has_down",
             "has_up",
             "has_strange",
@@ -130,7 +111,6 @@ def test_api_pdgid():
             "has_bottom",
             "has_top",
             "has_fundamental_anti",
-            #
             "charge",
             "three_charge",
             "j_spin",
@@ -145,6 +125,5 @@ def test_api_pdgid():
     )
 
 
-@python37plus_only
 def test_api_pythia():
     assert dir(particle.pythia) == ["PythiaID"]

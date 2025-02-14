@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -33,19 +33,19 @@ from particle.pdgid import (
     three_charge,
 )
 
-FILES = ["particle2022.csv", "particle2023.csv"]
+FILES = ["particle2023.csv", "particle2024.csv"]
 
 
 def test_generate(tmp_path):
     "This verifies that the input and output files match."
 
-    particle2022 = tmp_path / "particle2022.csv"
     particle2023 = tmp_path / "particle2023.csv"
+    particle2024 = tmp_path / "particle2024.csv"
 
-    produce_files(particle2022, particle2023, "DUMMY", "2023")
+    produce_files(particle2023, particle2024, "DUMMY", "2024")
 
-    particle2023_data = data.basepath / "particle2023.csv"
-    with particle2023.open() as src, particle2023_data.open() as res:
+    particle2024_data = data.basepath / "particle2024.csv"
+    with particle2024.open() as src, particle2024_data.open() as res:
         src_filtered = [line for line in src.readlines() if not line.startswith("#")]
         res_filtered = [line for line in res.readlines() if not line.startswith("#")]
         assert src_filtered == res_filtered

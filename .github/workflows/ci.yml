@@ -5,20 +5,23 @@ on:
   pull_request:
   push:
     branches:
-    - master
+    - main
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: "3.x"
-    - uses: pre-commit/action@v3.0.0
+    - uses: pre-commit/action@v3.0.1
       with:
         extra_args: --all-files --hook-stage manual
     - name: PyLint
@@ -33,56 +36,56 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
         include:
-          - {os: macos-latest, python-version: '3.7'}
-          - {os: macos-latest, python-version: '3.11'}
-          - {os: windows-latest, python-version: '3.7'}
-          - {os: windows-latest, python-version: '3.11'}
+          - {os: macos-13, python-version: '3.8'}
+          - {os: macos-13, python-version: '3.13'}
+          - {os: windows-latest, python-version: '3.8'}
+          - {os: windows-latest, python-version: '3.13'}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+        allow-prereleases: true
 
-    - name: Install package
-      run: python -m pip install -e .[test]
-
-    - name: Requirements list
-      run: python -m pip list
+    - uses: astral-sh/setup-uv@v5
 
     - name: Test package
-      run: python -m pytest ./tests --cov=src/particle --cov-report=xml
+      run: uvx nox -s tests --force-python=${{ matrix.python-version }}
 
     - name: Test coverage with Codecov
-      if: "runner.os != 'Windows' && matrix.python-version != 3.7"
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Test docstrings with doctest
-      if: "runner.os == 'Linux' && matrix.python-version == 3.11"
-      run: python -m pytest --doctest-modules src/particle --ignore-glob="src/particle/particle/convert.py"
+      if: runner.os == 'Linux' && matrix.python-version == '3.12'
+      run: uvx nox -s tests -- --doctest-modules src/particle --ignore=src/particle/particle/convert.py
 
   notebooks:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: "3.x"
 
+    - uses: astral-sh/setup-uv@v5
+
     - name: Install package
-      run: python -m pip install -e .[test]
+      run: uv pip install --system -e .[test]
 
     - name: Install notebook requirements
-      run: python -m pip install nbconvert jupyter_client ipykernel
+      run: uv pip install --system nbconvert jupyter_client ipykernel
 
     - name: Run the notebooks inplace
       run: jupyter nbconvert --execute --inplace notebooks/*.ipynb
@@ -92,16 +95,18 @@ jobs:
     name: ZipApp
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - uses: wntrblm/nox@2023.04.22
+    - uses: wntrblm/nox@2024.10.09
+      with:
+        python-versions: "3.8"
 
     - name: Make ZipApp
       run: nox -s zipapp
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: zipapp
         path: particle.pyz

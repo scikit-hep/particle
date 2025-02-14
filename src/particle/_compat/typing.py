@@ -3,21 +3,17 @@
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
+
 from __future__ import annotations
 
 import sys
 
 if sys.version_info < (3, 9):
-    import importlib_resources as resources
+    from importlib_resources.abc import Traversable
+elif sys.version_info < (3, 11):
+    from importlib.abc import Traversable  # pylint: disable=deprecated-class
 else:
-    from importlib import resources
+    from importlib.resources.abc import Traversable
 
 
-__all__ = ("basepath",)
-
-
-basepath = resources.files(__name__)
-
-
-def __dir__() -> tuple[str, ...]:
-    return __all__
+__all__ = ("Traversable",)

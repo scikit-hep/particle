@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -164,6 +164,7 @@ def latex_to_html_name(name: str) -> str:
     """Conversion of particle names from LaTeX to HTML."""
     name = re.sub(r"\^\{(.*?)\}", r"<SUP>\1</SUP>", name)
     name = re.sub(r"\_\{(.*?)\}", r"<SUB>\1</SUB>", name)
+    name = re.sub(r"\^\\prime(.*?)", r"<SUP>&#8242;</SUP>", name)
     name = re.sub(r"\\prime(.*?)", r"&#8242;", name)
     name = re.sub(r"\\mathrm\{(.*?)\}", r"\1", name)
     name = re.sub(r"\\left\[(.*?)\\right\]", r"[\1] ", name)

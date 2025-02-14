@@ -5,6 +5,8 @@ from pathlib import Path
 import nox
 
 nox.options.sessions = ["lint", "pylint", "tests"]
+nox.needs_version = ">=2024.4.15"
+nox.options.default_venv_backend = "uv|virtualenv"
 
 
 @nox.session
@@ -19,7 +21,7 @@ def pylint(session: nox.Session) -> None:
     Run pylint.
     """
 
-    session.install("pylint~=2.15.0")
+    session.install("pylint~=3.3.0")
     session.install("-e", ".[dev]")
     session.run("pylint", "src", *session.posargs)
 
@@ -29,6 +31,9 @@ def tests(session: nox.Session) -> None:
     session.install("-e", ".[test]")
     session.run(
         "pytest",
+        "--cov=src/particle",
+        "--cov-report=xml",
+        "--cov-report=term",
         *session.posargs,
     )
 
@@ -47,7 +52,7 @@ def build(session: nox.Session) -> None:
     )
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.8", venv_backend="virtualenv")
 def zipapp(session: nox.Session) -> None:
     tmpdir = session.create_tmp()
 
