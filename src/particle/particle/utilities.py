@@ -58,8 +58,8 @@ def str_with_unc(value: float, upper: float | None, lower: float | None = None) 
     if error == 0:
         return str(value)
 
-    value_digits = int(math.floor(math.log10(value)))
-    error_digits = int(math.floor(math.log10(error) - math.log10(2.5)))
+    value_digits = math.floor(math.log10(value))
+    error_digits = math.floor(math.log10(error) - math.log10(2.5))
     # This is split based on the value being larger than 1000000 or smaller than 0.001 - scientific notation split
 
     # This is normal notation
@@ -72,7 +72,7 @@ def str_with_unc(value: float, upper: float | None, lower: float | None = None) 
     # This is scientific notation - a little odd, but better than the other options.
     else:
         fsv = f".{abs(error_digits - value_digits)}e"
-        pure_error_digits = int(math.floor(math.log10(error)))
+        pure_error_digits = math.floor(math.log10(error))
 
         fse = ".0e" if error_digits == pure_error_digits else ".1e"
 

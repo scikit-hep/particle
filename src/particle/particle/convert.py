@@ -170,8 +170,26 @@ def get_from_pdg_extended(
         # Read in the table, apply the converters, add names, ignore comments
         pdg_table = pd.read_csv(
             file_object,
-            names="Mass,MassUpper,MassLower,Width,WidthUpper,WidthLower,I,G,J,P,C,Anti,"
-            "ID,Charge,Rank,Status,Name,Quarks".split(","),
+            names=[
+                "Mass",
+                "MassUpper",
+                "MassLower",
+                "Width",
+                "WidthUpper",
+                "WidthLower",
+                "I",
+                "G",
+                "J",
+                "P",
+                "C",
+                "Anti",
+                "ID",
+                "Charge",
+                "Rank",
+                "Status",
+                "Name",
+                "Quarks",
+            ],
             converters=PDG_converters,
             comment="#",
         )
