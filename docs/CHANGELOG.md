@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 0.25.3
+--------------
+
+April 3rd, 2025
+
+- CI and tests:
+  - Updates to pre-commit hooks and CI YAML files.
+
 Version 0.25.2
 --------------
 
