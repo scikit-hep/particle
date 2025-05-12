@@ -979,7 +979,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @property
     def programmatic_name(self) -> str:
         "This name could be used for a variable name."
-        return programmatic_name(self.name)
+        return programmatic_name(self.name, self.pdgid.is_nucleus)
 
     @property
     def html_name(self) -> str:
