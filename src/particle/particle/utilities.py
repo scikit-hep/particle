@@ -18,7 +18,7 @@ def programmatic_name(name: str, is_nucleus: bool) -> str:
     Note
     ----
     The function needs to know if the name relates to a nucleus
-    because zeros at the end of a name charges for all particles except for nuclei.
+    because zeros at the end of a name are charges for all particles except for nuclei.
     Charges need to be make explicit as '_0', as in a(0)(1450)0 or H0,
     whereas in Carbon C10 the last 0 is part of the atomic mass number A.
     """
