@@ -10,8 +10,41 @@ import pytest
 from particle.particle.utilities import (
     greek_letter_name_to_unicode,
     latex_name_unicode,
+    programmatic_name,
     str_with_unc,
 )
+
+possibilities = (
+    # Particles
+    ("d", "d", False),
+    ("b~", "b_bar", False),
+    ("nu(e)~", "nu_e_bar", False),
+    ("tau+", "tau_plus", False),
+    ("H0", "H_0", False),
+    ("a(2)(1320)0", "a_2_1320_0", False),
+    ("f(2)'(1525)", "f_2p_1525", False),
+    ("Delta(1232)~--", "Delta_1232_mm_bar", False),
+    ("a(0)(1450)0", "a_0_1450_0", False),
+    ("K*(892)0", "Kst_892_0", False),
+    ("K(2)*(1430)~0", "K_2st_1430_0_bar", False),
+    ("D(2)*(2460)+", "D_2st_2460_plus", False),
+    ("B(s2)*(5840)0", "B_s2st_5840_0", False),
+    ("(dd)(1)", "dd_1", False),
+    # Nuclei
+    ("H4", "H4", True),
+    ("He4", "He4", True),
+    ("He4~", "He4_bar", True),
+    ("C10", "C10", True),
+    ("C10~", "C10_bar", True),
+    ("Ag100", "Ag100", True),
+    ("Ag100~", "Ag100_bar", True),
+)
+
+
+@pytest.mark.parametrize(("name", "value", "is_nucleus"), possibilities)
+def test_programmatic_name(name, value, is_nucleus):
+    assert programmatic_name(name, is_nucleus) == value
+
 
 possibilities = (
     (1.234567, 0.01, None, "1.235 ± 0.010"),

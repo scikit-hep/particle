@@ -11,9 +11,19 @@ import unicodedata
 from html.entities import name2codepoint
 
 
-def programmatic_name(name: str) -> str:
-    "Return a name safe to use as a variable name."
-    name = re.sub("0$", "_0", name)
+def programmatic_name(name: str, is_nucleus: bool) -> str:
+    """
+    Return a name safe to use as a variable name.
+
+    Note
+    ----
+    The function needs to know if the name relates to a nucleus
+    because zeros at the end of a name are charges for all particles except for nuclei.
+    Charges need to be make explicit as '_0', as in a(0)(1450)0 or H0,
+    whereas in Carbon C10 the last 0 is part of the atomic mass number A.
+    """
+    # Last 0 in names is not a charge for nuclei ;-)
+    name = re.sub("0$", "_0", name) if not is_nucleus else name
     # Deal first with antiparticles of sparticles, e.g. "~d(R)~" antiparticle of "~d(R)"
     name = re.sub("^~", "tilde_", name)
     # The remaining "~" now always means it's an antiparticle
