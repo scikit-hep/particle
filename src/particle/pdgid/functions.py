@@ -899,10 +899,10 @@ def _digit(pdgid: PDGID_TYPE, loc: int) -> int:
     """
     Provides a convenient index into the PDGID number, whose format is in base 10.
 
-    Returns the digit at position 'loc' >=0 given that the right-most digit is at position 1.
+    Returns the digit at position 'loc' >0 given that the right-most digit is at position 1.
     """
     assert loc > 0, (
-        "Internal inconsistency: `loc` is supposed to be >= 0, an attribute of `Location`"
+        "Internal inconsistency: `loc` is supposed to be > 0, an attribute of `Location`"
     )
     sid: float = (abspid(pdgid) % 10**loc) // (10 ** (loc - 1))
     return int(sid)
