@@ -1,6 +1,20 @@
 Changelog
 =========
 
+Version 0.25.4
+--------------
+
+May 29th, 2025
+
+- `Particle` class and submodules:
+  - Fixed the creation of programmatic names for nuclei when the nucleus names end with a 0.
+  - Minor fix for the Higgs spin.
+- `PDGID` class method and related standalone functions:
+  - Little improvement to the helper function _digit.
+- CI and tests:
+  - Updates to pre-commit hooks and CI YAML files.
+
+
 Version 0.25.3
 --------------
 
@@ -8,6 +22,7 @@ April 3rd, 2025
 
 - CI and tests:
   - Updates to pre-commit hooks and CI YAML files.
+
 
 Version 0.25.2
 --------------
