@@ -180,6 +180,7 @@ ignore = [
     "E741",    # Ambiguous variable name
     "SIM103",
     "T201",
+    "PLC0415", # Import should be at the top
 ]
 isort.required-imports = ["from __future__ import annotations"]
 mccabe.max-complexity = 24
