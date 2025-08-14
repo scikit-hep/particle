@@ -36,8 +36,7 @@ or similar (use `--user`, `virtualenv`, etc. if you wish).
 
 ## Strict dependencies
 
-- [Python](http://docs.python-guide.org/en/latest/starting/installation/) (3.8+)
-- [importlib_resources backport](http://importlib-resources.readthedocs.io/en/latest/) if using Python < 3.9
+- [Python](http://docs.python-guide.org/en/latest/starting/installation/) (3.9)
 - [attrs](http://www.attrs.org/en/stable/) provides classes without boilerplate (similar to DataClasses in Python 3.7)
 - [hepunits](https://github.com/scikit-hep/hepunits)\_ provides units for the Scikit-HEP packages
 

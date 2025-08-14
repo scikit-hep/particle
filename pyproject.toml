@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "particle"
 description = "Extended PDG particle data and MC identification codes"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 authors = [
     { name = "Eduardo Rodrigues", email = "eduardo.rodrigues@cern.ch" },
     { name = "Henry Schreiner", email = "henryfs@princeton.edu" },
@@ -32,7 +32,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -116,7 +115,7 @@ filterwarnings = [
 ]
 
 [tool.pylint]
-py-version = "3.8"
+py-version = "3.9
 reports.output-format = "colorized"
 similarities.ignore-imports = "yes"
 jobs = "0"
