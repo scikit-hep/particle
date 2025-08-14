@@ -9,9 +9,10 @@ from __future__ import annotations
 # Python standard library
 import contextlib
 import csv
+from collections.abc import Iterable, Iterator, Sequence
 from copy import copy
 from functools import total_ordering
-from typing import Any, Callable, Iterable, Iterator, Sequence, SupportsInt, TypeVar
+from typing import Any, Callable, SupportsInt, TypeVar
 
 # External dependencies
 import attr
