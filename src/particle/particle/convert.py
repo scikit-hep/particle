@@ -57,7 +57,8 @@ import warnings
 from datetime import date
 from io import StringIO
 from pathlib import Path
-from typing import Any, Callable, Iterable, TextIO, TypeVar
+from typing import Any, Callable, TextIO, TypeVar
+from collections.abc import Iterable
 
 import numpy as np
 import pandas as pd

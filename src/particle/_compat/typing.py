@@ -8,9 +8,7 @@ from __future__ import annotations
 
 import sys
 
-if sys.version_info < (3, 9):
-    from importlib_resources.abc import Traversable
-elif sys.version_info < (3, 11):
+if sys.version_info < (3, 11):
     from importlib.abc import Traversable  # pylint: disable=deprecated-class
 else:
     from importlib.resources.abc import Traversable

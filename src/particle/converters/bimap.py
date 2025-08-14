@@ -15,11 +15,11 @@ from typing import (
     Any,
     Callable,
     Generic,
-    Iterator,
     TypeVar,
     Union,
     overload,
 )
+from collections.abc import Iterator
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
@@ -213,10 +213,7 @@ def DirectionalMaps(
     )
 
 
-if sys.version_info < (3, 9):
-    StrStrMapping = Mapping
-else:
-    StrStrMapping = Mapping[str, str]
+StrStrMapping = Mapping[str, str]
 
 
 class DirectionalMap(StrStrMapping):
