@@ -115,7 +115,7 @@ filterwarnings = [
 ]
 
 [tool.pylint]
-py-version = "3.9
+py-version = "3.9"
 reports.output-format = "colorized"
 similarities.ignore-imports = "yes"
 jobs = "0"
