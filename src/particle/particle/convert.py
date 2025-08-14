@@ -54,11 +54,11 @@ from __future__ import annotations
 
 import os
 import warnings
+from collections.abc import Iterable
 from datetime import date
 from io import StringIO
 from pathlib import Path
 from typing import Any, Callable, TextIO, TypeVar
-from collections.abc import Iterable
 
 import numpy as np
 import pandas as pd
@@ -415,9 +415,10 @@ def produce_files(
     with data.basepath.joinpath("mass_width_" + year + ".mcd").open() as mcd_f:
         ext_table = get_from_pdg_mcd(mcd_f)
 
-    with data.basepath.joinpath(
-        "mass_width_2008_ext.fwf"
-    ).open() as fwf_f, data.basepath.joinpath("pdgid_to_latexname.csv").open() as csv_f:
+    with (
+        data.basepath.joinpath("mass_width_2008_ext.fwf").open() as fwf_f,
+        data.basepath.joinpath("pdgid_to_latexname.csv").open() as csv_f,
+    ):
         addons = get_from_pdg_extended(fwf_f, [csv_f])
 
     # Only keep rows present in the .mcd file specified by year

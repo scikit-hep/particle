@@ -8,8 +8,7 @@ from __future__ import annotations
 
 import contextlib
 import csv
-import sys
-from collections.abc import Mapping
+from collections.abc import Iterator, Mapping
 from typing import (
     IO,
     Any,
@@ -19,7 +18,6 @@ from typing import (
     Union,
     overload,
 )
-from collections.abc import Iterator
 
 from .. import data
 from ..exceptions import MatchingIDNotFound
