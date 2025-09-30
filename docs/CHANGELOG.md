@@ -1,6 +1,18 @@
 Changelog
 =========
 
+Version 0.26.0
+--------------
+
+In preparation.
+
+- Dependencies:
+  - hepunits >= 2.4.0.
+- Miscellaneous:
+  - Dropped support for Python 3.8.
+- CI and tests:
+  - Updates to pre-commit hooks and CI YAML files.
+
 Version 0.25.4
 --------------
 
