@@ -4,14 +4,18 @@ Changelog
 Version 0.26.0
 --------------
 
-In preparation.
+September 30th, 2025
 
+- Data files:
+  - Added the 2025 PDG data table file, now default.
+  - Version 15 of package CSV data files:
+      - Since PDG 2025 information now the default.
 - Dependencies:
   - hepunits >= 2.4.0.
 - Miscellaneous:
   - Dropped support for Python 3.8.
 - CI and tests:
-  - Updates to pre-commit hooks and CI YAML files.
+  - Updates and improvements to pre-commit hooks and CI YAML files.
 
 Version 0.25.4
 --------------
