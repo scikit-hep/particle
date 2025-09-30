@@ -4,19 +4,19 @@ from particle import Particle, data
 
 
 def test_load_particle_table(benchmark):
-    benchmark(Particle.load_table, data.basepath / "particle2024.csv")
+    benchmark(Particle.load_table, data.basepath / "particle2025.csv")
 
 
 def test_load_nuclei_append(benchmark):
     def load_two():
-        Particle.load_table(data.basepath / "particle2024.csv")
+        Particle.load_table(data.basepath / "particle2025.csv")
         Particle.load_table(data.basepath / "nuclei2022.csv", append=True)
 
     benchmark(load_two)
 
 
 def test_from_pdgid(benchmark):
-    Particle.load_table(data.basepath / "particle2024.csv")
+    Particle.load_table(data.basepath / "particle2025.csv")
     table = [int(s.pdgid) for s in Particle.all()]
 
     def get_all(listing):
