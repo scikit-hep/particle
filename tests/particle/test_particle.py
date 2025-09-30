@@ -351,7 +351,7 @@ checklist_describe = (
     [4222, "Width = 1.89 + 0.09 - 0.18 MeV"],  # Sigma_c(2455)++
     [23, "Width = 2495.5 ± 2.3 MeV"],  # H0
     # Test print-out of symmetric lifetime errors
-    [5332, "Lifetime = 1.65e-03 + 1.8e-04 - 1.8e-04 ns"],  # Omega_b-
+    [5332, "Lifetime = 1.65e-03 ± 1.8e-04 ns"],  # Omega_b-
     [211, "Lifetime = 26.033 ± 0.005 ns"],  # pion
     # Test print-out of asymmetric lifetime errors
     [4332, "Lifetime = 2.73e-04 ± 1.3e-05 ns"],  # Omega_c^0
@@ -369,24 +369,26 @@ def test_describe(pid, description):
 
 
 def test_default_table_loading():
-    assert Particle.table_names() == ("particle2024.csv", "nuclei2022.csv")
+    assert Particle.table_names() == ("particle2025.csv", "nuclei2022.csv")
 
 
 def test_default_table_loading_bis():
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
-    assert p.table_names() == ("particle2024.csv", "nuclei2022.csv")
+    assert p.table_names() == ("particle2025.csv", "nuclei2022.csv")
 
 
 def test_explicit_table_loading():
-    Particle.load_table(data.basepath / "particle2024.csv")
+    Particle.load_table(data.basepath / "particle2025.csv")
     assert Particle.table_loaded()
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
 
 
 def test_all_particles_are_loaded():
+    Particle.load_table(data.basepath / "particle2025.csv")
+    assert len(Particle.all()) == 626
     Particle.load_table(data.basepath / "particle2024.csv")
     assert len(Particle.all()) == 625
     Particle.load_table(data.basepath / "particle2023.csv")
