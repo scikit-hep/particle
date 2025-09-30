@@ -209,7 +209,7 @@ with easily recognisable names. For example:
 >>>
 >>> from particle.literals import Lambda_b_0
 >>> Lambda_b_0
-<Particle: name="Lambda(b)0", pdgid=5122, mass=5619.60 ± 0.17 MeV>
+<Particle: name="Lambda(b)0", pdgid=5122, mass=5619.57 ± 0.16 MeV>
 >>> Lambda_b_0.J
 0.5
 ```
@@ -255,7 +255,7 @@ If you want a non-default data file distributed with the package just proceed as
 
 ```python
 >>> from particle import data
->>> Particle.load_table(data.basepath / "particle2024.csv"))
+>>> Particle.load_table(data.basepath / "particle2025.csv"))
 >>> Particle.load_table(data.basepath / "nuclei2022.csv"), append=True)  # I still want nuclei info
 >>> Particle.table_names()  # list the loaded tables
 ```
