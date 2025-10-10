@@ -64,7 +64,6 @@ def zipapp(session: nox.Session) -> None:
         "install",
         "--no-compile",
         ".",
-        "importlib_resources",
         "typing_extensions",
         f"--target={tmpdir}",
     )
