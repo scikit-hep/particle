@@ -36,12 +36,14 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.9", "3.10", "3.12", "3.13", "3.14"]
         include:
           - {os: macos-13, python-version: '3.9'}
           - {os: macos-13, python-version: '3.13'}
+          - {os: macos-13, python-version: '3.14'}
           - {os: windows-latest, python-version: '3.9'}
           - {os: windows-latest, python-version: '3.13'}
+          - {os: windows-latest, python-version: '3.14'}
 
     steps:
     - uses: actions/checkout@v5
@@ -101,7 +103,7 @@ jobs:
 
     - uses: wntrblm/nox@2025.05.01
       with:
-        python-versions: "3.9"
+        python-versions: "3.10"
 
     - name: Make ZipApp
       run: nox -s zipapp
