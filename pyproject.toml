@@ -100,7 +100,7 @@ ignore_missing_imports = true
 minversion = "6.0"
 testpaths = ["tests"]
 junit_family = "xunit2"
-log_cli_level = "info"
+log_cli_level = "INFO"
 xfail_strict = true
 addopts = [
     "--benchmark-disable",
@@ -148,9 +148,6 @@ messages_control.disable = [
 ]
 
 
-[tool.ruff]
-src = ["src"]
-
 [tool.ruff.lint]
 extend-select = [
     "B",            # flake8-bugbear
@@ -175,7 +172,6 @@ ignore = [
     "RUF002",  # Ambiguous unicode docstring
     "PLR2004", # Magic value used in comparison
     "PLR09",   # Too many X
-    "ISC001",  # Conflicts with the formatter
     "E741",    # Ambiguous variable name
     "SIM103",
     "T201",
