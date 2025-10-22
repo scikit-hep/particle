@@ -8,7 +8,7 @@
 [![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2552429.svg)](https://doi.org/10.5281/zenodo.2552429)
 
 [![GitHub Actions Status: CI](https://github.com/scikit-hep/particle/workflows/CI/badge.svg)](https://github.com/scikit-hep/particle/actions)
-[![Code Coverage](https://codecov.io/gh/scikit-hep/particle/graph/badge.svg?branch=main)](https://codecov.io/gh/scikit-hep/particle?branch=main)
+[![Code Coverage](https://codecov.io/gh/scikit-hep/particle/branch/main/graph/badge.svg)]([httin](https://app.codecov.io/gh/scikit-hep/particle/tree/main))
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/scikit-hep/particle/main?urlpath=lab/tree/notebooks/ParticleDemo.ipynb)
 
