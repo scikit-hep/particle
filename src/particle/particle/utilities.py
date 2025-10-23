@@ -184,7 +184,8 @@ def latex_to_html_name(name: str) -> str:
         # Special formatting since for example
         # f"{hex(html.entities.name2codepoint['Delta'])}" gives '0x394' whereas HTML needs 'x0394',
         # as in '&#x0394;', equivalent to '&Delta;'
-        name = name.replace(rf"\{gl}", f"&#x{name2codepoint[gl]:04x};")
+        if gl in name2codepoint:
+            name = name.replace(rf"\{gl}", f"&#x{name2codepoint[gl]:04x};")
     name = re.sub(r"\\tilde\{(.*?)\}", r"\1&#771;", name)
     name = re.sub(r"\\overline\{(.*?)\}", r"\1&#773;", name)
     return re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)
