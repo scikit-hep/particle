@@ -55,7 +55,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
         allow-prereleases: true
 
-    - uses: astral-sh/setup-uv@v6
+    - uses: astral-sh/setup-uv@v7
 
     - name: Test package
       run: uvx nox -s tests --force-python=${{ matrix.python-version }}
@@ -81,7 +81,7 @@ jobs:
       with:
         python-version: "3.x"
 
-    - uses: astral-sh/setup-uv@v6
+    - uses: astral-sh/setup-uv@v7
 
     - name: Install package
       run: uv pip install --system -e .[test]
@@ -101,14 +101,14 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: wntrblm/nox@2025.05.01
+    - uses: wntrblm/nox@2025.10.16
       with:
         python-versions: "3.10"
 
     - name: Make ZipApp
       run: nox -s zipapp
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: zipapp
         path: particle.pyz
