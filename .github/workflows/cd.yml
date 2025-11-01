@@ -20,7 +20,7 @@ jobs:
     - name: Build wheel and SDist
       run: pipx run build
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         path: dist/*
 
@@ -35,14 +35,14 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: wntrblm/nox@2025.05.01
+    - uses: wntrblm/nox@2025.10.16
       with:
         python-versions: "3.10"
 
     - name: Make ZipApp
       run: nox -s zipapp
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: zipapp
         path: particle.pyz
@@ -60,7 +60,7 @@ jobs:
       attestations: write
 
     steps:
-    - uses: actions/download-artifact@v5
+    - uses: actions/download-artifact@v6
       with:
         name: artifact
         path: dist
@@ -75,7 +75,7 @@ jobs:
       with:
         attestations: true
 
-    - uses: actions/download-artifact@v5
+    - uses: actions/download-artifact@v6
       with:
         name: zipapp
         path: zipapp
