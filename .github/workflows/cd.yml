@@ -7,46 +7,45 @@ on:
       - main
   release:
     types:
-    - published
+      - published
 
 jobs:
   dist:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
-    - name: Build wheel and SDist
-      run: pipx run build
+      - name: Build wheel and SDist
+        run: pipx run build
 
-    - uses: actions/upload-artifact@v5
-      with:
-        path: dist/*
+      - uses: actions/upload-artifact@v5
+        with:
+          path: dist/*
 
-    - name: Check metadata
-      run: pipx run twine check --strict dist/*
+      - name: Check metadata
+        run: pipx run twine check --strict dist/*
 
   zipapp:
     name: ZipApp
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
-    - uses: wntrblm/nox@2025.10.16
-      with:
-        python-versions: "3.10"
+      - uses: wntrblm/nox@2025.10.16
+        with:
+          python-versions: "3.10"
 
-    - name: Make ZipApp
-      run: nox -s zipapp
+      - name: Make ZipApp
+        run: nox -s zipapp
 
-    - uses: actions/upload-artifact@v5
-      with:
-        name: zipapp
-        path: particle.pyz
-
+      - uses: actions/upload-artifact@v5
+        with:
+          name: zipapp
+          path: particle.pyz
 
   publish:
     needs: [dist]
@@ -60,32 +59,32 @@ jobs:
       attestations: write
 
     steps:
-    - uses: actions/download-artifact@v6
-      with:
-        name: artifact
-        path: dist
+      - uses: actions/download-artifact@v6
+        with:
+          name: artifact
+          path: dist
 
-    - name: Generate artifact attestation for sdist and wheel
-      uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
-      with:
-        subject-path: "dist/particle*"
+      - name: Generate artifact attestation for sdist and wheel
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
+        with:
+          subject-path: "dist/particle*"
 
-    - name: Upload package to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        attestations: true
+      - name: Upload package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          attestations: true
 
-    - uses: actions/download-artifact@v6
-      with:
-        name: zipapp
-        path: zipapp
+      - uses: actions/download-artifact@v6
+        with:
+          name: zipapp
+          path: zipapp
 
-    - name: Upload ZipApp
-      uses: softprops/action-gh-release@v2
-      with:
-        files: ./zipapp/particle.pyz
+      - name: Upload ZipApp
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./zipapp/particle.pyz
 
-    - name: Generate artifact attestation for zipapp
-      uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
-      with:
-        subject-path: zipapp/particle.pyz
+      - name: Generate artifact attestation for zipapp
+        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
+        with:
+          subject-path: zipapp/particle.pyz

@@ -3,45 +3,58 @@ ci:
   autofix_commit_msg: "style: pre-commit fixes"
 
 repos:
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v6.0.0
-  hooks:
-  - id: check-added-large-files
-    args: ['--maxkb=1000']
-  - id: mixed-line-ending
-  - id: trailing-whitespace
-  - id: check-merge-conflict
-  - id: check-case-conflict
-  - id: check-symlinks
-  - id: check-yaml
-  - id: requirements-txt-fixer
-  - id: debug-statements
-  - id: end-of-file-fixer
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-symlinks
+      - id: check-yaml
+      - id: requirements-txt-fixer
+      - id: debug-statements
+      - id: end-of-file-fixer
 
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: "v0.14.3"
-  hooks:
-    - id: ruff-check
-      args: ["--fix", "--show-fixes"]
-    - id: ruff-format
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: "v0.14.3"
+    hooks:
+      - id: ruff-check
+        args: ["--fix", "--show-fixes"]
+      - id: ruff-format
 
-- repo: https://github.com/pre-commit/mirrors-mypy
-  rev: v1.18.2
-  hooks:
-  - id: mypy
-    files: src
-    additional_dependencies: [attrs==21.4.0, hepunits>=2.2.0]
+  - repo: https://github.com/adamchainz/blacken-docs
+    rev: "1.20.0"
+    hooks:
+      - id: blacken-docs
+        additional_dependencies: [black==23.*]
+        exclude: README.md
 
-- repo: https://github.com/codespell-project/codespell
-  rev: v2.4.1
-  hooks:
-  - id: codespell
-    exclude: ^(src/particle/data/.*\.csv|src/particle/data/.*\.fwf)$
-    args: ["-L", "Lamda,lamda,HEP"]
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: "v3.6.2"
+    hooks:
+      - id: prettier
+        types_or: [yaml, markdown, json]
 
-- repo: https://github.com/pre-commit/pygrep-hooks
-  rev: v1.10.0
-  hooks:
-  - id: rst-backticks
-  - id: rst-directive-colons
-  - id: rst-inline-touching-normal
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.18.2
+    hooks:
+      - id: mypy
+        files: src
+        additional_dependencies: [attrs==21.4.0, hepunits>=2.2.0]
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        exclude: ^(src/particle/data/.*\.csv|src/particle/data/.*\.fwf)$
+        args: ["-L", "Lamda,lamda,HEP"]
+
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
+      - id: rst-backticks
+      - id: rst-directive-colons
+      - id: rst-inline-touching-normal
