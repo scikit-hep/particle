@@ -10,4 +10,4 @@ dependencies:
   - jupyterlab>=4
   - tabulate
   - pip:
-    - .
+      - .
