@@ -20,7 +20,7 @@ jobs:
       - name: Build wheel and SDist
         run: pipx run build
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           path: dist/*
 
@@ -42,7 +42,7 @@ jobs:
       - name: Make ZipApp
         run: nox -s zipapp
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: zipapp
           path: particle.pyz
@@ -59,13 +59,13 @@ jobs:
       attestations: write
 
     steps:
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: artifact
           path: dist
 
       - name: Generate artifact attestation for sdist and wheel
-        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
+        uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
         with:
           subject-path: "dist/particle*"
 
@@ -74,7 +74,7 @@ jobs:
         with:
           attestations: true
 
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           name: zipapp
           path: zipapp
@@ -85,6 +85,6 @@ jobs:
           files: ./zipapp/particle.pyz
 
       - name: Generate artifact attestation for zipapp
-        uses: actions/attest-build-provenance@977bb373ede98d70efdf65b84cb5f73e068dcc2a # v3.0.0
+        uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
         with:
           subject-path: zipapp/particle.pyz
