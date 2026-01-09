@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 0.26.1
+
+January 9th, 2026
+
+- Dependencies:
+  - pandas >= 1.24.0
+  - attrs >= 22.2.0
+- Miscellaneous:
+  - Added support for Python 3.14.
+- CI and tests:
+  - Updates and improvements to pre-commit hooks and CI YAML files.
+
 ## Version 0.26.0
 
 September 30th, 2025
