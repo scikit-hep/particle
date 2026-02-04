@@ -203,7 +203,7 @@ def get_from_pdg_extended(
     pdg_table = pdg_table[pdg_table.ID >= 0]
 
     # PDG's ID should be the key to table
-    pdg_table.set_index("ID", inplace=True)
+    pdg_table = pdg_table.set_index("ID")
 
     # Assign the positive values LaTeX names
     pdg_table = pdg_table.assign(Latex=latex_series)
@@ -243,12 +243,11 @@ def get_from_pdg_extended(
     )
 
     full_inversion = pdg_table_inv.Anti == Inv.Barred
-    pdg_table_inv.Latex.where(
+    pdg_table_inv.Latex = pdg_table_inv.Latex.where(
         ~full_inversion,
         pdg_table_inv.Latex.str.replace(
             r"^(\\mathrm{|)([a-zA-Z\\][a-zA-Z]*)", r"\1\\overline{\2}", regex=True
         ),
-        inplace=True,
     )
     pdg_table_inv.Latex = (
         pdg_table_inv.Latex.str.replace(r"+", r"%", regex=False)
@@ -260,14 +259,14 @@ def get_from_pdg_extended(
     full = pd.concat([pdg_table, pdg_table_inv])
 
     # This will override any negative values
-    full.Latex.update(latex_series)
+    full.update({"Latex": latex_series})
 
     # These items are not very important - can be reconstructed from the PDG ID
     # TODO: maybe first check the consistency between what is read in and what the PDG ID provides (being maniac)?
     del full["J"]
 
     # Nice sorting
-    sort_particles(full)
+    full = sort_particles(full)
 
     # All the 'MassLower' and 'WidthLower' values should be absolute values
     # except for the special cases when they are equal to -1,
@@ -279,11 +278,12 @@ def get_from_pdg_extended(
     return full.fillna("")
 
 
-def sort_particles(table: pd.DataFrame) -> None:
+def sort_particles(table: pd.DataFrame) -> pd.DataFrame:
     "Sort a particle list table nicely"
     table["TmpVals"] = abs(table.index - 0.25)
-    table.sort_values("TmpVals", inplace=True)
+    table = table.sort_values("TmpVals")
     del table["TmpVals"]
+    return table
 
 
 def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
@@ -355,12 +355,12 @@ def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
         d["Name"] = nc[0]
         abcd = nc[1].str.split(pat=",", n=4, expand=True)
         d["charge"] = abcd[i]
-        d.set_index("ID", inplace=True)
+        d = d.set_index("ID")
         ds_list.append(d)
 
     ds = pd.concat(ds_list)
     del ds["NameCharge"], ds["ID1"], ds["ID2"], ds["ID3"], ds["ID4"]
-    ds.sort_index(inplace=True)
+    ds = ds.sort_index()
 
     # This should be in MeV, not GeV, and absolute value
     for name in ("Mass", "MassUpper", "MassLower", "Width", "WidthUpper", "WidthLower"):
@@ -451,7 +451,7 @@ def produce_files(
     # Allow replacement of particles by the ext file
     full_table = full_table[~full_table.index.duplicated(keep="last")]
 
-    sort_particles(full_table)
+    full_table = sort_particles(full_table)
 
     new_table = update_from_mcd(full_table, ext_table)
 
