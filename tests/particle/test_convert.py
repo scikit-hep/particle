@@ -17,7 +17,7 @@ from particle.particle.convert import get_from_pdg_mcd
 DIR = Path(__file__).parent.resolve()
 
 
-def test_get_from_pdg_mcd():
+def test_get_from_pdg_mcd() -> None:
     with (
         (DIR / "../data/test_PDG_mcd_file_duplicates.mcd").open() as f,
         pytest.raises(AssertionError),

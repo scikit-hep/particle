@@ -285,7 +285,7 @@ class Particle:
         exclusive_fields: Iterable[str] = (),
         exclude_fields: Iterable[str] = (),
         n_rows: int = -1,
-        filter_fn: Callable[[Particle], bool] | None = None,
+        filter_fn: Callable[[Particle], bool] | str | None = None,
         particle: bool | None = None,
         **search_terms: Any,
     ) -> Sequence[Sequence[bool | int | float | str]]:
@@ -1231,7 +1231,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @classmethod
     def findall(
         cls: type[Self],
-        filter_fn: Callable[[Particle], bool] | None = None,
+        filter_fn: Callable[[Particle], bool] | str | None = None,
         *,
         particle: bool | None = None,
         **search_terms: Any,

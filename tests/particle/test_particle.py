@@ -10,6 +10,7 @@ import contextlib
 
 import pytest
 from hepunits import meter, second
+from pdgids import PDGIDsEnum as PDGIDs
 from pytest import approx
 
 from particle import data
@@ -20,11 +21,11 @@ from particle.pdgid import PDGID
 from particle.pdgid.functions import Location, _digit
 
 
-def test_sorted_find():
+def test_sorted_find() -> None:
     assert Particle.findall() == sorted(Particle.finditer())
 
 
-def test_lambda_style_search():
+def test_lambda_style_search() -> None:
     particles = Particle.findall(lambda p: p.pdg_name == "p")
     assert len(particles) == 4
     assert 2212 in particles
@@ -46,14 +47,14 @@ def test_lambda_style_search():
     ]
 
 
-def test_fuzzy_name_search():
+def test_fuzzy_name_search() -> None:
     particles = Particle.findall("p~")
     assert len(particles) == 2
     assert -2212 in particles
     assert -1000010010 in particles
 
 
-def test_keyword_style_search():
+def test_keyword_style_search() -> None:
     particles = Particle.findall(pdg_name="p")
     assert len(particles) == 4
     assert 2212 in particles
@@ -62,7 +63,7 @@ def test_keyword_style_search():
     assert -1000010010 in particles
 
 
-def test_keyword_style_search_with_except_catch():
+def test_keyword_style_search_with_except_catch() -> None:
     particles = Particle.findall(ctau=float("inf"))
     assert 11 in particles
 
@@ -90,7 +91,7 @@ def test_keyword_style_search_with_except_catch():
     ]
 
 
-def test_keyword_lambda_style_search():
+def test_keyword_lambda_style_search() -> None:
     particles = Particle.findall(pdg_name=lambda x: x == "p")
     assert len(particles) == 4
     assert 2212 in particles
@@ -111,13 +112,13 @@ def test_keyword_lambda_style_search():
     assert 2212 in Particle.findall(lifetime=lambda x: x > 1 * second)
 
 
-def test_complex_search():
+def test_complex_search() -> None:
     # Find all strange mesons with c*tau > 1 meter
     particles = Particle.findall(
         lambda p: p.pdgid.is_meson
         and p.pdgid.has_strange
-        and p.width > 0
-        and p.ctau > 1000.0,
+        and p.width > 0  # type: ignore[operator]
+        and p.ctau > 1000.0,  # type: ignore[operator]
         particle=True,
     )
     assert len(particles) == 2  # K+ and KL0
@@ -128,33 +129,33 @@ def test_complex_search():
     particles = Particle.findall(
         lambda p: p.pdgid.is_meson
         and p.pdgid.has_strange
-        and p.width > 0
-        and p.ctau > 1000.0,
+        and p.width > 0  # type: ignore[operator]
+        and p.ctau > 1000.0,  # type: ignore[operator]
         particle=False,
     )
     assert len(particles) == 1  # only the K-
     assert -321 in particles
 
 
-def test_pdg():
+def test_pdg() -> None:
     assert Particle.from_pdgid(211).pdgid == 211
     with pytest.raises(InvalidParticle):
         Particle.from_pdgid(0)
 
 
-def test_pdg_convert():
+def test_pdg_convert() -> None:
     p = Particle.from_pdgid(211)
     assert isinstance(p.pdgid, PDGID)
     assert p.pdgid == 211
     assert int(p.pdgid) == 211
 
 
-def test_from_name():
+def test_from_name() -> None:
     p = Particle.from_name("pi+")
     assert p.name == "pi+"
 
 
-def test_from_name_ParticleNotFound():
+def test_from_name_ParticleNotFound() -> None:
     """
     Exception raised because the name given matches all pions,
     e.g. pi+, pi-, pi(2)(1670)+, etc.
@@ -163,7 +164,7 @@ def test_from_name_ParticleNotFound():
         _ = Particle.from_name("pi")
 
 
-def test_from_nucleus_info():
+def test_from_nucleus_info() -> None:
     p = Particle.from_nucleus_info(1, 2)
     assert p.pdgid == 1000010020
     p = Particle.from_nucleus_info(92, 235)
@@ -172,7 +173,7 @@ def test_from_nucleus_info():
     assert p.pdgid == -1000010020
 
 
-def test_from_nucleus_info_special_cases():
+def test_from_nucleus_info_special_cases() -> None:
     """
     The proton and the neutron should return the preferred quark representation
     rather than the representation as a nucleus.
@@ -181,7 +182,7 @@ def test_from_nucleus_info_special_cases():
     assert Particle.from_nucleus_info(a=1, z=0).pdgid == 2112
 
 
-def test_from_nucleus_info_ParticleNotFound():
+def test_from_nucleus_info_ParticleNotFound() -> None:
     with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(z=999, a=999)
 
@@ -190,7 +191,7 @@ def test_from_nucleus_info_ParticleNotFound():
         _ = Particle.from_nucleus_info(1, 2, i=1)
 
 
-def test_from_nucleus_info_InvalidParticle():
+def test_from_nucleus_info_InvalidParticle() -> None:
     with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(z=2, a=1)
 
@@ -212,12 +213,12 @@ def test_from_nucleus_info_InvalidParticle():
     assert str(e.value) == "Input PDGID 1000110020 is invalid!"
 
 
-def test_sorting():
+def test_sorting() -> None:
     assert Particle.from_pdgid(211) < Particle.from_pdgid(311)
     assert Particle.from_pdgid(211) < Particle.from_pdgid(-311)
 
 
-def test_int_compare():
+def test_int_compare() -> None:
     assert Particle.from_pdgid(211) > 0
     assert Particle.from_pdgid(-211) < 0
     assert Particle.from_pdgid(211) >= 0
@@ -229,19 +230,19 @@ def test_int_compare():
     assert Particle.from_pdgid(-211) <= 0
 
 
-def test_str():
+def test_str() -> None:
     pi = Particle.from_pdgid(211)
     assert str(pi) == "pi+"
 
 
-def test_rep():
+def test_rep() -> None:
     pi = Particle.from_pdgid(211)
     assert "pdgid=211" in repr(pi)
     assert 'name="pi+"' in repr(pi)
     assert "mass=139.57" in repr(pi)
 
 
-def test_basic_props():
+def test_basic_props() -> None:
     pi = Particle.from_pdgid(211)
     assert pi.pdg_name == "pi"
     assert pi.pdgid == 211
@@ -249,13 +250,13 @@ def test_basic_props():
     assert pi.charge == 1
 
 
-def test_lifetime_props():
+def test_lifetime_props() -> None:
     pi = Particle.from_pdgid(211)
     assert pi.lifetime == approx(26.0327460625985)  # in nanoseconds
     assert pi.ctau == approx(7804.4209306)  # in millimeters
 
 
-def test_charge_consistency():
+def test_charge_consistency() -> None:
     """
     The charge of a particle is presently stored in the CSV files
     (see Particle.charge for the motivation), but it can also be retrieved
@@ -266,7 +267,7 @@ def test_charge_consistency():
         assert p.three_charge == p.pdgid.three_charge
 
 
-def test_P_consistency_mesons():
+def test_P_consistency_mesons() -> None:
     """
     The parity quantum number is stored in the (curated) data CSV files.
     For unflavoured mesons it can be calculated as P = (-1)^(L+1),
@@ -282,10 +283,10 @@ def test_P_consistency_mesons():
         if p.pdgid == 22:  # Special case of the photon
             assert p.P == -1
         else:
-            assert (-1) ** (p.L + 1) == p.P
+            assert (-1) ** (p.L + 1) == p.P  # type: ignore[operator]
 
 
-def test_P_consistency_baryons():
+def test_P_consistency_baryons() -> None:
     """
     The parity quantum number is stored in the (curated) data CSV files.
     For baryons the (intrinsic) parity flips sign for the antiparticle.
@@ -293,7 +294,7 @@ def test_P_consistency_baryons():
     is equally undefined, of course.
     """
 
-    def pdgid(p):
+    def pdgid(p: Particle) -> int:
         return p.pdgid
 
     pdgids_baryons_defined_P = [
@@ -310,14 +311,14 @@ def test_P_consistency_baryons():
         )
     ]
 
-    for pdgid in pdgids_baryons_defined_P:
-        assert -Particle.from_pdgid(-pdgid).P == Particle.from_pdgid(pdgid).P
+    for pdgid_1 in pdgids_baryons_defined_P:
+        assert -Particle.from_pdgid(-pdgid_1).P == Particle.from_pdgid(pdgid_1).P
 
-    for pdgid in pdgids_baryons_undefined_P:
-        assert Particle.from_pdgid(pdgid).P == Particle.from_pdgid(-pdgid).P
+    for pdgid_2 in pdgids_baryons_undefined_P:
+        assert Particle.from_pdgid(pdgid_2).P == Particle.from_pdgid(-pdgid_2).P
 
 
-def test_C_consistency():
+def test_C_consistency() -> None:
     """
     The charge conjugation parity is stored in the (curated) data CSV files.
     For neutral unflavoured mesons it can be calculated as C = (-1)^(L+S),
@@ -336,7 +337,7 @@ def test_C_consistency():
         elif p.pdgid in [130, 310]:  # Special case of the KS and KL
             assert Parity.u == p.C
         else:
-            assert (-1) ** (p.L + p.S) == p.C
+            assert (-1) ** (p.L + p.S) == p.C  # type: ignore[operator]
 
 
 checklist_describe = (
@@ -363,30 +364,30 @@ checklist_describe = (
 
 
 @pytest.mark.parametrize(("pid", "description"), checklist_describe)
-def test_describe(pid, description):
+def test_describe(pid: int, description: str) -> None:
     part = Particle.from_pdgid(pid)
     assert description in part.describe()
 
 
-def test_default_table_loading():
+def test_default_table_loading() -> None:
     assert Particle.table_names() == ("particle2025.csv", "nuclei2022.csv")
 
 
-def test_default_table_loading_bis():
+def test_default_table_loading_bis() -> None:
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
     assert p.table_names() == ("particle2025.csv", "nuclei2022.csv")
 
 
-def test_explicit_table_loading():
+def test_explicit_table_loading() -> None:
     Particle.load_table(data.basepath / "particle2025.csv")
     assert Particle.table_loaded()
     assert len(Particle.table_names()) == 1
     assert Particle.all() is not None
 
 
-def test_all_particles_are_loaded():
+def test_all_particles_are_loaded() -> None:
     Particle.load_table(data.basepath / "particle2025.csv")
     assert len(Particle.all()) == 626
     Particle.load_table(data.basepath / "particle2024.csv")
@@ -437,7 +438,7 @@ checklist_html_name = (
 
 
 @pytest.mark.parametrize(("pid", "html_name"), checklist_html_name)
-def test_html_name(pid, html_name):
+def test_html_name(pid: int, html_name: str) -> None:
     particle = Particle.from_pdgid(pid)
 
     assert particle.html_name == html_name
@@ -462,13 +463,13 @@ checklist_is_self_conjugate = (
 
 
 @pytest.mark.parametrize(("pid", "is_self_conjugate"), checklist_is_self_conjugate)
-def test_is_self_conjugate(pid, is_self_conjugate):
+def test_is_self_conjugate(pid: int, is_self_conjugate: bool) -> None:
     particle = Particle.from_pdgid(pid)
 
     assert particle.is_self_conjugate == is_self_conjugate
 
 
-def test_self_conjugation_consistenty():
+def test_self_conjugation_consistenty() -> None:
     """
     The logic implemented in ``Particle.invert()`` and ``Particle.is_self_conjugate``
     should be consistent. In other words, the inverse of
@@ -506,13 +507,13 @@ checklist_is_name_barred = (
 
 
 @pytest.mark.parametrize(("pid", "has_bar"), checklist_is_name_barred)
-def test_is_name_barred(pid, has_bar):
+def test_is_name_barred(pid: int, has_bar: bool) -> None:
     particle = Particle.from_pdgid(pid)
 
     assert particle.is_name_barred == has_bar
 
 
-def test_is_unflavoured_meson(PDGIDs):
+def test_is_unflavoured_meson() -> None:
     _unflavoured_mesons = (
         PDGIDs.Pi0,
         PDGIDs.PiPlus,
@@ -577,7 +578,7 @@ spin_type_classification = (
 
 
 @pytest.mark.parametrize(("pid", "stype"), spin_type_classification)
-def test_spin_type(pid, stype):
+def test_spin_type(pid: int, stype: SpinType) -> None:
     particle = Particle.from_pdgid(pid)
 
     assert particle.spin_type == stype
@@ -607,13 +608,13 @@ checklist_isospin = (
 
 
 @pytest.mark.parametrize(("pid", "isospin"), checklist_isospin)
-def test_isospin(pid, isospin):
+def test_isospin(pid: int, isospin: float | None) -> None:
     particle = Particle.from_pdgid(pid)
 
     assert isospin == particle.I
 
 
-def test_default_particle():
+def test_default_particle() -> None:
     p = Particle.empty()
 
     assert repr(p) == '<Particle: name="Unknown", pdgid=0, mass=None>'
@@ -625,11 +626,11 @@ def test_default_particle():
     assert p.status == Status.NotInPDT
 
 
-def test_to_list():
+def test_to_list() -> None:
     tbl = Particle.to_list(
         filter_fn=lambda p: p.pdgid.is_meson
         and p.pdgid.has_strange
-        and p.ctau > 1 * meter,
+        and p.ctau > 1 * meter,  # type: ignore[operator]
         exclusive_fields=["pdgid", "name"],
     )
     assert tbl == [["pdgid", "name"], [130, "K(L)0"], [321, "K+"], [-321, "K-"]]
@@ -646,7 +647,7 @@ def test_to_list():
     assert ["D(s)*+"] in tbl
 
 
-def test_to_dict():
+def test_to_dict() -> None:
     query_as_dict = Particle.to_dict(
         filter_fn=lambda p: p.pdgid.is_lepton and p.charge != 0,
         exclusive_fields=["name", "charge"],
@@ -710,12 +711,12 @@ decfile_style_names = (
 
 
 @pytest.mark.parametrize(("name", "pid"), decfile_style_names)
-def test_decfile_style_names(name, pid):
+def test_decfile_style_names(name: str, pid: int) -> None:
     assert Particle.from_evtgen_name(name).pdgid == pid
 
 
 @pytest.mark.parametrize(("name", "pid"), decfile_style_names)
-def test_evtgen_name(name, pid):  # noqa: ARG001
+def test_evtgen_name(name: str, pid: int) -> None:  # noqa: ARG001
     assert Particle.from_evtgen_name(name).evtgen_name == name
 
 
@@ -728,7 +729,7 @@ def test_evtgen_name(name, pid):  # noqa: ARG001
         pytest.param(-2112, -1000000010, id="n~"),
     ],
 )
-def test_eq_non_unique_pdgids(pdgid1, pdgid2):
+def test_eq_non_unique_pdgids(pdgid1: int, pdgid2: int) -> None:
     """The proton and the neutron have two PDG ID representations. Make sure they still compare equal."""
 
     p1 = Particle.from_pdgid(pdgid1)
@@ -748,7 +749,7 @@ def test_eq_non_unique_pdgids(pdgid1, pdgid2):
         pytest.param("n~", -2112, id="n~"),
     ],
 )
-def test_from_name_non_unique_pdgids(name, pdgid):
+def test_from_name_non_unique_pdgids(name: str, pdgid: int) -> None:
     """
     Test that Particle.from_name works for p and n, returning the preferred quark representation
     rather than the representation as a nucleus.
@@ -760,7 +761,7 @@ def test_from_name_non_unique_pdgids(name, pdgid):
 
 
 @pytest.mark.parametrize("sign", [1, -1])
-def test_particle_hash(sign):
+def test_particle_hash(sign: int) -> None:
     proton1 = Particle.from_pdgid(sign * 2212)
     proton2 = Particle.from_pdgid(sign * 1000010010)
     neutron1 = Particle.from_pdgid(sign * 2112)

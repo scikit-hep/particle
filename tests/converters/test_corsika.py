@@ -9,7 +9,7 @@ from particle import PDGID, Corsika7ID, Particle
 from particle.converters import Corsika72PDGIDBiMap
 
 
-def test_Corsika72PDGID():
+def test_Corsika72PDGID() -> None:
     pdgid = Corsika72PDGIDBiMap[Corsika7ID(5)]
     assert pdgid == -13
 

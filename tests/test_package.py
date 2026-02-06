@@ -8,9 +8,9 @@ from __future__ import annotations
 import particle
 
 
-def test_package_import():
+def test_package_import() -> None:
     assert particle is not None
 
 
-def test_load_version():
+def test_load_version() -> None:
     assert particle.__version__
