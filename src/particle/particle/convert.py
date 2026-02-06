@@ -497,7 +497,7 @@ def run_convert(args: Any) -> None:
 
 
 if __name__ == "__main__":
-    from argparse import ArgumentParser, FileType
+    from argparse import ArgumentParser
 
     parser = ArgumentParser()
     subparsers = parser.add_subparsers(help="Options (pick one)")
@@ -525,7 +525,6 @@ if __name__ == "__main__":
     )
     parser_convert.add_argument(
         "latex",
-        type=FileType("r"),
         help="Optional Latex file with names",
         nargs="?",
         default=None,
