@@ -732,7 +732,7 @@ for elm in list_dec_but_not_in_pdt + list_dec_specific:
     dec_names.remove(elm)
 
 
-def test_decfile_style_names_valid():
+def test_decfile_style_names_valid() -> None:
     failures = set()
     for name in dec_names:
         try:

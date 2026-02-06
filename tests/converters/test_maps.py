@@ -14,7 +14,7 @@ from particle.pdgid import PDGID
 from particle.pythia import PythiaID
 
 
-def test_BiMap():
+def test_BiMap() -> None:
     bimap = BiMap(PDGID, PythiaID)
 
     assert len(bimap) == 540
@@ -24,7 +24,7 @@ def test_BiMap():
         bimap[PDGID(9000221)]
 
 
-def test_DirectionalMaps():
+def test_DirectionalMaps() -> None:
     filename = data.basepath / "pdgid_to_pythiaid.csv"
     PDG2PyIDMap, Py2PDGIDMap = DirectionalMaps(
         "PDGID", "PythiaID", filename=filename, converters=(int, int)

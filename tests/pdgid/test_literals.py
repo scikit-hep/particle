@@ -9,5 +9,5 @@ from __future__ import annotations
 from particle.pdgid import literals as lid
 
 
-def test_literals_import():
+def test_literals_import() -> None:
     assert lid is not None

@@ -51,7 +51,7 @@ dynamic = ["version"]
 dev = [
     "pandas",
     "pytest-benchmark",
-    "pytest>=6",
+    "pytest>=7",
     "tabulate",
     "pre-commit",
 ]
@@ -59,7 +59,7 @@ test = [
     "pandas",
     "pytest-benchmark",
     "pytest-cov",
-    "pytest>=6",
+    "pytest>=7",
     "tabulate",
 ]
 all = [
@@ -79,7 +79,8 @@ build.hooks.vcs.version-file = "src/particle/version.py"
 warn_unused_configs = true
 warn_unused_ignores = true
 python_version = "3.13"
-files = "src"
+files = ["src", "tests"]
+mypy_path = ["tests/utils"]
 strict = true
 warn_unreachable = true
 enable_error_code = [
@@ -87,6 +88,7 @@ enable_error_code = [
     "redundant-expr",
     "truthy-bool",
 ]
+exclude = ["tests/utils"]
 
 [[tool.mypy.overrides]]
 module = [
@@ -97,7 +99,7 @@ ignore_missing_imports = true
 
 
 [tool.pytest.ini_options]
-minversion = "6.0"
+minversion = "7.0"
 testpaths = ["tests"]
 junit_family = "xunit2"
 log_level = "INFO"
@@ -111,6 +113,9 @@ addopts = [
 ]
 filterwarnings = [
     "error",
+]
+pythonpath = [
+    "tests/utils",
 ]
 
 [tool.pylint]

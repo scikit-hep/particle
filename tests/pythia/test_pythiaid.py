@@ -12,22 +12,22 @@ from particle.pdgid import PDGID
 from particle.pythia import PythiaID
 
 
-def test_class_string_representations():
+def test_class_string_representations() -> None:
     pid = PythiaID(211)
     assert pid == 211
     assert pid.__str__() == "<PythiaID: 211>"
 
 
-def test_class_return_type():
+def test_class_return_type() -> None:
     assert isinstance(-PythiaID(211), PythiaID)
     assert isinstance(~PythiaID(211), PythiaID)
 
 
-def test_class_inversion():
+def test_class_inversion() -> None:
     assert -PythiaID(311) == ~PythiaID(311)
 
 
-def test_from_pdgid():
+def test_from_pdgid() -> None:
     assert PythiaID.from_pdgid(9010221) == 10221
 
     assert PythiaID.from_pdgid(PDGID(9010221)) == 10221
@@ -37,7 +37,7 @@ def test_from_pdgid():
         PythiaID.from_pdgid(9000221)
 
 
-def test_to_pdgid():
+def test_to_pdgid() -> None:
     pythiaid = PythiaID(10331)
     assert pythiaid.to_pdgid() == 10221
     assert pythiaid.to_pdgid() == PDGID(10221)

@@ -9,5 +9,5 @@ from __future__ import annotations
 from particle import literals as lp
 
 
-def test_literals_import():
+def test_literals_import() -> None:
     assert lp is not None

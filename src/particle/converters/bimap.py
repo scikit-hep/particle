@@ -140,9 +140,9 @@ class BiMap(Generic[A, B]):
 def DirectionalMaps(
     name_A: str,
     name_B: str,
-    converters: tuple[Callable[[str], str], Callable[[str], str]] = (str, str),
+    converters: tuple[Callable[[A], B], Callable[[B], A]] = (str, str),  # type: ignore[assignment]
     filename: StringOrIO | None = None,
-) -> tuple[DirectionalMap, DirectionalMap]:
+) -> tuple[DirectionalMap[B, A], DirectionalMap[A, B]]:
     """
     Directional map class providing a to and from mapping.
 
@@ -188,7 +188,7 @@ def DirectionalMaps(
         skipinitialspace = True
 
         to_map = {
-            converters[1](v[name_B]): converters[0](v[name_A])
+            converters[1](v[name_B]): converters[0](v[name_A])  # type: ignore[arg-type]
             for v in csv.DictReader(
                 (line for line in _f if not line.startswith("#")),
                 fieldnames=fieldnames,
@@ -197,7 +197,7 @@ def DirectionalMaps(
         }
         _f.seek(0)
         from_map = {
-            converters[0](v[name_A]): converters[1](v[name_B])
+            converters[0](v[name_A]): converters[1](v[name_B])  # type: ignore[arg-type]
             for v in csv.DictReader(
                 (line for line in _f if not line.startswith("#")),
                 fieldnames=fieldnames,
@@ -211,12 +211,9 @@ def DirectionalMaps(
     )
 
 
-StrStrMapping = Mapping[str, str]
-
-
-class DirectionalMap(StrStrMapping):
+class DirectionalMap(Mapping[A, B], Generic[A, B]):
     # pylint: disable-next=redefined-builtin
-    def __init__(self, name_A: str, name_B: str, map: dict[str, str]) -> None:
+    def __init__(self, name_A: str, name_B: str, map: dict[A, B]) -> None:
         """
         Directional map class providing a A -> B mapping.
 
@@ -233,14 +230,14 @@ class DirectionalMap(StrStrMapping):
 
         self._map = map
 
-    def __getitem__(self, value: str) -> str:
+    def __getitem__(self, value: A) -> B:
         try:
             return self._map[value]
         except KeyError:
             msg = f"Matching {self.name_A}->{self.name_B} for input {value} not found !"
             raise MatchingIDNotFound(msg) from None
 
-    def __iter__(self) -> Iterator[str]:
+    def __iter__(self) -> Iterator[A]:
         return iter(self._map)
 
     def __repr__(self) -> str:

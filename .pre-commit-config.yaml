@@ -42,8 +42,10 @@ repos:
     rev: v1.19.1
     hooks:
       - id: mypy
-        files: src
-        additional_dependencies: [attrs==21.4.0, hepunits>=2.2.0]
+        files: src|tests
+        exclude: ^tests/utils
+        additional_dependencies:
+          [attrs==21.4.0, hepunits>=2.2.0, pytest, pytest-benchmark]
 
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.1

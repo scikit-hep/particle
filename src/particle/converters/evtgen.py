@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from .. import data
 from ..pdgid import PDGID
-from .bimap import BiMap, DirectionalMaps
+from .bimap import BiMap, DirectionalMap, DirectionalMaps
 
 EvtGenName2PDGIDBiMap = BiMap(
     PDGID,
@@ -30,6 +30,8 @@ Examples
 <PDGID: 22>
 """
 
+PDG2EvtGenNameMap: DirectionalMap[str, str]
+EvtGen2PDGNameMap: DirectionalMap[str, str]
 
 PDG2EvtGenNameMap, EvtGen2PDGNameMap = DirectionalMaps("PDGName", "EvtGenName")
 

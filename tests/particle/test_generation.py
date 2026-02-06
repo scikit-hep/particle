@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 # Requires pandas
@@ -36,7 +38,7 @@ from particle.pdgid import (
 FILES = ["particle2024.csv", "particle2025.csv"]
 
 
-def test_generate(tmp_path):
+def test_generate(tmp_path: Path) -> None:
     "This verifies that the input and output files match."
 
     particle2024 = tmp_path / "particle2024.csv"
@@ -52,7 +54,7 @@ def test_generate(tmp_path):
 
 
 @pytest.mark.parametrize("filename", FILES)
-def test_csv_file_duplicates(filename):
+def test_csv_file_duplicates(filename: str) -> None:
     particle_data = data.basepath / filename
     p = pd.read_csv(particle_data, comment="#")
 
@@ -61,14 +63,14 @@ def test_csv_file_duplicates(filename):
 
 
 @pytest.mark.parametrize("filename", FILES)
-def test_csv_file_has_latex(filename):
+def test_csv_file_has_latex(filename: str) -> None:
     particle_data = data.basepath / filename
     p = pd.read_csv(particle_data, comment="#")
 
     assert p[p.Latex == ""].empty
 
 
-def test_None_masses():
+def test_None_masses() -> None:
     "Only certain specific particles should have None masses."
     none_masses = {
         100321,
@@ -113,7 +115,7 @@ check_nucleons = (
 
 
 @pytest.mark.parametrize(("id_particle", "id_nucleus"), check_nucleons)
-def test_nucleon_properties(id_particle, id_nucleus):
+def test_nucleon_properties(id_particle: int, id_nucleus: int) -> None:
     """
     Protons and neutrons are both available in the particles table and in the nuclei table
     under IDs 2212 and 2112, and 1000010010 and 1000000010, respectively.

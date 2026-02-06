@@ -1,13 +1,6 @@
-# Copyright (c) 2018-2026, Eduardo Rodrigues and Henry Schreiner.
-#
-# Distributed under the 3-clause BSD license, see accompanying file LICENSE
-# or https://github.com/scikit-hep/particle for details.
-
 from __future__ import annotations
 
 from enum import IntEnum
-
-import pytest
 
 
 class PDGIDsEnum(IntEnum):
@@ -155,8 +148,3 @@ class PDGIDsEnum(IntEnum):
     # Invalid ID
     Invalid1 = 0  # illegal ID
     Invalid2 = 99999999  # general form is a 7-digit number
-
-
-@pytest.fixture(scope="session")
-def PDGIDs():
-    return PDGIDsEnum
