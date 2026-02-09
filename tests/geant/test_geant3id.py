@@ -12,34 +12,34 @@ from particle.geant import Geant3ID
 from particle.pdgid import PDGID
 
 
-def test_class_string_representations():
+def test_class_string_representations() -> None:
     pid = Geant3ID(1)
     assert pid == 1
     assert pid.__str__() == "<Geant3ID: 1>"
 
 
-def test_class_return_type():
+def test_class_return_type() -> None:
     assert isinstance(-Geant3ID(3), Geant3ID)
     assert isinstance(~Geant3ID(3), Geant3ID)
 
 
-def test_class_inversion():
+def test_class_inversion() -> None:
     assert -Geant3ID(1) == ~Geant3ID(1)
 
 
-def test_from_pdgid():
+def test_from_pdgid() -> None:
     assert Geant3ID.from_pdgid(211) == 8
 
     assert Geant3ID.from_pdgid(PDGID(211)) == 8
     assert Geant3ID.from_pdgid(PDGID(211)) == Geant3ID(8)
 
 
-def test_from_pdgid_non_matching():
+def test_from_pdgid_non_matching() -> None:
     with pytest.raises(MatchingIDNotFound):
         Geant3ID.from_pdgid(55)
 
 
-def test_to_pdgid():
+def test_to_pdgid() -> None:
     gid = Geant3ID(8)
     assert gid.to_pdgid() == 211
     assert gid.to_pdgid() == PDGID(211)

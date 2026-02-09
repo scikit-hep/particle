@@ -26,10 +26,10 @@ lhcb_style_names = (
 
 
 @pytest.mark.parametrize(("name", "pid"), lhcb_style_names)
-def test_from_lhcb_name(name, pid):
+def test_from_lhcb_name(name: str, pid: int) -> None:
     assert from_lhcb_name(name).pdgid == pid
 
 
 @pytest.mark.parametrize(("name", "pid"), lhcb_style_names)
-def test_to_lhcb_name(name, pid):
+def test_to_lhcb_name(name: str, pid: int) -> None:
     assert to_lhcb_name(Particle.from_pdgid(pid)) == name

@@ -14,7 +14,7 @@ from particle.particle.utilities import (
     str_with_unc,
 )
 
-possibilities = (
+possibilities_1 = (
     # Particles
     ("d", "d", False),
     ("b~", "b_bar", False),
@@ -41,12 +41,12 @@ possibilities = (
 )
 
 
-@pytest.mark.parametrize(("name", "value", "is_nucleus"), possibilities)
-def test_programmatic_name(name, value, is_nucleus):
+@pytest.mark.parametrize(("name", "value", "is_nucleus"), possibilities_1)
+def test_programmatic_name(name: str, value: str, is_nucleus: bool) -> None:
     assert programmatic_name(name, is_nucleus) == value
 
 
-possibilities = (
+possibilities_2 = (
     (1.234567, 0.01, None, "1.235 ± 0.010"),
     (1.234567e-9, 0.01e-9, None, "1.235e-09 ± 1.0e-11"),
     (1.234567e9, 0.04e9, None, "1.23e+09 ± 4e+07"),
@@ -64,12 +64,14 @@ possibilities = (
 )
 
 
-@pytest.mark.parametrize(("value", "err_u", "err_l", "test_str"), possibilities)
-def test_unc_printout(value, err_u, err_l, test_str):
+@pytest.mark.parametrize(("value", "err_u", "err_l", "test_str"), possibilities_2)
+def test_unc_printout(
+    value: float, err_u: float | None, err_l: float | None, test_str: str
+) -> None:
     assert str_with_unc(value, err_u, err_l) == test_str
 
 
-possibilities = (
+possibilities_3 = (
     ("\\omega", "ω"),
     ("\\Omega", "Ω"),
     ("\\Lambda", "Λ"),
@@ -77,12 +79,12 @@ possibilities = (
 )
 
 
-@pytest.mark.parametrize(("name", "unicode_name"), possibilities)
-def test_latex_name_unicode(name, unicode_name):
+@pytest.mark.parametrize(("name", "unicode_name"), possibilities_3)
+def test_latex_name_unicode(name: str, unicode_name: str) -> None:
     assert latex_name_unicode(name) == unicode_name
 
 
-def test_greek_letter_name_to_unicode():
+def test_greek_letter_name_to_unicode() -> None:
     """
     Test the one exception that is not verified
     in the test "test_latex_name_unicode" above.

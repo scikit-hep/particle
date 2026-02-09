@@ -5,12 +5,14 @@
 
 from __future__ import annotations
 
+from pdgids import PDGIDsEnum as PDGIDs
+
 from particle.pdgid import PDGID
 from particle.pdgid import functions as _functions
 from particle.pdgid.pdgid import _fnames
 
 
-def test_class_string_representations():
+def test_class_string_representations() -> None:
     pid = PDGID(11)
     assert pid == 11
     assert pid.__str__() == "<PDGID: 11>"
@@ -18,24 +20,24 @@ def test_class_string_representations():
     assert pid.__str__() == "<PDGID: -99999999 (is_valid==False)>"
 
 
-def test_class_operations(PDGIDs):
+def test_class_operations() -> None:
     id_electron = PDGID(PDGIDs.Electron)
     id_positron = PDGID(PDGIDs.Positron)
-    assert PDGIDs.Electron == id_electron
+    assert PDGIDs.Electron == id_electron  # type: ignore[comparison-overlap]
     assert id_positron == -id_electron
-    assert PDGIDs.Positron == -id_electron
+    assert PDGIDs.Positron == -id_electron  # type: ignore[comparison-overlap]
 
 
-def test_class_return_type():
+def test_class_return_type() -> None:
     assert isinstance(-PDGID(311), PDGID)
     assert isinstance(~PDGID(311), PDGID)
 
 
-def test_class_inversion():
+def test_class_inversion() -> None:
     assert -PDGID(311) == ~PDGID(311)
 
 
-def test_nonphysical_pdgids():
+def test_nonphysical_pdgids() -> None:
     # The negative PDGID of a self-conjugate meson makes no sense
     assert not (
         PDGID(-111).is_meson
@@ -45,7 +47,7 @@ def test_nonphysical_pdgids():
     )  # the "anti-J/psi" with opposite PDGID of a J/psi does not exist
 
 
-def test_info():
+def test_info() -> None:
     __info = """A              None
 J              1.0
 L              None
@@ -89,7 +91,7 @@ three_charge   0
     assert PDGID(22).info() == __info
 
 
-def test_decorated_class_methods(PDGIDs):
+def test_decorated_class_methods() -> None:
     """
     Check that all particle.pdgid functions decorated in the PDGID class
     work as expected for all kinds of PDGIDs.

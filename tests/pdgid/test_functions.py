@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+from pdgids import PDGIDsEnum as PDGIDs
+
 from particle.pdgid import (
     A,
     J,
@@ -48,7 +50,7 @@ from particle.pdgid import (
 )
 
 
-def test_charge(PDGIDs):
+def test_charge() -> None:
     assert charge(PDGIDs.Photon) == 0
     assert charge(PDGIDs.Gluon) == 0
     assert charge(PDGIDs.Electron) == -1
@@ -72,7 +74,7 @@ def test_charge(PDGIDs):
     assert charge(PDGIDs.Invalid2) is None
 
 
-def test_three_charge(PDGIDs):
+def test_three_charge() -> None:
     assert three_charge(PDGIDs.Photon) == 0
     assert three_charge(PDGIDs.Electron) == -3
     assert three_charge(PDGIDs.jpsi) == 0
@@ -90,7 +92,7 @@ def test_three_charge(PDGIDs):
     assert three_charge(5100061) == 6  # special particle, see three_charge
 
 
-def test_is_valid(PDGIDs):
+def test_is_valid() -> None:
     _invalid = (
         PDGIDs.Invalid1,
         PDGIDs.Invalid2,
@@ -102,7 +104,7 @@ def test_is_valid(PDGIDs):
         assert not is_valid(i)
 
 
-def test_is_quark(PDGIDs):
+def test_is_quark() -> None:
     _quarks = (
         PDGIDs.DQuark,
         PDGIDs.UQuark,
@@ -120,7 +122,7 @@ def test_is_quark(PDGIDs):
         assert not is_quark(pid)
 
 
-def test_is_sm_quark(PDGIDs):
+def test_is_sm_quark() -> None:
     _sm_quarks = (
         PDGIDs.DQuark,
         PDGIDs.UQuark,
@@ -136,7 +138,7 @@ def test_is_sm_quark(PDGIDs):
         assert not is_sm_quark(pid)
 
 
-def test_is_lepton(PDGIDs):
+def test_is_lepton() -> None:
     _leptons = (
         PDGIDs.Electron,
         PDGIDs.Positron,
@@ -154,7 +156,7 @@ def test_is_lepton(PDGIDs):
         assert not is_lepton(pid)
 
 
-def test_is_sm_lepton(PDGIDs):
+def test_is_sm_lepton() -> None:
     _sm_leptons = (
         PDGIDs.Electron,
         PDGIDs.Positron,
@@ -171,7 +173,7 @@ def test_is_sm_lepton(PDGIDs):
         assert not is_sm_lepton(pid)
 
 
-def _get_mesons(PDGIDs):
+def _get_mesons() -> tuple[PDGIDs, ...]:
     """Trivial helper to collect and return all mesons."""
     return (
         PDGIDs.jpsi,
@@ -226,25 +228,25 @@ def _get_mesons(PDGIDs):
     )
 
 
-def _get_non_mesons(PDGIDs):
+def _get_non_mesons() -> list[PDGIDs]:
     """Trivial helper to collect and return all non-mesons."""
-    return [pid for pid in PDGIDs if pid not in _get_mesons(PDGIDs)]
+    return [pid for pid in PDGIDs if pid not in _get_mesons()]
 
 
-def test_is_meson(PDGIDs):
-    for pid in _get_mesons(PDGIDs):
+def test_is_meson() -> None:
+    for pid in _get_mesons():
         assert is_meson(pid)
-    for pid in _get_non_mesons(PDGIDs):
+    for pid in _get_non_mesons():
         assert not is_meson(pid)
 
 
-def test_is_meson_B_mass_eigenstates():
+def test_is_meson_B_mass_eigenstates() -> None:
     # Test special IDs of B(L)0, B(sL)0, B(H)0, B(sH)0
     for pdgid in [150, 350, 510, 530]:
         assert is_meson(pdgid)
 
 
-def test_is_baryon(PDGIDs):
+def test_is_baryon() -> None:
     _baryons = (
         PDGIDs.Proton,
         PDGIDs.AntiNeutron,
@@ -273,18 +275,18 @@ def test_is_baryon(PDGIDs):
         assert not is_baryon(pid)
 
 
-def test_is_baryon_old_codes_diffractive():
+def test_is_baryon_old_codes_diffractive() -> None:
     # Test old codes for diffractive p and n (MC usage)
     assert is_baryon(2110)
     assert is_baryon(2210)
 
 
-def test_is_hadron(PDGIDs):
+def test_is_hadron() -> None:
     for pid in PDGIDs:
         assert is_hadron(pid) == (is_meson(pid) or is_baryon(pid))
 
 
-def test_is_pentaquark(PDGIDs):
+def test_is_pentaquark() -> None:
     _pentaquarks = (PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
     _non_pentaquarks = [pid for pid in PDGIDs if pid not in _pentaquarks]
     assert is_pentaquark(PDGIDs.UCbarCUDPentaquark)
@@ -293,14 +295,14 @@ def test_is_pentaquark(PDGIDs):
         assert not is_pentaquark(pid)
 
 
-def test_pentaquarks_are_baryons(PDGIDs):
+def test_pentaquarks_are_baryons() -> None:
     """Obviously all pentaquarks are baryons!"""
     _pentaquarks = (PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
     for pid in _pentaquarks:
         assert is_baryon(pid)
 
 
-def test_is_gauge_boson_or_higgs(PDGIDs):
+def test_is_gauge_boson_or_higgs() -> None:
     _gb_and_higgs = (
         PDGIDs.Gluon,
         PDGIDs.Photon,
@@ -317,7 +319,7 @@ def test_is_gauge_boson_or_higgs(PDGIDs):
         assert not is_gauge_boson_or_higgs(pid)
 
 
-def test_is_sm_gauge_boson_or_higgs(PDGIDs):
+def test_is_sm_gauge_boson_or_higgs() -> None:
     _sm_gb_and_higgs = (
         PDGIDs.Gluon,
         PDGIDs.Photon,
@@ -332,7 +334,7 @@ def test_is_sm_gauge_boson_or_higgs(PDGIDs):
         assert not is_sm_gauge_boson_or_higgs(pid)
 
 
-def test_is_generator_specific(PDGIDs):
+def test_is_generator_specific() -> None:
     _generator_specific = (
         PDGIDs.AntiCHadron,
         PDGIDs.GenSpecific910,
@@ -350,7 +352,7 @@ def test_is_generator_specific(PDGIDs):
         assert not is_generator_specific(pid)
 
 
-def test_is_special_particle(PDGIDs):
+def test_is_special_particle() -> None:
     _special_particle = (
         PDGIDs.Graviton,
         PDGIDs.Reggeon,
@@ -372,7 +374,7 @@ def test_is_special_particle(PDGIDs):
         assert not is_special_particle(pid)
 
 
-def test_is_nucleus(PDGIDs):
+def test_is_nucleus() -> None:
     _nuclei = (
         PDGIDs.Proton,
         PDGIDs.AntiNeutron,
@@ -389,7 +391,7 @@ def test_is_nucleus(PDGIDs):
     assert not is_nucleus(1100000010)
 
 
-def test_is_diquark(PDGIDs):
+def test_is_diquark() -> None:
     _diquarks = (PDGIDs.DD1, PDGIDs.SD0)
     _non_diquarks = [pid for pid in PDGIDs if pid not in _diquarks]
     for pid in _diquarks:
@@ -398,7 +400,7 @@ def test_is_diquark(PDGIDs):
         assert not is_diquark(pid)
 
 
-def test_is_Rhadron(PDGIDs):
+def test_is_Rhadron() -> None:
     _Rhadrons = (PDGIDs.RPlus_TTildeDbar, PDGIDs.R0_GTildeG, PDGIDs.RPlusPlus_GTildeUUU)
     _non_Rhadrons = [pid for pid in PDGIDs if pid not in _Rhadrons]
     for pid in _Rhadrons:
@@ -407,7 +409,7 @@ def test_is_Rhadron(PDGIDs):
         assert not is_Rhadron(pid)
 
 
-def test_is_Qball(PDGIDs):
+def test_is_Qball() -> None:
     _Qballs = (PDGIDs.QBall1, PDGIDs.QBall2)
     _non_Qballs = [pid for pid in PDGIDs if pid not in _Qballs]
     for pid in _Qballs:
@@ -416,7 +418,7 @@ def test_is_Qball(PDGIDs):
         assert not is_Qball(pid)
 
 
-def test_is_dyon(PDGIDs):
+def test_is_dyon() -> None:
     _dyons = (PDGIDs.DyonSameMagElecChargeSign, PDGIDs.DyonOppositeMagElecChargeSign)
     _non_dyons = [pid for pid in PDGIDs if pid not in _dyons]
     for pid in _dyons:
@@ -425,7 +427,7 @@ def test_is_dyon(PDGIDs):
         assert not is_dyon(pid)
 
 
-def test_is_SUSY(PDGIDs):
+def test_is_SUSY() -> None:
     _susy = (
         PDGIDs.Gluino,
         PDGIDs.Gravitino,
@@ -442,7 +444,7 @@ def test_is_SUSY(PDGIDs):
         assert not is_SUSY(pid)
 
 
-def test_is_technicolor(PDGIDs):
+def test_is_technicolor() -> None:
     _technicolor = (PDGIDs.Pi0TC, PDGIDs.PiMinusTC)
     _non_technicolor = [pid for pid in PDGIDs if pid not in _technicolor]
     for pid in _technicolor:
@@ -451,7 +453,7 @@ def test_is_technicolor(PDGIDs):
         assert not is_technicolor(pid)
 
 
-def test_is_excited_quark_or_lepton(PDGIDs):
+def test_is_excited_quark_or_lepton() -> None:
     _excited_quark_or_lepton = (PDGIDs.UQuarkStar, PDGIDs.AntiElectronStar)
     _non_excited_quark_or_lepton = [
         pid for pid in PDGIDs if pid not in _excited_quark_or_lepton
@@ -462,7 +464,7 @@ def test_is_excited_quark_or_lepton(PDGIDs):
         assert not is_excited_quark_or_lepton(pid)
 
 
-def test_has_down(PDGIDs):
+def test_has_down() -> None:
     assert not has_down(PDGIDs.Photon)
     assert not has_down(PDGIDs.Gluon)
     assert not has_down(PDGIDs.Electron)
@@ -488,7 +490,7 @@ def test_has_down(PDGIDs):
     assert not has_down(PDGIDs.Invalid2)
 
 
-def test_has_up(PDGIDs):
+def test_has_up() -> None:
     assert not has_up(PDGIDs.Photon)
     assert not has_up(PDGIDs.Gluon)
     assert not has_up(PDGIDs.Electron)
@@ -514,7 +516,7 @@ def test_has_up(PDGIDs):
     assert not has_up(PDGIDs.Invalid2)
 
 
-def test_has_strange(PDGIDs):
+def test_has_strange() -> None:
     assert not has_strange(PDGIDs.Photon)
     assert not has_strange(PDGIDs.Gluon)
     assert not has_strange(PDGIDs.Electron)
@@ -540,7 +542,7 @@ def test_has_strange(PDGIDs):
     assert not has_strange(PDGIDs.Invalid2)
 
 
-def test_has_charm(PDGIDs):
+def test_has_charm() -> None:
     _with_charm_content = (
         PDGIDs.jpsi,
         PDGIDs.psi_2S,
@@ -560,7 +562,7 @@ def test_has_charm(PDGIDs):
         assert not has_charm(pid)
 
 
-def test_has_bottom(PDGIDs):
+def test_has_bottom() -> None:
     _with_bottom_content = (
         PDGIDs.Upsilon_1S,
         PDGIDs.Upsilon_4S,
@@ -579,7 +581,7 @@ def test_has_bottom(PDGIDs):
         assert not has_bottom(pid)
 
 
-def test_has_top(PDGIDs):
+def test_has_top() -> None:
     assert has_top(PDGIDs.T0)
     assert has_top(PDGIDs.LtPlus)
     _no_top = [
@@ -589,7 +591,7 @@ def test_has_top(PDGIDs):
         assert not has_top(pid)
 
 
-def test_has_fundamental_anti(PDGIDs):
+def test_has_fundamental_anti() -> None:
     # Particles that are "fundamental" and not their own antiparticle
     _yep = (
         PDGIDs.WMinus,
@@ -624,69 +626,71 @@ def test_has_fundamental_anti(PDGIDs):
         assert not has_fundamental_anti(pid)
 
 
-def _mesons_JSL_states_list(PDGIDs, jsl):
+_STATES = {
+    "000": (
+        PDGIDs.Pi0,
+        PDGIDs.PiPlus,
+        PDGIDs.eta,
+        PDGIDs.eta_prime,
+        PDGIDs.KL,
+        PDGIDs.KS,
+        PDGIDs.KMinus,
+        PDGIDs.D0,
+        PDGIDs.DPlus,
+        PDGIDs.DsPlus,
+        PDGIDs.B0,
+        PDGIDs.BPlus,
+        PDGIDs.Bs,
+        PDGIDs.BcPlus,
+        PDGIDs.T0,
+    ),
+    "011": (PDGIDs.a_0_1450_plus,),
+    "101": (PDGIDs.K1_1270_0, PDGIDs.h_b_3P),
+    "110": (PDGIDs.rho_770_minus, PDGIDs.jpsi, PDGIDs.Upsilon_4S),
+    "111": (PDGIDs.K1_1400_0,),
+    "112": (PDGIDs.rho_1700_0, PDGIDs.psi_3770),
+    "202": (PDGIDs.K2_1770_minus,),
+    "211": (PDGIDs.a2_1320_minus,),
+    "212": (PDGIDs.K2_1820_0_bar,),
+    "213": (PDGIDs.f_2_30225,),
+    "303": (PDGIDs.K3_10317_0,),
+    "312": (PDGIDs.omega_3_1670, PDGIDs.Upsilon_3_2D),
+    "313": (PDGIDs.K3_20317_plus,),
+    "314": (PDGIDs.K3_30317_0,),
+    "404": (PDGIDs.rho_10219_plus,),
+    "413": (PDGIDs.f_4_2050,),
+    "414": (PDGIDs.K4_20219_minus,),
+    "415": (PDGIDs.K4_30329_plus,),
+}
+
+
+def _mesons_JSL_states_list(jsl: str) -> tuple[int, ...]:
     """
     Trivial helper to organise mesons to be tested
     according to their J, S and L quantum numbers.
     """
-    _states = {
-        "000": (
-            PDGIDs.Pi0,
-            PDGIDs.PiPlus,
-            PDGIDs.eta,
-            PDGIDs.eta_prime,
-            PDGIDs.KL,
-            PDGIDs.KS,
-            PDGIDs.KMinus,
-            PDGIDs.D0,
-            PDGIDs.DPlus,
-            PDGIDs.DsPlus,
-            PDGIDs.B0,
-            PDGIDs.BPlus,
-            PDGIDs.Bs,
-            PDGIDs.BcPlus,
-            PDGIDs.T0,
-        ),
-        "011": (PDGIDs.a_0_1450_plus,),
-        "101": (PDGIDs.K1_1270_0, PDGIDs.h_b_3P),
-        "110": (PDGIDs.rho_770_minus, PDGIDs.jpsi, PDGIDs.Upsilon_4S),
-        "111": (PDGIDs.K1_1400_0,),
-        "112": (PDGIDs.rho_1700_0, PDGIDs.psi_3770),
-        "202": (PDGIDs.K2_1770_minus,),
-        "211": (PDGIDs.a2_1320_minus,),
-        "212": (PDGIDs.K2_1820_0_bar,),
-        "213": (PDGIDs.f_2_30225,),
-        "303": (PDGIDs.K3_10317_0,),
-        "312": (PDGIDs.omega_3_1670, PDGIDs.Upsilon_3_2D),
-        "313": (PDGIDs.K3_20317_plus,),
-        "314": (PDGIDs.K3_30317_0,),
-        "404": (PDGIDs.rho_10219_plus,),
-        "413": (PDGIDs.f_4_2050,),
-        "414": (PDGIDs.K4_20219_minus,),
-        "415": (PDGIDs.K4_30329_plus,),
-    }
-    return _states[jsl]
+    return _STATES[jsl]
 
 
-def test_JSL_mesons(PDGIDs):
-    _JSL_eq_000 = _mesons_JSL_states_list(PDGIDs, "000")
-    _JSL_eq_011 = _mesons_JSL_states_list(PDGIDs, "011")
-    _JSL_eq_101 = _mesons_JSL_states_list(PDGIDs, "101")
-    _JSL_eq_110 = _mesons_JSL_states_list(PDGIDs, "110")
-    _JSL_eq_111 = _mesons_JSL_states_list(PDGIDs, "111")
-    _JSL_eq_112 = _mesons_JSL_states_list(PDGIDs, "112")
-    _JSL_eq_202 = _mesons_JSL_states_list(PDGIDs, "202")
-    _JSL_eq_211 = _mesons_JSL_states_list(PDGIDs, "211")
-    _JSL_eq_212 = _mesons_JSL_states_list(PDGIDs, "212")
-    _JSL_eq_213 = _mesons_JSL_states_list(PDGIDs, "213")
-    _JSL_eq_303 = _mesons_JSL_states_list(PDGIDs, "303")
-    _JSL_eq_312 = _mesons_JSL_states_list(PDGIDs, "312")
-    _JSL_eq_313 = _mesons_JSL_states_list(PDGIDs, "313")
-    _JSL_eq_314 = _mesons_JSL_states_list(PDGIDs, "314")
-    _JSL_eq_404 = _mesons_JSL_states_list(PDGIDs, "404")
-    _JSL_eq_413 = _mesons_JSL_states_list(PDGIDs, "413")
-    _JSL_eq_414 = _mesons_JSL_states_list(PDGIDs, "414")
-    _JSL_eq_415 = _mesons_JSL_states_list(PDGIDs, "415")
+def test_JSL_mesons() -> None:
+    _JSL_eq_000 = _mesons_JSL_states_list("000")
+    _JSL_eq_011 = _mesons_JSL_states_list("011")
+    _JSL_eq_101 = _mesons_JSL_states_list("101")
+    _JSL_eq_110 = _mesons_JSL_states_list("110")
+    _JSL_eq_111 = _mesons_JSL_states_list("111")
+    _JSL_eq_112 = _mesons_JSL_states_list("112")
+    _JSL_eq_202 = _mesons_JSL_states_list("202")
+    _JSL_eq_211 = _mesons_JSL_states_list("211")
+    _JSL_eq_212 = _mesons_JSL_states_list("212")
+    _JSL_eq_213 = _mesons_JSL_states_list("213")
+    _JSL_eq_303 = _mesons_JSL_states_list("303")
+    _JSL_eq_312 = _mesons_JSL_states_list("312")
+    _JSL_eq_313 = _mesons_JSL_states_list("313")
+    _JSL_eq_314 = _mesons_JSL_states_list("314")
+    _JSL_eq_404 = _mesons_JSL_states_list("404")
+    _JSL_eq_413 = _mesons_JSL_states_list("413")
+    _JSL_eq_414 = _mesons_JSL_states_list("414")
+    _JSL_eq_415 = _mesons_JSL_states_list("415")
 
     for pid in _JSL_eq_000:
         assert J(pid) == 0
@@ -762,13 +766,13 @@ def test_JSL_mesons(PDGIDs):
         assert L(pid) == 5
 
 
-def test_JSL_badly_known_mesons(PDGIDs):
+def test_JSL_badly_known_mesons() -> None:
     assert j_spin(PDGIDs.f_4_2300) == 9
     assert s_spin(PDGIDs.f_4_2300) is None
     assert l_spin(PDGIDs.f_4_2300) is None
 
 
-def test_J_non_mesons(PDGIDs):
+def test_J_non_mesons() -> None:
     # TODO:  test special particles, supersymmetric particles, R-hadrons, di-quarks, nuclei and pentaquarks
     _J_eq_0 = (PDGIDs.STildeL, PDGIDs.CTildeR)
 
@@ -832,17 +836,17 @@ def test_J_non_mesons(PDGIDs):
     assert j_spin(9) == 3
 
 
-def test_S_non_mesons(PDGIDs):
-    for pid in _get_non_mesons(PDGIDs):
+def test_S_non_mesons() -> None:
+    for pid in _get_non_mesons():
         assert S(pid) is None
 
 
-def test_L_non_mesons(PDGIDs):
-    for pid in _get_non_mesons(PDGIDs):
+def test_L_non_mesons() -> None:
+    for pid in _get_non_mesons():
         assert L(pid) is None
 
 
-def test_A(PDGIDs):
+def test_A() -> None:
     _nuclei = {
         PDGIDs.Proton: 1,
         PDGIDs.AntiNeutron: 1,
@@ -856,7 +860,7 @@ def test_A(PDGIDs):
         assert A(pid) is None
 
 
-def test_Z(PDGIDs):
+def test_Z() -> None:
     _nuclei = {
         PDGIDs.Proton: 1,
         PDGIDs.AntiNeutron: 0,

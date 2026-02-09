@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import particle
+import particle.converters
+import particle.lhcb
 
 
-def test_top_level_api():
+def test_top_level_api() -> None:
     assert dir(particle) == [
         "Charge",
         "Corsika7ID",
@@ -24,7 +26,7 @@ def test_top_level_api():
     ]
 
 
-def test_api_converters():
+def test_api_converters() -> None:
     assert dir(particle.converters) == [
         "Corsika72PDGIDBiMap",
         "EvtGen2PDGNameMap",
@@ -35,19 +37,19 @@ def test_api_converters():
     ]
 
 
-def test_api_corsika():
+def test_api_corsika() -> None:
     assert dir(particle.corsika) == ["Corsika7ID"]
 
 
-def test_api_data():
+def test_api_data() -> None:
     assert dir(particle.data) == ["basepath"]
 
 
-def test_api_geant():
+def test_api_geant() -> None:
     assert dir(particle.geant) == ["Geant3ID"]
 
 
-def test_api_lhcb():
+def test_api_lhcb() -> None:
     assert dir(particle.lhcb) == [
         "LHCbName2PDGIDBiMap",
         "from_lhcb_name",
@@ -55,11 +57,11 @@ def test_api_lhcb():
     ]
 
 
-def test_api_lhcb_data():
+def test_api_lhcb_data() -> None:
     assert dir(particle.lhcb.data) == ["basepath"]
 
 
-def test_api_particle():
+def test_api_particle() -> None:
     assert dir(particle.particle) == [
         "Charge",
         "Inv",
@@ -77,7 +79,7 @@ def test_api_particle():
     ]
 
 
-def test_api_pdgid():
+def test_api_pdgid() -> None:
     assert dir(particle.pdgid) == sorted(
         [
             "PDGID",
@@ -125,5 +127,5 @@ def test_api_pdgid():
     )
 
 
-def test_api_pythia():
+def test_api_pythia() -> None:
     assert dir(particle.pythia) == ["PythiaID"]
