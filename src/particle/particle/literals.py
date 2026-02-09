@@ -38,6 +38,8 @@ def __dir__() -> list[str]:  # pragma: no cover
     return list(common_particles)
 
 
+# Automatically generated using `nox -s generate_aliases`, do not edit here
+#
 # [[[cog
 # import particle.shared_literals
 # for item in particle.shared_literals.common_particles:
