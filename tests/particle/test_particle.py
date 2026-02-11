@@ -115,10 +115,12 @@ def test_keyword_lambda_style_search() -> None:
 def test_complex_search() -> None:
     # Find all strange mesons with c*tau > 1 meter
     particles = Particle.findall(
-        lambda p: p.pdgid.is_meson
-        and p.pdgid.has_strange
-        and p.width > 0  # type: ignore[operator]
-        and p.ctau > 1000.0,  # type: ignore[operator]
+        lambda p: (
+            p.pdgid.is_meson
+            and p.pdgid.has_strange
+            and p.width > 0  # type: ignore[operator]
+            and p.ctau > 1000.0  # type: ignore[operator]
+        ),
         particle=True,
     )
     assert len(particles) == 2  # K+ and KL0
@@ -127,10 +129,12 @@ def test_complex_search() -> None:
 
     # Find all strange anti-mesons with c*tau > 1 meter
     particles = Particle.findall(
-        lambda p: p.pdgid.is_meson
-        and p.pdgid.has_strange
-        and p.width > 0  # type: ignore[operator]
-        and p.ctau > 1000.0,  # type: ignore[operator]
+        lambda p: (
+            p.pdgid.is_meson
+            and p.pdgid.has_strange
+            and p.width > 0  # type: ignore[operator]
+            and p.ctau > 1000.0  # type: ignore[operator]
+        ),
         particle=False,
     )
     assert len(particles) == 1  # only the K-
@@ -628,18 +632,20 @@ def test_default_particle() -> None:
 
 def test_to_list() -> None:
     tbl = Particle.to_list(
-        filter_fn=lambda p: p.pdgid.is_meson
-        and p.pdgid.has_strange
-        and p.ctau > 1 * meter,  # type: ignore[operator]
+        filter_fn=lambda p: (
+            p.pdgid.is_meson and p.pdgid.has_strange and p.ctau > 1 * meter  # type: ignore[operator]
+        ),
         exclusive_fields=["pdgid", "name"],
     )
     assert tbl == [["pdgid", "name"], [130, "K(L)0"], [321, "K+"], [-321, "K-"]]
 
     tbl = Particle.to_list(
-        filter_fn=lambda p: p.pdgid > 0
-        and p.pdgid.is_meson
-        and p.pdgid.has_strange
-        and p.pdgid.has_charm,
+        filter_fn=lambda p: (
+            p.pdgid > 0
+            and p.pdgid.is_meson
+            and p.pdgid.has_strange
+            and p.pdgid.has_charm
+        ),
         exclusive_fields=["name"],
         n_rows=2,
     )
