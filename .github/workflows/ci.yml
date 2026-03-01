@@ -98,14 +98,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: wntrblm/nox@2025.11.12
+      - uses: wntrblm/nox@2026.02.09
         with:
           python-versions: "3.10"
 
       - name: Make ZipApp
         run: nox -s zipapp
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: zipapp
           path: particle.pyz
