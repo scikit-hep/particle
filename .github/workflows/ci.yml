@@ -59,7 +59,7 @@ jobs:
         run: uvx nox -s tests --force-python=${{ matrix.python-version }}
 
       - name: Test coverage with Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
