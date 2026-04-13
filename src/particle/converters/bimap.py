@@ -92,7 +92,7 @@ class BiMap(Generic[A, B]):
         elif isinstance(filename, HasOpen):
             file_object = filename.open()
         else:
-            file_object = open(filename, encoding="utf_8")  # type: ignore[arg-type]  # noqa: SIM115
+            file_object = open(filename, encoding="utf_8")  # noqa: SIM115
 
         with file_object as _f:
             self._to_map = {
@@ -182,7 +182,7 @@ def DirectionalMaps(
     elif isinstance(filename, HasRead):
         file_object = filename
     else:
-        file_object = open(filename, encoding="utf_8")  # type: ignore[arg-type]  # noqa: SIM115
+        file_object = open(filename, encoding="utf_8")  # noqa: SIM115
 
     with file_object as _f:
         skipinitialspace = True
