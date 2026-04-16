@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 0.26.2
+
+April 17th, 2026
+
+- Miscellaneous:
+  - Statically type the particle and PDGID literals using `cog`.
+  - Chore to support Pandas 3.
+- CI and tests:
+  - Test suite statically typed.
+  - Updates and improvements to pre-commit hooks and CI YAML files.
+
 ## Version 0.26.1
 
 January 9th, 2026
