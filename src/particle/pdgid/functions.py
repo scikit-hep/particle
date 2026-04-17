@@ -657,39 +657,40 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
     q3 = _digit(pdgid, Location.Nq3)
     sid = _fundamental_id(pdgid)
 
-    if _extra_bits(pdgid) > 0:
-        if is_nucleus(pdgid):  # ion
-            Z_pdgid = Z(pdgid)
-            return None if Z_pdgid is None else 3 * Z_pdgid
-        if is_Qball(pdgid):  # Qball
-            charge = 3 * ((aid // 10) % 10000)
-        else:  # this should never be reached in the present numbering scheme
-            return None  # since extra bits exist only for Q-balls and nuclei
-    elif is_dyon(pdgid):  # Dyon
-        charge = 3 * ((aid // 10) % 1000)
-        # this is half right
-        # the charge sign will be changed below if pid < 0
-        if _digit(pdgid, Location.Nl) == 2:
-            charge = -charge
-    elif 0 < sid <= 100:  # use table
-        charge = ch100[sid - 1]
-        if aid in {1000017, 1000018, 1000034, 1000052, 1000053, 1000054}:
-            charge = 0
-        if aid in {5100061, 5100062}:
-            charge = 6
-    elif _digit(pdgid, Location.Nj) == 0:  # KL, KS, or undefined
-        return 0
-    elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9):  # mesons
-        if q2 in {3, 5}:
-            charge = ch100[q3 - 1] - ch100[q2 - 1]
-        else:
-            charge = ch100[q2 - 1] - ch100[q3 - 1]
-    elif q3 == 0:  # diquarks
-        charge = ch100[q2 - 1] + ch100[q1 - 1]
-    elif is_baryon(pdgid) or (
-        is_Rhadron(pdgid) and _digit(pdgid, Location.Nl) == 9
-    ):  # baryons
-        charge = ch100[q3 - 1] + ch100[q2 - 1] + ch100[q1 - 1]
+    match _extra_bits(pdgid):
+        case n if n > 0:
+            if is_nucleus(pdgid):  # ion
+                Z_pdgid = Z(pdgid)
+                return None if Z_pdgid is None else 3 * Z_pdgid
+            if is_Qball(pdgid):  # Qball
+                charge = 3 * ((aid // 10) % 10000)
+            else:  # this should never be reached in the present numbering scheme
+                return None  # since extra bits exist only for Q-balls and nuclei
+        case _ if is_dyon(pdgid):  # Dyon
+            charge = 3 * ((aid // 10) % 1000)
+            # this is half right
+            # the charge sign will be changed below if pid < 0
+            if _digit(pdgid, Location.Nl) == 2:
+                charge = -charge
+        case _ if 0 < sid <= 100:  # use table
+            charge = ch100[sid - 1]
+            if aid in {1000017, 1000018, 1000034, 1000052, 1000053, 1000054}:
+                charge = 0
+            if aid in {5100061, 5100062}:
+                charge = 6
+        case _ if _digit(pdgid, Location.Nj) == 0:  # KL, KS, or undefined
+            return 0
+        case _ if q1 == 0 or (is_Rhadron(pdgid) and q1 == 9):  # mesons
+            if q2 in {3, 5}:
+                charge = ch100[q3 - 1] - ch100[q2 - 1]
+            else:
+                charge = ch100[q2 - 1] - ch100[q3 - 1]
+        case _ if q3 == 0:  # diquarks
+            charge = ch100[q2 - 1] + ch100[q1 - 1]
+        case _ if is_baryon(pdgid) or (
+            is_Rhadron(pdgid) and _digit(pdgid, Location.Nl) == 9
+        ):  # baryons
+            charge = ch100[q3 - 1] + ch100[q2 - 1] + ch100[q1 - 1]
 
     if charge is not None and int(pdgid) < 0:
         charge = -charge
@@ -702,29 +703,27 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
         return None
     if _fundamental_id(pdgid) > 0:
         fund = _fundamental_id(pdgid)
-        if is_SUSY(pdgid):  # susy particles
-            if 0 < fund < 17:
+        match (is_SUSY(pdgid), fund):
+            case (True, n) if 0 < n < 17:
                 return 1
-            if fund == 21:
+            case (True, 21):
                 return 2
-            if 22 <= fund < 38:
+            case (True, n) if 22 <= n < 38:
                 return 2
-            if fund == 39:
+            case (True, 39):
                 return 4
-        else:  # other particles
-            if 0 < fund < 7:  # 4th generation quarks not dealt with !
+            case (False, n) if 0 < n < 7:
                 return 2
-            if (
-                fund == 9
-            ):  # Alternative ID for the gluon in codes for glueballs to allow a notation in close analogy with that of hadrons
+            case (False, 9):  # Alternative ID for the gluon in glueballs
                 return 3
-            if 10 < fund < 17:  # 4th generation leptons not dealt with !
+            case (False, n) if 10 < n < 17:
                 return 2
-            if 20 < fund < 25:
+            case (False, n) if 20 < n < 25:
                 return 3
-            if fund == 25:
+            case (False, 25):
                 return 1
-            return None
+            case (False, _):
+                return None
     if abs(int(pdgid)) in {1000000010, 1000010010}:  # neutron, proton
         return 2
     if _extra_bits(pdgid) > 0:
@@ -805,44 +804,22 @@ def L(pdgid: PDGID_TYPE) -> int | None:
     nl = (abspid(pdgid) // 10000) % 10
     js = abspid(pdgid) % 10
 
-    if nl == 0:
-        if js in {1, 3}:
+    # L values from (nl, js) combinations using pattern matching
+    match (nl, js):
+        case (0, 1 | 3):
             return 0
-        if js == 5:
+        case (0, 5) | (1, 1 | 3) | (2, 3):
             return 1
-        if js == 7:
+        case (0, 7) | (1, 5) | (2, 5) | (3, 3):
             return 2
-        if js == 9:
+        case (0, 9) | (1, 7) | (2, 7) | (3, 5):
             return 3
-    elif nl == 1:
-        if js in {1, 3}:
-            return 1
-        if js == 5:
-            return 2
-        if js == 7:
-            return 3
-        if js == 9:
+        case (1, 9) | (2, 9) | (3, 7):
             return 4
-    elif nl == 2:
-        if js == 3:
-            return 1
-        if js == 5:
-            return 2
-        if js == 7:
-            return 3
-        if js == 9:
-            return 4
-    elif nl == 3:
-        if js == 3:
-            return 2
-        if js == 5:
-            return 3
-        if js == 7:
-            return 4
-        if js == 9:
+        case (3, 9):
             return 5
-
-    return 0
+        case _:
+            return 0
 
 
 def l_spin(pdgid: PDGID_TYPE) -> int | None:
