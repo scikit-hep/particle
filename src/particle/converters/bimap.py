@@ -8,14 +8,12 @@ from __future__ import annotations
 
 import contextlib
 import csv
-from collections.abc import Iterator, Mapping
+from collections.abc import Callable, Iterator, Mapping
 from typing import (
     IO,
     Any,
-    Callable,
     Generic,
     TypeVar,
-    Union,
     overload,
 )
 
@@ -25,8 +23,8 @@ from ..typing import HasOpen, HasRead, StringOrIO
 
 A = TypeVar("A")
 B = TypeVar("B")
-A_conv = Callable[[str], Union[A, int]]
-B_conv = Callable[[str], Union[B, int]]
+A_conv = Callable[[str], A | int]
+B_conv = Callable[[str], B | int]
 
 
 class BiMap(Generic[A, B]):
