@@ -9,10 +9,10 @@ from __future__ import annotations
 # Python standard library
 import contextlib
 import csv
-from collections.abc import Iterable, Iterator, Sequence
+from collections.abc import Callable, Iterable, Iterator, Sequence
 from copy import copy
 from functools import total_ordering
-from typing import Any, Callable, SupportsInt, TypeVar
+from typing import Any, SupportsInt, TypeVar
 
 # External dependencies
 import attr
@@ -533,9 +533,9 @@ class Particle:
         """
         query_as_list = cls.to_list(*args, **kwargs)
         headers = query_as_list[0]
-        rows = zip(*query_as_list[1:])
+        rows = zip(*query_as_list[1:], strict=False)
 
-        return {str(h): r for h, r in zip(headers, rows)}
+        return {str(h): r for h, r in zip(headers, rows, strict=False)}
 
     @classmethod
     def load_table(

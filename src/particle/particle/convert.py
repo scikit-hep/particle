@@ -54,11 +54,11 @@ from __future__ import annotations
 
 import os
 import warnings
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from datetime import date
 from io import StringIO
 from pathlib import Path
-from typing import Any, Callable, TextIO, TypeVar
+from typing import Any, TextIO, TypeVar
 
 import numpy as np
 import pandas as pd
