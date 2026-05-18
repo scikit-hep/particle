@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import contextlib
+import re
 from fractions import Fraction
 
 import pytest
@@ -1071,3 +1072,30 @@ def test_gell_mann_nishijima(name: str, expected_i3_over_two: int | Fraction) ->
         pytest.skip(f"Particle {p.name} has no charge")
     i3 = Q - Y / 2
     assert i3 == expected_i3_over_two
+
+
+def test_gell_mann_nishijima_database_consistency() -> None:
+    violations: list[tuple[Particle, Fraction, Fraction, Fraction, Fraction]] = []
+    n_checked = 0
+    for p in Particle.all():
+        if re.match(r"\([udscb]{2}\)~?", p.name):
+            continue
+        if p.charge is None or p.I is None:
+            continue
+        n_checked += 1
+        Q = Fraction(p.charge)
+        Y = Fraction(p.hypercharge)
+        computed_i3 = Q - Y / 2
+        if abs(computed_i3) > p.I + 1e-6:
+            I = Fraction(p.I)
+            violations.append((p, Q, Y, I, computed_i3))
+
+    if violations:
+        violation_lines = [
+            f"  {p.name!r} ({int(p.pdgid)}): Q={Q}, Y={Y}, I={I}, computed Iz={i3:+} (exceeds |I|={I})"
+            for p, Q, Y, I, i3 in violations
+        ]
+        pytest.fail(
+            f"\nFound {len(violations)} violations in {n_checked} checked particles:\n"
+            + "\n".join(violation_lines)
+        )
