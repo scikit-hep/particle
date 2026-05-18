@@ -806,27 +806,31 @@ class Particle:
 
     @property
     def strangeness(self) -> int:
-        if not self.quarks or "(" in self.quarks:
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
             return 0
-        return self.quarks.count("S") - self.quarks.count("s")
+        return quark_content.count("S") - quark_content.count("s")
 
     @property
     def charmness(self) -> int:
-        if not self.quarks or "(" in self.quarks:
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
             return 0
-        return self.quarks.count("c") - self.quarks.count("C")
+        return quark_content.count("c") - quark_content.count("C")
 
     @property
     def bottomness(self) -> int:
-        if not self.quarks or "(" in self.quarks:
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
             return 0
-        return self.quarks.count("B") - self.quarks.count("b")
+        return quark_content.count("B") - quark_content.count("b")
 
     @property
     def topness(self) -> int:
-        if not self.quarks or "(" in self.quarks:
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
             return 0
-        return self.quarks.count("t") - self.quarks.count("T")
+        return quark_content.count("t") - quark_content.count("T")
 
     @property
     def hypercharge(self) -> Fraction | int:
@@ -1347,3 +1351,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return list(
             cls.finditer(filter_fn=filter_fn, particle=particle, **search_terms)
         )
+
+
+def _strip_quark_content(quarks: str) -> str:
+    return quarks.replace("Maybe", "")
