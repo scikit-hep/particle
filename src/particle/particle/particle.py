@@ -805,6 +805,40 @@ class Particle:
         return +1 if exponent % 2 == 0 else -1
 
     @property
+    def strangeness(self) -> int:
+        if not self.quarks or "(" in self.quarks:
+            return 0
+        return self.quarks.count("S") - self.quarks.count("s")
+
+    @property
+    def charmness(self) -> int:
+        if not self.quarks or "(" in self.quarks:
+            return 0
+        return self.quarks.count("c") - self.quarks.count("C")
+
+    @property
+    def bottomness(self) -> int:
+        if not self.quarks or "(" in self.quarks:
+            return 0
+        return self.quarks.count("B") - self.quarks.count("b")
+
+    @property
+    def topness(self) -> int:
+        if not self.quarks or "(" in self.quarks:
+            return 0
+        return self.quarks.count("t") - self.quarks.count("T")
+
+    @property
+    def hypercharge(self) -> Fraction | int:
+        return (
+            self.baryon_number
+            + self.strangeness
+            + self.charmness
+            + self.bottomness
+            + self.topness
+        )
+
+    @property
     def is_unflavoured_meson(self) -> bool:
         """
         Is the particle a light non-strange meson or a quarkonium?

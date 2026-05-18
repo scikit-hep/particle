@@ -916,3 +916,157 @@ def test_r_parity_all_sm_particles() -> None:
     for p in Particle.findall():
         if p.pdgid.J is not None and not p.pdgid.is_SUSY:
             assert p.r_parity == 1
+
+
+@pytest.mark.parametrize(
+    ("pid", "strangeness"),
+    [
+        (3, -1),
+        (-3, 1),
+        (2, 0),
+        (1, 0),
+        (4, 0),
+        (5, 0),
+        (321, 1),  # K+
+        (311, 1),  # K0
+        (-321, -1),  # K-
+        (130, 0),  # K(L)
+        (310, 0),  # K(S)
+        (3122, -1),  # Lambda
+        (-3122, 1),  # Lambda~
+        (2212, 0),  # proton
+        (2112, 0),  # neutron
+        (211, 0),  # pi+
+        (111, 0),  # pi0
+        (411, 0),  # D+
+        (421, 0),  # D0
+    ],
+)
+def test_strangeness(pid: int, strangeness: int) -> None:
+    assert Particle.from_pdgid(pid).strangeness == strangeness
+
+
+@pytest.mark.parametrize(
+    ("pid", "charmness"),
+    [
+        (4, 1),
+        (-4, -1),
+        (1, 0),
+        (2, 0),
+        (3, 0),
+        (5, 0),
+        (211, 0),  # pi+
+        (411, 1),  # D+
+        (421, 1),  # D0
+        (431, 1),  # D(s)+
+        (-411, -1),  # D-
+        (-421, -1),  # D0~
+        (321, 0),  # K+
+        (3122, 0),  # Lambda
+        (4122, 1),  # Lambda(c)+
+        (2212, 0),  # proton
+        (511, 0),  # B0
+    ],
+)
+def test_charm(pid: int, charmness: int) -> None:
+    assert Particle.from_pdgid(pid).charmness == charmness
+
+
+@pytest.mark.parametrize(
+    ("pid", "bottomness"),
+    [
+        (-5, 1),
+        (5, -1),
+        (1, 0),
+        (2, 0),
+        (3, 0),
+        (4, 0),
+        (511, 1),  # B0
+        (521, 1),  # B+
+        (531, 1),  # B(s)0
+        (-511, -1),  # B0~
+        (-521, -1),  # B-
+        (411, 0),  # D+
+        (321, 0),  # K+
+        (3122, 0),  # Lambda
+        (2212, 0),  # proton
+        (211, 0),  # pi+
+    ],
+)
+def test_bottomness(pid: int, bottomness: int) -> None:
+    assert Particle.from_pdgid(pid).bottomness == bottomness
+
+
+@pytest.mark.parametrize(
+    ("pid", "topness"),
+    [
+        (6, 1),
+        (-6, -1),
+        (1, 0),
+        (2, 0),
+        (3, 0),
+        (4, 0),
+        (5, 0),
+        (211, 0),  # pi+
+        (321, 0),  # K+
+        (411, 0),  # D+
+        (511, 0),  # B0
+        (2212, 0),  # proton
+    ],
+)
+def test_topness(pid: int, topness: int) -> None:
+    assert Particle.from_pdgid(pid).topness == topness
+
+
+@pytest.mark.parametrize(
+    ("pid", "hypercharge"),
+    [
+        # Quarks
+        (2, Fraction(1, 3)),
+        (3, Fraction(-2, 3)),
+        (4, Fraction(4, 3)),
+        # Mesons
+        (211, 0),  # pi+
+        (111, 0),  # pi0
+        (321, 1),  # K+
+        (311, 1),  # K0
+        (411, 1),  # D+
+        (421, 1),  # D0
+        (431, 2),  # D(s)+
+        (511, 1),  # B0
+        (521, 1),  # B+
+        (531, 0),  # B(s)0
+        # Baryons
+        (2212, 1),  # proton
+        (2112, 1),  # neutron
+        (3122, 0),  # Lambda
+    ],
+)
+def test_hypercharge(pid: int, hypercharge: int | Fraction) -> None:
+    assert Particle.from_pdgid(pid).hypercharge == hypercharge
+
+
+@pytest.mark.parametrize(
+    ("pid", "expected_i3_over_two"),
+    [
+        # Mesons
+        (211, 1),  # pi+
+        (111, 0),  # pi0
+        (-211, -1),  # pi-
+        (321, Fraction(1, 2)),  # K+
+        (311, Fraction(-1, 2)),  # K0
+        # Baryons
+        (2212, Fraction(1, 2)),  # proton
+        (2112, Fraction(-1, 2)),  # neutron
+        (3122, 0),  # Lambda
+        (3222, 1),  # Sigma+
+    ],
+)
+def test_gell_mann_nishijima(pid: int, expected_i3_over_two: int | Fraction) -> None:
+    p = Particle.from_pdgid(pid)
+    Y = p.hypercharge
+    Q = p.charge
+    if Q is None:
+        pytest.skip(f"Particle {p.name} has no charge")
+    i3 = Q - Y / 2
+    assert i3 == expected_i3_over_two
