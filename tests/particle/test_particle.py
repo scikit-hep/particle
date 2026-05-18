@@ -880,3 +880,39 @@ def test_baryon_number_all_baryons() -> None:
         assert p.baryon_number == -1
     for p in Particle.findall(lambda p: p.pdgid.is_meson):
         assert p.baryon_number == 0
+
+
+@pytest.mark.parametrize(
+    ("pid", "r_parity"),
+    [
+        # Leptons
+        (11, 1),  # e-
+        (-11, 1),  # e+
+        (12, 1),  # nu(e)
+        (13, 1),  # mu-
+        (15, 1),  # tau-
+        # Bosons
+        (21, 1),  # gluon
+        (22, 1),  # photon
+        (23, 1),  # Z
+        (24, 1),  # W+
+        (25, 1),  # H
+        # Mesons
+        (211, 1),  # pi+
+        (111, 1),  # pi0
+        (321, 1),  # K+
+        (443, 1),  # J/psi
+        # Baryons
+        (2212, 1),  # proton
+        (2112, 1),  # neutron
+        (3122, 1),  # Lambda
+    ],
+)
+def test_r_parity(pid: int, r_parity: int) -> None:
+    assert Particle.from_pdgid(pid).r_parity == r_parity
+
+
+def test_r_parity_all_sm_particles() -> None:
+    for p in Particle.findall():
+        if p.pdgid.J is not None and not p.pdgid.is_SUSY:
+            assert p.r_parity == 1

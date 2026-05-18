@@ -795,6 +795,16 @@ class Particle:
         return 0
 
     @property
+    def r_parity(self) -> int | None:
+        if self.pdgid.J is None:
+            return None
+        B = self.baryon_number
+        L = self.lepton_number
+        s = self.pdgid.J
+        exponent = int(3 * B) + L + int(2 * s)
+        return +1 if exponent % 2 == 0 else -1
+
+    @property
     def is_unflavoured_meson(self) -> bool:
         """
         Is the particle a light non-strange meson or a quarkonium?
