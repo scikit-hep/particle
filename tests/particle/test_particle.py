@@ -790,32 +790,32 @@ def test_particle_hash(sign: int) -> None:
 
 
 @pytest.mark.parametrize(
-    ("pid", "lepton_number"),
+    ("name", "lepton_number"),
     [
-        # SM leptons
-        (11, 1),  # e-
-        (-11, -1),  # e+
-        (12, 1),  # nu(e)
-        (-12, -1),  # nu(e)~
-        (13, 1),  # mu-
-        (-13, -1),  # mu+
-        (14, 1),  # nu(mu)
-        (-14, -1),  # nu(mu)~
-        (15, 1),  # tau-
-        (-15, -1),  # tau+
-        (16, 1),  # nu(tau)
-        (-16, -1),  # nu(tau)~
+        # Leptons
+        ("e-", 1),
+        ("e+", -1),
+        ("nu(e)", 1),
+        ("nu(e)~", -1),
+        ("mu-", 1),
+        ("mu+", -1),
+        ("nu(mu)", 1),
+        ("nu(mu)~", -1),
+        ("tau-", 1),
+        ("tau+", -1),
+        ("nu(tau)", 1),
+        ("nu(tau)~", -1),
         # Non-leptons
-        (22, 0),  # photon
-        (23, 0),  # Z
-        (25, 0),  # Higgs
-        (211, 0),  # pi+
-        (2212, 0),  # proton
-        (2112, 0),  # neutron
+        ("gamma", 0),
+        ("Z0", 0),
+        ("H0", 0),
+        ("pi+", 0),
+        ("p", 0),
+        ("n", 0),
     ],
 )
-def test_lepton_number(pid: int, lepton_number: int) -> None:
-    assert Particle.from_pdgid(pid).lepton_number == lepton_number
+def test_lepton_number(name: str, lepton_number: int) -> None:
+    assert Particle.from_name(name).lepton_number == lepton_number
 
 
 def test_lepton_number_all_sm_leptons() -> None:
@@ -828,49 +828,49 @@ def test_lepton_number_all_sm_leptons() -> None:
 
 
 @pytest.mark.parametrize(
-    ("pid", "baryon_number"),
+    ("name", "baryon_number"),
     [
         # Quarks
-        (1, Fraction(1, 3)),
-        (-1, Fraction(-1, 3)),
-        (2, Fraction(1, 3)),
-        (-2, Fraction(-1, 3)),
-        (3, Fraction(1, 3)),
-        (-3, Fraction(-1, 3)),
-        (4, Fraction(1, 3)),
-        (-4, Fraction(-1, 3)),
-        (5, Fraction(1, 3)),
-        (-5, Fraction(-1, 3)),
-        (6, Fraction(1, 3)),
-        (-6, Fraction(-1, 3)),
+        ("d", Fraction(1, 3)),
+        ("d~", Fraction(-1, 3)),
+        ("u", Fraction(1, 3)),
+        ("u~", Fraction(-1, 3)),
+        ("s", Fraction(1, 3)),
+        ("s~", Fraction(-1, 3)),
+        ("c", Fraction(1, 3)),
+        ("c~", Fraction(-1, 3)),
+        ("b", Fraction(1, 3)),
+        ("b~", Fraction(-1, 3)),
+        ("t", Fraction(1, 3)),
+        ("t~", Fraction(-1, 3)),
         # Baryons
-        (2212, 1),  # proton
-        (-2212, -1),  # antiproton
-        (2112, 1),  # neutron
-        (-2112, -1),  # antineutron
-        (3122, 1),  # Lambda
-        (-3122, -1),  # Lambda~
-        (3222, 1),  # Sigma+
-        (-3222, -1),  # Sigma+~
-        (4122, 1),  # Lambda(c)+
-        (-4122, -1),  # Lambda(c)+~
+        ("p", 1),
+        ("p~", -1),
+        ("n", 1),
+        ("n~", -1),
+        ("Lambda", 1),
+        ("Lambda~", -1),
+        ("Sigma+", 1),
+        ("Sigma~-", -1),
+        ("Lambda(c)+", 1),
+        ("Lambda(c)~-", -1),
         # Nuclei
-        (1000010020, 2),  # deuteron
-        (-1000010020, -2),  # anti-deuteron
-        (1000020040, 4),  # He-4
-        (-1000020040, -4),  # anti-He-4
+        ("D2", 2),
+        ("D2~", -2),
+        ("He4", 4),
+        ("He4~", -4),
         # Other particles
-        (211, 0),  # pi+
-        (111, 0),  # pi0
-        (321, 0),  # K+
-        (11, 0),  # e-
-        (22, 0),  # photon
-        (23, 0),  # Z
-        (25, 0),  # Higgs
+        ("pi+", 0),
+        ("pi0", 0),
+        ("K+", 0),
+        ("e-", 0),
+        ("gamma", 0),
+        ("Z0", 0),
+        ("H0", 0),
     ],
 )
-def test_baryon_number(pid: int, baryon_number: int | Fraction) -> None:
-    assert Particle.from_pdgid(pid).baryon_number == baryon_number
+def test_baryon_number(name: str, baryon_number: int | Fraction) -> None:
+    assert Particle.from_name(name).baryon_number == baryon_number
 
 
 def test_baryon_number_all_baryons() -> None:
@@ -883,33 +883,33 @@ def test_baryon_number_all_baryons() -> None:
 
 
 @pytest.mark.parametrize(
-    ("pid", "r_parity"),
+    ("name", "r_parity"),
     [
         # Leptons
-        (11, 1),  # e-
-        (-11, 1),  # e+
-        (12, 1),  # nu(e)
-        (13, 1),  # mu-
-        (15, 1),  # tau-
+        ("e-", 1),
+        ("e+", 1),
+        ("nu(e)", 1),
+        ("mu-", 1),
+        ("tau-", 1),
         # Bosons
-        (21, 1),  # gluon
-        (22, 1),  # photon
-        (23, 1),  # Z
-        (24, 1),  # W+
-        (25, 1),  # H
+        ("g", 1),
+        ("gamma", 1),
+        ("Z0", 1),
+        ("W+", 1),
+        ("H0", 1),
         # Mesons
-        (211, 1),  # pi+
-        (111, 1),  # pi0
-        (321, 1),  # K+
-        (443, 1),  # J/psi
+        ("pi+", 1),
+        ("pi0", 1),
+        ("K+", 1),
+        ("J/psi(1S)", 1),
         # Baryons
-        (2212, 1),  # proton
-        (2112, 1),  # neutron
-        (3122, 1),  # Lambda
+        ("p", 1),
+        ("n", 1),
+        ("Lambda", 1),
     ],
 )
-def test_r_parity(pid: int, r_parity: int) -> None:
-    assert Particle.from_pdgid(pid).r_parity == r_parity
+def test_r_parity(name: str, r_parity: int) -> None:
+    assert Particle.from_name(name).r_parity == r_parity
 
 
 def test_r_parity_all_sm_particles() -> None:
@@ -919,151 +919,152 @@ def test_r_parity_all_sm_particles() -> None:
 
 
 @pytest.mark.parametrize(
-    ("pid", "strangeness"),
+    ("name", "strangeness"),
     [
-        (3, -1),
-        (-3, 1),
-        (2, 0),
-        (1, 0),
-        (4, 0),
-        (5, 0),
-        (321, 1),  # K+
-        (311, 1),  # K0
-        (-321, -1),  # K-
-        (130, 0),  # K(L)
-        (310, 0),  # K(S)
-        (3122, -1),  # Lambda
-        (-3122, 1),  # Lambda~
-        (2212, 0),  # proton
-        (2112, 0),  # neutron
-        (211, 0),  # pi+
-        (111, 0),  # pi0
-        (411, 0),  # D+
-        (421, 0),  # D0
+        ("s", -1),
+        ("s~", 1),
+        ("u", 0),
+        ("d", 0),
+        ("c", 0),
+        ("b", 0),
+        ("K+", 1),
+        ("K0", 1),
+        ("K-", -1),
+        ("K(L)0", 0),
+        ("K(S)0", 0),
+        ("Lambda", -1),
+        ("Lambda~", 1),
+        ("p", 0),
+        ("n", 0),
+        ("pi+", 0),
+        ("pi0", 0),
+        ("D+", 0),
+        ("D0", 0),
     ],
 )
-def test_strangeness(pid: int, strangeness: int) -> None:
-    assert Particle.from_pdgid(pid).strangeness == strangeness
+def test_strangeness(name: str, strangeness: int) -> None:
+    assert Particle.from_name(name).strangeness == strangeness
 
 
 @pytest.mark.parametrize(
-    ("pid", "charmness"),
+    ("name", "charmness"),
     [
-        (4, 1),
-        (-4, -1),
-        (1, 0),
-        (2, 0),
-        (3, 0),
-        (5, 0),
-        (211, 0),  # pi+
-        (411, 1),  # D+
-        (421, 1),  # D0
-        (431, 1),  # D(s)+
-        (-411, -1),  # D-
-        (-421, -1),  # D0~
-        (321, 0),  # K+
-        (3122, 0),  # Lambda
-        (4122, 1),  # Lambda(c)+
-        (2212, 0),  # proton
-        (511, 0),  # B0
+        ("c", 1),
+        ("c~", -1),
+        ("d", 0),
+        ("u", 0),
+        ("s", 0),
+        ("b", 0),
+        ("pi+", 0),
+        ("D+", 1),
+        ("D0", 1),
+        ("D(s)+", 1),
+        ("D-", -1),
+        ("D~0", -1),
+        ("K+", 0),
+        ("Lambda", 0),
+        ("Lambda(c)+", 1),
+        ("p", 0),
+        ("B0", 0),
     ],
 )
-def test_charm(pid: int, charmness: int) -> None:
-    assert Particle.from_pdgid(pid).charmness == charmness
+def test_charm(name: str, charmness: int) -> None:
+    assert Particle.from_name(name).charmness == charmness
 
 
 @pytest.mark.parametrize(
-    ("pid", "bottomness"),
+    ("name", "bottomness"),
     [
-        (-5, 1),
-        (5, -1),
-        (1, 0),
-        (2, 0),
-        (3, 0),
-        (4, 0),
-        (511, 1),  # B0
-        (521, 1),  # B+
-        (531, 1),  # B(s)0
-        (-511, -1),  # B0~
-        (-521, -1),  # B-
-        (411, 0),  # D+
-        (321, 0),  # K+
-        (3122, 0),  # Lambda
-        (2212, 0),  # proton
-        (211, 0),  # pi+
+        ("b~", 1),
+        ("b", -1),
+        ("d", 0),
+        ("u", 0),
+        ("s", 0),
+        ("c", 0),
+        ("B0", 1),
+        ("B+", 1),
+        ("B(s)0", 1),
+        ("B~0", -1),
+        ("B-", -1),
+        ("D+", 0),
+        ("K+", 0),
+        ("Lambda", 0),
+        ("p", 0),
+        ("pi+", 0),
     ],
 )
-def test_bottomness(pid: int, bottomness: int) -> None:
-    assert Particle.from_pdgid(pid).bottomness == bottomness
+def test_bottomness(name: str, bottomness: int) -> None:
+    assert Particle.from_name(name).bottomness == bottomness
 
 
 @pytest.mark.parametrize(
-    ("pid", "topness"),
+    ("name", "topness"),
     [
-        (6, 1),
-        (-6, -1),
-        (1, 0),
-        (2, 0),
-        (3, 0),
-        (4, 0),
-        (5, 0),
-        (211, 0),  # pi+
-        (321, 0),  # K+
-        (411, 0),  # D+
-        (511, 0),  # B0
-        (2212, 0),  # proton
+        ("t", 1),
+        ("t~", -1),
+        ("d", 0),
+        ("u", 0),
+        ("s", 0),
+        ("c", 0),
+        ("b", 0),
+        ("pi+", 0),
+        ("K+", 0),
+        ("D+", 0),
+        ("B0", 0),
+        ("p", 0),
     ],
 )
-def test_topness(pid: int, topness: int) -> None:
-    assert Particle.from_pdgid(pid).topness == topness
+def test_topness(name: str, topness: int) -> None:
+    assert Particle.from_name(name).topness == topness
 
 
 @pytest.mark.parametrize(
-    ("pid", "hypercharge"),
+    ("name", "hypercharge"),
     [
         # Quarks
-        (2, Fraction(1, 3)),
-        (3, Fraction(-2, 3)),
-        (4, Fraction(4, 3)),
+        ("u", Fraction(1, 3)),
+        ("s", Fraction(-2, 3)),
+        ("c", Fraction(4, 3)),
         # Mesons
-        (211, 0),  # pi+
-        (111, 0),  # pi0
-        (321, 1),  # K+
-        (311, 1),  # K0
-        (411, 1),  # D+
-        (421, 1),  # D0
-        (431, 2),  # D(s)+
-        (511, 1),  # B0
-        (521, 1),  # B+
-        (531, 0),  # B(s)0
+        ("pi+", 0),
+        ("pi0", 0),
+        ("K+", 1),
+        ("K0", 1),
+        ("D+", 1),
+        ("D0", 1),
+        ("D(s)+", 2),
+        ("B0", 1),
+        ("B+", 1),
+        ("B(s)0", 0),
         # Baryons
-        (2212, 1),  # proton
-        (2112, 1),  # neutron
-        (3122, 0),  # Lambda
+        ("p", 1),
+        ("n", 1),
+        ("Lambda", 0),
+        ("Sigma+", 0),
     ],
 )
-def test_hypercharge(pid: int, hypercharge: int | Fraction) -> None:
-    assert Particle.from_pdgid(pid).hypercharge == hypercharge
+def test_hypercharge(name: str, hypercharge: int | Fraction) -> None:
+    assert Particle.from_name(name).hypercharge == hypercharge
 
 
 @pytest.mark.parametrize(
-    ("pid", "expected_i3_over_two"),
+    ("name", "expected_i3_over_two"),
     [
         # Mesons
-        (211, 1),  # pi+
-        (111, 0),  # pi0
-        (-211, -1),  # pi-
-        (321, Fraction(1, 2)),  # K+
-        (311, Fraction(-1, 2)),  # K0
+        ("pi+", 1),
+        ("pi0", 0),
+        ("pi-", -1),
+        ("K+", Fraction(1, 2)),
+        ("K0", Fraction(-1, 2)),
         # Baryons
-        (2212, Fraction(1, 2)),  # proton
-        (2112, Fraction(-1, 2)),  # neutron
-        (3122, 0),  # Lambda
-        (3222, 1),  # Sigma+
+        ("p", Fraction(1, 2)),
+        ("n", Fraction(-1, 2)),
+        ("Lambda", 0),
+        ("Sigma+", 1),
     ],
 )
-def test_gell_mann_nishijima(pid: int, expected_i3_over_two: int | Fraction) -> None:
-    p = Particle.from_pdgid(pid)
+def test_gell_mann_nishijima(name: str, expected_i3_over_two: int | Fraction) -> None:
+    p = Particle.from_name(name)
     Y = p.hypercharge
     Q = p.charge
     if Q is None:
