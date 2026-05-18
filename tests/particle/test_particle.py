@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import contextlib
+from fractions import Fraction
 
 import pytest
 from hepunits import meter, second
@@ -786,3 +787,96 @@ def test_particle_hash(sign: int) -> None:
     d = {proton1: 5, neutron2: 3}
     assert d[proton2] == 5
     assert d[neutron1] == 3
+
+
+@pytest.mark.parametrize(
+    ("pid", "lepton_number"),
+    [
+        # SM leptons
+        (11, 1),  # e-
+        (-11, -1),  # e+
+        (12, 1),  # nu(e)
+        (-12, -1),  # nu(e)~
+        (13, 1),  # mu-
+        (-13, -1),  # mu+
+        (14, 1),  # nu(mu)
+        (-14, -1),  # nu(mu)~
+        (15, 1),  # tau-
+        (-15, -1),  # tau+
+        (16, 1),  # nu(tau)
+        (-16, -1),  # nu(tau)~
+        # Non-leptons
+        (22, 0),  # photon
+        (23, 0),  # Z
+        (25, 0),  # Higgs
+        (211, 0),  # pi+
+        (2212, 0),  # proton
+        (2112, 0),  # neutron
+    ],
+)
+def test_lepton_number(pid: int, lepton_number: int) -> None:
+    assert Particle.from_pdgid(pid).lepton_number == lepton_number
+
+
+def test_lepton_number_all_sm_leptons() -> None:
+    for p in Particle.findall(lambda p: p.pdgid.is_lepton and p > 0):
+        assert p.lepton_number == +1
+    for p in Particle.findall(lambda p: p.pdgid.is_lepton and p < 0):
+        assert p.lepton_number == -1
+    for p in Particle.findall(lambda p: not p.pdgid.is_lepton):
+        assert p.lepton_number == 0
+
+
+@pytest.mark.parametrize(
+    ("pid", "baryon_number"),
+    [
+        # Quarks
+        (1, Fraction(1, 3)),
+        (-1, Fraction(-1, 3)),
+        (2, Fraction(1, 3)),
+        (-2, Fraction(-1, 3)),
+        (3, Fraction(1, 3)),
+        (-3, Fraction(-1, 3)),
+        (4, Fraction(1, 3)),
+        (-4, Fraction(-1, 3)),
+        (5, Fraction(1, 3)),
+        (-5, Fraction(-1, 3)),
+        (6, Fraction(1, 3)),
+        (-6, Fraction(-1, 3)),
+        # Baryons
+        (2212, 1),  # proton
+        (-2212, -1),  # antiproton
+        (2112, 1),  # neutron
+        (-2112, -1),  # antineutron
+        (3122, 1),  # Lambda
+        (-3122, -1),  # Lambda~
+        (3222, 1),  # Sigma+
+        (-3222, -1),  # Sigma+~
+        (4122, 1),  # Lambda(c)+
+        (-4122, -1),  # Lambda(c)+~
+        # Nuclei
+        (1000010020, 2),  # deuteron
+        (-1000010020, -2),  # anti-deuteron
+        (1000020040, 4),  # He-4
+        (-1000020040, -4),  # anti-He-4
+        # Other particles
+        (211, 0),  # pi+
+        (111, 0),  # pi0
+        (321, 0),  # K+
+        (11, 0),  # e-
+        (22, 0),  # photon
+        (23, 0),  # Z
+        (25, 0),  # Higgs
+    ],
+)
+def test_baryon_number(pid: int, baryon_number: int | Fraction) -> None:
+    assert Particle.from_pdgid(pid).baryon_number == baryon_number
+
+
+def test_baryon_number_all_baryons() -> None:
+    for p in Particle.findall(lambda p: p.pdgid.is_baryon and p > 0):
+        assert p.baryon_number == +1
+    for p in Particle.findall(lambda p: p.pdgid.is_baryon and p < 0):
+        assert p.baryon_number == -1
+    for p in Particle.findall(lambda p: p.pdgid.is_meson):
+        assert p.baryon_number == 0

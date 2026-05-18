@@ -11,6 +11,7 @@ import contextlib
 import csv
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from copy import copy
+from fractions import Fraction
 from functools import total_ordering
 from typing import Any, SupportsInt, TypeVar
 
@@ -771,6 +772,27 @@ class Particle:
         Is the particle self-conjugate, i.e. its own antiparticle?
         """
         return self.anti_flag == Inv.Same
+
+    @property
+    def baryon_number(self) -> Fraction | int:
+        if self.pdgid.is_baryon:
+            return 1 if self.pdgid > 0 else -1
+        if self.pdgid.is_nucleus:
+            if self.pdgid.A is None:
+                return 0
+            A = int(self.pdgid.A)
+            if self.pdgid > 0:
+                return A
+            return -A
+        if self.pdgid.is_quark:
+            return Fraction(1, 3) if self.pdgid > 0 else Fraction(-1, 3)
+        return 0
+
+    @property
+    def lepton_number(self) -> int:
+        if self.pdgid.is_lepton:
+            return +1 if self.pdgid > 0 else -1
+        return 0
 
     @property
     def is_unflavoured_meson(self) -> bool:
