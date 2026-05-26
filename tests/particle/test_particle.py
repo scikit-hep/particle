@@ -7,6 +7,8 @@
 from __future__ import annotations
 
 import contextlib
+import re
+from fractions import Fraction
 
 import pytest
 from hepunits import meter, second
@@ -786,3 +788,314 @@ def test_particle_hash(sign: int) -> None:
     d = {proton1: 5, neutron2: 3}
     assert d[proton2] == 5
     assert d[neutron1] == 3
+
+
+@pytest.mark.parametrize(
+    ("name", "lepton_number"),
+    [
+        # Leptons
+        ("e-", 1),
+        ("e+", -1),
+        ("nu(e)", 1),
+        ("nu(e)~", -1),
+        ("mu-", 1),
+        ("mu+", -1),
+        ("nu(mu)", 1),
+        ("nu(mu)~", -1),
+        ("tau-", 1),
+        ("tau+", -1),
+        ("nu(tau)", 1),
+        ("nu(tau)~", -1),
+        # Non-leptons
+        ("gamma", 0),
+        ("Z0", 0),
+        ("H0", 0),
+        ("pi+", 0),
+        ("p", 0),
+        ("n", 0),
+    ],
+)
+def test_lepton_number(name: str, lepton_number: int) -> None:
+    assert Particle.from_name(name).lepton_number == lepton_number
+
+
+def test_lepton_number_all_sm_leptons() -> None:
+    for p in Particle.findall(lambda p: p.pdgid.is_lepton and p > 0):
+        assert p.lepton_number == +1
+    for p in Particle.findall(lambda p: p.pdgid.is_lepton and p < 0):
+        assert p.lepton_number == -1
+    for p in Particle.findall(lambda p: not p.pdgid.is_lepton):
+        assert p.lepton_number == 0
+
+
+@pytest.mark.parametrize(
+    ("name", "baryon_number"),
+    [
+        # Quarks
+        ("d", Fraction(1, 3)),
+        ("d~", Fraction(-1, 3)),
+        ("u", Fraction(1, 3)),
+        ("u~", Fraction(-1, 3)),
+        ("s", Fraction(1, 3)),
+        ("s~", Fraction(-1, 3)),
+        ("c", Fraction(1, 3)),
+        ("c~", Fraction(-1, 3)),
+        ("b", Fraction(1, 3)),
+        ("b~", Fraction(-1, 3)),
+        ("t", Fraction(1, 3)),
+        ("t~", Fraction(-1, 3)),
+        # Baryons
+        ("p", 1),
+        ("p~", -1),
+        ("n", 1),
+        ("n~", -1),
+        ("Lambda", 1),
+        ("Lambda~", -1),
+        ("Sigma+", 1),
+        ("Sigma~-", -1),
+        ("Lambda(c)+", 1),
+        ("Lambda(c)~-", -1),
+        # Nuclei
+        ("D2", 2),
+        ("D2~", -2),
+        ("He4", 4),
+        ("He4~", -4),
+        # Other particles
+        ("pi+", 0),
+        ("pi0", 0),
+        ("K+", 0),
+        ("e-", 0),
+        ("gamma", 0),
+        ("Z0", 0),
+        ("H0", 0),
+    ],
+)
+def test_baryon_number(name: str, baryon_number: int | Fraction) -> None:
+    assert Particle.from_name(name).baryon_number == baryon_number
+
+
+def test_baryon_number_all_baryons() -> None:
+    for p in Particle.findall(lambda p: p.pdgid.is_baryon and p > 0):
+        assert p.baryon_number == +1
+    for p in Particle.findall(lambda p: p.pdgid.is_baryon and p < 0):
+        assert p.baryon_number == -1
+    for p in Particle.findall(lambda p: p.pdgid.is_meson):
+        assert p.baryon_number == 0
+
+
+@pytest.mark.parametrize(
+    ("name", "r_parity"),
+    [
+        # Leptons
+        ("e-", 1),
+        ("e+", 1),
+        ("nu(e)", 1),
+        ("mu-", 1),
+        ("tau-", 1),
+        # Bosons
+        ("g", 1),
+        ("gamma", 1),
+        ("Z0", 1),
+        ("W+", 1),
+        ("H0", 1),
+        # Mesons
+        ("pi+", 1),
+        ("pi0", 1),
+        ("K+", 1),
+        ("J/psi(1S)", 1),
+        # Baryons
+        ("p", 1),
+        ("n", 1),
+        ("Lambda", 1),
+    ],
+)
+def test_r_parity(name: str, r_parity: int) -> None:
+    assert Particle.from_name(name).r_parity == r_parity
+
+
+def test_r_parity_all_sm_particles() -> None:
+    for p in Particle.findall():
+        if p.pdgid.J is not None and not p.pdgid.is_SUSY:
+            assert p.r_parity == 1
+
+
+@pytest.mark.parametrize(
+    ("name", "strangeness"),
+    [
+        ("s", -1),
+        ("s~", 1),
+        ("u", 0),
+        ("d", 0),
+        ("c", 0),
+        ("b", 0),
+        ("K+", 1),
+        ("K0", 1),
+        ("K-", -1),
+        ("K(L)0", 0),
+        ("K(S)0", 0),
+        ("Lambda", -1),
+        ("Lambda~", 1),
+        ("p", 0),
+        ("n", 0),
+        ("pi+", 0),
+        ("pi0", 0),
+        ("D+", 0),
+        ("D0", 0),
+    ],
+)
+def test_strangeness(name: str, strangeness: int) -> None:
+    assert Particle.from_name(name).strangeness == strangeness
+
+
+@pytest.mark.parametrize(
+    ("name", "charmness"),
+    [
+        ("c", 1),
+        ("c~", -1),
+        ("d", 0),
+        ("u", 0),
+        ("s", 0),
+        ("b", 0),
+        ("pi+", 0),
+        ("D+", 1),
+        ("D0", 1),
+        ("D(s)+", 1),
+        ("D-", -1),
+        ("D~0", -1),
+        ("K+", 0),
+        ("Lambda", 0),
+        ("Lambda(c)+", 1),
+        ("p", 0),
+        ("B0", 0),
+    ],
+)
+def test_charm(name: str, charmness: int) -> None:
+    assert Particle.from_name(name).charmness == charmness
+
+
+@pytest.mark.parametrize(
+    ("name", "bottomness"),
+    [
+        ("b~", 1),
+        ("b", -1),
+        ("d", 0),
+        ("u", 0),
+        ("s", 0),
+        ("c", 0),
+        ("B0", 1),
+        ("B+", 1),
+        ("B(s)0", 1),
+        ("B~0", -1),
+        ("B-", -1),
+        ("D+", 0),
+        ("K+", 0),
+        ("Lambda", 0),
+        ("p", 0),
+        ("pi+", 0),
+    ],
+)
+def test_bottomness(name: str, bottomness: int) -> None:
+    assert Particle.from_name(name).bottomness == bottomness
+
+
+@pytest.mark.parametrize(
+    ("name", "topness"),
+    [
+        ("t", 1),
+        ("t~", -1),
+        ("d", 0),
+        ("u", 0),
+        ("s", 0),
+        ("c", 0),
+        ("b", 0),
+        ("pi+", 0),
+        ("K+", 0),
+        ("D+", 0),
+        ("B0", 0),
+        ("p", 0),
+    ],
+)
+def test_topness(name: str, topness: int) -> None:
+    assert Particle.from_name(name).topness == topness
+
+
+@pytest.mark.parametrize(
+    ("name", "hypercharge"),
+    [
+        # Quarks
+        ("u", Fraction(1, 3)),
+        ("s", Fraction(-2, 3)),
+        ("c", Fraction(4, 3)),
+        # Mesons
+        ("pi+", 0),
+        ("pi0", 0),
+        ("K+", 1),
+        ("K0", 1),
+        ("D+", 1),
+        ("D0", 1),
+        ("D(s)+", 2),
+        ("B0", 1),
+        ("B+", 1),
+        ("B(s)0", 0),
+        # Baryons
+        ("p", 1),
+        ("n", 1),
+        ("Lambda", 0),
+        ("Sigma+", 0),
+    ],
+)
+def test_hypercharge(name: str, hypercharge: int | Fraction) -> None:
+    assert Particle.from_name(name).hypercharge == hypercharge
+
+
+@pytest.mark.parametrize(
+    ("name", "expected_i3_over_two"),
+    [
+        # Mesons
+        ("pi+", 1),
+        ("pi0", 0),
+        ("pi-", -1),
+        ("K+", Fraction(1, 2)),
+        ("K0", Fraction(-1, 2)),
+        # Baryons
+        ("p", Fraction(1, 2)),
+        ("n", Fraction(-1, 2)),
+        ("Lambda", 0),
+        ("Sigma+", 1),
+    ],
+)
+def test_gell_mann_nishijima(name: str, expected_i3_over_two: int | Fraction) -> None:
+    p = Particle.from_name(name)
+    Y = p.hypercharge
+    Q = p.charge
+    if Q is None:
+        pytest.skip(f"Particle {p.name} has no charge")
+    i3 = Q - Y / 2
+    assert i3 == expected_i3_over_two
+
+
+def test_gell_mann_nishijima_database_consistency() -> None:
+    violations: list[tuple[Particle, Fraction, Fraction, Fraction, Fraction]] = []
+    n_checked = 0
+    for p in Particle.all():
+        if re.match(r"\([udscb]{2}\)~?", p.name):
+            continue
+        if p.charge is None or p.I is None:
+            continue
+        n_checked += 1
+        Q = Fraction(p.charge)
+        Y = Fraction(p.hypercharge)
+        computed_i3 = Q - Y / 2
+        if abs(computed_i3) > p.I + 1e-6:
+            I = Fraction(p.I)
+            violations.append((p, Q, Y, I, computed_i3))
+
+    if violations:
+        violation_lines = [
+            f"  {p.name!r} ({int(p.pdgid)}): Q={Q}, Y={Y}, I={I}, computed Iz={i3:+} (exceeds |I|={I})"
+            for p, Q, Y, I, i3 in violations
+        ]
+        pytest.fail(
+            f"\nFound {len(violations)} violations in {n_checked} checked particles:\n"
+            + "\n".join(violation_lines)
+        )

@@ -11,6 +11,7 @@ import contextlib
 import csv
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from copy import copy
+from fractions import Fraction
 from functools import total_ordering
 from typing import Any, SupportsInt, TypeVar
 
@@ -773,6 +774,75 @@ class Particle:
         return self.anti_flag == Inv.Same
 
     @property
+    def baryon_number(self) -> Fraction | int:
+        if self.pdgid.is_baryon:
+            return 1 if self.pdgid > 0 else -1
+        if self.pdgid.is_nucleus:
+            if self.pdgid.A is None:
+                return 0
+            A = int(self.pdgid.A)
+            if self.pdgid > 0:
+                return A
+            return -A
+        if self.pdgid.is_quark:
+            return Fraction(1, 3) if self.pdgid > 0 else Fraction(-1, 3)
+        return 0
+
+    @property
+    def lepton_number(self) -> int:
+        if self.pdgid.is_lepton:
+            return +1 if self.pdgid > 0 else -1
+        return 0
+
+    @property
+    def r_parity(self) -> int | None:
+        if self.pdgid.J is None:
+            return None
+        B = self.baryon_number
+        L = self.lepton_number
+        s = self.pdgid.J
+        exponent = int(3 * B) + L + int(2 * s)
+        return +1 if exponent % 2 == 0 else -1
+
+    @property
+    def strangeness(self) -> int:
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
+            return 0
+        return quark_content.count("S") - quark_content.count("s")
+
+    @property
+    def charmness(self) -> int:
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
+            return 0
+        return quark_content.count("c") - quark_content.count("C")
+
+    @property
+    def bottomness(self) -> int:
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
+            return 0
+        return quark_content.count("B") - quark_content.count("b")
+
+    @property
+    def topness(self) -> int:
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
+            return 0
+        return quark_content.count("t") - quark_content.count("T")
+
+    @property
+    def hypercharge(self) -> Fraction | int:
+        return (
+            self.baryon_number
+            + self.strangeness
+            + self.charmness
+            + self.bottomness
+            + self.topness
+        )
+
+    @property
     def is_unflavoured_meson(self) -> bool:
         """
         Is the particle a light non-strange meson or a quarkonium?
@@ -1281,3 +1351,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return list(
             cls.finditer(filter_fn=filter_fn, particle=particle, **search_terms)
         )
+
+
+def _strip_quark_content(quarks: str) -> str:
+    return quarks.replace("Maybe", "")
