@@ -7,6 +7,7 @@
 from __future__ import annotations
 
 import contextlib
+from fractions import Fraction
 
 import pytest
 from hepunits import meter, second
@@ -590,7 +591,7 @@ def test_spin_type(pid: int, stype: SpinType) -> None:
 
 checklist_isospin = (
     # Quarks
-    (1, 0.5),  # d
+    (1, Fraction(1, 2)),  # d
     # Gauge bosons
     (22, None),  # photon
     (23, None),  # Z0
@@ -598,21 +599,21 @@ checklist_isospin = (
     (11, None),  # e-
     (-12, None),  # nu(e)_bar
     # Mesons
-    (211, 1.0),  # pi+
-    (310, 0.5),  # K_S
-    (-421, 0.5),  # D0_bar
-    (333, 0.0),  # phi(1020)
-    (443, 0.0),  # J/psi
-    (521, 0.5),  # B+
-    (531, 0.0),  # Bs
+    (211, Fraction(1)),  # pi+
+    (310, Fraction(1, 2)),  # K_S
+    (-421, Fraction(1, 2)),  # D0_bar
+    (333, Fraction(0)),  # phi(1020)
+    (443, Fraction(0)),  # J/psi
+    (521, Fraction(1, 2)),  # B+
+    (531, Fraction(0)),  # Bs
     # Baryons
-    (2212, 0.5),  # proton
-    (2214, 1.5),  # Delta+
+    (2212, Fraction(1, 2)),  # proton
+    (2214, Fraction(3, 2)),  # Delta+
 )
 
 
 @pytest.mark.parametrize(("pid", "isospin"), checklist_isospin)
-def test_isospin(pid: int, isospin: float | None) -> None:
+def test_isospin(pid: int, isospin: Fraction | None) -> None:
     particle = Particle.from_pdgid(pid)
 
     assert isospin == particle.I

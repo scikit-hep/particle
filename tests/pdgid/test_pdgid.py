@@ -49,7 +49,7 @@ def test_nonphysical_pdgids() -> None:
 
 def test_info() -> None:
     __info = """A              None
-J              1.0
+J              1
 L              None
 S              None
 Z              None

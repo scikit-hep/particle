@@ -735,10 +735,10 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
     return abspid(pdgid) % 10
 
 
-def J(pdgid: PDGID_TYPE) -> float | None:
+def J(pdgid: PDGID_TYPE) -> Fraction | None:
     """Returns the total spin J."""
     value = j_spin(pdgid)
-    return (value - 1) / 2 if value is not None else value
+    return Fraction(value - 1, 2) if value is not None else None
 
 
 def S(pdgid: PDGID_TYPE) -> int | None:
