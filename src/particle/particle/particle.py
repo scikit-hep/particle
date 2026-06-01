@@ -791,7 +791,7 @@ class Particle:
     @property
     def lepton_number(self) -> int:
         if self.pdgid.is_lepton:
-            return +1 if self.pdgid > 0 else -1
+            return 1 if self.pdgid > 0 else -1
         return 0
 
     @property
@@ -802,7 +802,7 @@ class Particle:
         L = self.lepton_number
         s = self.pdgid.J
         exponent = int(3 * B) + L + int(2 * s)
-        return +1 if exponent % 2 == 0 else -1
+        return 1 if exponent % 2 == 0 else -1
 
     @property
     def strangeness(self) -> int:
