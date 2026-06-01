@@ -11,6 +11,7 @@ import contextlib
 import csv
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from copy import copy
+from fractions import Fraction
 from functools import total_ordering
 from typing import Any, SupportsInt, TypeVar
 
@@ -681,7 +682,7 @@ class Particle:
         return self.pdgid.S  # type: ignore[no-any-return]
 
     @property
-    def charge(self) -> float | None:
+    def charge(self) -> Fraction | None:
         """
         The particle charge, in units of the positron charge.
 
@@ -691,7 +692,7 @@ class Particle:
         Consistency of both ways of retrieving the particle charge is guaranteed
         for all PDG table particles.
         """
-        return self.three_charge / 3 if self.three_charge is not None else None
+        return Fraction(self.three_charge, 3) if self.three_charge is not None else None
 
     @property
     def three_charge(self) -> int | None:

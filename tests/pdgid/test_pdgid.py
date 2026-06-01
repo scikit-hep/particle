@@ -54,7 +54,7 @@ L              None
 S              None
 Z              None
 abspid         22
-charge         0.0
+charge         0
 has_bottom     False
 has_charm      False
 has_down       False
