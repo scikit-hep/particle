@@ -23,6 +23,7 @@ uv run nox -s zipapp                   # build the self-contained particle.pyz
 ```
 
 Notes:
+
 - `pytest` config sets `filterwarnings = ["error"]` and `xfail_strict = true` — warnings and unexpected xpasses fail the suite.
 - Lint enforces `from __future__ import annotations` at the top of every module (ruff isort `required-imports`).
 - mypy runs in `strict` mode over `src` and `tests`.
