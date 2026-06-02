@@ -98,12 +98,12 @@ You can quickly display `PDGID` info from the command line with:
 $ python -m particle pdgid 323
 <PDGID: 323>
 A              None
-J              1.0
+J              1
 L              0
 S              1
 Z              None
 abspid         323
-charge         1.0
+charge         1
 has_bottom     False
 ...
 ```
@@ -211,7 +211,7 @@ with easily recognisable names. For example:
 >>> Lambda_b_0
 <Particle: name="Lambda(b)0", pdgid=5122, mass=5619.57 ± 0.16 MeV>
 >>> Lambda_b_0.J
-0.5
+Fraction(1, 2)
 ```
 
 You can quickly search for particles from the command line with
@@ -232,8 +232,8 @@ $ python -m particle search 311
 Name: K0             ID: 311          Latex: $K^{0}$
 Mass  = 497.611 ± 0.013 MeV
 Width = -1.0 MeV
-Q (charge)        = 0       J (total angular) = 0.0      P (space parity) = -
-C (charge parity) = ?       I (isospin)       = 1/2      G (G-parity)     = ?
+Q (charge)        = 0       J (total angular) = 0        P (space parity) = -
+C (charge parity) = ?       I (isospin)       = 1/2      G (G-parity)     = None
     SpinType: SpinType.PseudoScalar
     Quarks: dS
     Antiparticle name: K~0 (antiparticle status: Barred)
@@ -293,7 +293,7 @@ False
 Name: MyPentaquark   ID: 9912345      Latex: $Unknown$
 Mass  = None
 Width = None
-Q (charge)        = None    J (total angular) = 2.0      P (space parity) = None
+Q (charge)        = None    J (total angular) = 2        P (space parity) = None
 C (charge parity) = None    I (isospin)       = None     G (G-parity)     = None
 Antiparticle name: MyPentaquark (antiparticle status: Same)
 ```
@@ -301,7 +301,7 @@ Antiparticle name: MyPentaquark (antiparticle status: Same)
 A yet more sophisticated definition:
 
 ```python
->>> p3 = Particle(pdgid=9221132,pdg_name='Theta',three_charge=3,latex_name='\Theta^{+}')
+>>> p3 = Particle(pdgid=9221132,pdg_name='Theta',three_charge=3,latex_name='\\Theta^{+}')
 >>> p3
 <Particle: name="Theta", pdgid=9221132, mass=None>
 >>>
@@ -309,9 +309,9 @@ A yet more sophisticated definition:
 Name: Theta          ID: 9221132      Latex: $\Theta^{+}$
 Mass  = None
 Width = None
-Q (charge)        = +       J (total angular) = 0.5      P (space parity) = None
+Q (charge)        = +       J (total angular) = 1/2      P (space parity) = None
 C (charge parity) = None    I (isospin)       = None     G (G-parity)     = None
-    SpinType: SpinType.NonDefined
+    SpinType: 5
     Antiparticle name: Theta (antiparticle status: Same)
 ```
 

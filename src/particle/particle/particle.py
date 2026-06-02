@@ -11,6 +11,7 @@ import contextlib
 import csv
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from copy import copy
+from fractions import Fraction
 from functools import total_ordering
 from typing import Any, SupportsInt, TypeVar
 
@@ -73,12 +74,12 @@ for pdgid1, pdgid2 in _NON_UNIQUE_PDGIDS.items():
     _PREFERRED_PDGID[pdgid2] = _PREFERRED_PDGID[pdgid1]
 
 
-def _isospin_converter(isospin: str) -> float | None:
-    vals: dict[str | None, float | None] = {
-        "0": 0.0,
-        "1/2": 0.5,
-        "1": 1.0,
-        "3/2": 1.5,
+def _isospin_converter(isospin: str) -> Fraction | None:
+    vals: dict[str | None, Fraction | None] = {
+        "0": Fraction(0),
+        "1/2": Fraction(1, 2),
+        "1": Fraction(1),
+        "3/2": Fraction(3, 2),
     }
     return vals.get(isospin)
 
@@ -90,6 +91,7 @@ def _none_or_positive_converter(value: float) -> float | None:
 # These are needed to trick attrs typing
 minus_one: float | None = -1.0
 none_float: float | None = None
+none_fraction: Fraction | None = None
 
 
 Self = TypeVar("Self", bound="Particle")
@@ -214,7 +216,7 @@ class Particle:
         minus_one, converter=_none_or_positive_converter
     )
     _three_charge: Charge | None = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    I: float | None = attr.ib(none_float, converter=_isospin_converter)
+    I: Fraction | None = attr.ib(none_fraction, converter=_isospin_converter)
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity
@@ -651,7 +653,7 @@ class Particle:
     # Shared with PDGID
 
     @property
-    def J(self) -> int:
+    def J(self) -> Fraction | None:
         """
         The total spin J quantum number.
 
@@ -681,7 +683,7 @@ class Particle:
         return self.pdgid.S  # type: ignore[no-any-return]
 
     @property
-    def charge(self) -> float | None:
+    def charge(self) -> Fraction | None:
         """
         The particle charge, in units of the positron charge.
 
@@ -691,7 +693,7 @@ class Particle:
         Consistency of both ways of retrieving the particle charge is guaranteed
         for all PDG table particles.
         """
-        return self.three_charge / 3 if self.three_charge is not None else None
+        return Fraction(self.three_charge, 3) if self.three_charge is not None else None
 
     @property
     def three_charge(self) -> int | None:
@@ -751,7 +753,7 @@ class Particle:
         if self.pdgid.j_spin % 2 == 0:
             return SpinType.NonDefined
 
-        J = int(self.J)
+        J = (self.pdgid.j_spin - 1) // 2
         if J in {0, 1, 2}:
             if Parity.p == self.P:
                 return (SpinType.Scalar, SpinType.Axial, SpinType.Tensor)[J]
