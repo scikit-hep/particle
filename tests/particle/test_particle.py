@@ -599,13 +599,13 @@ checklist_isospin = (
     (11, None),  # e-
     (-12, None),  # nu(e)_bar
     # Mesons
-    (211, Fraction(1)),  # pi+
+    (211,1),  # pi+
     (310, Fraction(1, 2)),  # K_S
     (-421, Fraction(1, 2)),  # D0_bar
-    (333, Fraction(0)),  # phi(1020)
-    (443, Fraction(0)),  # J/psi
+    (333, 0),  # phi(1020)
+    (443, 0),  # J/psi
     (521, Fraction(1, 2)),  # B+
-    (531, Fraction(0)),  # Bs
+    (531, 0),  # Bs
     # Baryons
     (2212, Fraction(1, 2)),  # proton
     (2214, Fraction(3, 2)),  # Delta+
