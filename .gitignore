@@ -82,3 +82,7 @@ docs/_build
 
 # Editors
 .vscode/
+
+# Symlink to AGENTS.md
+CLAUDE.md
+.claude/
