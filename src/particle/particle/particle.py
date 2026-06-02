@@ -776,13 +776,13 @@ class Particle:
     @property
     def baryon_number(self) -> Fraction | int:
         """
-        Baryon number :math:`B` of the particle.
+        The baryon number :math:`B` of the particle.
 
         Baryons have :math:`B = +1` (antibaryons :math:`B = -1`) and nuclei have
-        :math:`B = A`, the mass number (:math:`B = -A` for anti-nuclei). Quarks
-        carry a fractional baryon number of :math:`+1/3` (antiquarks
-        :math:`-1/3`), which is returned as a `~fractions.Fraction` so that the
-        value stays exact; all other cases return a plain `int`. Everything else
+        :math:`B = A`, the mass number (:math:`B = -A` for anti-nuclei).
+        Quarks carry a fractional baryon number of :math:`+1/3` (antiquarks :math:`-1/3`),
+        which is returned as a `~fractions.Fraction` so that the value stays exact;
+        all other cases return a plain `int`. Everything else
         (mesons, leptons, gauge bosons, ...) has :math:`B = 0`.
         """
         if self.pdgid.is_baryon:
@@ -801,11 +801,11 @@ class Particle:
     @property
     def lepton_number(self) -> int:
         """
-        Lepton number :math:`L` of the particle.
+        The lepton quantum number :math:`L` of the particle.
 
-        Leptons have :math:`L = +1` and antileptons :math:`L = -1`. All other
-        particles have :math:`L = 0`. Note that this is the total lepton number
-        and not a per-generation lepton number.
+        Leptons have :math:`L = +1` and antileptons :math:`L = -1`.
+        All other particles have :math:`L = 0`.
+        Note that this is the total lepton number and not a per-generation lepton number.
         """
         if self.pdgid.is_lepton:
             return 1 if self.pdgid > 0 else -1
@@ -814,14 +814,14 @@ class Particle:
     @property
     def r_parity(self) -> int | None:
         """
-        :math:`R`-parity of the particle.
+        The :math:`R`-parity quantum number of the particle.
 
         :math:`R`-parity is the multiplicative quantum number defined as
-        :math:`R = (-1)^(3B + L + 2s)`, where B is the :attr:`baryon_number`,
-        :math:`L` is the :attr:`lepton_number` and :math:`s` is the spin
-        :math:`J`. Standard Model particles have :math:`R = +1` and their
-        hypothetical supersymmetric partners :math:`R = -1`. Returns `None` if
-        the spin is unknown.
+        :math:`R = (-1)^(3B + L + 2s)`, where :math:`B` is the :attr:`baryon_number`,
+        :math:`L` is the :attr:`lepton_number` and :math:`s` is the spin :math:`J`.
+        Standard Model particles have :math:`R = +1` and their
+        hypothetical supersymmetric partners :math:`R = -1`.
+        Returns `None` if the spin is unknown.
         """
         if self.pdgid.J is None:
             return None
@@ -834,14 +834,16 @@ class Particle:
     @property
     def strangeness(self) -> int:
         r"""
-        Strangeness :math:`S` of the particle.
+        The strangeness quantum number :math:`S` of the particle.
 
         Counts the net number of strange quarks, :math:`S = n(\bar{s}) - n(s)`,
-        as derived from the particle's quark content. Returns ``0`` if the quark
-        content is empty or not unambiguous (e.g. flavour mixtures denoted with
-        parentheses).
+        as derived from the particle's quark content.
+        Returns ``0`` if the quark content is empty or not unambiguous
+        (e.g. flavour mixtures denoted with parentheses).
 
-        Note that, by convention, a flavour quantum number has the same sign as
+        Note
+        ----
+        By convention, a flavour quantum number has the same sign as
         the electric charge of its quark, so down-type quarks (:math:`s`,
         :math:`b`) carry a negative value while up-type quarks (:math:`c`,
         :math:`t`) carry a positive one. The quark content uses uppercase
@@ -857,12 +859,12 @@ class Particle:
     @property
     def charmness(self) -> int:
         r"""
-        Charm quantum number :math:`C` of the particle.
+        The charm quantum number :math:`C` of the particle.
 
-        Counts the net number of charm quarks, :math:`C = n(c) - n(\bar{c})`, as
-        derived from the particle's quark content. Returns ``0`` if the quark
-        content is empty or not unambiguous (e.g. flavour mixtures denoted with
-        parentheses).
+        Counts the net number of charm quarks, :math:`C = n(c) - n(\bar{c})`,
+        as derived from the particle's quark content.
+        Returns ``0`` if the quark content is empty or not unambiguous
+        (e.g. flavour mixtures denoted with parentheses).
         """
         quark_content = _strip_quark_content(self.quarks)
         if not quark_content or "(" in quark_content:
@@ -872,12 +874,12 @@ class Particle:
     @property
     def bottomness(self) -> int:
         r"""
-        Bottom quantum number :math:`B'` of the particle.
+        The bottom quantum number :math:`B'` of the particle.
 
         Counts the net number of bottom quarks, :math:`B' = n(\bar{b}) - n(b)`,
-        as derived from the particle's quark content. Returns ``0`` if the quark
-        content is empty or not unambiguous (e.g. flavour mixtures denoted with
-        parentheses).
+        as derived from the particle's quark content.
+        Returns ``0`` if the quark content is empty or not unambiguous
+        (e.g. flavour mixtures denoted with parentheses).
         """
         quark_content = _strip_quark_content(self.quarks)
         if not quark_content or "(" in quark_content:
@@ -887,12 +889,12 @@ class Particle:
     @property
     def topness(self) -> int:
         r"""
-        Top quantum number :math:`T` of the particle.
+        The top quantum number :math:`T` of the particle.
 
-        Counts the net number of top quarks, :math:`T = n(t) - n(\bar{t})`, as
-        derived from the particle's quark content. Returns 0 if the quark
-        content is empty or not unambiguous (e.g. flavour mixtures denoted with
-        parentheses).
+        Counts the net number of top quarks, :math:`T = n(t) - n(\bar{t})`,
+        as derived from the particle's quark content.
+        Returns ``0`` if the quark content is empty or not unambiguous
+        (e.g. flavour mixtures denoted with parentheses).
         """
         quark_content = _strip_quark_content(self.quarks)
         if not quark_content or "(" in quark_content:
@@ -902,7 +904,7 @@ class Particle:
     @property
     def hypercharge(self) -> Fraction | int:
         """
-        Strong hypercharge Y of the particle.
+        The strong hypercharge quantum number :math:`Y` of the particle.
 
         Defined as :math:`Y = B + S + C + B' + T`, i.e. the sum of the
         :attr:`baryon_number` and the flavour quantum numbers
