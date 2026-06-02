@@ -8,7 +8,7 @@
 [![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2552429.svg)](https://doi.org/10.5281/zenodo.2552429)
 
 [![GitHub Actions Status: CI](https://github.com/scikit-hep/particle/workflows/CI/badge.svg)](https://github.com/scikit-hep/particle/actions)
-[![Code Coverage](https://codecov.io/gh/scikit-hep/particle/graph/badge.svg?branch=main)](https://codecov.io/gh/scikit-hep/particle?branch=main)
+[![Code Coverage](https://codecov.io/gh/scikit-hep/particle/branch/main/graph/badge.svg)](https://app.codecov.io/gh/scikit-hep/particle/tree/main)
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/scikit-hep/particle/main?urlpath=lab/tree/notebooks/ParticleDemo.ipynb)
 
@@ -36,8 +36,7 @@ or similar (use `--user`, `virtualenv`, etc. if you wish).
 
 ## Strict dependencies
 
-- [Python](http://docs.python-guide.org/en/latest/starting/installation/) (3.8+)
-- [importlib_resources backport](http://importlib-resources.readthedocs.io/en/latest/) if using Python < 3.9
+- [Python](http://docs.python-guide.org/en/latest/starting/installation/) (3.10+)
 - [attrs](http://www.attrs.org/en/stable/) provides classes without boilerplate (similar to DataClasses in Python 3.7)
 - [hepunits](https://github.com/scikit-hep/hepunits)\_ provides units for the Scikit-HEP packages
 
@@ -210,7 +209,7 @@ with easily recognisable names. For example:
 >>>
 >>> from particle.literals import Lambda_b_0
 >>> Lambda_b_0
-<Particle: name="Lambda(b)0", pdgid=5122, mass=5619.60 ± 0.17 MeV>
+<Particle: name="Lambda(b)0", pdgid=5122, mass=5619.57 ± 0.16 MeV>
 >>> Lambda_b_0.J
 0.5
 ```
@@ -256,7 +255,7 @@ If you want a non-default data file distributed with the package just proceed as
 
 ```python
 >>> from particle import data
->>> Particle.load_table(data.basepath / "particle2024.csv"))
+>>> Particle.load_table(data.basepath / "particle2025.csv"))
 >>> Particle.load_table(data.basepath / "nuclei2022.csv"), append=True)  # I still want nuclei info
 >>> Particle.table_names()  # list the loaded tables
 ```
@@ -435,6 +434,7 @@ similarly to what is available in the standard (i.e. non-experiment-specific) co
 ## Contributors
 
 We hereby acknowledge the contributors that made this project possible ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
@@ -454,7 +454,7 @@ We hereby acknowledge the contributors that made this project possible ([emoji k
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/chrisburr"><img src="https://avatars.githubusercontent.com/u/5220533?v=4?s=100" width="100px;" alt="Chris Burr"/><br /><sub><b>Chris Burr</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=chrisburr" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://gitlab.cern.ch/users/admorris"><img src="https://avatars.githubusercontent.com/u/15155249?v=4?s=100" width="100px;" alt="Adam Morris"/><br /><sub><b>Adam Morris</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=admorris" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://doronbehar.com"><img src="https://avatars.githubusercontent.com/u/10998835?v=4?s=100" width="100px;" alt="Doron Behar"/><br /><sub><b>Doron Behar</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=doronbehar" title="Documentation">📖</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/APN-Pucky"><img src="https://avatars.githubusercontent.com/u/4533248?v=4?s=100" width="100px;" alt="Alexander Puck Neuwirth"/><br /><sub><b>Alexander Puck Neuwirth</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=APN-Pucky" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/APN-Pucky"><img src="https://avatars.githubusercontent.com/u/4533248?v=4?s=100" width="100px;" alt="Alexander Puck Neuwirth"/><br /><sub><b>Alexander Puck Neuwirth</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=APN-Pucky" title="Code">💻</a> <a href="https://github.com/scikit-hep/particle/commits?author=APN-Pucky" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/amanmdesai"><img src="https://avatars.githubusercontent.com/u/98302868?v=4?s=100" width="100px;" alt="Aman Desai"/><br /><sub><b>Aman Desai</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=amanmdesai" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://jonathantellechea.com"><img src="https://avatars.githubusercontent.com/u/49012693?v=4?s=100" width="100px;" alt="Jonathan Tellechea"/><br /><sub><b>Jonathan Tellechea</b></sub></a><br /><a href="https://github.com/scikit-hep/particle/commits?author=JOTELLECHEA" title="Documentation">📖</a></td>
     </tr>

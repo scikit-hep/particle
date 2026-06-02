@@ -1,9 +1,11 @@
-# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2026, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
 
 from __future__ import annotations
+
+from pathlib import Path
 
 import pytest
 
@@ -33,26 +35,26 @@ from particle.pdgid import (
     three_charge,
 )
 
-FILES = ["particle2023.csv", "particle2024.csv"]
+FILES = ["particle2024.csv", "particle2025.csv"]
 
 
-def test_generate(tmp_path):
+def test_generate(tmp_path: Path) -> None:
     "This verifies that the input and output files match."
 
-    particle2023 = tmp_path / "particle2023.csv"
     particle2024 = tmp_path / "particle2024.csv"
+    particle2025 = tmp_path / "particle2025.csv"
 
-    produce_files(particle2023, particle2024, "DUMMY", "2024")
+    produce_files(particle2024, particle2025, "DUMMY", "2025")
 
-    particle2024_data = data.basepath / "particle2024.csv"
-    with particle2024.open() as src, particle2024_data.open() as res:
+    particle2025_data = data.basepath / "particle2025.csv"
+    with particle2025.open() as src, particle2025_data.open() as res:
         src_filtered = [line for line in src.readlines() if not line.startswith("#")]
         res_filtered = [line for line in res.readlines() if not line.startswith("#")]
         assert src_filtered == res_filtered
 
 
 @pytest.mark.parametrize("filename", FILES)
-def test_csv_file_duplicates(filename):
+def test_csv_file_duplicates(filename: str) -> None:
     particle_data = data.basepath / filename
     p = pd.read_csv(particle_data, comment="#")
 
@@ -61,14 +63,14 @@ def test_csv_file_duplicates(filename):
 
 
 @pytest.mark.parametrize("filename", FILES)
-def test_csv_file_has_latex(filename):
+def test_csv_file_has_latex(filename: str) -> None:
     particle_data = data.basepath / filename
     p = pd.read_csv(particle_data, comment="#")
 
     assert p[p.Latex == ""].empty
 
 
-def test_None_masses():
+def test_None_masses() -> None:
     "Only certain specific particles should have None masses."
     none_masses = {
         100321,
@@ -113,7 +115,7 @@ check_nucleons = (
 
 
 @pytest.mark.parametrize(("id_particle", "id_nucleus"), check_nucleons)
-def test_nucleon_properties(id_particle, id_nucleus):
+def test_nucleon_properties(id_particle: int, id_nucleus: int) -> None:
     """
     Protons and neutrons are both available in the particles table and in the nuclei table
     under IDs 2212 and 2112, and 1000010010 and 1000000010, respectively.

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2026, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -722,6 +722,8 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
                 return 2
             if 20 < fund < 25:
                 return 3
+            if fund == 25:
+                return 1
             return None
     if abs(int(pdgid)) in {1000000010, 1000010010}:  # neutron, proton
         return 2
@@ -803,44 +805,22 @@ def L(pdgid: PDGID_TYPE) -> int | None:
     nl = (abspid(pdgid) // 10000) % 10
     js = abspid(pdgid) % 10
 
-    if nl == 0:
-        if js in {1, 3}:
+    # L values from (nl, js) combinations using pattern matching
+    match (nl, js):
+        case (0, 1 | 3):
             return 0
-        if js == 5:
+        case (0, 5) | (1, 1 | 3) | (2, 3):
             return 1
-        if js == 7:
+        case (0, 7) | (1, 5) | (2, 5) | (3, 3):
             return 2
-        if js == 9:
+        case (0, 9) | (1, 7) | (2, 7) | (3, 5):
             return 3
-    elif nl == 1:
-        if js in {1, 3}:
-            return 1
-        if js == 5:
-            return 2
-        if js == 7:
-            return 3
-        if js == 9:
+        case (1, 9) | (2, 9) | (3, 7):
             return 4
-    elif nl == 2:
-        if js == 3:
-            return 1
-        if js == 5:
-            return 2
-        if js == 7:
-            return 3
-        if js == 9:
-            return 4
-    elif nl == 3:
-        if js == 3:
-            return 2
-        if js == 5:
-            return 3
-        if js == 7:
-            return 4
-        if js == 9:
+        case (3, 9):
             return 5
-
-    return 0
+        case _:
+            return 0
 
 
 def l_spin(pdgid: PDGID_TYPE) -> int | None:
@@ -897,10 +877,13 @@ def _digit(pdgid: PDGID_TYPE, loc: int) -> int:
     """
     Provides a convenient index into the PDGID number, whose format is in base 10.
 
-    Returns the digit at position 'loc' given that the right-most digit is at position 1.
+    Returns the digit at position 'loc' >0 given that the right-most digit is at position 1.
     """
-    sid = str(abspid(pdgid))
-    return int(sid[-loc]) if loc <= len(sid) else 0
+    assert loc > 0, (
+        "Internal inconsistency: `loc` is supposed to be > 0, an attribute of `Location`"
+    )
+    sid: float = (abspid(pdgid) % 10**loc) // (10 ** (loc - 1))
+    return int(sid)
 
 
 def _extra_bits(pdgid: PDGID_TYPE) -> int:

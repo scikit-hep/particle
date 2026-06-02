@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2026, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -9,9 +9,10 @@ from __future__ import annotations
 # Python standard library
 import contextlib
 import csv
+from collections.abc import Callable, Iterable, Iterator, Sequence
 from copy import copy
 from functools import total_ordering
-from typing import Any, Callable, Iterable, Iterator, Sequence, SupportsInt, TypeVar
+from typing import Any, SupportsInt, TypeVar
 
 # External dependencies
 import attr
@@ -284,7 +285,7 @@ class Particle:
         exclusive_fields: Iterable[str] = (),
         exclude_fields: Iterable[str] = (),
         n_rows: int = -1,
-        filter_fn: Callable[[Particle], bool] | None = None,
+        filter_fn: Callable[[Particle], bool] | str | None = None,
         particle: bool | None = None,
         **search_terms: Any,
     ) -> Sequence[Sequence[bool | int | float | str]]:
@@ -532,9 +533,9 @@ class Particle:
         """
         query_as_list = cls.to_list(*args, **kwargs)
         headers = query_as_list[0]
-        rows = zip(*query_as_list[1:])
+        rows = zip(*query_as_list[1:], strict=False)
 
-        return {str(h): r for h, r in zip(headers, rows)}
+        return {str(h): r for h, r in zip(headers, rows, strict=False)}
 
     @classmethod
     def load_table(
@@ -565,8 +566,8 @@ class Particle:
         assert cls._table_names is not None
 
         if filename is None:
-            with data.basepath.joinpath("particle2024.csv").open() as fa:
-                cls.load_table(fa, append=append, _name="particle2024.csv")
+            with data.basepath.joinpath("particle2025.csv").open() as fa:
+                cls.load_table(fa, append=append, _name="particle2025.csv")
             with data.basepath.joinpath("nuclei2022.csv").open() as fb:
                 cls.load_table(fb, append=True, _name="nuclei2022.csv")
             return
@@ -979,7 +980,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @property
     def programmatic_name(self) -> str:
         "This name could be used for a variable name."
-        return programmatic_name(self.name)
+        return programmatic_name(self.name, self.pdgid.is_nucleus)
 
     @property
     def html_name(self) -> str:
@@ -1230,7 +1231,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
     @classmethod
     def findall(
         cls: type[Self],
-        filter_fn: Callable[[Particle], bool] | None = None,
+        filter_fn: Callable[[Particle], bool] | str | None = None,
         *,
         particle: bool | None = None,
         **search_terms: Any,

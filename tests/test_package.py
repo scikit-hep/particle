@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2026, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -8,9 +8,9 @@ from __future__ import annotations
 import particle
 
 
-def test_package_import():
+def test_package_import() -> None:
     assert particle is not None
 
 
-def test_load_version():
+def test_load_version() -> None:
     assert particle.__version__

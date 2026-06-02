@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2026, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -13,13 +13,13 @@ from pytest import approx
 from particle.particle import lifetime_to_width, width_to_lifetime
 
 
-def test_valid_width_lifetime_conversions():
+def test_valid_width_lifetime_conversions() -> None:
     assert lifetime_to_width(1.5 * ps) / GeV == approx(4.388079676311604e-13)
     assert 1.5 * ps * lifetime_to_width(1.5 * ps) == hbar
     assert width_to_lifetime(hbar) == 1 * MeV
 
 
-def test_invalid_width_lifetime_conversions():
+def test_invalid_width_lifetime_conversions() -> None:
     with pytest.raises(ValueError, match="Input provided, -1 <= 0!"):
         lifetime_to_width(-1)
     with pytest.raises(ValueError, match="Input provided, -1 <= 0!"):

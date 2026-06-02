@@ -7,49 +7,49 @@ from particle.exceptions import MatchingIDNotFound
 from particle.pdgid import PDGID
 
 
-def test_class_string_representations():
+def test_class_string_representations() -> None:
     pid = Corsika7ID(1)
     assert pid == 1
     assert pid.__str__() == "<Corsika7ID: 1>"
 
 
-def test_class_return_type():
+def test_class_return_type() -> None:
     assert isinstance(Corsika7ID(3), Corsika7ID)
 
 
-def test_from_pdgid():
+def test_from_pdgid() -> None:
     assert Corsika7ID.from_pdgid(-13) == 5
 
     assert Corsika7ID.from_pdgid(PDGID(-13)) == 5
     assert Corsika7ID.from_pdgid(PDGID(13)) == Corsika7ID(6)
 
 
-def test_from_pdgid_non_matching():
+def test_from_pdgid_non_matching() -> None:
     with pytest.raises(MatchingIDNotFound):
         _ = Corsika7ID.from_pdgid(55)
 
 
-def test_to_pdgid():
+def test_to_pdgid() -> None:
     cid = Corsika7ID(5)
     assert cid.to_pdgid() == -13
     assert cid.to_pdgid() == PDGID(-13)
 
 
-def test_to_pdgid_invalid():
+def test_to_pdgid_invalid() -> None:
     from particle.particle import InvalidParticle  # pylint: disable=C0415
 
     with pytest.raises(InvalidParticle):
         _ = Corsika7ID(75).to_pdgid()
 
 
-def test_is_particle():
+def test_is_particle() -> None:
     cid = Corsika7ID(1)
     assert cid.is_particle()
     cid = Corsika7ID(75)
     assert not cid.is_particle()
 
 
-def test_from_particle_description():
+def test_from_particle_description() -> None:
     cid, is_mother = Corsika7ID.from_particle_description(-6001)
     assert is_mother
     assert cid.is_particle()
@@ -61,12 +61,12 @@ def test_from_particle_description():
     assert Corsika7ID.from_particle_description(-201000)[0].name() == "D2"
 
 
-def test_from_particle_description_non_valid():
+def test_from_particle_description_non_valid() -> None:
     with pytest.raises(MatchingIDNotFound):
         _ = Corsika7ID.from_particle_description(0)
 
 
-def test__is_non_particle_id():
+def test__is_non_particle_id() -> None:
     # Muons
     assert not Corsika7ID._is_non_particle_id(5)
     assert not Corsika7ID._is_non_particle_id(6)
@@ -79,7 +79,7 @@ def test__is_non_particle_id():
     assert Corsika7ID._is_non_particle_id(9900)
 
 
-def test_name():
+def test_name() -> None:
     # check name from pdgid module
     cid = Corsika7ID(5)
     assert cid.name() == "mu+"
@@ -95,7 +95,7 @@ def test_name():
     assert cid.name() == "decaying μ+ at start"
 
 
-def test_name_invalid():
+def test_name_invalid() -> None:
     from particle.particle import InvalidParticle  # pylint: disable=C0415
 
     with pytest.raises(InvalidParticle):

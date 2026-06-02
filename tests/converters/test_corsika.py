@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2026, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -9,7 +9,7 @@ from particle import PDGID, Corsika7ID, Particle
 from particle.converters import Corsika72PDGIDBiMap
 
 
-def test_Corsika72PDGID():
+def test_Corsika72PDGID() -> None:
     pdgid = Corsika72PDGIDBiMap[Corsika7ID(5)]
     assert pdgid == -13
 

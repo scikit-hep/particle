@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2026, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -11,9 +11,19 @@ import unicodedata
 from html.entities import name2codepoint
 
 
-def programmatic_name(name: str) -> str:
-    "Return a name safe to use as a variable name."
-    name = re.sub("0$", "_0", name)
+def programmatic_name(name: str, is_nucleus: bool) -> str:
+    """
+    Return a name safe to use as a variable name.
+
+    Note
+    ----
+    The function needs to know if the name relates to a nucleus
+    because zeros at the end of a name are charges for all particles except for nuclei.
+    Charges need to be make explicit as '_0', as in a(0)(1450)0 or H0,
+    whereas in Carbon C10 the last 0 is part of the atomic mass number A.
+    """
+    # Last 0 in names is not a charge for nuclei ;-)
+    name = re.sub("0$", "_0", name) if not is_nucleus else name
     # Deal first with antiparticles of sparticles, e.g. "~d(R)~" antiparticle of "~d(R)"
     name = re.sub("^~", "tilde_", name)
     # The remaining "~" now always means it's an antiparticle
@@ -58,8 +68,8 @@ def str_with_unc(value: float, upper: float | None, lower: float | None = None) 
     if error == 0:
         return str(value)
 
-    value_digits = int(math.floor(math.log10(value)))
-    error_digits = int(math.floor(math.log10(error) - math.log10(2.5)))
+    value_digits = math.floor(math.log10(value))
+    error_digits = math.floor(math.log10(error) - math.log10(2.5))
     # This is split based on the value being larger than 1000000 or smaller than 0.001 - scientific notation split
 
     # This is normal notation
@@ -72,7 +82,7 @@ def str_with_unc(value: float, upper: float | None, lower: float | None = None) 
     # This is scientific notation - a little odd, but better than the other options.
     else:
         fsv = f".{abs(error_digits - value_digits)}e"
-        pure_error_digits = int(math.floor(math.log10(error)))
+        pure_error_digits = math.floor(math.log10(error))
 
         fse = ".0e" if error_digits == pure_error_digits else ".1e"
 
@@ -174,7 +184,8 @@ def latex_to_html_name(name: str) -> str:
         # Special formatting since for example
         # f"{hex(html.entities.name2codepoint['Delta'])}" gives '0x394' whereas HTML needs 'x0394',
         # as in '&#x0394;', equivalent to '&Delta;'
-        name = name.replace(rf"\{gl}", f"&#x{name2codepoint[gl]:04x};")
+        if gl in name2codepoint:
+            name = name.replace(rf"\{gl}", f"&#x{name2codepoint[gl]:04x};")
     name = re.sub(r"\\tilde\{(.*?)\}", r"\1&#771;", name)
     name = re.sub(r"\\overline\{(.*?)\}", r"\1&#773;", name)
     return re.sub(r"\\bar\{(.*?)\}", r"\1&#773;", name)

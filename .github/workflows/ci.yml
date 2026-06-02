@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches:
-    - main
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -15,19 +15,17 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-python@v5
-      with:
-        python-version: "3.x"
-    - uses: pre-commit/action@v3.0.1
-      with:
-        extra_args: --all-files --hook-stage manual
-    - name: PyLint
-      run: |
-        echo "::add-matcher::$GITHUB_WORKSPACE/.github/matchers/pylint.json"
-        pipx run nox -s pylint
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+      - uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: --all-files --hook-stage manual
+      - name: PyLint
+        run: pipx run nox -s pylint -- --output-format=github
 
   checks:
     name: Check ${{ matrix.os }} 🐍 ${{ matrix.python-version }}
@@ -36,77 +34,78 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.10", "3.12", "3.13", "3.14"]
         include:
-          - {os: macos-13, python-version: '3.8'}
-          - {os: macos-13, python-version: '3.13'}
-          - {os: windows-latest, python-version: '3.8'}
-          - {os: windows-latest, python-version: '3.13'}
+          - { os: macos-latest, python-version: "3.10" }
+          - { os: macos-latest, python-version: "3.13" }
+          - { os: macos-latest, python-version: "3.14" }
+          - { os: windows-latest, python-version: "3.10" }
+          - { os: windows-latest, python-version: "3.13" }
+          - { os: windows-latest, python-version: "3.14" }
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-    - uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-        allow-prereleases: true
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
 
-    - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v8.1.0
 
-    - name: Test package
-      run: uvx nox -s tests --force-python=${{ matrix.python-version }}
+      - name: Test package
+        run: uvx nox -s tests --force-python=${{ matrix.python-version }}
 
-    - name: Test coverage with Codecov
-      uses: codecov/codecov-action@v5
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Test coverage with Codecov
+        uses: codecov/codecov-action@v6
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-    - name: Test docstrings with doctest
-      if: runner.os == 'Linux' && matrix.python-version == '3.12'
-      run: uvx nox -s tests -- --doctest-modules src/particle --ignore=src/particle/particle/convert.py
+      - name: Test docstrings with doctest
+        if: runner.os == 'Linux' && matrix.python-version == '3.12'
+        run: uvx nox -s tests -- --doctest-modules src/particle --ignore=src/particle/particle/convert.py
 
   notebooks:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-    - uses: actions/setup-python@v5
-      with:
-        python-version: "3.x"
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
 
-    - uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v8.1.0
 
-    - name: Install package
-      run: uv pip install --system -e .[test]
+      - name: Install package
+        run: uv pip install --system -e .[test]
 
-    - name: Install notebook requirements
-      run: uv pip install --system nbconvert jupyter_client ipykernel
+      - name: Install notebook requirements
+        run: uv pip install --system nbconvert jupyter_client ipykernel
 
-    - name: Run the notebooks inplace
-      run: jupyter nbconvert --execute --inplace notebooks/*.ipynb
-
+      - name: Run the notebooks inplace
+        run: jupyter nbconvert --execute --inplace notebooks/*.ipynb
 
   zipapp:
     name: ZipApp
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
-    - uses: wntrblm/nox@2024.10.09
-      with:
-        python-versions: "3.8"
+      - uses: wntrblm/nox@2026.04.10
+        with:
+          python-versions: "3.10"
 
-    - name: Make ZipApp
-      run: nox -s zipapp
+      - name: Make ZipApp
+        run: nox -s zipapp
 
-    - uses: actions/upload-artifact@v4
-      with:
-        name: zipapp
-        path: particle.pyz
+      - uses: actions/upload-artifact@v7
+        with:
+          name: zipapp
+          path: particle.pyz

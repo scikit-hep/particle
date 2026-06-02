@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2026, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -8,7 +8,7 @@ This is a conversion file, not part of the public API.
 
 The default CSV files can be updated directly using the command:
 
-    >>> python -m particle.particle.convert regenerate 2024 <version_number>    # doctest: +SKIP
+    >>> python -m particle.particle.convert regenerate 2025 <version_number>    # doctest: +SKIP
 
 A custom fwf file and LaTeX file can be converted into the CSV format using:
 
@@ -33,7 +33,7 @@ combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
 
 You can also read in a modern "standard" file (this will produce fewer columns):
 
-    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2024.mcd')
+    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2025.mcd')
 
 A utility is even provided to use the modern table to update the full table:
 
@@ -54,10 +54,11 @@ from __future__ import annotations
 
 import os
 import warnings
+from collections.abc import Callable, Iterable
 from datetime import date
 from io import StringIO
 from pathlib import Path
-from typing import Any, Callable, Iterable, TextIO, TypeVar
+from typing import Any, TextIO, TypeVar
 
 import numpy as np
 import pandas as pd
@@ -170,8 +171,26 @@ def get_from_pdg_extended(
         # Read in the table, apply the converters, add names, ignore comments
         pdg_table = pd.read_csv(
             file_object,
-            names="Mass,MassUpper,MassLower,Width,WidthUpper,WidthLower,I,G,J,P,C,Anti,"
-            "ID,Charge,Rank,Status,Name,Quarks".split(","),
+            names=[
+                "Mass",
+                "MassUpper",
+                "MassLower",
+                "Width",
+                "WidthUpper",
+                "WidthLower",
+                "I",
+                "G",
+                "J",
+                "P",
+                "C",
+                "Anti",
+                "ID",
+                "Charge",
+                "Rank",
+                "Status",
+                "Name",
+                "Quarks",
+            ],
             converters=PDG_converters,
             comment="#",
         )
@@ -184,7 +203,7 @@ def get_from_pdg_extended(
     pdg_table = pdg_table[pdg_table.ID >= 0]
 
     # PDG's ID should be the key to table
-    pdg_table.set_index("ID", inplace=True)
+    pdg_table = pdg_table.set_index("ID")
 
     # Assign the positive values LaTeX names
     pdg_table = pdg_table.assign(Latex=latex_series)
@@ -224,12 +243,11 @@ def get_from_pdg_extended(
     )
 
     full_inversion = pdg_table_inv.Anti == Inv.Barred
-    pdg_table_inv.Latex.where(
+    pdg_table_inv.Latex = pdg_table_inv.Latex.where(
         ~full_inversion,
         pdg_table_inv.Latex.str.replace(
             r"^(\\mathrm{|)([a-zA-Z\\][a-zA-Z]*)", r"\1\\overline{\2}", regex=True
         ),
-        inplace=True,
     )
     pdg_table_inv.Latex = (
         pdg_table_inv.Latex.str.replace(r"+", r"%", regex=False)
@@ -241,14 +259,14 @@ def get_from_pdg_extended(
     full = pd.concat([pdg_table, pdg_table_inv])
 
     # This will override any negative values
-    full.Latex.update(latex_series)
+    full.update({"Latex": latex_series})
 
     # These items are not very important - can be reconstructed from the PDG ID
     # TODO: maybe first check the consistency between what is read in and what the PDG ID provides (being maniac)?
     del full["J"]
 
     # Nice sorting
-    sort_particles(full)
+    full = sort_particles(full)
 
     # All the 'MassLower' and 'WidthLower' values should be absolute values
     # except for the special cases when they are equal to -1,
@@ -260,20 +278,21 @@ def get_from_pdg_extended(
     return full.fillna("")
 
 
-def sort_particles(table: pd.DataFrame) -> None:
+def sort_particles(table: pd.DataFrame) -> pd.DataFrame:
     "Sort a particle list table nicely"
     table["TmpVals"] = abs(table.index - 0.25)
-    table.sort_values("TmpVals", inplace=True)
+    table = table.sort_values("TmpVals")
     del table["TmpVals"]
+    return table
 
 
 def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
     """
-    Reads in a current-style PDG .mcd file (mass_width_2024.mcd file tested).
+    Reads in a current-style PDG .mcd file (mass_width_2025.mcd file tested).
 
     Example
     -------
-    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2024.mcd')
+    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2025.mcd')
     """
 
     # The format here includes the space before a column
@@ -336,12 +355,12 @@ def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
         d["Name"] = nc[0]
         abcd = nc[1].str.split(pat=",", n=4, expand=True)
         d["charge"] = abcd[i]
-        d.set_index("ID", inplace=True)
+        d = d.set_index("ID")
         ds_list.append(d)
 
     ds = pd.concat(ds_list)
     del ds["NameCharge"], ds["ID1"], ds["ID2"], ds["ID3"], ds["ID4"]
-    ds.sort_index(inplace=True)
+    ds = ds.sort_index()
 
     # This should be in MeV, not GeV, and absolute value
     for name in ("Mass", "MassUpper", "MassLower", "Width", "WidthUpper", "WidthLower"):
@@ -359,7 +378,7 @@ def update_from_mcd(
 
     Example
     -------
-    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2024.mcd')    # doctest: +SKIP
+    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2025.mcd')    # doctest: +SKIP
     """
 
     full_table = full_table.copy()
@@ -373,7 +392,7 @@ def update_from_mcd(
 
 def produce_files(
     particle2008: str | Path,  # noqa: ARG001
-    particle2024: str | Path,
+    particle2025: str | Path,
     version: str,
     year: str,
 ) -> None:
@@ -396,9 +415,10 @@ def produce_files(
     with data.basepath.joinpath("mass_width_" + year + ".mcd").open() as mcd_f:
         ext_table = get_from_pdg_mcd(mcd_f)
 
-    with data.basepath.joinpath(
-        "mass_width_2008_ext.fwf"
-    ).open() as fwf_f, data.basepath.joinpath("pdgid_to_latexname.csv").open() as csv_f:
+    with (
+        data.basepath.joinpath("mass_width_2008_ext.fwf").open() as fwf_f,
+        data.basepath.joinpath("pdgid_to_latexname.csv").open() as csv_f,
+    ):
         addons = get_from_pdg_extended(fwf_f, [csv_f])
 
     # Only keep rows present in the .mcd file specified by year
@@ -431,12 +451,12 @@ def produce_files(
     # Allow replacement of particles by the ext file
     full_table = full_table[~full_table.index.duplicated(keep="last")]
 
-    sort_particles(full_table)
+    full_table = sort_particles(full_table)
 
     new_table = update_from_mcd(full_table, ext_table)
 
-    with open(particle2024, "w", newline="\n", encoding="utf-8") as f:
-        f.write(version_header(str(particle2024), version))
+    with open(particle2025, "w", newline="\n", encoding="utf-8") as f:
+        f.write(version_header(str(particle2025), version))
         new_table.to_csv(f, float_format="%.12g")
 
 
@@ -477,7 +497,7 @@ def run_convert(args: Any) -> None:
 
 
 if __name__ == "__main__":
-    from argparse import ArgumentParser, FileType
+    from argparse import ArgumentParser
 
     parser = ArgumentParser()
     subparsers = parser.add_subparsers(help="Options (pick one)")
@@ -505,7 +525,6 @@ if __name__ == "__main__":
     )
     parser_convert.add_argument(
         "latex",
-        type=FileType("r"),
         help="Optional Latex file with names",
         nargs="?",
         default=None,

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Eduardo Rodrigues and Henry Schreiner.
+# Copyright (c) 2018-2026, Eduardo Rodrigues and Henry Schreiner.
 #
 # Distributed under the 3-clause BSD license, see accompanying file LICENSE
 # or https://github.com/scikit-hep/particle for details.
@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from .. import data
 from ..pdgid import PDGID
-from .bimap import BiMap, DirectionalMaps
+from .bimap import BiMap, DirectionalMap, DirectionalMaps
 
 EvtGenName2PDGIDBiMap = BiMap(
     PDGID,
@@ -30,6 +30,8 @@ Examples
 <PDGID: 22>
 """
 
+PDG2EvtGenNameMap: DirectionalMap[str, str]
+EvtGen2PDGNameMap: DirectionalMap[str, str]
 
 PDG2EvtGenNameMap, EvtGen2PDGNameMap = DirectionalMaps("PDGName", "EvtGenName")
 
