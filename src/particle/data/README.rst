@@ -1,7 +1,7 @@
 Particle Data folder contents
 -----------------------------
 
-You can ``import particle.data``, then use ``particle.data.basepath / "particle2025.csv"``
+You can ``import particle.data``, then use ``particle.data.basepath / "particle2026.csv"``
 to access data reliably regardless of how you have installed or are running the package (even from a zip file!).
 
 
@@ -20,7 +20,7 @@ An extension file for the extended PDG data file, prepared by this package's mai
 It contains entries necessary to provide extended information for the particles in the standard PDG .txt file.
 
 
-``mass_width_2025.txt``
+``mass_width_2026.txt``
 =======================
 
 The latest version of the PDG particle data file, downloaded from the PDG website,
@@ -28,7 +28,7 @@ with much less information, but with more particles and more up to date.
 A few older years are included, too.
 
 
-``particle2025.csv``
+``particle2026.csv``
 ====================
 
 The combined data file, in a format that is easy for the ``Particle`` class to read and easy for physicists to extend or edit.
@@ -50,7 +50,7 @@ The 2008 version of the file was created with only the first two.
 ==================
 
 Information on nuclei extracted and adapted from package ``periodictable``,
-available in the same format as that of ``particle2025.csv``.
+available in the same format as that of ``particle2026.csv``.
 
 
 ``conversions.csv``
