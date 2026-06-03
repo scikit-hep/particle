@@ -255,8 +255,8 @@ If you want a non-default data file distributed with the package just proceed as
 
 ```python
 >>> from particle import data
->>> Particle.load_table(data.basepath / "particle2025.csv"))
->>> Particle.load_table(data.basepath / "nuclei2022.csv"), append=True)  # I still want nuclei info
+>>> Particle.load_table(data.basepath / "particle2026.csv"))
+>>> Particle.load_table(data.basepath / "nuclei2026.csv"), append=True)  # I still want nuclei info
 >>> Particle.table_names()  # list the loaded tables
 ```
 

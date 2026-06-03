@@ -45,15 +45,15 @@ python -m particle pdgid 323      # print PDGID property table for an ID
 - **`particle/`** — the `Particle` class (`particle.py`, ~1300 lines, built with `attrs`), plus `enums.py` (`Charge`, `Parity`, `SpinType`, `Inv`, `Status`), `kinematics.py` (`width_to_lifetime` etc.), `utilities.py`, `regex.py`, and `convert.py` (data-table generation, see below).
 - **`converters/`** — `BiMap`/`DirectionalMaps` (`bimap.py`) plus per-generator converters (`pythia.py`, `geant.py`, `corsika.py`, `evtgen.py`) backed by CSV files.
 - **`pythia/`, `geant/`, `corsika/`, `lhcb/`** — generator-specific ID classes (`PythiaID`, `Geant3ID`, `Corsika7ID`) and name mappings.
-- **`data/`** — bundled data files plus a loader. Import `particle.data` and use `particle.data.basepath / "particle2025.csv"` (uses `importlib.resources`, so it works even from a zipapp). Do not hardcode filesystem paths to data.
+- **`data/`** — bundled data files plus a loader. Import `particle.data` and use `particle.data.basepath / "particle2026.csv"` (uses `importlib.resources`, so it works even from a zipapp). Do not hardcode filesystem paths to data.
 
 ### Particle data loading
 
-`Particle` keeps lazily-populated class-level caches: `_table` (sorted list), `_hash_table` (PDGID → Particle), and `_table_names`. The table is **not** read at import — `load_table()` is triggered on first access (e.g. `from_pdgid`, `findall`, `all`). `load_table(filename, append=True)` lets users extend or replace the built-in table; by default it loads `particle2025.csv` then `nuclei2022.csv`. `from_pdgid` / `from_name` / `findall` are the main lookup entry points.
+`Particle` keeps lazily-populated class-level caches: `_table` (sorted list), `_hash_table` (PDGID → Particle), and `_table_names`. The table is **not** read at import — `load_table()` is triggered on first access (e.g. `from_pdgid`, `findall`, `all`). `load_table(filename, append=True)` lets users extend or replace the built-in table; by default it loads `particle2026.csv` then `nuclei2026.csv`. `from_pdgid` / `from_name` / `findall` are the main lookup entry points.
 
 ### Data files and regeneration
 
-`src/particle/data/README.rst` documents every data file. The pipeline: the 2008 fixed-width files (`mass_width_2008.fwf`, `mass_width_2008_ext.fwf`) + LaTeX names + the year's `.mcd` PDG download are combined by `particle/convert.py` into the per-year `particleYYYY.csv` that `Particle` reads. Regenerate with:
+`src/particle/data/README.rst` documents every data file. The pipeline: the 2008 fixed-width files (`mass_width_2008.fwf`, `mass_width_2008_ext.fwf`) + LaTeX names + the year's `.txt` PDG download are combined by `particle/convert.py` into the per-year `particleYYYY.csv` that `Particle` reads. Regenerate with:
 
 ```bash
 python -m particle.particle.convert regenerate <year> <version>   # rebuild built-in CSVs

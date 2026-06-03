@@ -1,5 +1,5 @@
-* Example PDG particle data file in ".mcd format" for testing purposes.
-* File in the very same format as the mass_width_<year>.mcd files.
+* Example PDG particle data file in ".txt format" for testing purposes.
+* File in the very same format as the mass_width_<year>.txt files.
 * Values below come from the 2021 file.
 *
 * Particle ID(s)                  Mass  (GeV)       Errors (GeV)       Width (GeV)       Errors (GeV)      Name          Charges

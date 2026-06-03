@@ -12,14 +12,14 @@ pd = pytest.importorskip("pandas")
 
 from pathlib import Path
 
-from particle.particle.convert import get_from_pdg_mcd
+from particle.particle.convert import get_from_pdg_txt
 
 DIR = Path(__file__).parent.resolve()
 
 
-def test_get_from_pdg_mcd() -> None:
+def test_get_from_pdg_txt() -> None:
     with (
-        (DIR / "../data/test_PDG_mcd_file_duplicates.mcd").open() as f,
+        (DIR / "../data/test_PDG_txt_file_duplicates.txt").open() as f,
         pytest.raises(AssertionError),
     ):
-        get_from_pdg_mcd(f)
+        get_from_pdg_txt(f)

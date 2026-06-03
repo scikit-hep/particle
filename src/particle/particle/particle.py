@@ -371,14 +371,14 @@ class Particle:
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'], particle=False)
         >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
-        =======  ======  =============  ========
-          pdgid  name             mass    charge
-        =======  ======  =============  ========
-            -11  e+         0.51099895         1
-            -13  mu+      105.6583755          1
-            -15  tau+    1776.93               1
-            -17  tau'+                         1
-        =======  ======  =============  ========
+        =======  ======  ================  ========
+          pdgid  name                mass    charge
+        =======  ======  ================  ========
+            -11  e+         0.51099895069         1
+            -13  mu+      105.6583755             1
+            -15  tau+    1776.93                  1
+            -17  tau'+                            1
+        =======  ======  ================  ========
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton, pdg_name='tau', exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
         >>> print(tabulate(query_as_list, headers='firstrow'))
@@ -568,10 +568,10 @@ class Particle:
         assert cls._table_names is not None
 
         if filename is None:
-            with data.basepath.joinpath("particle2025.csv").open() as fa:
-                cls.load_table(fa, append=append, _name="particle2025.csv")
-            with data.basepath.joinpath("nuclei2022.csv").open() as fb:
-                cls.load_table(fb, append=True, _name="nuclei2022.csv")
+            with data.basepath.joinpath("particle2026.csv").open() as fa:
+                cls.load_table(fa, append=append, _name="particle2026.csv")
+            with data.basepath.joinpath("nuclei2026.csv").open() as fb:
+                cls.load_table(fb, append=True, _name="nuclei2026.csv")
             return
         if isinstance(filename, HasRead):
             tmp_name = _name or filename.name
@@ -1405,15 +1405,15 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
            >>> # Returns proton and antiproton only
            >>> Particle.findall(pdg_name='p')    # doctest: +NORMALIZE_WHITESPACE
-           [<Particle: name="p", pdgid=2212, mass=938.2720882 ± 0.0000003 MeV>,
-            <Particle: name="p~", pdgid=-2212, mass=938.2720882 ± 0.0000003 MeV>,
-            <Particle: name="p", pdgid=1000010010, mass=938.2720882 ± 0.0000003 MeV>,
-            <Particle: name="p~", pdgid=-1000010010, mass=938.2720882 ± 0.0000003 MeV>]
+           [<Particle: name="p", pdgid=2212, mass=938.2720894 ± 0.0000003 MeV>,
+            <Particle: name="p~", pdgid=-2212, mass=938.2720894 ± 0.0000003 MeV>,
+            <Particle: name="p", pdgid=1000010010, mass=938.2720894 ± 0.0000003 MeV>,
+            <Particle: name="p~", pdgid=-1000010010, mass=938.2720894 ± 0.0000003 MeV>]
 
            >>> # Returns proton only
            >>> Particle.findall(pdg_name='p', particle=True)    # doctest: +NORMALIZE_WHITESPACE
-           [<Particle: name="p", pdgid=2212, mass=938.2720882 ± 0.0000003 MeV>,
-           <Particle: name="p", pdgid=1000010010, mass=938.2720882 ± 0.0000003 MeV>]
+           [<Particle: name="p", pdgid=2212, mass=938.2720894 ± 0.0000003 MeV>,
+           <Particle: name="p", pdgid=1000010010, mass=938.2720894 ± 0.0000003 MeV>]
 
         Versatile searches require a (lambda) function as argument:
 
