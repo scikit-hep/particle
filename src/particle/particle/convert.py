@@ -33,11 +33,11 @@ combined with one or more LaTeX files describing the pair (PDG ID, LaTeX name):
 
 You can also read in a modern "standard" file (this will produce fewer columns):
 
-    >>> ext_table = get_from_pdg_mcd('particle/data/mass_width_2025.mcd')
+    >>> ext_table = get_from_pdg_txt('particle/data/mass_width_2025.txt')
 
 A utility is even provided to use the modern table to update the full table:
 
-    >>> new_table = update_from_mcd(full_table, ext_table)
+    >>> new_table = update_from_txt(full_table, ext_table)
 
 You can see what particles were missing from the full table if you want:
 
@@ -83,8 +83,8 @@ __all__ = (
     "convert",
     "get_from_latex",
     "get_from_pdg_extended",
-    "get_from_pdg_mcd",
-    "update_from_mcd",
+    "get_from_pdg_txt",
+    "update_from_txt",
 )
 
 
@@ -286,13 +286,13 @@ def sort_particles(table: pd.DataFrame) -> pd.DataFrame:
     return table
 
 
-def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
+def get_from_pdg_txt(filename: StringOrIO) -> pd.DataFrame:
     """
-    Reads in a current-style PDG .mcd file (mass_width_2025.mcd file tested).
+    Reads in a current-style PDG .txt file (mass_width_2025.txt file tested).
 
     Example
     -------
-    >>> mcd_table = get_from_pdg_mcd('particle/data/mass_width_2025.mcd')
+    >>> txt_table = get_from_pdg_txt('particle/data/mass_width_2025.txt')
     """
 
     # The format here includes the space before a column
@@ -369,16 +369,16 @@ def get_from_pdg_mcd(filename: StringOrIO) -> pd.DataFrame:
     return ds
 
 
-def update_from_mcd(
+def update_from_txt(
     full_table: pd.DataFrame, update_table: pd.DataFrame
 ) -> pd.DataFrame:
     """
     Update the full table (aka the PDG extended-style table) with the
-    up-to-date information from the PDG .mcd file.
+    up-to-date information from the PDG .txt file.
 
     Example
     -------
-    >>> new_table = update_from_mcd('mass_width_2008.fwf', 'mass_width_2025.mcd')    # doctest: +SKIP
+    >>> new_table = update_from_txt('mass_width_2008.fwf', 'mass_width_2025.txt')    # doctest: +SKIP
     """
 
     full_table = full_table.copy()
@@ -412,8 +412,8 @@ def produce_files(
     # f.write(version_header(particle2008, version))
     # full_table.to_csv(f, float_format="%.12g")
 
-    with data.basepath.joinpath("mass_width_" + year + ".mcd").open() as mcd_f:
-        ext_table = get_from_pdg_mcd(mcd_f)
+    with data.basepath.joinpath("mass_width_" + year + ".txt").open() as txt_f:
+        ext_table = get_from_pdg_txt(txt_f)
 
     with (
         data.basepath.joinpath("mass_width_2008_ext.fwf").open() as fwf_f,
@@ -421,12 +421,12 @@ def produce_files(
     ):
         addons = get_from_pdg_extended(fwf_f, [csv_f])
 
-    # Only keep rows present in the .mcd file specified by year
+    # Only keep rows present in the .txt file specified by year
     full_table = full_table[
         full_table.index.isin(ext_table.index) | full_table.index.isin(-ext_table.index)
     ]
 
-    # Check it there are rows only present in the .mcd file specified by year,
+    # Check it there are rows only present in the .txt file specified by year,
     # in which case we need to update our curated files!
     ext_table_excl = pd.DataFrame(
         ext_table[
@@ -438,9 +438,9 @@ def produce_files(
         columns=full_table.columns,
     )
     if len(ext_table_excl) > 0:
-        mcd_year = "mass_width_" + year + ".mcd"
+        txt_year = "mass_width_" + year + ".txt"
         warnings.warn(
-            f"""{mcd_year!r} contains the following {len(ext_table_excl)} new entries:"
+            f"""{txt_year!r} contains the following {len(ext_table_excl)} new entries:"
     {ext_table_excl.index.to_list()}
     Curation needs an update!""",
             stacklevel=1,
@@ -453,7 +453,7 @@ def produce_files(
 
     full_table = sort_particles(full_table)
 
-    new_table = update_from_mcd(full_table, ext_table)
+    new_table = update_from_txt(full_table, ext_table)
 
     with open(particle2025, "w", newline="\n", encoding="utf-8") as f:
         f.write(version_header(str(particle2025), version))

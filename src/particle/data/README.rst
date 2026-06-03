@@ -17,14 +17,13 @@ width format.
 ===========================
 
 An extension file for the extended PDG data file, prepared by this package's maintainers.
-It contains entries necessary to provide extended information for the particles in the standard .mcd file.
+It contains entries necessary to provide extended information for the particles in the standard PDG .txt file.
 
 
-``mass_width_2025.mcd``
+``mass_width_2025.txt``
 =======================
 
-The latest version of the PDG particle data file, downloaded from the PDG website
-(renamed from .txt to the .mcd extension as in previous years),
+The latest version of the PDG particle data file, downloaded from the PDG website,
 with much less information, but with more particles and more up to date.
 A few older years are included, too.
 
@@ -43,7 +42,7 @@ If you'd like to append to this file, write a similar file with the same header,
 to read in the original table and then the new file you've written.
 
 This file was created from ``pdgid_to_latexname.csv``, ``mass_width_2008.fwf``,
-``mass_width_2008_ext.fwf`` and ``mass_width_2025.mcd``.
+``mass_width_2008_ext.fwf`` and ``mass_width_2025.txt``.
 The 2008 version of the file was created with only the first two.
 
 

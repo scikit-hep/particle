@@ -53,7 +53,7 @@ python -m particle pdgid 323      # print PDGID property table for an ID
 
 ### Data files and regeneration
 
-`src/particle/data/README.rst` documents every data file. The pipeline: the 2008 fixed-width files (`mass_width_2008.fwf`, `mass_width_2008_ext.fwf`) + LaTeX names + the year's `.mcd` PDG download are combined by `particle/convert.py` into the per-year `particleYYYY.csv` that `Particle` reads. Regenerate with:
+`src/particle/data/README.rst` documents every data file. The pipeline: the 2008 fixed-width files (`mass_width_2008.fwf`, `mass_width_2008_ext.fwf`) + LaTeX names + the year's `.txt` PDG download are combined by `particle/convert.py` into the per-year `particleYYYY.csv` that `Particle` reads. Regenerate with:
 
 ```bash
 python -m particle.particle.convert regenerate <year> <version>   # rebuild built-in CSVs
