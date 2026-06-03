@@ -49,7 +49,7 @@ python -m particle pdgid 323      # print PDGID property table for an ID
 
 ### Particle data loading
 
-`Particle` keeps lazily-populated class-level caches: `_table` (sorted list), `_hash_table` (PDGID → Particle), and `_table_names`. The table is **not** read at import — `load_table()` is triggered on first access (e.g. `from_pdgid`, `findall`, `all`). `load_table(filename, append=True)` lets users extend or replace the built-in table; by default it loads `particle2026.csv` then `nuclei2022.csv`. `from_pdgid` / `from_name` / `findall` are the main lookup entry points.
+`Particle` keeps lazily-populated class-level caches: `_table` (sorted list), `_hash_table` (PDGID → Particle), and `_table_names`. The table is **not** read at import — `load_table()` is triggered on first access (e.g. `from_pdgid`, `findall`, `all`). `load_table(filename, append=True)` lets users extend or replace the built-in table; by default it loads `particle2026.csv` then `nuclei2026.csv`. `from_pdgid` / `from_name` / `findall` are the main lookup entry points.
 
 ### Data files and regeneration
 
