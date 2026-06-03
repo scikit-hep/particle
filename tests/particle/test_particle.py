@@ -1061,6 +1061,7 @@ def test_hypercharge(name: str, hypercharge: int | Fraction) -> None:
     ],
 )
 def test_gell_mann_nishijima(name: str, expected_i3_over_two: int | Fraction) -> None:
+    """Test the Gell-Mann–Nishijima formula relating charge to isospin and hypercharge."""
     p = Particle.from_name(name)
     Y = p.hypercharge
     Q = p.charge
@@ -1071,6 +1072,7 @@ def test_gell_mann_nishijima(name: str, expected_i3_over_two: int | Fraction) ->
 
 
 def test_gell_mann_nishijima_database_consistency() -> None:
+    """Verify the Gell-Mann–Nishijima formula relating charge to isospin and hypercharge for all particles in the database."""
     violations: list[tuple[Particle, Fraction, Fraction, Fraction, Fraction]] = []
     n_checked = 0
     for p in Particle.all():
