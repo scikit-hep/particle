@@ -570,8 +570,8 @@ class Particle:
         if filename is None:
             with data.basepath.joinpath("particle2026.csv").open() as fa:
                 cls.load_table(fa, append=append, _name="particle2026.csv")
-            with data.basepath.joinpath("nuclei2022.csv").open() as fb:
-                cls.load_table(fb, append=True, _name="nuclei2022.csv")
+            with data.basepath.joinpath("nuclei2026.csv").open() as fb:
+                cls.load_table(fb, append=True, _name="nuclei2026.csv")
             return
         if isinstance(filename, HasRead):
             tmp_name = _name or filename.name

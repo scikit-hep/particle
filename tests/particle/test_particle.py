@@ -376,14 +376,14 @@ def test_describe(pid: int, description: str) -> None:
 
 
 def test_default_table_loading() -> None:
-    assert Particle.table_names() == ("particle2026.csv", "nuclei2022.csv")
+    assert Particle.table_names() == ("particle2026.csv", "nuclei2026.csv")
 
 
 def test_default_table_loading_bis() -> None:
     Particle.all()
     p = Particle.from_pdgid(211)
     assert p.table_loaded() is True
-    assert p.table_names() == ("particle2026.csv", "nuclei2022.csv")
+    assert p.table_names() == ("particle2026.csv", "nuclei2026.csv")
 
 
 def test_explicit_table_loading() -> None:
@@ -401,7 +401,7 @@ def test_all_particles_are_loaded() -> None:
     Particle.load_table(data.basepath / "particle2024.csv")
     assert len(Particle.all()) == 625
 
-    Particle.load_table(data.basepath / "nuclei2022.csv")
+    Particle.load_table(data.basepath / "nuclei2026.csv")
     assert len(Particle.all()) == 5880
 
     # Load default table to restore global state

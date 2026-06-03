@@ -15,7 +15,7 @@ def test_load_particle_table(benchmark: BenchmarkFixture) -> None:
 def test_load_nuclei_append(benchmark: BenchmarkFixture) -> None:
     def load_two() -> None:
         Particle.load_table(data.basepath / "particle2026.csv")
-        Particle.load_table(data.basepath / "nuclei2022.csv", append=True)
+        Particle.load_table(data.basepath / "nuclei2026.csv", append=True)
 
     benchmark(load_two)
 
