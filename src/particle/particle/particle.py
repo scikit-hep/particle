@@ -11,6 +11,7 @@ import contextlib
 import csv
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from copy import copy
+from fractions import Fraction
 from functools import total_ordering
 from typing import Any, SupportsInt, TypeVar
 
@@ -73,12 +74,12 @@ for pdgid1, pdgid2 in _NON_UNIQUE_PDGIDS.items():
     _PREFERRED_PDGID[pdgid2] = _PREFERRED_PDGID[pdgid1]
 
 
-def _isospin_converter(isospin: str) -> float | None:
-    vals: dict[str | None, float | None] = {
-        "0": 0.0,
-        "1/2": 0.5,
-        "1": 1.0,
-        "3/2": 1.5,
+def _isospin_converter(isospin: str) -> Fraction | None:
+    vals: dict[str | None, Fraction | None] = {
+        "0": Fraction(0),
+        "1/2": Fraction(1, 2),
+        "1": Fraction(1),
+        "3/2": Fraction(3, 2),
     }
     return vals.get(isospin)
 
@@ -90,6 +91,7 @@ def _none_or_positive_converter(value: float) -> float | None:
 # These are needed to trick attrs typing
 minus_one: float | None = -1.0
 none_float: float | None = None
+none_fraction: Fraction | None = None
 
 
 Self = TypeVar("Self", bound="Particle")
@@ -214,7 +216,7 @@ class Particle:
         minus_one, converter=_none_or_positive_converter
     )
     _three_charge: Charge | None = attr.ib(Charge.u, converter=Charge)  # charge * 3
-    I: float | None = attr.ib(none_float, converter=_isospin_converter)
+    I: Fraction | None = attr.ib(none_fraction, converter=_isospin_converter)
     # J = attr.ib(None)  # Total angular momentum
     G = attr.ib(Parity.u, converter=Parity)  # Parity: '', +, -, or ?
     P = attr.ib(Parity.u, converter=Parity)  # Space parity
@@ -369,14 +371,14 @@ class Particle:
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton and p.charge!=0, exclusive_fields=['pdgid', 'name', 'mass', 'charge'], particle=False)
         >>> print(tabulate(query_as_list, headers='firstrow', tablefmt="rst", floatfmt=".12g", numalign="decimal"))
-        =======  ======  =============  ========
-          pdgid  name             mass    charge
-        =======  ======  =============  ========
-            -11  e+         0.51099895         1
-            -13  mu+      105.6583755          1
-            -15  tau+    1776.93               1
-            -17  tau'+                         1
-        =======  ======  =============  ========
+        =======  ======  ================  ========
+          pdgid  name                mass    charge
+        =======  ======  ================  ========
+            -11  e+         0.51099895069         1
+            -13  mu+      105.6583755             1
+            -15  tau+    1776.93                  1
+            -17  tau'+                            1
+        =======  ======  ================  ========
 
         >>> query_as_list = Particle.to_list(filter_fn=lambda p: p.pdgid.is_lepton, pdg_name='tau', exclusive_fields=['pdgid', 'name', 'mass', 'charge'])
         >>> print(tabulate(query_as_list, headers='firstrow'))
@@ -566,10 +568,10 @@ class Particle:
         assert cls._table_names is not None
 
         if filename is None:
-            with data.basepath.joinpath("particle2025.csv").open() as fa:
-                cls.load_table(fa, append=append, _name="particle2025.csv")
-            with data.basepath.joinpath("nuclei2022.csv").open() as fb:
-                cls.load_table(fb, append=True, _name="nuclei2022.csv")
+            with data.basepath.joinpath("particle2026.csv").open() as fa:
+                cls.load_table(fa, append=append, _name="particle2026.csv")
+            with data.basepath.joinpath("nuclei2026.csv").open() as fb:
+                cls.load_table(fb, append=True, _name="nuclei2026.csv")
             return
         if isinstance(filename, HasRead):
             tmp_name = _name or filename.name
@@ -651,7 +653,7 @@ class Particle:
     # Shared with PDGID
 
     @property
-    def J(self) -> int:
+    def J(self) -> Fraction | None:
         """
         The total spin J quantum number.
 
@@ -681,7 +683,7 @@ class Particle:
         return self.pdgid.S  # type: ignore[no-any-return]
 
     @property
-    def charge(self) -> float | None:
+    def charge(self) -> Fraction | None:
         """
         The particle charge, in units of the positron charge.
 
@@ -691,7 +693,7 @@ class Particle:
         Consistency of both ways of retrieving the particle charge is guaranteed
         for all PDG table particles.
         """
-        return self.three_charge / 3 if self.three_charge is not None else None
+        return Fraction(self.three_charge, 3) if self.three_charge is not None else None
 
     @property
     def three_charge(self) -> int | None:
@@ -751,7 +753,7 @@ class Particle:
         if self.pdgid.j_spin % 2 == 0:
             return SpinType.NonDefined
 
-        J = int(self.J)
+        J = (self.pdgid.j_spin - 1) // 2
         if J in {0, 1, 2}:
             if Parity.p == self.P:
                 return (SpinType.Scalar, SpinType.Axial, SpinType.Tensor)[J]
@@ -771,6 +773,152 @@ class Particle:
         Is the particle self-conjugate, i.e. its own antiparticle?
         """
         return self.anti_flag == Inv.Same
+
+    @property
+    def baryon_number(self) -> Fraction | int:
+        """
+        The baryon number :math:`B` of the particle.
+
+        Baryons have :math:`B = +1` (antibaryons :math:`B = -1`) and nuclei have
+        :math:`B = A`, the mass number (:math:`B = -A` for anti-nuclei).
+        Quarks carry a fractional baryon number of :math:`+1/3` (antiquarks :math:`-1/3`),
+        which is returned as a `~fractions.Fraction` so that the value stays exact;
+        all other cases return a plain `int`. Everything else
+        (mesons, leptons, gauge bosons, ...) has :math:`B = 0`.
+        """
+        if self.pdgid.is_baryon:
+            return 1 if self.pdgid > 0 else -1
+        if self.pdgid.is_nucleus:
+            if self.pdgid.A is None:
+                return 0
+            A = int(self.pdgid.A)
+            if self.pdgid > 0:
+                return A
+            return -A
+        if self.pdgid.is_quark:
+            return Fraction(1, 3) if self.pdgid > 0 else Fraction(-1, 3)
+        return 0
+
+    @property
+    def lepton_number(self) -> int:
+        """
+        The lepton quantum number :math:`L` of the particle.
+
+        Leptons have :math:`L = +1` and antileptons :math:`L = -1`.
+        All other particles have :math:`L = 0`.
+        Note that this is the total lepton number and not a per-generation lepton number.
+        """
+        if self.pdgid.is_lepton:
+            return 1 if self.pdgid > 0 else -1
+        return 0
+
+    @property
+    def r_parity(self) -> int | None:
+        """
+        The :math:`R`-parity quantum number of the particle.
+
+        :math:`R`-parity is the multiplicative quantum number defined as
+        :math:`R = (-1)^(3B + L + 2s)`, where :math:`B` is the :attr:`baryon_number`,
+        :math:`L` is the :attr:`lepton_number` and :math:`s` is the spin :math:`J`.
+        Standard Model particles have :math:`R = +1` and their
+        hypothetical supersymmetric partners :math:`R = -1`.
+        Returns `None` if the spin is unknown.
+        """
+        if self.pdgid.J is None:
+            return None
+        B = self.baryon_number
+        L = self.lepton_number
+        s = self.pdgid.J
+        exponent = int(3 * B) + L + int(2 * s)
+        return 1 if exponent % 2 == 0 else -1
+
+    @property
+    def strangeness(self) -> int:
+        r"""
+        The strangeness quantum number :math:`S` of the particle.
+
+        Counts the net number of strange quarks, :math:`S = n(\bar{s}) - n(s)`,
+        as derived from the particle's quark content.
+        Returns ``0`` if the quark content is empty or not unambiguous
+        (e.g. flavour mixtures denoted with parentheses).
+
+        Note
+        ----
+        By convention, a flavour quantum number has the same sign as
+        the electric charge of its quark, so down-type quarks (:math:`s`,
+        :math:`b`) carry a negative value while up-type quarks (:math:`c`,
+        :math:`t`) carry a positive one. The quark content uses uppercase
+        letters for antiquarks, which is why :attr:`strangeness` and
+        :attr:`bottomness` count uppercase minus lowercase, while
+        :attr:`charmness` and :attr:`topness` do the reverse.
+        """
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
+            return 0
+        return quark_content.count("S") - quark_content.count("s")
+
+    @property
+    def charmness(self) -> int:
+        r"""
+        The charm quantum number :math:`C` of the particle.
+
+        Counts the net number of charm quarks, :math:`C = n(c) - n(\bar{c})`,
+        as derived from the particle's quark content.
+        Returns ``0`` if the quark content is empty or not unambiguous
+        (e.g. flavour mixtures denoted with parentheses).
+        """
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
+            return 0
+        return quark_content.count("c") - quark_content.count("C")
+
+    @property
+    def bottomness(self) -> int:
+        r"""
+        The bottom quantum number :math:`B'` of the particle.
+
+        Counts the net number of bottom quarks, :math:`B' = n(\bar{b}) - n(b)`,
+        as derived from the particle's quark content.
+        Returns ``0`` if the quark content is empty or not unambiguous
+        (e.g. flavour mixtures denoted with parentheses).
+        """
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
+            return 0
+        return quark_content.count("B") - quark_content.count("b")
+
+    @property
+    def topness(self) -> int:
+        r"""
+        The top quantum number :math:`T` of the particle.
+
+        Counts the net number of top quarks, :math:`T = n(t) - n(\bar{t})`,
+        as derived from the particle's quark content.
+        Returns ``0`` if the quark content is empty or not unambiguous
+        (e.g. flavour mixtures denoted with parentheses).
+        """
+        quark_content = _strip_quark_content(self.quarks)
+        if not quark_content or "(" in quark_content:
+            return 0
+        return quark_content.count("t") - quark_content.count("T")
+
+    @property
+    def hypercharge(self) -> Fraction | int:
+        """
+        The strong hypercharge quantum number :math:`Y` of the particle.
+
+        Defined as :math:`Y = B + S + C + B' + T`, i.e. the sum of the
+        :attr:`baryon_number` and the flavour quantum numbers
+        :attr:`strangeness`, :attr:`charmness`, :attr:`bottomness` and
+        :attr:`topness`.
+        """
+        return (
+            self.baryon_number
+            + self.strangeness
+            + self.charmness
+            + self.bottomness
+            + self.topness
+        )
 
     @property
     def is_unflavoured_meson(self) -> bool:
@@ -1257,15 +1405,15 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
            >>> # Returns proton and antiproton only
            >>> Particle.findall(pdg_name='p')    # doctest: +NORMALIZE_WHITESPACE
-           [<Particle: name="p", pdgid=2212, mass=938.2720882 ± 0.0000003 MeV>,
-            <Particle: name="p~", pdgid=-2212, mass=938.2720882 ± 0.0000003 MeV>,
-            <Particle: name="p", pdgid=1000010010, mass=938.2720882 ± 0.0000003 MeV>,
-            <Particle: name="p~", pdgid=-1000010010, mass=938.2720882 ± 0.0000003 MeV>]
+           [<Particle: name="p", pdgid=2212, mass=938.2720894 ± 0.0000003 MeV>,
+            <Particle: name="p~", pdgid=-2212, mass=938.2720894 ± 0.0000003 MeV>,
+            <Particle: name="p", pdgid=1000010010, mass=938.2720894 ± 0.0000003 MeV>,
+            <Particle: name="p~", pdgid=-1000010010, mass=938.2720894 ± 0.0000003 MeV>]
 
            >>> # Returns proton only
            >>> Particle.findall(pdg_name='p', particle=True)    # doctest: +NORMALIZE_WHITESPACE
-           [<Particle: name="p", pdgid=2212, mass=938.2720882 ± 0.0000003 MeV>,
-           <Particle: name="p", pdgid=1000010010, mass=938.2720882 ± 0.0000003 MeV>]
+           [<Particle: name="p", pdgid=2212, mass=938.2720894 ± 0.0000003 MeV>,
+           <Particle: name="p", pdgid=1000010010, mass=938.2720894 ± 0.0000003 MeV>]
 
         Versatile searches require a (lambda) function as argument:
 
@@ -1281,3 +1429,12 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return list(
             cls.finditer(filter_fn=filter_fn, particle=particle, **search_terms)
         )
+
+
+def _strip_quark_content(quarks: str) -> str:
+    """Remove additional qualifiers from a quark-content string.
+
+    For example, the quark content of some particles is prefixed with
+    ``"Maybe"`` to indicate that the assignment is uncertain.
+    """
+    return quarks.replace("Maybe", "")

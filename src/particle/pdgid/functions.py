@@ -26,6 +26,7 @@ References
 from __future__ import annotations
 
 from enum import IntEnum
+from fractions import Fraction
 from typing import SupportsInt
 
 PDGID_TYPE = SupportsInt
@@ -528,15 +529,15 @@ def has_fundamental_anti(pdgid: PDGID_TYPE) -> bool:
     return False
 
 
-def charge(pdgid: PDGID_TYPE) -> float | None:
+def charge(pdgid: PDGID_TYPE) -> Fraction | None:
     """Returns the charge."""
 
     three_charge_pdgid = three_charge(pdgid)
     if three_charge_pdgid is None:
         return None
     if not is_Qball(pdgid):
-        return three_charge_pdgid / 3.0
-    return three_charge_pdgid / 30.0
+        return Fraction(three_charge_pdgid, 3)
+    return Fraction(three_charge_pdgid, 30)
 
 
 def three_charge(pdgid: PDGID_TYPE) -> int | None:
@@ -734,10 +735,10 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
     return abspid(pdgid) % 10
 
 
-def J(pdgid: PDGID_TYPE) -> float | None:
+def J(pdgid: PDGID_TYPE) -> Fraction | None:
     """Returns the total spin J."""
     value = j_spin(pdgid)
-    return (value - 1) / 2 if value is not None else value
+    return Fraction(value - 1, 2) if value is not None else None
 
 
 def S(pdgid: PDGID_TYPE) -> int | None:

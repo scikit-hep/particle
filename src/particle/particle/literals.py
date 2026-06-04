@@ -21,7 +21,7 @@ Typical use cases::
     >>> Lambda_b_0
     <Particle: name="Lambda(b)0", pdgid=5122, mass=5619.57 ± 0.16 MeV>
     >>> Lambda_b_0.J
-    0.5
+    Fraction(1, 2)
 
 List of available/defined literals:
 

@@ -17,10 +17,12 @@ sdist
 wheelhouse
 develop-eggs
 .installed.cfg
+.venv*/
 lib
 lib64
 venv*/
 pyvenv*/
+uv.lock
 
 # Installer logs
 pip-log.txt
@@ -77,3 +79,10 @@ docs/_build
 *.pixi
 
 */__pycache__/*
+
+# Editors
+.vscode/
+
+# Symlink to AGENTS.md
+CLAUDE.md
+.claude/

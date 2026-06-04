@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+from fractions import Fraction
+
 from pdgids import PDGIDsEnum as PDGIDs
 
 from particle.pdgid import (
@@ -68,8 +70,8 @@ def test_charge() -> None:
     assert charge(PDGIDs.Proton) == +1
     assert charge(PDGIDs.LcPlus) == +1
     assert charge(PDGIDs.Lb) == 0
-    assert charge(PDGIDs.DD1) == -2 / 3
-    assert charge(PDGIDs.SD0) == -2 / 3
+    assert charge(PDGIDs.DD1) == Fraction(-2, 3)
+    assert charge(PDGIDs.SD0) == Fraction(-2, 3)
     assert charge(PDGIDs.Invalid1) is None
     assert charge(PDGIDs.Invalid2) is None
 
