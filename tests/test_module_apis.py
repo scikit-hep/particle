@@ -12,7 +12,6 @@ def test_top_level_api() -> None:
         "Geant3ID",
         "Inv",
         "InvalidParticle",
-        "MCParticleID",
         "PDGID",
         "Parity",
         "Particle",
