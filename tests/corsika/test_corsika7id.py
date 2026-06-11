@@ -4,6 +4,7 @@ import pytest
 
 from particle.corsika import Corsika7ID
 from particle.exceptions import MatchingIDNotFound
+from particle.particle import InvalidParticle
 from particle.pdgid import PDGID
 
 
@@ -36,8 +37,6 @@ def test_to_pdgid() -> None:
 
 
 def test_to_pdgid_invalid() -> None:
-    from particle.particle import InvalidParticle  # pylint: disable=C0415
-
     with pytest.raises(InvalidParticle):
         _ = Corsika7ID(75).to_pdgid()
 
@@ -105,7 +104,5 @@ def test_name() -> None:
 
 
 def test_name_invalid() -> None:
-    from particle.particle import InvalidParticle  # pylint: disable=C0415
-
     with pytest.raises(InvalidParticle):
         _ = Corsika7ID(0).name()

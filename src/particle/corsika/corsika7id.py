@@ -17,6 +17,7 @@ from typing import TypeVar
 
 from ..exceptions import MatchingIDNotFound
 from ..mcid import MCParticleID, _csv_to_pdg_map
+from ..particle.particle import InvalidParticle, Particle
 from ..pdgid import PDGID
 
 Self = TypeVar("Self", bound="Corsika7ID")
@@ -158,8 +159,6 @@ class Corsika7ID(MCParticleID):
         >>> ch_photons_of.name()
         'Cherenkov photons on particle output file'
         """
-        from ..particle.particle import Particle  # pylint: disable=C0415
-
         if not self.is_particle():
             iid = int(self)
 
@@ -196,8 +195,6 @@ class Corsika7ID(MCParticleID):
         >>> Corsika7ID(76).to_pdgid()  # doctest: +SKIP
         InvalidParticle: The Corsika7ID <Corsika7ID: 76> does not correspond to a particle and thus has no equivalent PDGID.
         """
-        from ..particle.particle import InvalidParticle  # pylint: disable=C0415
-
         if int(self) in self._to_pdg_map:
             return super().to_pdgid()
 
