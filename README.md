@@ -108,7 +108,7 @@ has_bottom     False
 ...
 ```
 
-Similarly, classes exist to express identification codes used by MC programs, see information on converters below.
+Similarly, classes exist to express identification codes used by MC programs, see the section on MC particle IDs below.
 
 ## Getting started: Particles
 
@@ -324,27 +324,24 @@ You can convert and update the particle tables with the utilities in `particle.p
 $ python3 -m particle.particle.convert --help
 ```
 
-## Getting started: Converters
+## Getting started: MC particle IDs
 
-You can use mapping classes to convert between particle MC identification codes
-and particle names. See the `particle.converters` modules for the available
-mapping classes. For example:
+Classes similar to `PDGID` hold the particle identification codes ("IDs")
+used by MC programs, and convert to and from the standard PDG IDs
+via the methods `to_pdgid()` and `from_pdgid()`
+(a `MatchingIDNotFound` exception is raised when no conversion exists):
 
 ```python
->>> from particle.converters import Pythia2PDGIDBiMap
 >>> from particle import PDGID, PythiaID
 >>>
->>> pyid = Pythia2PDGIDBiMap[PDGID(9010221)]
+>>> pyid = PythiaID.from_pdgid(PDGID(9010221))
 >>> pyid
 <PythiaID: 10221>
 
->>> pdgid = Pythia2PDGIDBiMap[PythiaID(10221)]
->>> pdgid
+>>> pyid.to_pdgid()
 <PDGID: 9010221>
 ```
 
-This code makes use of classes similar to `PDGID`, which hold
-particle identification codes used by MC programs.
 Possible use cases are the following:
 
 ```python
@@ -369,6 +366,21 @@ Possible use cases are the following:
 >>> p = Particle.from_pdgid(cid.to_pdgid())
 >>> p.name
 'mu+'
+```
+
+All these ID classes derive from the common base class `MCParticleID`,
+which can be subclassed to define custom ID classes,
+given a conversion mapping to PDG IDs:
+
+```python
+>>> from particle.mcid import MCParticleID
+>>>
+>>> class MyGeneratorID(MCParticleID):
+...     _to_pdg_map = {1: 11, 2: -11, 3: 22}
+>>> MyGeneratorID(3).to_pdgid()
+<PDGID: 22>
+>>> MyGeneratorID.from_pdgid(PDGID(-11))
+<MyGeneratorID: 2>
 ```
 
 ### Corsika7
