@@ -14,6 +14,7 @@ def run_cli(*args: str) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         [sys.executable, "-m", "particle", *args],
         capture_output=True,
+        check=False,
         text=True,
     )
 
