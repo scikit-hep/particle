@@ -30,6 +30,10 @@ with data.basepath.joinpath("pdgid_to_geant3id.csv").open() as _f:
         for v in csv.DictReader(line for line in _f if not line.startswith("#"))
     }
 
+_inverse_bimap: dict[int, int] = {}
+for _k, _v in _bimap.items():
+    _inverse_bimap.setdefault(_v, _k)
+
 
 class Geant3ID(int):
     """
@@ -54,10 +58,12 @@ class Geant3ID(int):
         """
         Constructor from a PDGID.
         """
-        for k, v in _bimap.items():
-            if v == pdgid:
-                return cls(k)
-        raise MatchingIDNotFound(f"Non-existent Geant3ID for input PDGID {pdgid} !")
+        try:
+            return cls(_inverse_bimap[int(pdgid)])
+        except KeyError:
+            raise MatchingIDNotFound(
+                f"Non-existent Geant3ID for input PDGID {pdgid} !"
+            ) from None
 
     def to_pdgid(self) -> PDGID:
         return PDGID(_bimap[self])
