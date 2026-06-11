@@ -12,6 +12,7 @@ import sys
 
 from . import __version__
 from .particle import Particle
+from .particle.particle import InvalidParticle, ParticleNotFound
 from .pdgid import PDGID
 
 
@@ -27,7 +28,9 @@ def main() -> None:
         version=f"%(prog)s {__version__}",
     )
 
-    subparsers = parser.add_subparsers(help="Subcommands")
+    subparsers = parser.add_subparsers(
+        help="Subcommands", required=True, dest="command"
+    )
 
     search = subparsers.add_parser(
         "search",
@@ -44,18 +47,18 @@ def main() -> None:
 
     if "particle" in opts:
         for cand in opts.particle:
-            if hasattr(cand, "decode"):
-                cand = cand.decode("utf-8")  # noqa: PLW2901
-
             try:
                 value = int(cand)
             except ValueError:
                 value = 0
 
-            if value:
-                particles = [Particle.from_pdgid(value)]
-            else:
-                particles = Particle.findall(cand)
+            try:
+                if value:
+                    particles = [Particle.from_pdgid(value)]
+                else:
+                    particles = Particle.findall(cand)
+            except (InvalidParticle, ParticleNotFound):
+                particles = []
 
             if not particles:
                 print("Particle", cand, "not found.")
@@ -70,9 +73,13 @@ def main() -> None:
 
     if "pdgid" in opts:
         for value in opts.pdgid:
-            p = PDGID(value)
+            try:
+                p = PDGID(value)
+            except ValueError:
+                print(f"Invalid PDG ID: {value!r}")
+                sys.exit(1)
             print(p)
-            print(PDGID(value).info())
+            print(p.info())
 
 
 if __name__ == "__main__":
