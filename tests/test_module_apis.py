@@ -12,6 +12,7 @@ def test_top_level_api() -> None:
         "Geant3ID",
         "Inv",
         "InvalidParticle",
+        "MCParticleID",
         "PDGID",
         "Parity",
         "Particle",
@@ -28,12 +29,9 @@ def test_top_level_api() -> None:
 
 def test_api_converters() -> None:
     assert dir(particle.converters) == [
-        "Corsika72PDGIDBiMap",
         "EvtGen2PDGNameMap",
         "EvtGenName2PDGIDBiMap",
-        "Geant2PDGIDBiMap",
         "PDG2EvtGenNameMap",
-        "Pythia2PDGIDBiMap",
     ]
 
 
