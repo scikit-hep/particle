@@ -51,7 +51,7 @@ Directional map between EvtGen and names.
 Examples
 --------
 >>> EvtGen2PDGNameMap['J/psi']
->>> 'J/psi(1S)'
+'J/psi(1S)'
 """
 
 del BiMap

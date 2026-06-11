@@ -408,6 +408,57 @@ def test_all_particles_are_loaded() -> None:
     Particle.load_table()
 
 
+def test_load_table_append_true_no_duplicate_on_fresh_state() -> None:
+    """
+    load_table(append=True) on a completely unloaded table (i.e. _table is None)
+    with filename=None should produce exactly the default two-file table,
+    not duplicate it.  This guards against a regression where defaults were read twice.
+    """
+    saved_table = Particle._table
+    saved_hash = Particle._hash_table
+    saved_names = Particle._table_names
+    try:
+        # Simulate the "never loaded" state
+        Particle._table = None
+        Particle._hash_table = None
+        Particle._table_names = None
+        assert not Particle.table_loaded()
+        Particle.load_table(append=True)
+        assert Particle.table_names() == ("particle2026.csv", "nuclei2026.csv")
+    finally:
+        Particle._table = saved_table
+        Particle._hash_table = saved_hash
+        Particle._table_names = saved_names
+        Particle.load_table()  # restore global state
+
+
+@pytest.mark.parametrize(
+    "name",
+    ["p", "n", "p~", "n~"],
+)
+def test_from_name_special_particles_partinotfound_on_empty_table(
+    name: str,
+) -> None:
+    """
+    from_name raises ParticleNotFound (not bare StopIteration) for the special
+    p/n/p~/n~ branch when the table does not contain those entries.
+    """
+    import io
+
+    # Load a minimal table that has no p/n entries
+    minimal_csv = (
+        "ID,Mass,MassUpper,MassLower,Width,WidthUpper,WidthLower,"
+        "I,G,P,C,Anti,Charge,Rank,Status,Name,Quarks,Latex\n"
+        "22,0.0,0.0,0.0,0.0,0.0,0.0,5,5,5,5,5,0,0,0,gamma,,\\gamma\n"
+    )
+    try:
+        Particle.load_table(io.StringIO(minimal_csv), _name="minimal_test.csv")
+        with pytest.raises(ParticleNotFound):
+            Particle.from_name(name)
+    finally:
+        Particle.load_table()  # restore global state
+
+
 checklist_html_name = (
     (22, "&#x03b3;"),  # photon
     (1, "d"),  # d quark
