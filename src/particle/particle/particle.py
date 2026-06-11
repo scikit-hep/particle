@@ -408,12 +408,8 @@ class Particle:
                 with contextlib.suppress(ValueError):
                     tbl_names.remove(fld)
 
-        # Start with the full table
-        tbl_all = sorted(cls.all())
-
-        # Apply a filter, if specified
-        if filter_fn is not None:
-            tbl_all = cls.findall(filter_fn, particle=particle, **search_terms)
+        # Apply a filter if specified; with all-None arguments findall returns the full table
+        tbl_all = cls.findall(filter_fn, particle=particle, **search_terms)
 
         # In any case, only keep a given number of rows?
         if n_rows >= 0:

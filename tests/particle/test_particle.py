@@ -663,6 +663,23 @@ def test_to_dict() -> None:
     assert set(query_as_dict["name"]) == {"e+", "mu+", "tau+", "tau'+"}
 
 
+def test_to_list_search_terms_without_filter_fn() -> None:
+    # Test the search when filter_fn is not given.
+    tbl = Particle.to_list(pdg_name="tau", exclusive_fields=["pdgid"])
+    # Header row + tau (15) + anti-tau (-15)
+    assert len(tbl) == 3
+    assert ["pdgid"] in tbl
+    assert [15] in tbl
+    assert [-15] in tbl
+
+
+def test_to_list_particle_kwarg_without_filter_fn() -> None:
+    # Test that the particle= keyword is not silently ignored when filter_fn is not given.
+    tbl = Particle.to_list(particle=True, n_rows=5, exclusive_fields=["pdgid"])
+    pdgids = [int(row[0]) for row in tbl[1:]]  # skip header
+    assert all(pid > 0 for pid in pdgids)
+
+
 decfile_style_names = (
     ("s", 3),
     ("anti-b", -5),
