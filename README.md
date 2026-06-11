@@ -327,7 +327,14 @@ $ python3 -m particle.particle.convert --help
 ## Getting started: MC particle IDs
 
 Classes similar to `PDGID` hold the particle identification codes ("IDs")
-used by MC programs, and convert to and from the standard PDG IDs
+used by MC programs. The following ID classes are available:
+
+- `Corsika7ID` - IDs used by Corsika7 (Corsika8 uses Geant3 IDs).
+- `Geant3ID` - IDs used by Geant3 (Geant4 uses the standard PDG IDs).
+- `PythiaID` - IDs used by Pythia (identical to the PDG IDs apart from
+  a few legacy numberings of light scalar mesons).
+
+They all convert to and from the standard PDG IDs
 via the methods `to_pdgid()` and `from_pdgid()`
 (a `MatchingIDNotFound` exception is raised when no conversion exists):
 
