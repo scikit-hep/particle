@@ -10,33 +10,33 @@ import pytest
 from particle import data
 from particle.converters.bimap import BiMap, DirectionalMaps
 from particle.exceptions import MatchingIDNotFound
+from particle.geant import Geant3ID
 from particle.pdgid import PDGID
-from particle.pythia import PythiaID
 
 
 def test_BiMap() -> None:
-    bimap = BiMap(PDGID, PythiaID)
+    bimap = BiMap(PDGID, Geant3ID)
 
-    assert len(bimap) == 540
-    assert "BiMap(PDGID-PythiaID)" in str(bimap)
+    assert len(bimap) == 945
+    assert "BiMap(PDGID-Geant3ID)" in str(bimap)
 
     with pytest.raises(MatchingIDNotFound):
-        bimap[PDGID(9000221)]
+        bimap[PDGID(998877)]
 
 
 def test_DirectionalMaps() -> None:
-    filename = data.basepath / "pdgid_to_pythiaid.csv"
-    PDG2PyIDMap, Py2PDGIDMap = DirectionalMaps(
-        "PDGID", "PythiaID", filename=filename, converters=(int, int)
+    filename = data.basepath / "pdgid_to_geant3id.csv"
+    PDG2GeantIDMap, Geant2PDGIDMap = DirectionalMaps(
+        "PDGID", "Geant3ID", filename=filename, converters=(int, int)
     )
 
-    assert len(PDG2PyIDMap) == 540
-    assert len(Py2PDGIDMap) == 540
+    assert len(PDG2GeantIDMap) == 945
+    assert len(Geant2PDGIDMap) == 945
 
-    assert "DirectionalMap(PDGID->PYTHIAID)" in str(PDG2PyIDMap)
-    assert "DirectionalMap(PYTHIAID->PDGID)" in str(Py2PDGIDMap)
+    assert "DirectionalMap(PDGID->GEANT3ID)" in str(PDG2GeantIDMap)
+    assert "DirectionalMap(GEANT3ID->PDGID)" in str(Geant2PDGIDMap)
 
     with pytest.raises(MatchingIDNotFound):
-        PDG2PyIDMap[PDGID(9000221)]
+        PDG2GeantIDMap[PDGID(998877)]
     with pytest.raises(MatchingIDNotFound):
-        Py2PDGIDMap[PythiaID(9000221)]
+        Geant2PDGIDMap[Geant3ID(998877)]

@@ -181,12 +181,13 @@ class Corsika7ID(MCParticleID):
         Raises
         ------
         InvalidParticle
-            If the Corsika7ID does not correspond to a particle
-            (`is_particle()` is False), so a conversion is meaningless.
+            If the Corsika7ID does not correspond to a particle, either
+            because it holds additional information (`is_particle()` is False)
+            or because it is no valid Corsika7ID at all.
 
         MatchingIDNotFound
             If the Corsika7ID is a particle but has no matching PDGID,
-            e.g. nuclei unknown to the PDG.
+            i.e. nuclei unknown to the PDG.
 
         Examples
         --------
@@ -197,8 +198,15 @@ class Corsika7ID(MCParticleID):
         """
         from ..particle.particle import InvalidParticle  # pylint: disable=C0415
 
-        if not self.is_particle():
-            raise InvalidParticle(
-                f"The Corsika7ID {self} does not correspond to a particle and thus has no equivalent PDGID."
+        if int(self) in self._to_pdg_map:
+            return super().to_pdgid()
+
+        # Nuclei with no known PDG ID are particles nonetheless
+        if self.is_particle() and 200 <= int(self) < 5699:
+            raise MatchingIDNotFound(
+                f"Non-existent PDGID for input {self.__class__.__name__} {int(self)}!"
             )
-        return super().to_pdgid()
+
+        raise InvalidParticle(
+            f"The Corsika7ID {self} does not correspond to a particle and thus has no equivalent PDGID."
+        )

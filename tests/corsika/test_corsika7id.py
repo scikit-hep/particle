@@ -42,6 +42,15 @@ def test_to_pdgid_invalid() -> None:
         _ = Corsika7ID(75).to_pdgid()
 
 
+def test_to_pdgid_non_matching() -> None:
+    # A real particle (nucleus in the range unknown to the PDG) with no
+    # matching PDGID raises MatchingIDNotFound, not InvalidParticle
+    cid = Corsika7ID(300)
+    assert cid.is_particle()
+    with pytest.raises(MatchingIDNotFound):
+        _ = cid.to_pdgid()
+
+
 def test_is_particle() -> None:
     cid = Corsika7ID(1)
     assert cid.is_particle()
