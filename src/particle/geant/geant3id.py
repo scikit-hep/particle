@@ -14,28 +14,14 @@ follows the PDG rules, hence uses the standard PDG IDs.
 
 from __future__ import annotations
 
-import csv
 from typing import TypeVar
 
-from .. import data
-from ..exceptions import MatchingIDNotFound
-from ..pdgid import PDGID
+from ..mcid import MCParticleID, _csv_to_pdg_map
 
 Self = TypeVar("Self", bound="Geant3ID")
 
 
-with data.basepath.joinpath("pdgid_to_geant3id.csv").open() as _f:
-    _bimap = {
-        int(v["GEANT3ID"]): int(v["PDGID"])
-        for v in csv.DictReader(line for line in _f if not line.startswith("#"))
-    }
-
-_inverse_bimap: dict[int, int] = {}
-for _k, _v in _bimap.items():
-    _inverse_bimap.setdefault(_v, _k)
-
-
-class Geant3ID(int):
+class Geant3ID(MCParticleID):
     """
     Holds a Geant3 ID.
 
@@ -53,26 +39,7 @@ class Geant3ID(int):
 
     __slots__ = ()  # Keep Geant3ID a slots based class
 
-    @classmethod
-    def from_pdgid(cls: type[Self], pdgid: int) -> Self:
-        """
-        Constructor from a PDGID.
-        """
-        try:
-            return cls(_inverse_bimap[int(pdgid)])
-        except KeyError:
-            raise MatchingIDNotFound(
-                f"Non-existent Geant3ID for input PDGID {pdgid} !"
-            ) from None
-
-    def to_pdgid(self) -> PDGID:
-        return PDGID(_bimap[self])
-
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__}: {int(self):d}>"
-
-    def __str__(self) -> str:
-        return repr(self)
+    _to_pdg_map = _csv_to_pdg_map("pdgid_to_geant3id.csv", "GEANT3ID")
 
     def __neg__(self: Self) -> Self:
         """

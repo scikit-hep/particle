@@ -58,21 +58,21 @@ class BiMap(Generic[A, B]):
 
         Examples
         --------
-        >>> from particle import PDGID, PythiaID
+        >>> from particle import PDGID, Geant3ID
 
         Basic/standard usage:
-        >>> bimap = BiMap(PDGID, PythiaID)
+        >>> bimap = BiMap(PDGID, Geant3ID)
 
-        >>> bimap[PDGID(9010221)]
-        <PythiaID: 10221>
-        >>> bimap[PythiaID(10221)]
-        <PDGID: 9010221>
+        >>> bimap[PDGID(211)]
+        <Geant3ID: 8>
+        >>> bimap[Geant3ID(8)]
+        <PDGID: 211>
 
         Advanced usage:
         >>> # Either pass a file name or a file object
         >>> from particle import data
-        >>> filename = data.basepath / "pdgid_to_pythiaid.csv"
-        >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
+        >>> filename = data.basepath / "pdgid_to_geant3id.csv"
+        >>> bimap = BiMap(PDGID, Geant3ID, filename=filename)
         """
 
         self.class_A: type[A] = class_A

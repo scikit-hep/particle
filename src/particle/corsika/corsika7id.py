@@ -13,25 +13,14 @@ Corsika8 uses Geant3 Particle IDs.
 
 from __future__ import annotations
 
-import csv
 from typing import TypeVar
 
-from .. import data
 from ..exceptions import MatchingIDNotFound
+from ..mcid import MCParticleID, _csv_to_pdg_map
 from ..pdgid import PDGID
 
 Self = TypeVar("Self", bound="Corsika7ID")
 
-
-with data.basepath.joinpath("pdgid_to_corsika7id.csv").open() as _f:
-    _bimap = {
-        int(v["CORSIKA7ID"]): int(v["PDGID"])
-        for v in csv.DictReader(line for line in _f if not line.startswith("#"))
-    }
-
-_inverse_bimap: dict[int, int] = {}
-for _k, _v in _bimap.items():
-    _inverse_bimap.setdefault(_v, _k)
 
 # Some Corsika7 ID's are not really particles
 _non_particles = {
@@ -48,7 +37,7 @@ _non_particles = {
 }
 
 
-class Corsika7ID(int):
+class Corsika7ID(MCParticleID):
     """
     Holds a Corsika7 ID.
 
@@ -72,17 +61,7 @@ class Corsika7ID(int):
 
     __slots__ = ()  # Keep Corsika7ID a slots based class
 
-    @classmethod
-    def from_pdgid(cls: type[Self], pdgid: int) -> Self:
-        """
-        Constructor from a PDGID.
-        """
-        try:
-            return cls(_inverse_bimap[int(pdgid)])
-        except KeyError:
-            raise MatchingIDNotFound(
-                f"Non-existent Corsika7ID for input PDGID {pdgid}!"
-            ) from None
+    _to_pdg_map = _csv_to_pdg_map("pdgid_to_corsika7id.csv", "CORSIKA7ID")
 
     @classmethod
     def from_particle_description(
@@ -110,7 +89,7 @@ class Corsika7ID(int):
         if 200 <= cid < 5699:
             return cls(cid), ismother
 
-        if cid in _bimap:
+        if cid in cls._to_pdg_map:
             return cls(cid), ismother
 
         raise MatchingIDNotFound(
@@ -197,10 +176,17 @@ class Corsika7ID(int):
 
     def to_pdgid(self) -> PDGID:
         """
+        Convert to the matching PDGID.
+
         Raises
         ------
         InvalidParticle
-            If it is a valid Corsika particle, but not a valid PDGID.
+            If the Corsika7ID does not correspond to a particle
+            (`is_particle()` is False), so a conversion is meaningless.
+
+        MatchingIDNotFound
+            If the Corsika7ID is a particle but has no matching PDGID,
+            e.g. nuclei unknown to the PDG.
 
         Examples
         --------
@@ -211,14 +197,8 @@ class Corsika7ID(int):
         """
         from ..particle.particle import InvalidParticle  # pylint: disable=C0415
 
-        if self not in _bimap:
+        if not self.is_particle():
             raise InvalidParticle(
                 f"The Corsika7ID {self} does not correspond to a particle and thus has no equivalent PDGID."
             )
-        return PDGID(_bimap[self])
-
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__}: {int(self):d}>"
-
-    def __str__(self) -> str:
-        return repr(self)
+        return super().to_pdgid()
