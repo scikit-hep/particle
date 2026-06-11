@@ -11,7 +11,7 @@ import sys
 from .corsika import Corsika7ID
 from .geant import Geant3ID
 
-# Direct access to Particle literals
+# Direct access to Particle literals (lazy: see particle.literals.__getattr__)
 # Direct access to Particle (the CSV file is not read until a particle is accessed)
 # Direct access to handy LaTeX to HTML particle name conversions
 # Direct access to kinematics functions
