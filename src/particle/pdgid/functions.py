@@ -49,6 +49,119 @@ class Location(IntEnum):
     N10 = 10
 
 
+# Maps fundamental PDG ID (1..100) to 3*charge.  Index i corresponds to fundamental ID i+1.
+_CH100: tuple[int, ...] = (
+    -1,
+    2,
+    -1,
+    2,
+    -1,
+    2,
+    -1,
+    2,
+    0,
+    0,
+    -3,
+    0,
+    -3,
+    0,
+    -3,
+    0,
+    -3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    3,
+    0,
+    0,
+    3,
+    0,
+    0,
+    0,
+    0,
+    -1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    6,
+    3,
+    6,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+)
+
+# PDG IDs that are their own CP conjugate (self-conjugate fundamental particles).
+_CP_CONJUGATES: frozenset[int] = frozenset({21, 22, 23, 25, 32, 33, 35, 36, 39, 40, 43})
+
+# Fundamental IDs that are not assigned to any particle.
+_UNASSIGNED: frozenset[int] = frozenset(
+    {9, 10, 19, 20} | set(range(26, 32)) | set(range(45, 80))
+)
+
+
 def is_valid(pdgid: PDGID_TYPE) -> bool:
     """Is it a valid PDG ID?"""
     if is_gauge_boson_or_higgs(pdgid):  # test first since quickest check
@@ -278,15 +391,13 @@ def is_pentaquark(pdgid: PDGID_TYPE) -> bool:
         return False
     if _digit(pdgid, Location.Nr) in {9, 0}:
         return False
-    if _digit(pdgid, Location.Nj) == 9 or _digit(pdgid, Location.Nl) == 0:
+    if _digit(pdgid, Location.Nj) in {0, 9} or _digit(pdgid, Location.Nl) == 0:
         return False
     if _digit(pdgid, Location.Nq1) == 0:
         return False
     if _digit(pdgid, Location.Nq2) == 0:
         return False
     if _digit(pdgid, Location.Nq3) == 0:
-        return False
-    if _digit(pdgid, Location.Nj) == 0:
         return False
     if _digit(pdgid, Location.Nq2) > _digit(pdgid, Location.Nq1):
         return False
@@ -513,18 +624,8 @@ def has_fundamental_anti(pdgid: PDGID_TYPE) -> bool:
         return fid in {82, 84, 85, 86, 87}
 
     # Check PDGIDs from 1 to 79
-    _cp_conjugates = {21, 22, 23, 25, 32, 33, 35, 36, 39, 40, 43}
-    _unassigned = [
-        9,
-        10,
-        19,
-        20,
-        26,
-        *list(range(26, 32)),
-        *list(range(45, 80)),
-    ]  # not in conversion.csv
-    if (1 <= fid <= 79) and fid not in _cp_conjugates:
-        return fid not in _unassigned
+    if (1 <= fid <= 79) and fid not in _CP_CONJUGATES:
+        return fid not in _UNASSIGNED
 
     return False
 
@@ -551,108 +652,6 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
 
     aid = abspid(pdgid)
     charge = None  # pylint: disable=redefined-outer-name
-    ch100 = [
-        -1,
-        2,
-        -1,
-        2,
-        -1,
-        2,
-        -1,
-        2,
-        0,
-        0,
-        -3,
-        0,
-        -3,
-        0,
-        -3,
-        0,
-        -3,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        3,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        3,
-        0,
-        0,
-        3,
-        0,
-        0,
-        0,
-        0,
-        -1,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        6,
-        3,
-        6,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-    ]
     q1 = _digit(pdgid, Location.Nq1)
     q2 = _digit(pdgid, Location.Nq2)
     q3 = _digit(pdgid, Location.Nq3)
@@ -673,7 +672,7 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
         if _digit(pdgid, Location.Nl) == 2:
             charge = -charge
     elif 0 < sid <= 100:  # use table
-        charge = ch100[sid - 1]
+        charge = _CH100[sid - 1]
         if aid in {1000017, 1000018, 1000034, 1000052, 1000053, 1000054}:
             charge = 0
         if aid in {5100061, 5100062}:
@@ -682,15 +681,15 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
         return 0
     elif q1 == 0 or (is_Rhadron(pdgid) and q1 == 9):  # mesons
         if q2 in {3, 5}:
-            charge = ch100[q3 - 1] - ch100[q2 - 1]
+            charge = _CH100[q3 - 1] - _CH100[q2 - 1]
         else:
-            charge = ch100[q2 - 1] - ch100[q3 - 1]
+            charge = _CH100[q2 - 1] - _CH100[q3 - 1]
     elif q3 == 0:  # diquarks
-        charge = ch100[q2 - 1] + ch100[q1 - 1]
+        charge = _CH100[q2 - 1] + _CH100[q1 - 1]
     elif is_baryon(pdgid) or (
         is_Rhadron(pdgid) and _digit(pdgid, Location.Nl) == 9
     ):  # baryons
-        charge = ch100[q3 - 1] + ch100[q2 - 1] + ch100[q1 - 1]
+        charge = _CH100[q3 - 1] + _CH100[q2 - 1] + _CH100[q1 - 1]
 
     if charge is not None and int(pdgid) < 0:
         charge = -charge
@@ -706,9 +705,7 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
         if is_SUSY(pdgid):  # susy particles
             if 0 < fund < 17:
                 return 1
-            if fund == 21:
-                return 2
-            if 22 <= fund < 38:
+            if 21 <= fund < 38:
                 return 2
             if fund == 39:
                 return 4

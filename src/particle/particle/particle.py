@@ -408,12 +408,8 @@ class Particle:
                 with contextlib.suppress(ValueError):
                     tbl_names.remove(fld)
 
-        # Start with the full table
-        tbl_all = sorted(cls.all())
-
-        # Apply a filter, if specified
-        if filter_fn is not None:
-            tbl_all = cls.findall(filter_fn, particle=particle, **search_terms)
+        # Apply a filter if specified; with all-None arguments findall returns the full table
+        tbl_all = cls.findall(filter_fn, particle=particle, **search_terms)
 
         # In any case, only keep a given number of rows?
         if n_rows >= 0:
@@ -557,6 +553,9 @@ class Particle:
 
         if append and not cls.table_loaded():
             cls.load_table(append=False)  # default load
+            if filename is None:
+                # Default data already loaded; nothing more to do.
+                return
         elif not append:
             cls._table = []
             cls._hash_table = {}
@@ -1182,7 +1181,10 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             def find_preferred_id(p: Self) -> bool:
                 return int(p.pdgid) in _PREFERRED_PDGID.values()
 
-            return next(filter(find_preferred_id, cls.finditer(name=name)))
+            result = next(filter(find_preferred_id, cls.finditer(name=name)), None)
+            if result is None:
+                raise ParticleNotFound(f"Could not find name {name!r}")
+            return result
         try:
             (particle,) = cls.finditer(
                 name=name
@@ -1256,7 +1258,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             )
         if z < 0 or z > 999:
             raise InvalidParticle(
-                f"Atomic number Z={z} is invalid. Must be 0 <= A <= 999."
+                f"Atomic number Z={z} is invalid. Must be 0 <= Z <= 999."
             )
         if a < 0 or a > 999:
             raise InvalidParticle(
@@ -1268,7 +1270,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             )
         if z > a:
             raise InvalidParticle(
-                f"Nucleus A={a}, Z={z} is invalid. Z must be smaller or equal to Z."
+                f"Nucleus A={a}, Z={z} is invalid. Z must be smaller or equal to A."
             )
 
         pdgid = int(1e9 + l_strange * 1e5 + z * 1e4 + a * 10 + i)

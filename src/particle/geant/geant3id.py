@@ -51,7 +51,7 @@ class Geant3ID(int):
     'pi+'
     """
 
-    __slots__ = ()  # Keep PythiaID a slots based class
+    __slots__ = ()  # Keep Geant3ID a slots based class
 
     @classmethod
     def from_pdgid(cls: type[Self], pdgid: int) -> Self:
