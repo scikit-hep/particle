@@ -68,6 +68,14 @@ def str_with_unc(value: float, upper: float | None, lower: float | None = None) 
     if error == 0:
         return str(value)
 
+    if value == 0:
+        # log10(0) is undefined; format with the error's significant digits
+        error_digits = math.floor(math.log10(error) - math.log10(2.5))
+        fse = f".{-error_digits}f" if error_digits < 0 else ".0f"
+        if upper != lower:
+            return f"{value:{fse}} + {upper:{fse}} - {lower:{fse}}"
+        return f"{value:{fse}} ± {upper:{fse}}"
+
     value_digits = math.floor(math.log10(value))
     error_digits = math.floor(math.log10(error) - math.log10(2.5))
     # This is split based on the value being larger than 1000000 or smaller than 0.001 - scientific notation split
