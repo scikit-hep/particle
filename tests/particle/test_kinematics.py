@@ -20,9 +20,9 @@ def test_valid_width_lifetime_conversions() -> None:
 
 
 def test_invalid_width_lifetime_conversions() -> None:
-    with pytest.raises(ValueError, match="Input provided, -1 <= 0!"):
+    with pytest.raises(ValueError, match="Input provided, -1 < 0!"):
         lifetime_to_width(-1)
-    with pytest.raises(ValueError, match="Input provided, -1 <= 0!"):
+    with pytest.raises(ValueError, match="Input provided, -1 < 0!"):
         width_to_lifetime(-1)
 
     assert lifetime_to_width(0) == float("inf")

@@ -50,7 +50,7 @@ def width_to_lifetime(Gamma: float) -> float:
     """
 
     if Gamma < 0.0:
-        raise ValueError(f"Input provided, {Gamma} <= 0!")
+        raise ValueError(f"Input provided, {Gamma} < 0!")
     if Gamma == 0:
         return float("inf")
 
@@ -70,7 +70,7 @@ def lifetime_to_width(tau: float) -> float:
     Returns
     -------
     Particle decay width, in the HEP standard energy unit MeV.
-    tau > 0: particle lifetime, in the HEP standard time unit ns.
+    tau > 0: particle decay width, in the HEP standard energy unit MeV.
     tau = 0: Infinity (float("inf")).
     tau < 0: an exception ValueError is raised.
 
@@ -96,7 +96,7 @@ def lifetime_to_width(tau: float) -> float:
     """
 
     if tau < 0:
-        raise ValueError(f"Input provided, {tau} <= 0!")
+        raise ValueError(f"Input provided, {tau} < 0!")
     if tau == 0:
         return float("inf")
 
