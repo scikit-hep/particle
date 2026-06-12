@@ -93,15 +93,15 @@ class BiMap(Generic[A, B]):
             file_object = open(filename, encoding="utf_8")  # noqa: SIM115
 
         with file_object as _f:
-            self._to_map = {
-                converters[1](v[name_B]): converters[0](v[name_A])
-                for v in csv.DictReader(line for line in _f if not line.startswith("#"))
-            }
-            _f.seek(0)
-            self._from_map = {
-                converters[0](v[name_A]): converters[1](v[name_B])
-                for v in csv.DictReader(line for line in _f if not line.startswith("#"))
-            }
+            to_map: dict[Any, Any] = {}
+            from_map: dict[Any, Any] = {}
+            for v in csv.DictReader(line for line in _f if not line.startswith("#")):
+                a = converters[0](v[name_A])
+                b = converters[1](v[name_B])
+                to_map[b] = a
+                from_map[a] = b
+            self._to_map = to_map
+            self._from_map = from_map
 
     @overload
     def __getitem__(self, value: A) -> B:
@@ -185,23 +185,17 @@ def DirectionalMaps(
     with file_object as _f:
         skipinitialspace = True
 
-        to_map = {
-            converters[1](v[name_B]): converters[0](v[name_A])  # type: ignore[arg-type]
-            for v in csv.DictReader(
-                (line for line in _f if not line.startswith("#")),
-                fieldnames=fieldnames,
-                skipinitialspace=skipinitialspace,
-            )
-        }
-        _f.seek(0)
-        from_map = {
-            converters[0](v[name_A]): converters[1](v[name_B])  # type: ignore[arg-type]
-            for v in csv.DictReader(
-                (line for line in _f if not line.startswith("#")),
-                fieldnames=fieldnames,
-                skipinitialspace=skipinitialspace,
-            )
-        }
+        to_map: dict[Any, Any] = {}
+        from_map: dict[Any, Any] = {}
+        for v in csv.DictReader(
+            (line for line in _f if not line.startswith("#")),
+            fieldnames=fieldnames,
+            skipinitialspace=skipinitialspace,
+        ):
+            a = converters[0](v[name_A])  # type: ignore[arg-type]
+            b = converters[1](v[name_B])  # type: ignore[arg-type]
+            to_map[b] = a
+            from_map[a] = b
 
     return (
         DirectionalMap(name_A, name_B, from_map),

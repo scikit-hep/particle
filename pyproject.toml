@@ -211,3 +211,8 @@ tabulate = "*"
 
 [tool.pixi.tasks]
 lab = "jupyter lab"
+
+[dependency-groups]
+dev = [
+    "pytest-benchmark>=5.2.3",
+]

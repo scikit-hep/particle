@@ -29,6 +29,10 @@ with data.basepath.joinpath("pdgid_to_corsika7id.csv").open() as _f:
         for v in csv.DictReader(line for line in _f if not line.startswith("#"))
     }
 
+_inverse_bimap: dict[int, int] = {}
+for _k, _v in _bimap.items():
+    _inverse_bimap.setdefault(_v, _k)
+
 # Some Corsika7 ID's are not really particles
 _non_particles = {
     71: "η → γγ",
@@ -73,10 +77,12 @@ class Corsika7ID(int):
         """
         Constructor from a PDGID.
         """
-        for k, v in _bimap.items():
-            if v == pdgid:
-                return cls(k)
-        raise MatchingIDNotFound(f"Non-existent Corsika7ID for input PDGID {pdgid}!")
+        try:
+            return cls(_inverse_bimap[int(pdgid)])
+        except KeyError:
+            raise MatchingIDNotFound(
+                f"Non-existent Corsika7ID for input PDGID {pdgid}!"
+            ) from None
 
     @classmethod
     def from_particle_description(
