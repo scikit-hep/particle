@@ -9,26 +9,32 @@ Class representing a Pythia ID.
 
 from __future__ import annotations
 
-import csv
 from typing import TypeVar
 
-from .. import data
-from ..exceptions import MatchingIDNotFound
+from ..mcid import MCParticleID
 from ..pdgid import PDGID
-
-with data.basepath.joinpath("pdgid_to_pythiaid.csv").open() as _f:
-    _bimap = {
-        int(v["PYTHIAID"]): int(v["PDGID"])
-        for v in csv.DictReader(line for line in _f if not line.startswith("#"))
-    }
-
 
 Self = TypeVar("Self", bound="PythiaID")
 
+# Pythia follows the standard PDG particle numbering scheme, except for a
+# few light scalar mesons, for which it kept older PDG numberings.
+_pdgid_to_pythiaid = {
+    10221: 10331,  # f(0)(1370)
+    9000111: 10111,  # a(0)(980)0
+    9000211: 10211,  # a(0)(980)+
+    -9000211: -10211,  # a(0)(980)-
+    9010221: 10221,  # f(0)(980)
+}
+_pythiaid_to_pdgid = {v: k for k, v in _pdgid_to_pythiaid.items()}
 
-class PythiaID(int):
+
+class PythiaID(MCParticleID):
     """
     Holds a Pythia ID.
+
+    Pythia IDs are identical to PDG IDs apart from a few legacy numberings
+    of light scalar mesons, hence conversions are done algorithmically
+    rather than via an explicit conversion table.
 
     Examples
     --------
@@ -40,28 +46,25 @@ class PythiaID(int):
     >>> (p,) = Particle.finditer(pdgid=pythiaid.to_pdgid())
     >>> p.name
     'pi+'
+
+    >>> PythiaID(10221).to_pdgid()
+    <PDGID: 9010221>
     """
 
     __slots__ = ()  # Keep PythiaID a slots based class
+
+    def to_pdgid(self) -> PDGID:
+        """
+        Convert to the matching PDGID.
+        """
+        return PDGID(_pythiaid_to_pdgid.get(int(self), int(self)))
 
     @classmethod
     def from_pdgid(cls: type[Self], pdgid: int) -> Self:
         """
         Constructor from a PDGID.
         """
-        for k, v in _bimap.items():
-            if v == pdgid:
-                return cls(k)
-        raise MatchingIDNotFound(f"Non-existent PythiaID for input PDGID {pdgid} !")
-
-    def to_pdgid(self) -> PDGID:
-        return PDGID(_bimap[self])
-
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__}: {int(self):d}>"
-
-    def __str__(self) -> str:
-        return repr(self)
+        return cls(_pdgid_to_pythiaid.get(int(pdgid), int(pdgid)))
 
     def __neg__(self: Self) -> Self:
         return self.__class__(-int(self))

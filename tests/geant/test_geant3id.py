@@ -43,3 +43,8 @@ def test_to_pdgid() -> None:
     gid = Geant3ID(8)
     assert gid.to_pdgid() == 211
     assert gid.to_pdgid() == PDGID(211)
+
+
+def test_to_pdgid_non_matching() -> None:
+    with pytest.raises(MatchingIDNotFound):
+        _ = Geant3ID(123456).to_pdgid()
