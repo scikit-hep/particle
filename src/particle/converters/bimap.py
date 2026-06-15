@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import contextlib
 import csv
+import warnings
 from collections.abc import Callable, Iterator, Mapping
 from typing import (
     IO,
@@ -58,21 +59,21 @@ class BiMap(Generic[A, B]):
 
         Examples
         --------
-        >>> from particle import PDGID, Geant3ID
+        >>> from particle import PDGID, PythiaID
 
         Basic/standard usage:
-        >>> bimap = BiMap(PDGID, Geant3ID)
+        >>> bimap = BiMap(PDGID, PythiaID)
 
-        >>> bimap[PDGID(211)]
-        <Geant3ID: 8>
-        >>> bimap[Geant3ID(8)]
-        <PDGID: 211>
+        >>> bimap[PDGID(9010221)]
+        <PythiaID: 10221>
+        >>> bimap[PythiaID(10221)]
+        <PDGID: 9010221>
 
         Advanced usage:
         >>> # Either pass a file name or a file object
         >>> from particle import data
-        >>> filename = data.basepath / "pdgid_to_geant3id.csv"
-        >>> bimap = BiMap(PDGID, Geant3ID, filename=filename)
+        >>> filename = data.basepath / "pdgid_to_pythiaid.csv"
+        >>> bimap = BiMap(PDGID, PythiaID, filename=filename)
         """
 
         self.class_A: type[A] = class_A
@@ -133,6 +134,38 @@ class BiMap(Generic[A, B]):
     def __len__(self) -> int:
         """Returns the number of matches."""
         return len(self._to_map)
+
+
+class _DeprecatedBiMap(BiMap[A, B]):
+    """
+    A :class:`BiMap` that emits a ``DeprecationWarning`` on every lookup.
+
+    Used for the PDG-ID <-> MC-program-ID maps, which are deprecated in
+    favour of the ``from_pdgid()`` and ``to_pdgid()`` methods of the ID
+    classes themselves. It behaves identically to :class:`BiMap` otherwise.
+    """
+
+    def __init__(
+        self,
+        class_A: type[A],
+        class_B: type[B],
+        *,
+        name: str,
+        converters: tuple[A_conv, B_conv] = (int, int),  # type: ignore[type-arg]
+        filename: StringOrIO | None = None,
+    ) -> None:
+        super().__init__(class_A, class_B, converters=converters, filename=filename)
+        self._name = name
+
+    def __getitem__(self, value: Any) -> Any:
+        warnings.warn(
+            f"{self._name} is deprecated and will be removed in a future release; "
+            f"use {self.class_B.__name__}.from_pdgid() and "
+            f"{self.class_B.__name__}.to_pdgid() instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return super().__getitem__(value)
 
 
 def DirectionalMaps(
