@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+import warnings
+
 import pytest
 
 from particle import PDGID, Corsika7ID, Geant3ID, PythiaID
@@ -13,6 +15,7 @@ from particle.converters import (
     Geant2PDGIDBiMap,
     Pythia2PDGIDBiMap,
 )
+from particle.exceptions import MatchingIDNotFound
 
 # (deprecated BiMap, PDGID, matching MC ID)
 cases = [
@@ -23,19 +26,20 @@ cases = [
 
 
 @pytest.mark.parametrize(("bimap", "pdgid", "mcid"), cases)
-def test_deprecated_bimap_warns_and_converts(bimap, pdgid, mcid) -> None:  # type: ignore[no-untyped-def]
-    # Both lookup directions still work, exactly as before, but warn.
-    with pytest.warns(DeprecationWarning, match="from_pdgid"):
+def test_deprecated_bimap_warns_once_and_converts(bimap, pdgid, mcid) -> None:  # type: ignore[no-untyped-def]
+    # The first look-up warns and still returns the correct value...
+    with pytest.warns(DeprecationWarning, match="deprecated"):
         assert bimap[pdgid] == mcid
-    with pytest.warns(DeprecationWarning, match="from_pdgid"):
+
+    # ...all further look-ups are silent (turned into errors here to be sure).
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         assert bimap[mcid] == pdgid
 
 
 def test_deprecated_bimap_preserves_pythia_whitelist() -> None:
     # The deprecated map keeps the old whitelist behavior (unlike the new,
     # algorithmic PythiaID.from_pdgid, which converts unknown IDs by identity).
-    from particle.exceptions import MatchingIDNotFound
-
     with (
         pytest.warns(DeprecationWarning, match="deprecated"),
         pytest.raises(MatchingIDNotFound),

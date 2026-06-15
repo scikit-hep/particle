@@ -138,11 +138,13 @@ class BiMap(Generic[A, B]):
 
 class _DeprecatedBiMap(BiMap[A, B]):
     """
-    A :class:`BiMap` that emits a ``DeprecationWarning`` on every lookup.
+    A :class:`BiMap` that emits a ``DeprecationWarning`` on first use.
 
     Used for the PDG-ID <-> MC-program-ID maps, which are deprecated in
     favour of the ``from_pdgid()`` and ``to_pdgid()`` methods of the ID
-    classes themselves. It behaves identically to :class:`BiMap` otherwise.
+    classes themselves. The warning is emitted only once (on the first
+    look-up) to avoid spamming; the map behaves identically to
+    :class:`BiMap` otherwise.
     """
 
     def __init__(
@@ -156,15 +158,18 @@ class _DeprecatedBiMap(BiMap[A, B]):
     ) -> None:
         super().__init__(class_A, class_B, converters=converters, filename=filename)
         self._name = name
+        self._warned = False
 
     def __getitem__(self, value: Any) -> Any:
-        warnings.warn(
-            f"{self._name} is deprecated and will be removed in a future release; "
-            f"use {self.class_B.__name__}.from_pdgid() and "
-            f"{self.class_B.__name__}.to_pdgid() instead.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
+        if not self._warned:
+            self._warned = True
+            warnings.warn(
+                f"{self._name} is deprecated and will be removed in a future release; "
+                f"use {self.class_B.__name__}.from_pdgid() and "
+                f"{self.class_B.__name__}.to_pdgid() instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
         return super().__getitem__(value)
 
 

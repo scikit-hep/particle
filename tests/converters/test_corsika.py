@@ -12,12 +12,12 @@ from particle.converters import Corsika72PDGIDBiMap
 
 
 def test_Corsika72PDGID() -> None:
+    # The first look-up warns (deprecated); later ones are silent.
     with pytest.warns(DeprecationWarning, match="deprecated"):
         pdgid = Corsika72PDGIDBiMap[Corsika7ID(5)]
     assert pdgid == -13
 
-    with pytest.warns(DeprecationWarning, match="deprecated"):
-        cid = Corsika72PDGIDBiMap[PDGID(13)]
+    cid = Corsika72PDGIDBiMap[PDGID(13)]
     assert cid.is_particle()
     assert cid == 6
 
