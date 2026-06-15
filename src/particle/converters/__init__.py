@@ -37,7 +37,7 @@ _LAZY_MODULES = {
 def __getattr__(name: str) -> Any:
     module_name = _LAZY_MODULES.get(name)
     if module_name is not None:
-        from importlib import import_module
+        from importlib import import_module  # pylint: disable=C0415
 
         module = import_module(f"{__name__}.{module_name}")
         return getattr(module, name)
