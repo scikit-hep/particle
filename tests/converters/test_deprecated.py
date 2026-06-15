@@ -9,6 +9,7 @@ import warnings
 
 import pytest
 
+import particle.converters
 from particle import PDGID, Corsika7ID, Geant3ID, PythiaID
 from particle.converters import (
     Corsika72PDGIDBiMap,
@@ -45,3 +46,10 @@ def test_deprecated_bimap_preserves_pythia_whitelist() -> None:
         pytest.raises(MatchingIDNotFound),
     ):
         _ = Pythia2PDGIDBiMap[PDGID(9000221)]
+
+
+def test_unknown_converter_attribute_raises() -> None:
+    # The lazy module __getattr__ only resolves the known (deprecated) maps;
+    # anything else must behave like a normal missing attribute.
+    with pytest.raises(AttributeError, match="has no attribute 'DoesNotExist'"):
+        _ = particle.converters.DoesNotExist
