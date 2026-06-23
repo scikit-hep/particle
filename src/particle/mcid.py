@@ -24,6 +24,8 @@ def _csv_to_pdg_map(filename: str, id_column: str) -> dict[int, int]:
     """
     Read an <ID> -> PDG ID conversion table from a CSV file
     shipped in the package data.
+    
+    Examples of <ID>: Corsika7ID, Geant3ID, PythiaID.
     """
     with data.basepath.joinpath(filename).open() as f:
         return {
@@ -44,14 +46,14 @@ class MCParticleID(int):
 
     Concrete ID classes derive from this class and either
 
-    - define a class-level `_to_pdg_map` mapping of their IDs to PDG IDs,
+    - Define a class-level `_to_pdg_map` mapping of their IDs to PDG IDs,
       in which case `to_pdgid` and `from_pdgid` are provided automatically, or
-    - override `to_pdgid` and `from_pdgid`, e.g. when the conversion
+    - Override `to_pdgid` and `from_pdgid`, e.g. when the conversion
       is algorithmic and no explicit mapping is needed.
 
     Examples
     --------
-    Define a custom ID class given a known mapping to PDG IDs:
+    Define a custom ID class `MyGeneratorID` given a known mapping to PDG IDs:
 
     >>> class MyGeneratorID(MCParticleID):
     ...     _to_pdg_map = {1: 11, 2: -11, 3: 22}

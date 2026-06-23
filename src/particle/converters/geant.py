@@ -14,7 +14,7 @@ Geant2PDGIDBiMap = _DeprecatedBiMap(PDGID, Geant3ID, name="Geant2PDGIDBiMap")
 Geant2PDGIDBiMap.__doc__ = """
 Bi-bidirectional map between PDG and Geant3 IDs.
 
-.. deprecated::
+.. deprecated:: 1.0.0
     Use ``Geant3ID.from_pdgid()`` and ``Geant3ID.to_pdgid()`` instead.
 
 Examples

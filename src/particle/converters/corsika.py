@@ -14,7 +14,7 @@ Corsika72PDGIDBiMap = _DeprecatedBiMap(PDGID, Corsika7ID, name="Corsika72PDGIDBi
 Corsika72PDGIDBiMap.__doc__ = """
 Bi-bidirectional map between PDG and Corsika7 IDs.
 
-.. deprecated::
+.. deprecated:: 1.0.0
     Use ``Corsika7ID.from_pdgid()`` and ``Corsika7ID.to_pdgid()`` instead.
 
 Examples

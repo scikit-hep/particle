@@ -145,6 +145,8 @@ class _DeprecatedBiMap(BiMap[A, B]):
     classes themselves. The warning is emitted only once (on the first
     look-up) to avoid spamming; the map behaves identically to
     :class:`BiMap` otherwise.
+    
+    This helper function will be removed at a later stage, in the medium term.
     """
 
     def __init__(

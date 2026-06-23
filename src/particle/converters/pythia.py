@@ -14,7 +14,7 @@ Pythia2PDGIDBiMap = _DeprecatedBiMap(PDGID, PythiaID, name="Pythia2PDGIDBiMap")
 Pythia2PDGIDBiMap.__doc__ = """
 Bi-bidirectional map between PDG and Pythia IDs.
 
-.. deprecated::
+.. deprecated:: 1.0.0
     Use ``PythiaID.from_pdgid()`` and ``PythiaID.to_pdgid()`` instead.
 
 Examples
