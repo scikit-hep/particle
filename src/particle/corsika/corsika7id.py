@@ -86,8 +86,12 @@ class Corsika7ID(MCParticleID):
         if cls._is_non_particle_id(cid):
             return cls(cid), ismother
 
-        # This catches the cases of nuclei with no known PDG ID
-        if 200 <= cid < 5699:
+        # These are all nuclei allowed by CORSIKA7,
+        # Reference: Page 130 of the CORSIKA7 userguide Version 7.8050
+        # https://www.iap.kit.edu/corsika/downloads/CORSIKA_GUIDE7.8050.pdf
+        # Note: Particles with A>Z do not make sense
+        # But in principle the CORSIKA7 numbering scheme allows them
+        if 200 <= cid <= 5699:
             return cls(cid), ismother
 
         if cid in cls._to_pdg_map:
@@ -198,8 +202,12 @@ class Corsika7ID(MCParticleID):
         if int(self) in self._to_pdg_map:
             return super().to_pdgid()
 
-        # Nuclei with no known PDG ID are particles nonetheless
-        if self.is_particle() and 200 <= int(self) < 5699:
+        # Some nuclei with no known PDG ID are valid C7 IDs nonetheless
+        # Particles with existing PDGIDs are in the csv conversion file
+        # and are caught by the first `if`
+        # Reference: Page 130 of the CORSIKA7 userguide Version 7.8050
+        # https://www.iap.kit.edu/corsika/downloads/CORSIKA_GUIDE7.8050.pdf
+        if self.is_particle() and 200 <= int(self) <= 5699:
             raise MatchingIDNotFound(
                 f"Non-existent PDGID for input {self.__class__.__name__} {int(self)}!"
             )
