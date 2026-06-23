@@ -24,7 +24,7 @@ def _csv_to_pdg_map(filename: str, id_column: str) -> dict[int, int]:
     """
     Read an <ID> -> PDG ID conversion table from a CSV file
     shipped in the package data.
-    
+
     Examples of <ID>: Corsika7ID, Geant3ID, PythiaID.
     """
     with data.basepath.joinpath(filename).open() as f:
