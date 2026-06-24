@@ -5,12 +5,16 @@
 
 from __future__ import annotations
 
+import pytest
+
 from particle import PDGID, Corsika7ID, Particle
 from particle.converters import Corsika72PDGIDBiMap
 
 
 def test_Corsika72PDGID() -> None:
-    pdgid = Corsika72PDGIDBiMap[Corsika7ID(5)]
+    # The first look-up warns (deprecated); later ones are silent.
+    with pytest.warns(DeprecationWarning, match="deprecated"):
+        pdgid = Corsika72PDGIDBiMap[Corsika7ID(5)]
     assert pdgid == -13
 
     cid = Corsika72PDGIDBiMap[PDGID(13)]

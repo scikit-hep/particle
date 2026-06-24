@@ -13,25 +13,15 @@ Corsika8 uses Geant3 Particle IDs.
 
 from __future__ import annotations
 
-import csv
 from typing import TypeVar
 
-from .. import data
 from ..exceptions import MatchingIDNotFound
+from ..mcid import MCParticleID, _csv_to_pdg_map
+from ..particle.particle import InvalidParticle, Particle
 from ..pdgid import PDGID
 
 Self = TypeVar("Self", bound="Corsika7ID")
 
-
-with data.basepath.joinpath("pdgid_to_corsika7id.csv").open() as _f:
-    _bimap = {
-        int(v["CORSIKA7ID"]): int(v["PDGID"])
-        for v in csv.DictReader(line for line in _f if not line.startswith("#"))
-    }
-
-_inverse_bimap: dict[int, int] = {}
-for _k, _v in _bimap.items():
-    _inverse_bimap.setdefault(_v, _k)
 
 # Some Corsika7 ID's are not really particles
 _non_particles = {
@@ -48,7 +38,7 @@ _non_particles = {
 }
 
 
-class Corsika7ID(int):
+class Corsika7ID(MCParticleID):
     """
     Holds a Corsika7 ID.
 
@@ -72,17 +62,7 @@ class Corsika7ID(int):
 
     __slots__ = ()  # Keep Corsika7ID a slots based class
 
-    @classmethod
-    def from_pdgid(cls: type[Self], pdgid: int) -> Self:
-        """
-        Constructor from a PDGID.
-        """
-        try:
-            return cls(_inverse_bimap[int(pdgid)])
-        except KeyError:
-            raise MatchingIDNotFound(
-                f"Non-existent Corsika7ID for input PDGID {pdgid}!"
-            ) from None
+    _to_pdg_map = _csv_to_pdg_map("pdgid_to_corsika7id.csv", "CORSIKA7ID")
 
     @classmethod
     def from_particle_description(
@@ -106,11 +86,15 @@ class Corsika7ID(int):
         if cls._is_non_particle_id(cid):
             return cls(cid), ismother
 
-        # This catches the cases of nuclei with no known PDG ID
-        if 200 <= cid < 5699:
+        # These are all nuclei allowed by CORSIKA7,
+        # Reference: Page 130 of the CORSIKA7 userguide Version 7.8050
+        # https://www.iap.kit.edu/corsika/downloads/CORSIKA_GUIDE7.8050.pdf
+        # Note: Particles with A>Z do not make sense
+        # But in principle the CORSIKA7 numbering scheme allows them
+        if 200 <= cid <= 5699:
             return cls(cid), ismother
 
-        if cid in _bimap:
+        if cid in cls._to_pdg_map:
             return cls(cid), ismother
 
         raise MatchingIDNotFound(
@@ -179,8 +163,6 @@ class Corsika7ID(int):
         >>> ch_photons_of.name()
         'Cherenkov photons on particle output file'
         """
-        from ..particle.particle import Particle  # pylint: disable=C0415
-
         if not self.is_particle():
             iid = int(self)
 
@@ -197,10 +179,18 @@ class Corsika7ID(int):
 
     def to_pdgid(self) -> PDGID:
         """
+        Convert to the matching PDGID.
+
         Raises
         ------
         InvalidParticle
-            If it is a valid Corsika particle, but not a valid PDGID.
+            If the Corsika7ID does not correspond to a particle, either
+            because it holds additional information (`is_particle()` is False)
+            or because it is no valid Corsika7ID at all.
+
+        MatchingIDNotFound
+            If the Corsika7ID is a particle but has no matching PDGID,
+            i.e. nuclei unknown to the PDG.
 
         Examples
         --------
@@ -209,16 +199,19 @@ class Corsika7ID(int):
         >>> Corsika7ID(76).to_pdgid()  # doctest: +SKIP
         InvalidParticle: The Corsika7ID <Corsika7ID: 76> does not correspond to a particle and thus has no equivalent PDGID.
         """
-        from ..particle.particle import InvalidParticle  # pylint: disable=C0415
+        if int(self) in self._to_pdg_map:
+            return super().to_pdgid()
 
-        if self not in _bimap:
-            raise InvalidParticle(
-                f"The Corsika7ID {self} does not correspond to a particle and thus has no equivalent PDGID."
+        # Some nuclei with no known PDG ID are valid C7 IDs nonetheless.
+        # Particles with existing PDGIDs are in the csv conversion file
+        # and are caught by the first `if`.
+        # Reference: Page 130 of the CORSIKA7 userguide Version 7.8050
+        # https://www.iap.kit.edu/corsika/downloads/CORSIKA_GUIDE7.8050.pdf.
+        if self.is_particle() and 200 <= int(self) <= 5699:
+            raise MatchingIDNotFound(
+                f"Non-existent PDGID for input {self.__class__.__name__} {int(self)}!"
             )
-        return PDGID(_bimap[self])
 
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__}: {int(self):d}>"
-
-    def __str__(self) -> str:
-        return repr(self)
+        raise InvalidParticle(
+            f"The Corsika7ID {self} does not correspond to a particle and thus has no equivalent PDGID."
+        )

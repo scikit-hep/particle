@@ -156,8 +156,15 @@ def dump_pdgid_to_corsika7(file: pathlib.Path | None = None) -> None:
     Generates the conversion .csv file with the patching PDGID to Corsika7ID under 'src/particle/data/pdgid_to_corsika7id.csv'
     (if file is None, else in the specified path).
     """
-    # Loop over all thinkable values and only add them if the PDG ID exists
+    # These are all nuclei allowed by CORSIKA7.
+    # Reference: Page 130 of the CORSIKA7 userguide Version 7.8050
+    # https://www.iap.kit.edu/corsika/downloads/CORSIKA_GUIDE7.8050.pdf
+    # Note: Some of these particles do not exist or make any sense.
+    # But in principle the CORSIKA7 numbering scheme allows them.
+    # CORSIKA7 stops at A=56, which is the number of nucleons
+    # in the most common iron isotope.
     for a in range(2, 56 + 1):
+        # `Particle.from_nucleus_info` throws an error anyway if Z>A, which is not possible
         for z in range(a + 1):
             corsikaid = a * 100 + z
             with contextlib.suppress(ParticleNotFound):
