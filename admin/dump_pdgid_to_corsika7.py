@@ -162,9 +162,9 @@ def dump_pdgid_to_corsika7(file: pathlib.Path | None = None) -> None:
     # Note: Some of these particles do not exist or make any sense.
     # But in principle the CORSIKA7 numbering scheme allows them.
     # CORSIKA7 stops at A=56, which is the number of nucleons
-    # in the most common iron-isotope
+    # in the most common iron isotope.
     for a in range(2, 56 + 1):
-        # `Particle.from_nucleus_info` throws an error anyway if Z>A
+        # `Particle.from_nucleus_info` throws an error anyway if Z>A, which is not possible
         for z in range(a + 1):
             corsikaid = a * 100 + z
             with contextlib.suppress(ParticleNotFound):
