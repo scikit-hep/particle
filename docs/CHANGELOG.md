@@ -1,5 +1,42 @@
 # Changelog
 
+## Version 1.0.0
+
+June 25th, 2026
+
+- Data files:
+  - Added the 2026 PDG data table file, now default,
+    and made a new 2026 nucleus data file to match.
+  - Added version 16 of package CSV data files since PDG 2026 information now the default.
+  - Removed old and superseded 2022 and 2023 PDG and derived data files.
+  - Removed old 2020 and 2022 nucleus data files.
+- `Particle` class and submodules:
+  - Return `Fraction` instead of float for charge, spin J, and isospin I.
+  - Implemented baryon, lepton and R-parity quantum numbers.
+  - Implemented flavour quantum numbers - strangeness, charmness, bottomness, topness. Also hypercharge.
+  - Tests added for all new functionality.
+  - Added also a test of the Gell-Mann–Nishijima formula relating charge to isospin and hypercharge.
+  - Performance improvements, notably for particle and PDGID literals.
+  - Minor improvements and fixes to the odd member function.
+  - Improvements to the CLI commands `python -m particle ...` for better user experience
+    and clearer error messages.
+- `PDGID` class method and related standalone functions:
+  - Return `Fraction` instead of float for charge, spin J, and isospin I.
+  - Minor fixes to the odd function.
+- Classes for MC particle identification codes and converters:
+  - New common `MCParticleID` base class for MC particle ID classes.
+    The classes `Geant3ID`, `PythiaID`, `Corsika7ID` now inherit from it
+    and are much simplified and streamlined.
+- Dependencies:
+  - Moved to Pandas 2.0+.
+  - Dropped support for Python 3.9.
+- Miscellaneous:
+  - Added support for agents.
+  - Started using pattern matching to simplify bits of code.
+- Tests and CI:
+  - Test suite significantly improved and enhanced.
+  - Updates and improvements to pre-commit hooks and CI YAML files.
+
 ## Version 0.26.2
 
 April 17th, 2026
