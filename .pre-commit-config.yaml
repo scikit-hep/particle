@@ -33,7 +33,7 @@ repos:
         exclude: README.md
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: "v3.9.1"
+    rev: "v3.9.4"
     hooks:
       - id: prettier
         types_or: [yaml, markdown, json]
