@@ -19,7 +19,7 @@ repos:
       - id: end-of-file-fixer
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.15.20"
+    rev: "v0.15.21"
     hooks:
       - id: ruff-check
         args: ["--fix", "--show-fixes"]
@@ -33,13 +33,13 @@ repos:
         exclude: README.md
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: "v3.9.4"
+    rev: "v3.9.5"
     hooks:
       - id: prettier
         types_or: [yaml, markdown, json]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v2.1.0
+    rev: v2.3.0
     hooks:
       - id: mypy
         files: src|tests
