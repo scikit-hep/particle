@@ -20,11 +20,10 @@ import attr
 from hepunits.constants import c_light
 
 from .. import data
-from .._compat.typing import Self, Traversable
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
 from ..pdgid import PDGID, is_valid
 from ..pdgid.functions import Location, _digit
-from ..typing import HasOpen, HasRead, StringOrIO
+from ..typing import HasOpen, HasRead, Self, StringOrIO, Traversable
 from .enums import (
     Charge,
     Charge_undo,

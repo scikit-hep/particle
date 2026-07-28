@@ -13,10 +13,10 @@ import csv
 from collections.abc import Mapping
 from typing import ClassVar
 
-from ..typing import Self
 from . import data
 from .exceptions import MatchingIDNotFound
 from .pdgid import PDGID
+from .typing import Self
 
 
 def _csv_to_pdg_map(filename: str, id_column: str) -> dict[int, int]:

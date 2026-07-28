@@ -15,6 +15,7 @@ __all__ = (
     "HasRead",
     "Self",
     "StringOrIO",
+    "Traversable",
 )
 
 
