@@ -42,6 +42,7 @@ classifiers = [
 dependencies = [
     "attrs>=22.2.0",
     "hepunits>=2.4.0",
+    'typing-extensions>=4;python_version<"3.11"',
 ]
 dynamic = ["version"]
 

@@ -13,15 +13,11 @@ Corsika8 uses Geant3 Particle IDs.
 
 from __future__ import annotations
 
-from typing import TypeVar
-
 from ..exceptions import MatchingIDNotFound
 from ..mcid import MCParticleID, _csv_to_pdg_map
 from ..particle.particle import InvalidParticle, Particle
 from ..pdgid import PDGID
-
-Self = TypeVar("Self", bound="Corsika7ID")
-
+from ..typing import Self
 
 # Some Corsika7 ID's are not really particles
 _non_particles = {
@@ -65,9 +61,7 @@ class Corsika7ID(MCParticleID):
     _to_pdg_map = _csv_to_pdg_map("pdgid_to_corsika7id.csv", "CORSIKA7ID")
 
     @classmethod
-    def from_particle_description(
-        cls: type[Self], particle_description: int
-    ) -> tuple[Self, bool]:
+    def from_particle_description(cls, particle_description: int) -> tuple[Self, bool]:
         """
         Constructor from the particle description returned by Corsika7
         in the particle data sub-block, mother particle data sub-block or
@@ -102,7 +96,7 @@ class Corsika7ID(MCParticleID):
         )
 
     @classmethod
-    def _is_non_particle_id(cls: type[Self], corsikaid: int) -> bool:
+    def _is_non_particle_id(cls, corsikaid: int) -> bool:
         """
         Returns True if the ID is valid but does not correspond to a particle, False otherwise.
         """

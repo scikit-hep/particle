@@ -25,7 +25,7 @@ def download_table(
 
 
 def main():
-    date = dt.datetime.today().strftime("%Y-%m-%d")
+    date = dt.datetime.now(tz=dt.timezone.utc).strftime("%Y-%m-%d")
     table = download_table()
     lhcb_names = {int(pdg_id): name for name, _, pdg_id, *_ in table}
 

@@ -9,12 +9,9 @@ Class representing a Pythia ID.
 
 from __future__ import annotations
 
-from typing import TypeVar
-
 from ..mcid import MCParticleID
 from ..pdgid import PDGID
-
-Self = TypeVar("Self", bound="PythiaID")
+from ..typing import Self
 
 # Pythia follows the standard PDG particle numbering scheme, except for a
 # few light scalar mesons, for which it kept older PDG numberings.
@@ -66,7 +63,7 @@ class PythiaID(MCParticleID):
         """
         return cls(_pdgid_to_pythiaid.get(int(pdgid), int(pdgid)))
 
-    def __neg__(self: Self) -> Self:
+    def __neg__(self) -> Self:
         return self.__class__(-int(self))
 
     __invert__ = __neg__

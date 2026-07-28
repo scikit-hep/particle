@@ -8,12 +8,14 @@ from __future__ import annotations
 
 from typing import IO, Any, Protocol, runtime_checkable
 
-from ._compat.typing import Traversable
+from ._compat.typing import Self, Traversable
 
 __all__ = (
     "HasOpen",
     "HasRead",
+    "Self",
     "StringOrIO",
+    "Traversable",
 )
 
 

@@ -12,8 +12,8 @@ All methods of HepPID are implemented in a Pythonic version, see the functions m
 from __future__ import annotations
 
 from inspect import isfunction
-from typing import TypeVar
 
+from ..typing import Self
 from . import functions as _functions
 
 # Collect all the user defined, non-hidden functions in the pdgid.functions module
@@ -22,9 +22,6 @@ _fnames = [
     for fname in dir(_functions)
     if not fname.startswith("_") and isfunction(getattr(_functions, fname))
 ]
-
-
-Self = TypeVar("Self", bound="PDGID")
 
 
 class PDGID(int):
@@ -46,7 +43,7 @@ class PDGID(int):
     def __str__(self) -> str:
         return repr(self)
 
-    def __neg__(self: Self) -> Self:
+    def __neg__(self) -> Self:
         return self.__class__(-int(self))
 
     __invert__ = __neg__

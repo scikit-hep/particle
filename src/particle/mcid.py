@@ -11,13 +11,12 @@ from __future__ import annotations
 
 import csv
 from collections.abc import Mapping
-from typing import ClassVar, TypeVar
+from typing import ClassVar
 
 from . import data
 from .exceptions import MatchingIDNotFound
 from .pdgid import PDGID
-
-Self = TypeVar("Self", bound="MCParticleID")
+from .typing import Self
 
 
 def _csv_to_pdg_map(filename: str, id_column: str) -> dict[int, int]:
@@ -103,7 +102,7 @@ class MCParticleID(int):
             ) from None
 
     @classmethod
-    def from_pdgid(cls: type[Self], pdgid: int) -> Self:
+    def from_pdgid(cls, pdgid: int) -> Self:
         """
         Constructor from a PDGID.
 
