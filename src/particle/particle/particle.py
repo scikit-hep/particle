@@ -13,7 +13,7 @@ from collections.abc import Callable, Iterable, Iterator, Sequence
 from copy import copy
 from fractions import Fraction
 from functools import total_ordering
-from typing import Any, SupportsInt, TypeVar
+from typing import Any, Self, SupportsInt
 
 # External dependencies
 import attr
@@ -92,9 +92,6 @@ def _none_or_positive_converter(value: float) -> float | None:
 minus_one: float | None = -1.0
 none_float: float | None = None
 none_fraction: Fraction | None = None
-
-
-Self = TypeVar("Self", bound="Particle")
 
 
 @total_ordering
@@ -270,7 +267,7 @@ class Particle:
         return cls._table is not None
 
     @classmethod
-    def all(cls: type[Self]) -> list[Self]:
+    def all(cls) -> list[Self]:
         """
         Access, hence get hold of, the internal particle data CSV table,
         loading it from the default location if no table has yet been loaded.
@@ -956,7 +953,7 @@ class Particle:
         # Only K-mesons at this point
         return False
 
-    def invert(self: Self) -> Self:
+    def invert(self) -> Self:
         "Get the antiparticle."
         if self.anti_flag == Inv.Barred or (
             self.anti_flag == Inv.ChargeInv and self.three_charge != Charge.o
@@ -1135,12 +1132,12 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
         return latex_to_html_name(self.latex_name)
 
     @classmethod
-    def empty(cls: type[Self]) -> Self:
+    def empty(cls) -> Self:
         "Make a new empty particle."
         return cls(0, "Unknown", anti_flag=Inv.Same)
 
     @classmethod
-    def from_pdgid(cls: type[Self], value: SupportsInt) -> Self:
+    def from_pdgid(cls, value: SupportsInt) -> Self:
         """
         Get a particle from a PDGID. Uses by default the package
         extended PDG data table.
@@ -1166,7 +1163,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             raise ParticleNotFound(f"Could not find PDGID {value}") from None
 
     @classmethod
-    def from_name(cls: type[Self], name: str) -> Self:
+    def from_name(cls, name: str) -> Self:
         """
         Get a particle from its name.
 
@@ -1194,7 +1191,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
             raise ParticleNotFound(f"Could not find name {name!r}") from None
 
     @classmethod
-    def from_evtgen_name(cls: type[Self], name: str) -> Self:
+    def from_evtgen_name(cls, name: str) -> Self:
         """
         Get a particle from an EvtGen particle name, as in .dec decay files.
 
@@ -1209,7 +1206,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def from_nucleus_info(
-        cls: type[Self],
+        cls,
         z: int,
         a: int,
         anti: bool = False,
@@ -1285,7 +1282,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def finditer(
-        cls: type[Self],
+        cls,
         filter_fn: Callable[[Particle], bool] | str | None = None,
         *,
         particle: bool | None = None,
@@ -1380,7 +1377,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
 
     @classmethod
     def findall(
-        cls: type[Self],
+        cls,
         filter_fn: Callable[[Particle], bool] | str | None = None,
         *,
         particle: bool | None = None,

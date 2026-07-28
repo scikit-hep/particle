@@ -14,11 +14,9 @@ follows the PDG rules, hence uses the standard PDG IDs.
 
 from __future__ import annotations
 
-from typing import TypeVar
+from typing import Self
 
 from ..mcid import MCParticleID, _csv_to_pdg_map
-
-Self = TypeVar("Self", bound="Geant3ID")
 
 
 class Geant3ID(MCParticleID):
@@ -41,7 +39,7 @@ class Geant3ID(MCParticleID):
 
     _to_pdg_map = _csv_to_pdg_map("pdgid_to_geant3id.csv", "GEANT3ID")
 
-    def __neg__(self: Self) -> Self:
+    def __neg__(self) -> Self:
         """
         Note:
         Allowed operation though ALL Geant3 identification codes are positive!
