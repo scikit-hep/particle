@@ -180,7 +180,7 @@ def dump_pdgid_to_corsika7(file: pathlib.Path | None = None) -> None:
             .joinpath("src/particle/data/pdgid_to_corsika7id.csv")
         )
 
-    date = dt.datetime.today().strftime("%Y-%m-%d")
+    date = dt.datetime.now(tz=dt.timezone.utc).strftime("%Y-%m-%d")
 
     with open(
         file,
