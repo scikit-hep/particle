@@ -14,9 +14,8 @@ follows the PDG rules, hence uses the standard PDG IDs.
 
 from __future__ import annotations
 
-from typing import Self
-
 from ..mcid import MCParticleID, _csv_to_pdg_map
+from ..typing import Self
 
 
 class Geant3ID(MCParticleID):

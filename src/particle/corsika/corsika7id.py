@@ -13,12 +13,11 @@ Corsika8 uses Geant3 Particle IDs.
 
 from __future__ import annotations
 
-from typing import Self
-
 from ..exceptions import MatchingIDNotFound
 from ..mcid import MCParticleID, _csv_to_pdg_map
 from ..particle.particle import InvalidParticle, Particle
 from ..pdgid import PDGID
+from ..typing import Self
 
 # Some Corsika7 ID's are not really particles
 _non_particles = {

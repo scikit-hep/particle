@@ -9,10 +9,9 @@ Class representing a Pythia ID.
 
 from __future__ import annotations
 
-from typing import Self
-
 from ..mcid import MCParticleID
 from ..pdgid import PDGID
+from ..typing import Self
 
 # Pythia follows the standard PDG particle numbering scheme, except for a
 # few light scalar mesons, for which it kept older PDG numberings.

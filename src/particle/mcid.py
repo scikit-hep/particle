@@ -11,8 +11,9 @@ from __future__ import annotations
 
 import csv
 from collections.abc import Mapping
-from typing import ClassVar, Self
+from typing import ClassVar
 
+from ..typing import Self
 from . import data
 from .exceptions import MatchingIDNotFound
 from .pdgid import PDGID

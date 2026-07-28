@@ -12,8 +12,8 @@ All methods of HepPID are implemented in a Pythonic version, see the functions m
 from __future__ import annotations
 
 from inspect import isfunction
-from typing import Self
 
+from ..typing import Self
 from . import functions as _functions
 
 # Collect all the user defined, non-hidden functions in the pdgid.functions module

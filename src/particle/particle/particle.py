@@ -13,14 +13,14 @@ from collections.abc import Callable, Iterable, Iterator, Sequence
 from copy import copy
 from fractions import Fraction
 from functools import total_ordering
-from typing import Any, Self, SupportsInt
+from typing import Any, SupportsInt
 
 # External dependencies
 import attr
 from hepunits.constants import c_light
 
 from .. import data
-from .._compat.typing import Traversable
+from .._compat.typing import Self, Traversable
 from ..converters.evtgen import EvtGenName2PDGIDBiMap
 from ..pdgid import PDGID, is_valid
 from ..pdgid.functions import Location, _digit
