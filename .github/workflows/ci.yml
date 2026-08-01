@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
       - uses: pre-commit/action@v3.0.1
@@ -48,12 +48,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
 
-      - uses: astral-sh/setup-uv@v8.2.0
+      - uses: astral-sh/setup-uv@v9.0.0
 
       - name: Test package
         run: uvx nox -s tests --force-python=${{ matrix.python-version }}
@@ -75,11 +75,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.x"
 
-      - uses: astral-sh/setup-uv@v8.2.0
+      - uses: astral-sh/setup-uv@v9.0.0
 
       - name: Install package
         run: uv pip install --system -e .[test]
@@ -98,7 +98,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: wntrblm/nox@2026.04.10
+      - uses: wntrblm/nox@2026.07.11
         with:
           python-versions: "3.10"
 
