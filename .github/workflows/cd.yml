@@ -35,7 +35,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: wntrblm/nox@2026.07.11
+      - uses: wntrblm/nox@2026.08.17
         with:
           python-versions: "3.10"
 
@@ -65,7 +65,7 @@ jobs:
           path: dist
 
       - name: Generate artifact attestation for sdist and wheel
-        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
           subject-path: "dist/particle*"
 
@@ -85,6 +85,6 @@ jobs:
           files: ./zipapp/particle.pyz
 
       - name: Generate artifact attestation for zipapp
-        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
           subject-path: zipapp/particle.pyz
