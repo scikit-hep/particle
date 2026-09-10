@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 1.0.1
+
+September 10th, 2026
+
+- Miscellaneous:
+  - Give the publish job contents write permission for the ZipApp release upload.
+  - Minor modernisations/improvements to type checking.
+- Tests and CI:
+  - Updates and improvements to pre-commit hooks and CI YAML files.
+
 ## Version 1.0.0
 
 June 25th, 2026
