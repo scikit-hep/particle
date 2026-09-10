@@ -48,7 +48,7 @@ jobs:
           path: particle.pyz
 
   publish:
-    needs: [dist]
+    needs: [dist, zipapp]
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'published'
     environment:
@@ -57,6 +57,7 @@ jobs:
     permissions:
       id-token: write
       attestations: write
+      contents: write
 
     steps:
       - uses: actions/download-artifact@v8
