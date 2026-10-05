@@ -82,6 +82,7 @@ is_sm_lepton   False
 is_sm_quark    False
 is_special_particle False
 is_technicolor False
+is_tetraquark  False
 is_valid       True
 j_spin         3
 l_spin         None

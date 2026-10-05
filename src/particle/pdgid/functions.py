@@ -174,6 +174,8 @@ def is_valid(pdgid: PDGID_TYPE) -> bool:
         return True
     if is_pentaquark(pdgid):
         return True
+    if is_tetraquark(pdgid):
+        return True
     if is_SUSY(pdgid):
         return True
     if is_Rhadron(pdgid):
@@ -260,8 +262,6 @@ def is_hadron(pdgid: PDGID_TYPE) -> bool:
         return True
     if is_baryon(pdgid):
         return True
-    # Irrelevant test since all pentaquarks are baryons!
-    # if is_pentaquark(pdgid): return True
     return bool(is_Rhadron(pdgid))
 
 
@@ -377,33 +377,92 @@ def is_nucleus(pdgid: PDGID_TYPE) -> bool:
     return False
 
 
+def _is_pentaquark_9digit(pdgid: PDGID_TYPE) -> bool:
+    """
+    Does the PDG ID correspond to a pentaquark in the 9-digit layout of
+    the RPP 2026 Monte Carlo numbering scheme (section 15)?
+
+    Pentaquark IDs are of the form +/- 1 nr nL nq1 nq2 nq3 nq4 nq5 nJ,
+    where the first four quark numbers are sorted in decreasing order
+    (nq1 >= nq2 >= nq3 >= nq4) and nq5 gives the antiquark number. The
+    nr and nL digits carry no physics meaning; they form a two-digit
+    index distinguishing states.
+    """
+    aid = abspid(pdgid)
+    if aid < 100000000 or aid > 199999999:
+        return False
+    if _digit(pdgid, Location.Nj) in {0, 9}:
+        return False
+    nq = [
+        _digit(pdgid, loc)
+        for loc in (Location.Nr, Location.Nl, Location.Nq1, Location.Nq2, Location.Nq3)
+    ]
+    if any(q == 0 for q in nq):
+        return False
+    return nq[0] >= nq[1] >= nq[2] >= nq[3]
+
+
 def is_pentaquark(pdgid: PDGID_TYPE) -> bool:
     """
     Does the PDG ID correspond to a pentaquark?
 
-    Pentaquark IDs are of the form +/- 9 Nr Nl Nq1 Nq2 Nq3 Nj, where Nj = 2J + 1 gives the spin
-    and Nr Nl Nq1 Nq2 Nq3 denote the 5 quark numbers in order Nr >= Nl >= Nq1 >= Nq2
-    and Nq3 gives the antiquark number.
+    Pentaquark IDs follow the 9-digit layout of the RPP 2026 Monte Carlo
+    numbering scheme (section 15): +/- 1 nr nL nq1 nq2 nq3 nq4 nq5 nJ,
+    where the first four quark numbers are sorted in decreasing order
+    (nq1 >= nq2 >= nq3 >= nq4) and nq5 gives the antiquark number, while
+    Nj = 2J + 1 gives the spin as for ordinary hadrons.
     """
-    if _extra_bits(pdgid) > 0:
+    return _is_pentaquark_9digit(pdgid)
+
+
+def _is_tetraquark_9digit(pdgid: PDGID_TYPE) -> bool:
+    """
+    Does the PDG ID correspond to a tetraquark in the 9-digit layout of
+    the RPP 2026 Monte Carlo numbering scheme (section 14)?
+
+    Tetraquark IDs are of the form +/- 1 nr nL nq1 nq2 0 nq3 nq4 nJ,
+    where nq1 nq2 is a diquark and nq3 nq4 an antidiquark, sorted such
+    that nq1 >= nq2, nq3 >= nq4, nq1 >= nq3, and nq2 >= nq4 if nq1 == nq3.
+    The nr and nL digits carry no physics meaning; they form a two-digit
+    index distinguishing states.
+    """
+    aid = abspid(pdgid)
+    if aid < 100000000 or aid > 199999999:
         return False
-    if _digit(pdgid, Location.N) != 9:
+    if _digit(pdgid, Location.Nj) in {0, 9}:
         return False
-    if _digit(pdgid, Location.Nr) in {9, 0}:
+    # In the 7-digit location frame the separator digit sits at Nq1 and
+    # the diquark/antidiquark digits at Nr, Nl, Nq2, Nq3 respectively.
+    if _digit(pdgid, Location.Nq1) != 0:
         return False
-    if _digit(pdgid, Location.Nj) in {0, 9} or _digit(pdgid, Location.Nl) == 0:
+    nq1 = _digit(pdgid, Location.Nr)
+    nq2 = _digit(pdgid, Location.Nl)
+    nq3 = _digit(pdgid, Location.Nq2)
+    nq4 = _digit(pdgid, Location.Nq3)
+    if 0 in {nq1, nq2, nq3, nq4}:
         return False
-    if _digit(pdgid, Location.Nq1) == 0:
+    if not (nq1 >= nq2 and nq3 >= nq4):
         return False
-    if _digit(pdgid, Location.Nq2) == 0:
-        return False
-    if _digit(pdgid, Location.Nq3) == 0:
-        return False
-    if _digit(pdgid, Location.Nq2) > _digit(pdgid, Location.Nq1):
-        return False
-    if _digit(pdgid, Location.Nq1) > _digit(pdgid, Location.Nl):
-        return False
-    return _digit(pdgid, Location.Nl) <= _digit(pdgid, Location.Nr)
+    # Particle sorting (nq1 >= nq3, and nq2 >= nq4 if nq1 == nq3), or the
+    # antiparticle sorting (either strict inequality), or a
+    # flavour-diagonal state, which is a particle by convention.
+    if nq1 > nq3 or nq2 > nq4:
+        return True
+    return nq1 == nq3 and nq2 == nq4
+
+
+def is_tetraquark(pdgid: PDGID_TYPE) -> bool:
+    """
+    Does the PDG ID correspond to a tetraquark?
+
+    Tetraquark IDs follow the 9-digit layout of the RPP 2026 Monte Carlo
+    numbering scheme (section 14): +/- 1 nr nL nq1 nq2 0 nq3 nq4 nJ, where
+    nq1 nq2 is a diquark and nq3 nq4 an antidiquark. For the antiparticle
+    (negative sign) the first two are an antidiquark and the last two a
+    diquark, with the same sorting except that flavour-diagonal states
+    are particles.
+    """
+    return _is_tetraquark_9digit(pdgid)
 
 
 def is_gauge_boson_or_higgs(pdgid: PDGID_TYPE) -> bool:
@@ -658,10 +717,26 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
     sid = _fundamental_id(pdgid)
 
     if _extra_bits(pdgid) > 0:
-        if is_nucleus(pdgid):  # ion
+        if is_pentaquark(pdgid):  # 9-digit pentaquark (RPP 2026, section 15)
+            charge = (
+                sum(
+                    _CH100[_digit(pdgid, loc) - 1]
+                    for loc in (Location.Nr, Location.Nl, Location.Nq1, Location.Nq2)
+                )
+                - _CH100[_digit(pdgid, Location.Nq3) - 1]
+            )
+        elif is_tetraquark(pdgid):  # 9-digit tetraquark (RPP 2026, section 14)
+            # diquark digits Nr, Nl minus antidiquark digits Nq2, Nq3
+            charge = (
+                _CH100[_digit(pdgid, Location.Nr) - 1]
+                + _CH100[_digit(pdgid, Location.Nl) - 1]
+                - _CH100[_digit(pdgid, Location.Nq2) - 1]
+                - _CH100[_digit(pdgid, Location.Nq3) - 1]
+            )
+        elif is_nucleus(pdgid):  # ion
             Z_pdgid = Z(pdgid)
             return None if Z_pdgid is None else 3 * Z_pdgid
-        if is_Qball(pdgid):  # Qball
+        elif is_Qball(pdgid):  # Qball
             charge = 3 * ((aid // 10) % 10000)
         else:  # this should never be reached in the present numbering scheme
             return None  # since extra bits exist only for Q-balls and nuclei
@@ -950,11 +1025,6 @@ def _has_quark_q(pdgid: PDGID_TYPE, q: int) -> bool:
         _digit(pdgid, Location.Nq3) == q
         or _digit(pdgid, Location.Nq2) == q
         or _digit(pdgid, Location.Nq1) == q
-    ):
-        return True
-
-    if is_pentaquark(pdgid) and (
-        _digit(pdgid, Location.Nl) == q or _digit(pdgid, Location.Nr) == q
     ):
         return True
 

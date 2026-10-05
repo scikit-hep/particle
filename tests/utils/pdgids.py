@@ -126,10 +126,20 @@ class PDGIDsEnum(IntEnum):
     # Nuclei
     HydrogenNucleus = 1000010010
     Carbon12 = 1000060120
-    # Pentaquarks
-    AntiUCbarCUDPentaquark = -9422144
-    # example of spin 3/2 u-cbar-c-u-d pentaquark decaying to J/psi proton
-    UCbarCUDPentaquark = 9422144
+    # Pentaquarks (RPP 2026, section 15: 9-digit codes)
+    # P_c(4312)+ as u u d c cbar with J = 1/2 (nr/nL index 00)
+    Pc4312Plus = 100422142
+    AntiPc4312Minus = -100422142
+    # P_c(4440)+ as u u d c cbar with J = 1/2 (nr/nL index 01)
+    Pc4440Plus = 101422142
+    # Tetraquarks (RPP 2026, section 14: table entries)
+    Tc3900Plus = 100420413
+    AntiTc3900Minus = -100420413
+    Tc3900Zero = 100410413
+    Tc4430Plus = 101420413
+    Tc4430Zero = 101410413
+    Tb10610Plus = 100520513
+    Tb10610Zero = 100510513
     # Technicolor
     Pi0TC = 3000111
     PiMinusTC = -3000211

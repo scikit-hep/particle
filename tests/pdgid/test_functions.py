@@ -44,6 +44,7 @@ from particle.pdgid import (
     is_special_particle,
     is_SUSY,
     is_technicolor,
+    is_tetraquark,
     is_valid,
     j_spin,
     l_spin,
@@ -92,6 +93,55 @@ def test_three_charge() -> None:
     assert three_charge(PDGIDs.Invalid1) is None
     assert three_charge(PDGIDs.Invalid2) is None
     assert three_charge(5100061) == 6  # special particle, see three_charge
+
+
+def test_three_charge_pentaquarks() -> None:
+    # 9-digit pentaquark codes of the RPP 2026 numbering scheme,
+    # section 15: quarks nq1-nq4 minus the antiquark nq5 (gh-804).
+    assert three_charge(PDGIDs.Pc4312Plus) == +3
+    assert three_charge(PDGIDs.AntiPc4312Minus) == -3
+    assert three_charge(PDGIDs.Pc4440Plus) == +3
+    assert charge(PDGIDs.Pc4312Plus) == Fraction(1, 1)
+    assert charge(PDGIDs.Pc4440Plus) == Fraction(1, 1)
+    assert is_valid(PDGIDs.Pc4312Plus)
+    assert is_valid(PDGIDs.Pc4440Plus)
+    assert is_pentaquark(PDGIDs.Pc4312Plus)
+    assert is_pentaquark(PDGIDs.Pc4440Plus)
+    assert is_pentaquark(PDGIDs.AntiPc4312Minus)
+    # neighbouring 9-digit layouts are not pentaquarks: tetraquarks
+    # carry a zero separator digit (RPP 2026, section 14)
+    assert not is_pentaquark(PDGIDs.Tc3900Plus)
+    assert not is_pentaquark(PDGIDs.Tc3900Zero)
+    assert not is_pentaquark(1000010020)
+    # the removed legacy 7-digit scheme is no longer recognised
+    assert not is_pentaquark(9221132)
+    assert not is_pentaquark(9331122)
+    assert not is_pentaquark(9422144)
+
+
+def test_three_charge_tetraquarks() -> None:
+    # 9-digit tetraquark codes of the RPP 2026 numbering scheme,
+    # section 14: diquark nq1-nq2 minus antidiquark nq3-nq4 (gh-804).
+    assert three_charge(PDGIDs.Tc3900Plus) == +3
+    assert three_charge(PDGIDs.AntiTc3900Minus) == -3
+    assert three_charge(PDGIDs.Tc3900Zero) == 0
+    assert three_charge(PDGIDs.Tc4430Plus) == +3
+    assert three_charge(PDGIDs.Tc4430Zero) == 0
+    assert three_charge(PDGIDs.Tb10610Plus) == +3
+    assert three_charge(PDGIDs.Tb10610Zero) == 0
+    assert charge(PDGIDs.Tc3900Plus) == Fraction(1, 1)
+    assert charge(PDGIDs.Tc3900Zero) == 0
+    assert charge(PDGIDs.Tb10610Plus) == Fraction(1, 1)
+    assert is_valid(PDGIDs.Tc3900Plus)
+    assert is_valid(PDGIDs.Tc3900Zero)
+    assert is_tetraquark(PDGIDs.Tc3900Plus)
+    assert is_tetraquark(PDGIDs.AntiTc3900Minus)
+    assert is_tetraquark(PDGIDs.Tc3900Zero)
+    assert is_tetraquark(PDGIDs.Tb10610Plus)
+    assert is_tetraquark(PDGIDs.Tb10610Zero)
+    # pentaquarks have no separator digit and are not tetraquarks
+    assert not is_tetraquark(PDGIDs.Pc4312Plus)
+    assert not is_tetraquark(1000010020)
 
 
 def test_is_valid() -> None:
@@ -267,8 +317,6 @@ def test_is_baryon() -> None:
         PDGIDs.Lb,
         PDGIDs.LtPlus,
         PDGIDs.RPlusPlus_GTildeUUU,
-        PDGIDs.UCbarCUDPentaquark,
-        PDGIDs.AntiUCbarCUDPentaquark,
     )
     _non_baryons = [pid for pid in PDGIDs if pid not in _baryons]
     for pid in _baryons:
@@ -289,19 +337,33 @@ def test_is_hadron() -> None:
 
 
 def test_is_pentaquark() -> None:
-    _pentaquarks = (PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
+    _pentaquarks = (
+        PDGIDs.Pc4312Plus,
+        PDGIDs.AntiPc4312Minus,
+        PDGIDs.Pc4440Plus,
+    )
     _non_pentaquarks = [pid for pid in PDGIDs if pid not in _pentaquarks]
-    assert is_pentaquark(PDGIDs.UCbarCUDPentaquark)
-    assert is_pentaquark(PDGIDs.AntiUCbarCUDPentaquark)
+    for pid in _pentaquarks:
+        assert is_pentaquark(pid)
     for pid in _non_pentaquarks:
         assert not is_pentaquark(pid)
 
 
-def test_pentaquarks_are_baryons() -> None:
-    """Obviously all pentaquarks are baryons!"""
-    _pentaquarks = (PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
-    for pid in _pentaquarks:
-        assert is_baryon(pid)
+def test_is_tetraquark() -> None:
+    _tetraquarks = (
+        PDGIDs.Tc3900Plus,
+        PDGIDs.AntiTc3900Minus,
+        PDGIDs.Tc3900Zero,
+        PDGIDs.Tc4430Plus,
+        PDGIDs.Tc4430Zero,
+        PDGIDs.Tb10610Plus,
+        PDGIDs.Tb10610Zero,
+    )
+    _non_tetraquarks = [pid for pid in PDGIDs if pid not in _tetraquarks]
+    for pid in _tetraquarks:
+        assert is_tetraquark(pid)
+    for pid in _non_tetraquarks:
+        assert not is_tetraquark(pid)
 
 
 def test_is_gauge_boson_or_higgs() -> None:
@@ -554,8 +616,6 @@ def test_has_charm() -> None:
         PDGIDs.DsPlus,
         PDGIDs.BcPlus,
         PDGIDs.LcPlus,
-        PDGIDs.UCbarCUDPentaquark,
-        PDGIDs.AntiUCbarCUDPentaquark,
     )
     _without_charm_content = [pid for pid in PDGIDs if pid not in _with_charm_content]
     for pid in _with_charm_content:
