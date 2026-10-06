@@ -113,10 +113,32 @@ def test_three_charge_pentaquarks() -> None:
     assert not is_pentaquark(PDGIDs.Tc3900Plus)
     assert not is_pentaquark(PDGIDs.Tc3900Zero)
     assert not is_pentaquark(1000010020)
-    # the removed legacy 7-digit scheme is no longer recognised
+    # the removed legacy 7-digit scheme is no longer recognised, and
+    # those IDs are not valid baryons either. Mesons that only share
+    # the leading 9 (a0(980) = 9000111) stay mesons.
     assert not is_pentaquark(9221132)
     assert not is_pentaquark(9331122)
     assert not is_pentaquark(9422144)
+    assert not is_valid(9221132)
+    assert not is_valid(9331122)
+    assert not is_valid(9422144)
+    assert not is_valid(-9422144)
+    assert not is_baryon(9422144)
+    assert three_charge(9422144) is None
+    assert is_meson(9000111)
+    assert is_valid(9000111)
+    assert not is_pentaquark(9000111)
+    # 9-digit exotics are hadrons: pentaquarks are baryons, tetraquarks mesons
+    assert is_baryon(PDGIDs.Pc4312Plus)
+    assert is_baryon(PDGIDs.AntiPc4312Minus)
+    assert not is_meson(PDGIDs.Pc4312Plus)
+    assert is_hadron(PDGIDs.Pc4312Plus)
+    assert is_meson(PDGIDs.Tc3900Plus)
+    assert is_meson(PDGIDs.AntiTc3900Minus)
+    assert is_meson(PDGIDs.Tc3900Zero)
+    assert not is_baryon(PDGIDs.Tc3900Plus)
+    assert is_hadron(PDGIDs.Tc3900Plus)
+    assert is_hadron(PDGIDs.Tb10610Zero)
 
 
 def test_three_charge_tetraquarks() -> None:
@@ -277,6 +299,13 @@ def _get_mesons() -> tuple[PDGIDs, ...]:
         PDGIDs.Odderon,
         PDGIDs.RPlus_TTildeDbar,
         PDGIDs.R0_GTildeG,
+        PDGIDs.Tc3900Plus,
+        PDGIDs.AntiTc3900Minus,
+        PDGIDs.Tc3900Zero,
+        PDGIDs.Tc4430Plus,
+        PDGIDs.Tc4430Zero,
+        PDGIDs.Tb10610Plus,
+        PDGIDs.Tb10610Zero,
     )
 
 
@@ -317,6 +346,9 @@ def test_is_baryon() -> None:
         PDGIDs.Lb,
         PDGIDs.LtPlus,
         PDGIDs.RPlusPlus_GTildeUUU,
+        PDGIDs.Pc4312Plus,
+        PDGIDs.AntiPc4312Minus,
+        PDGIDs.Pc4440Plus,
     )
     _non_baryons = [pid for pid in PDGIDs if pid not in _baryons]
     for pid in _baryons:

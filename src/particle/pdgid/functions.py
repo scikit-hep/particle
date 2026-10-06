@@ -256,6 +256,11 @@ def is_hadron(pdgid: PDGID_TYPE) -> bool:
     # needs to be checked first since _extra_bits(pdgid) > 0 for nuclei
     if abs(int(pdgid)) in {1000000010, 1000010010}:
         return True
+    # 9-digit exotics carry extra bits, so they have to be recognised
+    # before that test. Pentaquarks (RPP 2026, section 15) and
+    # tetraquarks (section 14) are both hadrons.
+    if is_pentaquark(pdgid) or is_tetraquark(pdgid):
+        return True
     if _extra_bits(pdgid) > 0:
         return False
     if is_meson(pdgid):
@@ -267,6 +272,11 @@ def is_hadron(pdgid: PDGID_TYPE) -> bool:
 
 def is_meson(pdgid: PDGID_TYPE) -> bool:
     """Does this PDG ID correspond to a meson?"""
+    # Tetraquarks are quark-antiquark composites (a diquark plus an
+    # antidiquark) and carry baryon number 0, so they are mesons.
+    # Their 9-digit IDs have extra bits.
+    if is_tetraquark(pdgid):
+        return True
     if _extra_bits(pdgid) > 0:
         return False
     aid = abspid(pdgid)
@@ -311,6 +321,11 @@ def is_baryon(pdgid: PDGID_TYPE) -> bool:
     if aid in {1000000010, 1000010010}:
         return True
 
+    # Four quarks and one antiquark: baryon number 1. The 9-digit IDs
+    # have extra bits, so this comes before that test.
+    if is_pentaquark(pdgid):
+        return True
+
     if _extra_bits(pdgid) > 0:
         return False
 
@@ -320,6 +335,14 @@ def is_baryon(pdgid: PDGID_TYPE) -> bool:
     # Old codes for diffractive p and n (MC usage)
     if aid in {2110, 2210}:
         return True
+
+    # The retired 7-digit pentaquark layout (RPP 2020 item 6f) matches the
+    # generic baryon digit test. Those codes were removed from the tables
+    # and must not be reported as baryons. Mesons that merely start with 9
+    # (a0(980) = 9000111 and the like) have a zero quark digit and are not
+    # matched here.
+    if _is_legacy_pentaquark(pdgid):
+        return False
 
     return (
         _digit(pdgid, Location.Nj) > 0
@@ -400,6 +423,37 @@ def _is_pentaquark_9digit(pdgid: PDGID_TYPE) -> bool:
     if any(q == 0 for q in nq):
         return False
     return nq[0] >= nq[1] >= nq[2] >= nq[3]
+
+
+def _is_legacy_pentaquark(pdgid: PDGID_TYPE) -> bool:
+    """
+    Does the PDG ID follow the retired 7-digit pentaquark layout?
+
+    That layout (RPP 2020, Monte Carlo numbering item 6f) was
+    +/- 9 Nr Nl Nq1 Nq2 Nq3 Nj with Nr >= Nl >= Nq1 >= Nq2 and Nq3
+    the antiquark. It was removed from the 2026 tables. The predicate
+    exists so those IDs are not classified as ordinary baryons; it is
+    not a public pentaquark check.
+    """
+    if _extra_bits(pdgid) > 0:
+        return False
+    if _digit(pdgid, Location.N) != 9:
+        return False
+    if _digit(pdgid, Location.Nr) in {9, 0}:
+        return False
+    if _digit(pdgid, Location.Nj) in {0, 9} or _digit(pdgid, Location.Nl) == 0:
+        return False
+    if _digit(pdgid, Location.Nq1) == 0:
+        return False
+    if _digit(pdgid, Location.Nq2) == 0:
+        return False
+    if _digit(pdgid, Location.Nq3) == 0:
+        return False
+    if _digit(pdgid, Location.Nq2) > _digit(pdgid, Location.Nq1):
+        return False
+    if _digit(pdgid, Location.Nq1) > _digit(pdgid, Location.Nl):
+        return False
+    return _digit(pdgid, Location.Nl) <= _digit(pdgid, Location.Nr)
 
 
 def is_pentaquark(pdgid: PDGID_TYPE) -> bool:
