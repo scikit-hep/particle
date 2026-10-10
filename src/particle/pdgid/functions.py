@@ -400,31 +400,6 @@ def is_nucleus(pdgid: PDGID_TYPE) -> bool:
     return False
 
 
-def _is_pentaquark_9digit(pdgid: PDGID_TYPE) -> bool:
-    """
-    Does the PDG ID correspond to a pentaquark in the 9-digit layout of
-    the RPP 2026 Monte Carlo numbering scheme (section 15)?
-
-    Pentaquark IDs are of the form +/- 1 nr nL nq1 nq2 nq3 nq4 nq5 nJ,
-    where the first four quark numbers are sorted in decreasing order
-    (nq1 >= nq2 >= nq3 >= nq4) and nq5 gives the antiquark number. The
-    nr and nL digits carry no physics meaning; they form a two-digit
-    index distinguishing states.
-    """
-    aid = abspid(pdgid)
-    if aid < 100000000 or aid > 199999999:
-        return False
-    if _digit(pdgid, Location.Nj) in {0, 9}:
-        return False
-    nq = [
-        _digit(pdgid, loc)
-        for loc in (Location.Nr, Location.Nl, Location.Nq1, Location.Nq2, Location.Nq3)
-    ]
-    if any(q == 0 for q in nq):
-        return False
-    return nq[0] >= nq[1] >= nq[2] >= nq[3]
-
-
 def _is_legacy_pentaquark(pdgid: PDGID_TYPE) -> bool:
     """
     Does the PDG ID follow the retired 7-digit pentaquark layout?
@@ -464,21 +439,37 @@ def is_pentaquark(pdgid: PDGID_TYPE) -> bool:
     numbering scheme (section 15): +/- 1 nr nL nq1 nq2 nq3 nq4 nq5 nJ,
     where the first four quark numbers are sorted in decreasing order
     (nq1 >= nq2 >= nq3 >= nq4) and nq5 gives the antiquark number, while
-    Nj = 2J + 1 gives the spin as for ordinary hadrons.
+    Nj = 2J + 1 gives the spin as for ordinary hadrons. The nr and nL
+    digits carry no physics meaning; they form a two-digit index
+    distinguishing states.
     """
-    return _is_pentaquark_9digit(pdgid)
+    aid = abspid(pdgid)
+    if aid < 100000000 or aid > 199999999:
+        return False
+    if _digit(pdgid, Location.Nj) in {0, 9}:
+        return False
+    # In the 7-digit location frame the quark digits nq1..nq4 sit at
+    # Nr, Nl, Nq1, Nq2 and the antiquark digit nq5 at Nq3.
+    nq = [
+        _digit(pdgid, loc)
+        for loc in (Location.Nr, Location.Nl, Location.Nq1, Location.Nq2, Location.Nq3)
+    ]
+    if any(q == 0 for q in nq):
+        return False
+    return nq[0] >= nq[1] >= nq[2] >= nq[3]
 
 
-def _is_tetraquark_9digit(pdgid: PDGID_TYPE) -> bool:
+def is_tetraquark(pdgid: PDGID_TYPE) -> bool:
     """
-    Does the PDG ID correspond to a tetraquark in the 9-digit layout of
-    the RPP 2026 Monte Carlo numbering scheme (section 14)?
+    Does the PDG ID correspond to a tetraquark?
 
-    Tetraquark IDs are of the form +/- 1 nr nL nq1 nq2 0 nq3 nq4 nJ,
-    where nq1 nq2 is a diquark and nq3 nq4 an antidiquark, sorted such
-    that nq1 >= nq2, nq3 >= nq4, nq1 >= nq3, and nq2 >= nq4 if nq1 == nq3.
-    The nr and nL digits carry no physics meaning; they form a two-digit
-    index distinguishing states.
+    Tetraquark IDs follow the 9-digit layout of the RPP 2026 Monte Carlo
+    numbering scheme (section 14): +/- 1 nr nL nq1 nq2 0 nq3 nq4 nJ, where
+    nq1 nq2 is a diquark and nq3 nq4 an antidiquark. For the antiparticle
+    (negative sign) the first two are an antidiquark and the last two a
+    diquark, with the same sorting except that flavour-diagonal states
+    are particles. The nr and nL digits carry no physics meaning; they
+    form a two-digit index distinguishing states.
     """
     aid = abspid(pdgid)
     if aid < 100000000 or aid > 199999999:
@@ -503,20 +494,6 @@ def _is_tetraquark_9digit(pdgid: PDGID_TYPE) -> bool:
     if nq1 > nq3 or nq2 > nq4:
         return True
     return nq1 == nq3 and nq2 == nq4
-
-
-def is_tetraquark(pdgid: PDGID_TYPE) -> bool:
-    """
-    Does the PDG ID correspond to a tetraquark?
-
-    Tetraquark IDs follow the 9-digit layout of the RPP 2026 Monte Carlo
-    numbering scheme (section 14): +/- 1 nr nL nq1 nq2 0 nq3 nq4 nJ, where
-    nq1 nq2 is a diquark and nq3 nq4 an antidiquark. For the antiparticle
-    (negative sign) the first two are an antidiquark and the last two a
-    diquark, with the same sorting except that flavour-diagonal states
-    are particles.
-    """
-    return _is_tetraquark_9digit(pdgid)
 
 
 def is_gauge_boson_or_higgs(pdgid: PDGID_TYPE) -> bool:
