@@ -7,23 +7,23 @@ expected. A negative ID represents the antiparticle.
 from particle import PDGID, Particle
 
 pid = PDGID(211)
-pid.is_meson          # True
-pid.charge            # Fraction(1, 1) (a Fraction, not a float)
-pid.J                 # Fraction(0, 1)
-pid.has_bottom        # False
-pid.is_valid          # True
-PDGID(99999999).is_valid          # False
--PDGID(211)                        # <PDGID: -211>
-~PDGID(211)                        # also <PDGID: -211>
-PDGID(323).info()                  # one property per line, for inspection
+pid.is_meson  # True
+pid.charge  # Fraction(1, 1) (a Fraction, not a float)
+pid.J  # Fraction(0, 1)
+pid.has_bottom  # False
+pid.is_valid  # True
+PDGID(99999999).is_valid  # False
+-PDGID(211)  # <PDGID: -211>
+~PDGID(211)  # also <PDGID: -211>
+PDGID(323).info()  # one property per line, for inspection
 ```
 
 ## What a PDG ID encodes
 
 The PDG numbering scheme is a signed integer whose digits encode the particle's
 quantum numbers (e.g. meson spin, orbital angular momentum, quark content,
-nucleus composition). This means classification and spin are decoded *from the
-ID*, and `PDGID` never needs the data tables.
+nucleus composition). This means classification and spin are decoded _from the
+ID_, and `PDGID` never needs the data tables.
 
 Properties and their meaning:
 
@@ -61,9 +61,9 @@ operating on any int-like value (useful for composition):
 from particle.pdgid import is_meson, has_charm, has_bottom
 from particle import Particle
 
-is_meson(211)                        # True  (plain int works)
-is_meson(Particle.from_pdgid(211).pdgid)   # pass the PDGID, not the Particle
-has_charm(4122)                      # True
+is_meson(211)  # True  (plain int works)
+is_meson(Particle.from_pdgid(211).pdgid)  # pass the PDGID, not the Particle
+has_charm(4122)  # True
 is_heavy = lambda x: has_charm(x) or has_bottom(x)
 ```
 

@@ -46,10 +46,10 @@ All data tables ship inside the package and are loaded lazily: importing
   are decoded from the ID digits; other properties (`charge`, `I`, `P`, `C`,
   `G`, `rank`, `status`) come from the data tables.
 - **Names.** `name` is display-ready (`'B+'`, `'B~0'`, `'K0'`), `pdg_name` is the
-  PDG table name *without* charge (`'B'`, `'K'`); LaTeX/HTML/EvtGen/programmatic
+  PDG table name _without_ charge (`'B'`, `'K'`); LaTeX/HTML/EvtGen/programmatic
   variants exist too.
-- **Search semantics.** A bare string is a *fuzzy* substring search on `name`;
-  keyword arguments match *exactly*; values may be callables;
+- **Search semantics.** A bare string is a _fuzzy_ substring search on `name`;
+  keyword arguments match _exactly_; values may be callables;
   `particle=True/False` filters to particles/antiparticles.
 - **Units.** Mass and width in MeV, `lifetime` in ns, `ctau` in mm. `charge`,
   `J` and `I` are `Fraction`s, not floats.
@@ -62,11 +62,11 @@ All data tables ship inside the package and are loaded lazily: importing
 from particle import Particle, PDGID
 from particle.pdgid import is_meson, has_charm
 
-p = Particle.from_pdgid(521)                 # look up by ID (see references/particle-properties.md)
-Particle.findall("pi", charge=-1)            # fuzzy name + exact charge
+p = Particle.from_pdgid(521)  # look up by ID (see references/particle-properties.md)
+Particle.findall("pi", charge=-1)  # fuzzy name + exact charge
 Particle.findall(lambda q: q.pdgid.has_bottom and q.charge == 0)
-is_meson(211)                                # classify a bare number
-has_charm(p.pdgid)                           # pass the PDGID, not the Particle
+is_meson(211)  # classify a bare number
+has_charm(p.pdgid)  # pass the PDGID, not the Particle
 ```
 
 For literals (`Particle`/`PDGID` aliases) and MC-ID conversions, see the
@@ -94,12 +94,12 @@ reference files below.
 
 ## Reference files
 
-| File | Contents |
-| --- | --- |
-| [references/pdgid.md](references/pdgid.md) | `PDGID` queries, ID classification, validity, antiparticles, `particle.pdgid` functions |
+| File                                                                   | Contents                                                                                                       |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| [references/pdgid.md](references/pdgid.md)                             | `PDGID` queries, ID classification, validity, antiparticles, `particle.pdgid` functions                        |
 | [references/particle-properties.md](references/particle-properties.md) | Particle lookups, properties, searches, literals, names, mass/width/lifetime, custom particles and data tables |
-| [references/quantum-numbers.md](references/quantum-numbers.md) | Charge, spin, parity, isospin, flavour quantum numbers, and the related enums |
-| [references/interoperability.md](references/interoperability.md) | MC generator IDs, EvtGen/LHCb names, `hepunits`, pandas/tabulate |
+| [references/quantum-numbers.md](references/quantum-numbers.md)         | Charge, spin, parity, isospin, flavour quantum numbers, and the related enums                                  |
+| [references/interoperability.md](references/interoperability.md)       | MC generator IDs, EvtGen/LHCb names, `hepunits`, pandas/tabulate                                               |
 
 ## Documentation
 

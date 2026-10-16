@@ -16,8 +16,8 @@
 from particle import Particle
 
 p = Particle.from_pdgid(521)
-p.charge            # Fraction(1, 1)  — in units of the positron charge
-p.three_charge      # 3 — int, 3 × charge; None if unknown
+p.charge  # Fraction(1, 1)  — in units of the positron charge
+p.three_charge  # 3 — int, 3 × charge; None if unknown
 ```
 
 - `charge` is a `fractions.Fraction` (since 1.0.0); compare with `== 0` or
@@ -31,12 +31,12 @@ p.three_charge      # 3 — int, 3 × charge; None if unknown
 ```python
 from particle import Particle
 
-p = Particle.from_pdgid(443)        # J/psi
-p.J                  # Fraction(1, 1)
-p.L, p.S             # meson orbital/spin quantum numbers, or None
-p.I                  # Fraction(1, 2) — isospin
-p.P, p.C, p.G        # Parity enums (Parity.p / Parity.m / Parity.u)
-p.spin_type          # SpinType.Vector
+p = Particle.from_pdgid(443)  # J/psi
+p.J  # Fraction(1, 1)
+p.L, p.S  # meson orbital/spin quantum numbers, or None
+p.I  # Fraction(1, 2) — isospin
+p.P, p.C, p.G  # Parity enums (Parity.p / Parity.m / Parity.u)
+p.spin_type  # SpinType.Vector
 ```
 
 - `J`, `L`, `S` are read off the PDG ID; `L`/`S` are `None` for non-mesons,
@@ -52,15 +52,15 @@ p.spin_type          # SpinType.Vector
 ```python
 from particle import Particle
 
-Particle.from_pdgid(2212).baryon_number   # 1  (proton)
-Particle.from_pdgid(11).lepton_number     # 1  (electron); -1 for e+
-Particle.from_pdgid(521).bottomness       # 1  (B+)
-Particle.from_pdgid(321).strangeness      # 1  (K+)
-Particle.from_pdgid(443).charmness        # 0  (J/psi is charmonium: net 0)
+Particle.from_pdgid(2212).baryon_number  # 1  (proton)
+Particle.from_pdgid(11).lepton_number  # 1  (electron); -1 for e+
+Particle.from_pdgid(521).bottomness  # 1  (B+)
+Particle.from_pdgid(321).strangeness  # 1  (K+)
+Particle.from_pdgid(443).charmness  # 0  (J/psi is charmonium: net 0)
 p = Particle.from_pdgid(443)
-p.r_parity, p.hypercharge, p.topness, p.charmness   # 1, 0, 0, 0
-p.is_self_conjugate                       # True for e.g. pi0, J/psi
-p.is_unflavoured_meson                    # True for e.g. J/psi
+p.r_parity, p.hypercharge, p.topness, p.charmness  # 1, 0, 0, 0
+p.is_self_conjugate  # True for e.g. pi0, J/psi
+p.is_unflavoured_meson  # True for e.g. J/psi
 ```
 
 These satisfy the usual relations — for example

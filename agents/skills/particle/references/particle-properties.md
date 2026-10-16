@@ -8,10 +8,10 @@ the class methods for lookups; never guess properties by hand.
 ```python
 from particle import Particle
 
-p = Particle.from_pdgid(521)          # B+          (raises InvalidParticle / ParticleNotFound)
-p = Particle.from_name("J/psi(1S)")   # exact, must match exactly one particle
+p = Particle.from_pdgid(521)  # B+          (raises InvalidParticle / ParticleNotFound)
+p = Particle.from_name("J/psi(1S)")  # exact, must match exactly one particle
 p = Particle.from_evtgen_name("J/psi")
-p = Particle.from_nucleus_info(z=2, a=4)      # He4; anti=True for the antinucleus
+p = Particle.from_nucleus_info(z=2, a=4)  # He4; anti=True for the antinucleus
 ```
 
 - `from_pdgid` raises `InvalidParticle` for malformed codes and
@@ -25,21 +25,21 @@ p = Particle.from_nucleus_info(z=2, a=4)      # He4; anti=True for the antinucle
 ## Useful properties
 
 ```python
-p.pdgid              # the PDGID
-p.name               # 'B+', 'B~0', 'K0', ... (charge + anti-tilde included)
-p.pdg_name           # 'B', 'K'  — the PDG table name, WITHOUT charge
-p.evtgen_name        # EvtGen name, e.g. 'B+'
-p.latex_name         # r'B^{+}'
-p.html_name          # HTML rendering of the LaTeX name
+p.pdgid  # the PDGID
+p.name  # 'B+', 'B~0', 'K0', ... (charge + anti-tilde included)
+p.pdg_name  # 'B', 'K'  — the PDG table name, WITHOUT charge
+p.evtgen_name  # EvtGen name, e.g. 'B+'
+p.latex_name  # r'B^{+}'
+p.html_name  # HTML rendering of the LaTeX name
 p.programmatic_name  # 'B_plus', 'B_0' — safe as a variable name
-p.mass, p.mass_upper, p.mass_lower   # in MeV; None if unknown
-p.width, p.width_upper, p.width_lower # in MeV; None if unknown
-p.lifetime           # in ns (hbar/Gamma); inf for stable particles
-p.ctau               # in mm
-p.charge             # Fraction; p.three_charge is the int 3*charge
+p.mass, p.mass_upper, p.mass_lower  # in MeV; None if unknown
+p.width, p.width_upper, p.width_lower  # in MeV; None if unknown
+p.lifetime  # in ns (hbar/Gamma); inf for stable particles
+p.ctau  # in mm
+p.charge  # Fraction; p.three_charge is the int 3*charge
 p.quarks, p.rank, p.status, p.anti_flag
 p.is_name_barred, p.is_self_conjugate
-p.describe()         # high-density human-readable summary
+p.describe()  # high-density human-readable summary
 ```
 
 Quantum numbers (`I`, `J`, `L`, `S`, `P`, `C`, `G`, `spin_type`, flavour
@@ -59,13 +59,15 @@ be callables.
 ```python
 from hepunits import meter
 
-Particle.findall("pi", charge=-1)                      # fuzzy name + exact charge
-Particle.findall(pdg_name="B", particle=True)          # exact match on PDG name
+Particle.findall("pi", charge=-1)  # fuzzy name + exact charge
+Particle.findall(pdg_name="B", particle=True)  # exact match on PDG name
 Particle.findall(pdg_name="B", charge=0, particle=True)
 Particle.findall(lambda p: p.pdgid.has_bottom and p.charge == 0)
-Particle.findall(lambda p: p.pdgid.is_meson and p.pdgid.has_strange
-                            and p.ctau > 1 * meter, particle=True)
-Particle.finditer(name="Omega", particle=False)        # exact name search
+Particle.findall(
+    lambda p: p.pdgid.is_meson and p.pdgid.has_strange and p.ctau > 1 * meter,
+    particle=True,
+)
+Particle.finditer(name="Omega", particle=False)  # exact name search
 ```
 
 `particle=True` keeps only particles, `particle=False` only antiparticles, and
@@ -79,7 +81,7 @@ a value receives the property (e.g. `mass=lambda m: m is not None and m > 5.2*Ge
 A bare string is a fuzzy substring search on `name`; a keyword is exact:
 
 ```python
-Particle.finditer("Omega", particle=False)       # fuzzy: several Omega states
+Particle.finditer("Omega", particle=False)  # fuzzy: several Omega states
 Particle.finditer(name="Omega", particle=False)  # exact: no match (name is 'Omega~+')
 Particle.findall(pdg_name="Omega", particle=False)  # exact PDG name: 1 match
 ```
@@ -92,7 +94,7 @@ patterns:
 import fnmatch
 from particle import Particle
 
-Particle.findall(lambda p: fnmatch.fnmatch(p.name, "K[+-]"))   # K+, K-
+Particle.findall(lambda p: fnmatch.fnmatch(p.name, "K[+-]"))  # K+, K-
 ```
 
 `finditer` is lazy — prefer it over `findall` for large scans.
@@ -108,9 +110,9 @@ the object on demand.
 from particle import literals as lp
 from particle.pdgid import literals as lid
 
-lp.pi_plus            # <Particle: name="pi+", pdgid=211, ...>
-lid.pi_plus           # <PDGID: 211>
-lp.Lambda_b_0.J       # Fraction(1, 2)
+lp.pi_plus  # <Particle: name="pi+", pdgid=211, ...>
+lid.pi_plus  # <PDGID: 211>
+lp.Lambda_b_0.J  # Fraction(1, 2)
 ```
 
 ## Width, lifetime and c*tau helpers
@@ -120,9 +122,9 @@ Mass/width live in the table in MeV; lifetime and `ctau` are derived:
 ```python
 from particle import width_to_lifetime, lifetime_to_width
 
-width_to_lifetime(4.33e-10)      # 0.00152 ns   (input MeV, output ns)
-lifetime_to_width(0.00152)       # 4.33e-10 MeV
-width_to_lifetime(0)             # inf
+width_to_lifetime(4.33e-10)  # 0.00152 ns   (input MeV, output ns)
+lifetime_to_width(0.00152)  # 4.33e-10 MeV
+width_to_lifetime(0)  # inf
 # width_to_lifetime(-1)          # -> ValueError
 ```
 
@@ -134,11 +136,13 @@ There is **no `is_stable` property** — test the lifetime directly:
 ```python
 from particle import Particle
 
+
 def is_stable(p: Particle) -> bool:
     return p.lifetime == float("inf")
 
-is_stable(Particle.from_pdgid(11))      # True  (electron)
-is_stable(Particle.from_pdgid(211))     # False (pion decays)
+
+is_stable(Particle.from_pdgid(11))  # True  (electron)
+is_stable(Particle.from_pdgid(211))  # False (pion decays)
 ```
 
 ## Loading custom data tables
@@ -150,11 +154,13 @@ replace via `Particle.load_table`; data files are reachable through
 ```python
 import particle.data as data
 
-Particle.load_table("my_particles.csv", append=True)   # extend (file must exist; same CSV layout)
-Particle.load_table("my_table.csv")                    # replace (default append=False)
+Particle.load_table(
+    "my_particles.csv", append=True
+)  # extend (file must exist; same CSV layout)
+Particle.load_table("my_table.csv")  # replace (default append=False)
 Particle.load_table(data.basepath / "particle2026.csv")
-Particle.table_names()    # names of loaded tables (triggers loading if needed)
-Particle.table_loaded()   # check without triggering a load
+Particle.table_names()  # names of loaded tables (triggers loading if needed)
+Particle.table_loaded()  # check without triggering a load
 ```
 
 ## Creating user-defined particles
@@ -165,7 +171,7 @@ gives undefined or wrong properties, and `mass`/`width` are `None` unless you
 supply them.
 
 ```python
-p = Particle.empty()                    # <Particle: name="Unknown", pdgid=0, mass=None>
+p = Particle.empty()  # <Particle: name="Unknown", pdgid=0, mass=None>
 p = Particle(9912345, "MyPentaquark")
 p = Particle(pdgid=9221132, pdg_name="Theta", three_charge=3, latex_name=r"\Theta^{+}")
 ```

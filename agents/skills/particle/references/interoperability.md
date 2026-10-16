@@ -9,20 +9,22 @@
 ```python
 from particle import PDGID, PythiaID, Geant3ID, Corsika7ID, Particle
 
-pyid = PythiaID.from_pdgid(PDGID(9010221))   # <PythiaID: 10221>
-pyid.to_pdgid()                              # <PDGID: 9010221>
-pdg = Geant3ID(8).to_pdgid()                 # <PDGID: 211>
-Particle.from_pdgid(pdg)                     # pi+
-cid = Corsika7ID(5).to_pdgid()               # <PDGID: -13>
+pyid = PythiaID.from_pdgid(PDGID(9010221))  # <PythiaID: 10221>
+pyid.to_pdgid()  # <PDGID: 9010221>
+pdg = Geant3ID(8).to_pdgid()  # <PDGID: 211>
+Particle.from_pdgid(pdg)  # pi+
+cid = Corsika7ID(5).to_pdgid()  # <PDGID: -13>
 ```
 
 **Corsika7 specifics** (Corsika8 uses Geant3 IDs):
 
 ```python
-Corsika7ID.from_particle_description(6000)    # (Corsika7ID(6), False)  -> mu-
-Corsika7ID.from_particle_description(-6000)   # (Corsika7ID(6), True) — a (grand)mother particle
-Corsika7ID(76).is_particle()                  # False — additional info, not a particle
-Corsika7ID(76).name()                         # 'μ− add. info.'
+Corsika7ID.from_particle_description(6000)  # (Corsika7ID(6), False)  -> mu-
+Corsika7ID.from_particle_description(
+    -6000
+)  # (Corsika7ID(6), True) — a (grand)mother particle
+Corsika7ID(76).is_particle()  # False — additional info, not a particle
+Corsika7ID(76).name()  # 'μ− add. info.'
 ```
 
 Note: `Corsika7ID` arithmetic (e.g. `-Corsika7ID(5)`) returns a plain `int`,
@@ -33,11 +35,13 @@ unlike `-PDGID(...)`, which returns a `PDGID`.
 ```python
 from particle.mcid import MCParticleID
 
+
 class MyGeneratorID(MCParticleID):
     _to_pdg_map = {1: 11, 2: -11, 3: 22}
 
-MyGeneratorID(3).to_pdgid()              # <PDGID: 22>
-MyGeneratorID.from_pdgid(PDGID(-11))     # <MyGeneratorID: 2>
+
+MyGeneratorID(3).to_pdgid()  # <PDGID: 22>
+MyGeneratorID.from_pdgid(PDGID(-11))  # <MyGeneratorID: 2>
 ```
 
 The older converter objects in `particle.converters` (`Pythia2PDGIDBiMap`,
@@ -47,11 +51,12 @@ The older converter objects in `particle.converters` (`Pythia2PDGIDBiMap`,
 ## EvtGen and LHCb names
 
 ```python
-Particle.from_evtgen_name("J/psi").pdgid        # <PDGID: 443>
-Particle.from_pdgid(443).evtgen_name            # 'J/psi'
+Particle.from_evtgen_name("J/psi").pdgid  # <PDGID: 443>
+Particle.from_pdgid(443).evtgen_name  # 'J/psi'
 from particle import lhcb
-lhcb.to_lhcb_name(Particle.from_pdgid(-531))    # 'B_s~0'
-lhcb.from_lhcb_name("B_s~0")                    # <Particle: name="B(s)~0", ...>
+
+lhcb.to_lhcb_name(Particle.from_pdgid(-531))  # 'B_s~0'
+lhcb.from_lhcb_name("B_s~0")  # <Particle: name="B(s)~0", ...>
 ```
 
 The `particle.lhcb` module also exposes `LHCbName2PDGIDBiMap` for direct
@@ -68,8 +73,8 @@ from particle import Particle
 from hepunits import GeV, meter
 
 p = Particle.from_pdgid(521)
-5.2 * GeV < p.mass < 5.3 * GeV      # masses in MeV
-p.ctau > 1 * meter                  # ctau in mm
+5.2 * GeV < p.mass < 5.3 * GeV  # masses in MeV
+p.ctau > 1 * meter  # ctau in mm
 ```
 
 ## pandas and tabulate
@@ -87,6 +92,7 @@ rows = Particle.to_list(
 )
 # rows[0] is the header; use with tabulate, or:
 import pandas as pd
+
 df = pd.DataFrame(rows[1:], columns=rows[0])
 ```
 
@@ -100,7 +106,7 @@ import numpy as np
 from particle import Particle
 
 p = Particle.from_pdgid(521)
-np.int64(int(p.pdgid))     # works fine
+np.int64(int(p.pdgid))  # works fine
 ```
 
 ## Gotchas
