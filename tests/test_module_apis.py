@@ -100,6 +100,7 @@ def test_api_pdgid() -> None:
             "is_meson",
             "is_nucleus",
             "is_pentaquark",
+            "is_tetraquark",
             "is_quark",
             "is_sm_gauge_boson_or_higgs",
             "is_sm_lepton",
