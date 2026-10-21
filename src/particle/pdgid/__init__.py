@@ -5,15 +5,23 @@
 
 r"""
 The Particle Data Group (PDG) defines the standard particle identification numbering scheme
-in the form of a signed 7-digit number +/- N Nr Nl Nq1 Nq2 Nq3 Nj.
+in the form of a signed 7-digit number ``+/- n nr nL nq1 nq2 nq3 nJ``.
 
-PDG IDs with more than 7 digits exist for non-standard particles such as Q-balls.
+The scheme encodes information about the particle's spin, flavor content, and internal quantum numbers.
+
+PDG IDs with more than 7 digits exist to extend beyond "common particles":
+
+- Exotic hadron states, tetraquarks and pentaquarks, use a 9-digit extension.
+- Nuclear and hyper-nuclear states use a distinct 10-digit scheme.
+- Q-balls use a 9-digit extension.
+
+The definite reference is the PDG document "Monte Carlo Particle Numbering Scheme".
 
 This module provides the following:
 
 - A pythonic version of the functions defined in HepPID and HepPDT,
   which work with PDG particle identification codes (PDG IDs).
-- A handy `PDGID` class.
+- A handy ``PDGID`` class.
 - A few other functions extending the functionality of the HepXXX code.
 
 
@@ -21,15 +29,15 @@ Matrix of spin states for mesons
 --------------------------------
 
 The table below provides a handy overview of the "links" between PDG IDs
-and meson quantum numbers. It is provided here for reference (for lack of a better place!),
-as it is not at all easy to find ... not to say impossible.
+and meson quantum numbers. It is provided here for reference.
 
-Useful definitions:
+Useful definitions within the naive quark model:
 
-- State: (2S+1)^L_J
-- Parity P = (-1)^(L+1)
-- Charge conjugation C = (-1)^(L+S), valid only for neutral mesons
-- "q q" stands for "nq2 nq3" in the table below
+- State: (2S+1)^L_J.
+- Parity P = (-1)^(L+1).
+- Charge conjugation C = (-1)^(L+S), valid only for neutral mesons, where S = 0 or 1.
+- The total angular momentum J satisfies |L - S| <= J <= L + S.
+- "q q" stands for "nq2 nq3" in the table below.
 
 ==== === === ======================== ======== ================= ====================== =======================
  J    S   L   State                    J^PC     Name              Mesons                 PDG nL nq1 nq2 nq3 nJ
