@@ -1,5 +1,11 @@
 # Changelog
 
+## WIP - UNRELEASED
+
+- Documentation:
+  - Updates and improvements to the documentation of the `pdgid` submodule
+    based on the 2026 update of the PDG document "Monte Carlo Particle Numbering Scheme".
+
 ## Version 1.0.1
 
 September 10th, 2026
