@@ -73,9 +73,23 @@ class Corsika7ID(MCParticleID):
 
         Corsika7ID: The Corsika7 id
         bool:       If the particle is a (grand)mother particle.
+
+        Examples
+        --------
+        >>> Corsika7ID.from_particle_description(-6001)
+        (<Corsika7ID: 6>, True)
+        >>> Corsika7ID.from_particle_description(8888420)
+        (<Corsika7ID: 8888420>, False)
         """
-        cid = abs(particle_description) // 1000
         ismother = particle_description < 0
+
+        # MULTITHIN weight lines hold the identification word 8888jjj itself,
+        # not part. id x 1000 + generation as for particles,
+        # see Table 14 of the CORSIKA7 userguide Version 7.8050
+        if abs(particle_description) // 1000 == 8888:
+            return cls(abs(particle_description)), ismother
+
+        cid = abs(particle_description) // 1000
 
         if cls._is_non_particle_id(cid):
             return cls(cid), ismother
