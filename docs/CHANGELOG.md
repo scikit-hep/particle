@@ -2,6 +2,8 @@
 
 ## WIP - UNRELEASED
 
+- Classes for MC particle identification codes and converters:
+  - Fix `Corsika7ID.from_particle_description` raising on MULTITHIN weight identification words (8888jjj).
 - Documentation:
   - Updates and improvements to the documentation of the `pdgid` submodule
     based on the 2026 update of the PDG document "Monte Carlo Particle Numbering Scheme".
