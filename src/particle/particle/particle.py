@@ -776,7 +776,8 @@ class Particle:
 
         Baryons have :math:`B = +1` (antibaryons :math:`B = -1`) and nuclei have
         :math:`B = A`, the mass number (:math:`B = -A` for anti-nuclei).
-        Quarks carry a fractional baryon number of :math:`+1/3` (antiquarks :math:`-1/3`),
+        Quarks, and their SUSY partners the squarks, carry a fractional baryon number
+        of :math:`+1/3` (antiquarks :math:`-1/3`),
         which is returned as a `~fractions.Fraction` so that the value stays exact;
         all other cases return a plain `int`. Everything else
         (mesons, leptons, gauge bosons, ...) has :math:`B = 0`.
@@ -790,7 +791,7 @@ class Particle:
             if self.pdgid > 0:
                 return A
             return -A
-        if self.pdgid.is_quark:
+        if self._sm_partner_pdgid.is_quark:
             return Fraction(1, 3) if self.pdgid > 0 else Fraction(-1, 3)
         return 0
 
@@ -799,13 +800,26 @@ class Particle:
         """
         The lepton quantum number :math:`L` of the particle.
 
-        Leptons have :math:`L = +1` and antileptons :math:`L = -1`.
+        Leptons, and their SUSY partners the sleptons, have :math:`L = +1`
+        and antileptons :math:`L = -1`.
         All other particles have :math:`L = 0`.
         Note that this is the total lepton number and not a per-generation lepton number.
         """
-        if self.pdgid.is_lepton:
+        if self._sm_partner_pdgid.is_lepton:
             return 1 if self.pdgid > 0 else -1
         return 0
+
+    @property
+    def _sm_partner_pdgid(self) -> PDGID:
+        """
+        The PDG ID of the Standard Model partner for a SUSY particle, else the PDG ID itself.
+
+        Squarks and sleptons carry the baryon and lepton numbers of their partner quark or lepton.
+        """
+        if not self.pdgid.is_SUSY:
+            return self.pdgid
+        sign = 1 if self.pdgid > 0 else -1
+        return PDGID(sign * (abs(int(self.pdgid)) % 1_000_000))
 
     @property
     def r_parity(self) -> int | None:
