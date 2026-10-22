@@ -64,9 +64,8 @@ import numpy as np
 import pandas as pd
 
 from .. import data
-from .._compat.typing import Traversable
 from ..pdgid import PDGID, is_baryon
-from ..typing import StringOrIO
+from ..typing import StringOrIO, Traversable
 from .enums import (
     Charge,
     Charge_mapping,
@@ -463,9 +462,7 @@ def produce_files(
 def version_header(filename: str, version_number: str) -> str:
     filename = os.path.basename(filename)
     version = version_number  # version of CSV files
-    today_date = datetime.date.isoformat(
-        datetime.datetime.now(tz=datetime.timezone.utc)
-    )
+    today_date = datetime.date.isoformat(datetime.datetime.now(tz=datetime.UTC))
     return f"# (c) Scikit-HEP project - Particle package data file - {filename} - version {version} - {today_date}\n"
 
 

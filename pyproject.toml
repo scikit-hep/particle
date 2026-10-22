@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "particle"
 description = "Extended PDG particle data and MC identification codes"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [
     { name = "Eduardo Rodrigues", email = "eduardo.rodrigues@cern.ch" },
     { name = "Henry Schreiner", email = "henryfs@princeton.edu" },
@@ -33,7 +33,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -44,7 +43,6 @@ classifiers = [
 dependencies = [
     "attrs>=22.2.0",
     "hepunits>=2.4.0",
-    'typing-extensions>=4;python_version<"3.11"',
 ]
 dynamic = ["version"]
 

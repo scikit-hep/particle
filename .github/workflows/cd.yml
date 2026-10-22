@@ -37,7 +37,7 @@ jobs:
 
       - uses: wntrblm/nox@2026.08.17
         with:
-          python-versions: "3.10"
+          python-versions: "3.11"
 
       - name: Make ZipApp
         run: nox -s zipapp
