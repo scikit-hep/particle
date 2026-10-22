@@ -69,6 +69,15 @@ def test_from_particle_description() -> None:
     assert Corsika7ID.from_particle_description(-201000)[0].name() == "D2"
 
 
+def test_from_particle_description_multithin_weights() -> None:
+    # MULTITHIN weight lines carry the identification word 8888jjj directly
+    cid, is_mother = Corsika7ID.from_particle_description(8888420)
+    assert cid == Corsika7ID(8888420)
+    assert not is_mother
+    assert not cid.is_particle()
+    assert cid.name() == "weights of preceding particle (MULTITHIN option)"
+
+
 def test_from_particle_description_non_valid() -> None:
     with pytest.raises(MatchingIDNotFound):
         _ = Corsika7ID.from_particle_description(0)
