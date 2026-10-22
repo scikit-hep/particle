@@ -2,6 +2,9 @@
 
 ## WIP - UNRELEASED
 
+- `Particle` class and submodules:
+  - Fix `baryon_number`, `lepton_number` and `r_parity` for squarks and sleptons,
+    which now carry the B and L of their Standard Model partners and have R = -1.
 - Documentation:
   - Updates and improvements to the documentation of the `pdgid` submodule
     based on the 2026 update of the PDG document "Monte Carlo Particle Numbering Scheme".
