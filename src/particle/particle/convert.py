@@ -404,7 +404,7 @@ def produce_files(
     # Entries to remove, see comments in file mass_width_2008_ext.fwf:
     # 30221 - the f(0)(1370) since it was renumbered
     # 5132 and 5232 - the Xi_b baryons got their IDs swapped at some stage
-    full_table.drop([30221, 5132, 5232], axis=0, inplace=True)
+    full_table = full_table.drop([30221, 5132, 5232], axis=0)
 
     # No longer write out the particle2008.csv file, which nobody should use
     # with open(particle2008, "w", newline="\n", encoding="utf-8") as f:
