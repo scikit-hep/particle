@@ -5,10 +5,17 @@
 
 """
 The Particle Data Group (PDG) defines the standard particle identification numbering scheme
-in the form of a signed 7-digit number +/- N Nr Nl Nq1 Nq2 Nq3 Nj.
+in the form of a signed 7-digit number ``+/- n nr nL nq1 nq2 nq3 nJ``.
 
-PDG IDs with more than 7 digits exist for non-standard particles such as Q-balls.
-These follow outside the standard PDG numbering scheme.
+The scheme encodes information about the particle's spin, flavor content, and internal quantum numbers.
+
+PDG IDs with more than 7 digits exist to extend beyond "common particles":
+
+- Exotic hadron states, tetraquarks and pentaquarks, use a 9-digit extension.
+- Nuclear and hyper-nuclear states use a distinct 10-digit scheme.
+- Q-balls use a 9-digit extension.
+
+The definite reference is the PDG document "Monte Carlo Particle Numbering Scheme".
 
 This module provides the following:
 
@@ -266,7 +273,14 @@ def is_hadron(pdgid: PDGID_TYPE) -> bool:
 
 
 def is_meson(pdgid: PDGID_TYPE) -> bool:
-    """Does this PDG ID correspond to a meson?"""
+    """
+    Does this PDG ID correspond to a meson?
+
+    In the 7-digit number ``+/- n nr nL nq1 nq2 nq3 nJ``
+    the quark numbers nq1 to nq3 specify the quark content
+    while nJ = 2J + 1 gives the spin.
+    Mesons have nq1=0 and nq2 >= nq3 (except the K_L).
+    """
     if _extra_bits(pdgid) > 0:
         return False
     aid = abspid(pdgid)
@@ -292,17 +306,24 @@ def is_meson(pdgid: PDGID_TYPE) -> bool:
         and _digit(pdgid, Location.Nq2) > 0
         and _digit(pdgid, Location.Nq1) == 0
     ):
-        # check for illegal antiparticles
+        # check for illegal antiparticles - K(L)0 is the only exception but is taken into account above
         return (
-            _digit(pdgid, Location.Nq3) != _digit(pdgid, Location.Nq2)
-            or int(pdgid) >= 0
+            _digit(pdgid, Location.Nq2) > _digit(pdgid, Location.Nq3)
+            if int(pdgid) < 0
+            else _digit(pdgid, Location.Nq2) >= _digit(pdgid, Location.Nq3)
         )
 
     return False
 
 
 def is_baryon(pdgid: PDGID_TYPE) -> bool:
-    """Does this PDG ID correspond to a baryon?"""
+    """
+    Does this PDG ID correspond to a baryon?
+
+    In the 7-digit number ``+/- n nr nL nq1 nq2 nq3 nJ``
+    the quark numbers nq1 to nq3 specify the quark content
+    while nJ = 2J + 1 gives the spin.
+    """
     aid = abspid(pdgid)
     if aid <= 100:
         return False
@@ -333,8 +354,11 @@ def is_diquark(pdgid: PDGID_TYPE) -> bool:
     """
     Does this PDG ID correspond to a diquark?
 
-    Diquark IDs have 4-digit numbers +/- Nq1 Nq2 Nq3 Nj
-    with Nq1 >= Nq2 and Nq3 = 0.
+    Diquark IDs have 4-digit numbers ``+/- nq1 nq2 nq3 nJ``
+    with nq1 >= nq2 and nq3 = 0.
+
+    The quark numbers nq1 to nq3 specify the quark content
+    while nJ = 2J + 1 gives the spin.
     """
     if _extra_bits(pdgid) > 0:
         return False
@@ -352,13 +376,15 @@ def is_diquark(pdgid: PDGID_TYPE) -> bool:
 
 def is_nucleus(pdgid: PDGID_TYPE) -> bool:
     """
-    Does this PDG ID correspond to a nucleus?
+    Does this PDG ID correspond to a nuclear or hyper-nuclear state?
 
-    Ion numbers are +/- 10LZZZAAAI.
-    AAA is A - total baryon number
-    ZZZ is Z - total charge
-    L is the total number of strange quarks.
-    I is the isomer number, with I=0 corresponding to the ground state.
+    Nuclear and hyper-nuclear states use a distinct
+    10-digit scheme ``+/- 10LZZZAAAI``, where:
+    AAA is A, the total baryon number of protons + neutrons + Lambda baryons;
+    ZZZ is Z, the total charge as given by the number of protons;
+    L is the total number of strange quarks;
+    I is the isomer number, with I = 0 corresponding to the ground state
+    and I > 0 to excitations.
     """
     # A proton can be a Hydrogen nucleus
     # A neutron can be considered as a nucleus when given the PDG ID 1000000010,
@@ -381,9 +407,14 @@ def is_pentaquark(pdgid: PDGID_TYPE) -> bool:
     """
     Does the PDG ID correspond to a pentaquark?
 
-    Pentaquark IDs are of the form +/- 9 Nr Nl Nq1 Nq2 Nq3 Nj, where Nj = 2J + 1 gives the spin
-    and Nr Nl Nq1 Nq2 Nq3 denote the 5 quark numbers in order Nr >= Nl >= Nq1 >= Nq2
-    and Nq3 gives the antiquark number.
+    Pentaquark IDs are of the form ``+/- 1 nr nL nq1 nq2 nq3 nq4 nq5 nJ``,
+    using a 9-digit extension of the standard scheme.
+
+    In a particle the numbers nq1 to nq4 are quarks and nq5 an antiquark,
+    while the opposite holds for an antiparticle, which is given with a negative sign.
+    Sorting follows nq1 >= nq2 >= nq3 >= nq4.
+    The nr and nL numbers do not have physical meaning.
+    As for the standard scheme, nJ = 2J + 1 gives the spin.
     """
     if _extra_bits(pdgid) > 0:
         return False
@@ -419,9 +450,9 @@ def is_gauge_boson_or_higgs(pdgid: PDGID_TYPE) -> bool:
 
 def is_sm_gauge_boson_or_higgs(pdgid: PDGID_TYPE) -> bool:
     """
-    Does this PDG ID correspond to a Standard Model gauge boson or Higgs?
+    Does this PDG ID correspond to a Standard Model (SM) gauge boson or Higgs?
 
-    Codes 21-30 are reserved for the Standard Model gauge bosons and the Higgs,
+    Codes 21-30 are reserved for the SM gauge and Higgs bosons,
     but only the codes 21-25 actually correspond to SM particles.
     """
     if abspid(pdgid) == 24:  # W is the only SM gauge boson not its antiparticle
@@ -432,11 +463,12 @@ def is_sm_gauge_boson_or_higgs(pdgid: PDGID_TYPE) -> bool:
 
 def is_generator_specific(pdgid: PDGID_TYPE) -> bool:
     """
-    Does this PDG ID correspond to generator-specific pseudoparticles or concepts?
+    Does this PDG ID correspond to internal, generator-specific pseudoparticles or concepts?
 
-    Codes 81-100 are reserved for generator-specific pseudoparticles and concepts.
-    Codes 901-930, 1901-1930, 2901-2930, and 3901-3930 are for
-    additional components of Standard Model parton distribution functions,
+    Codes 81-100 are reserved for internal, generator-specific pseudoparticles and concepts
+    not corresponding to physical states.
+    Codes 901-930, 1901-1930, 2901-2930, and 3901-393
+    are for additional components of Standard Model parton distribution functions,
     where the latter three ranges are intended to distinguish
     left/right/longitudinal components.
     Codes 998 and 999 are reserved for GEANT tracking purposes.
@@ -465,7 +497,7 @@ def is_special_particle(pdgid: PDGID_TYPE) -> bool:
 
     Special particle in the sense of the classification in the PDG MC particle numbering scheme document,
     hence the graviton, the DM (S = 0, 1/2, 1) particles, the reggeons (reggeon, pomeron and odderon),
-    and all generator-specific pseudo-particles and concepts, see `is_generator_specific`.
+    and all generator-specific pseudo-particles and concepts, see ``is_generator_specific``.
     """
     return pdgid in {39, 41, 42, 51, 52, 53, 110, 990, 9990} or is_generator_specific(
         pdgid
@@ -476,7 +508,7 @@ def is_Rhadron(pdgid: PDGID_TYPE) -> bool:
     """
     Does this PDG ID correspond to an R-hadron?
 
-    An R-hadron is of the form 10abcdj, 100abcj, or 1000abj,
+    An R-hadron is of the form ``10abcdj``, ``100abcj``, or ``1000abj``,
     where j = 2J + 1 gives the spin; b, c, and d are quarks or gluons;
     and a (the digit following the zero's) is a SUSY particle.
     """
@@ -500,7 +532,7 @@ def is_Qball(pdgid: PDGID_TYPE) -> bool:
     """
     Does this PDG ID correspond to a Q-ball or any exotic particle with electric charge beyond the qqq scheme?
 
-    Ad-hoc numbering for such particles is +/- 100XXXY0, where XXX.Y is the charge.
+    Ad-hoc numbering for such particles is ``+/- 100XXXY0``, where XXX.Y is the charge.
     """
     if _extra_bits(pdgid) != 1:
         return False
@@ -518,10 +550,11 @@ def is_dyon(pdgid: PDGID_TYPE) -> bool:
     Does this PDG ID correspond to a Dyon, a magnetic monopole?
 
     Magnetic monopoles and Dyons are assumed to have one unit of Dirac monopole charge
-    and a variable integer number xyz units of electric charge,
-    where xyz stands for Nq1 Nq2 Nq3.
+    and a variable integer number ``nq1 nq2 nq3`` units of electric charge
+    in the 7-digit number scheme ``+/- n nr nL nq1 nq2 nq3 nJ``.
 
-    Codes 411xyz0 are used when the magnetic and electrical charge sign agree and 412xyz0 when they disagree,
+    Codes ``4 1 1 nq1 nq2 nq3 0`` are used when the magnetic and electrical charge sign agree
+    and ``4 1 2 nq1 nq2 nq3 0`` when they disagree,
     with the overall sign of the particle set by the magnetic charge.
     For now, no spin information is provided.
     """
@@ -557,7 +590,8 @@ def is_technicolor(pdgid: PDGID_TYPE) -> bool:
     """
     Does this PDG ID correspond to a Technicolor state?
 
-    Technicolor states have N = 3.
+    Technicolor states have n = 3
+    in the 7-digit number ``+/- n nr nL nq1 nq2 nq3 nJ``.
     """
     if _extra_bits(pdgid) > 0:
         return False
@@ -568,8 +602,9 @@ def is_excited_quark_or_lepton(pdgid: PDGID_TYPE) -> bool:
     """
     Does this PDG ID correspond to an excited (composite) quark or lepton?
 
-    Excited (composite) quarks and leptons have N = 4 and Nr = 0,
-    hence numbers of the form +/- 4 0 Nl Nq1 Nq2 Nq3 Nj.
+    Excited (composite) quarks and leptons have n = 4 and nr = 0,
+    in the 7-digit number ``+/- n nr nL nq1 nq2 nq3 nJ``.
+    hence numbers of the form ``+/- 4 0 nL nq1 nq2 nq3 nJ``.
     """
     if _extra_bits(pdgid) > 0:
         return False
