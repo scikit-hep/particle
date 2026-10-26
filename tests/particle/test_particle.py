@@ -270,7 +270,8 @@ def test_charge_consistency() -> None:
     This test makes sure both numbers are consistent for all particles in the PDG table.
     """
     for p in Particle.all():
-        if 100000000 < abs(p.pdgid) < 199999999: continue  # to be fixed asap for the new PDG ID scheme for tetraquarks
+        if 100000000 < abs(p.pdgid) < 199999999:
+            continue  # to be fixed asap for the new PDG ID scheme for tetraquarks
         assert p.three_charge == p.pdgid.three_charge
 
 

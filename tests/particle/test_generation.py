@@ -110,7 +110,8 @@ def test_None_masses() -> None:
         pdgid = p.pdgid
         if pdgid in none_masses:
             continue
-        if 100000000 < abs(pdgid) < 199999999: continue  # to be replaced asap by a new is_tetraquark function
+        if 100000000 < abs(pdgid) < 199999999:
+            continue  # to be replaced asap by a new is_tetraquark function
         if (
             is_Qball(pdgid)
             or is_Rhadron(pdgid)
