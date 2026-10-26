@@ -270,8 +270,7 @@ def test_charge_consistency() -> None:
     This test makes sure both numbers are consistent for all particles in the PDG table.
     """
     for p in Particle.all():
-        if 100000000 < abs(p.pdgid) < 199999999:
-            continue  # to be fixed asap for the new PDG ID scheme for tetraquarks
+        if 100000000 < abs(p.pdgid) < 199999999: continue  # to be fixed asap for the new PDG ID scheme for tetraquarks
         assert p.three_charge == p.pdgid.three_charge
 
 
@@ -397,7 +396,7 @@ def test_explicit_table_loading() -> None:
 
 def test_all_particles_are_loaded() -> None:
     Particle.load_table(data.basepath / "particle2026.csv")
-    assert len(Particle.all()) == 672
+    assert len(Particle.all()) == 673
     Particle.load_table(data.basepath / "particle2025.csv")
     assert len(Particle.all()) == 626
 
