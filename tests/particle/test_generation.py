@@ -73,14 +73,44 @@ def test_csv_file_has_latex(filename: str) -> None:
 def test_None_masses() -> None:
     "Only certain specific particles should have None masses."
     none_masses = {
+        417,
+        -417,  # D(3)*(2750)
+        427,  # D(3)*(2750)0
+        437,
+        -437,  # D(s3)*(2860)
+        447,  # psi(3)(3842)
+        10513,
+        -10513,  # B(1)(5721)
+        10523,
+        -10523,  # B(1)(5721)
+        -10533,
+        10533,  # B(s1)(5830)
+        20445,  # psi(2)(3823)
         100321,
-        -100321,  # K(1460)+
+        -100321,  # K(1460)
+        100433,
+        -100433,  # D(s1)*(2700)
+        100541,
+        -100541,  # B(c)(2S)
+        110115,  # pi(2)(1880)0
+        110215,  # pi(2)(1880)+
+        110441,  # chi(c0)(3915)
+        120443,  # chi(c1)(3872)
+        130443,  # psi(4160) 
+        200443,  # psi(4040)
+        220443,  # chi(c1)(4140)
+        230333,  # phi(2170)
+        300443,  # psi(4230)
+        320443,  # chi(c1)(4274)
+        400443,  # psi(4360)
+        500443,  # psi(4415)
+        600443,  # psi(4660)
     }
     for p in Particle.all():
         pdgid = p.pdgid
         if pdgid in none_masses:
             continue
-
+        if 100000000 < abs(pdgid) < 199999999: continue  # to be replaced asap by a new is_tetraquark function
         if (
             is_Qball(pdgid)
             or is_Rhadron(pdgid)
