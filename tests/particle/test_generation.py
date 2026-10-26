@@ -74,8 +74,9 @@ def test_None_masses() -> None:
     "Only certain specific particles should have None masses."
     none_masses = {
         417,
-        -417,  # D(3)*(2750)
-        427,  # D(3)*(2750)0
+        -417,
+        427,
+        -427,  # D(3)*(2750)
         437,
         -437,  # D(s3)*(2860)
         447,  # psi(3)(3842)
