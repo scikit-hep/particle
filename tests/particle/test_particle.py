@@ -979,6 +979,28 @@ def test_r_parity(name: str, r_parity: int) -> None:
     assert Particle.from_name(name).r_parity == r_parity
 
 
+@pytest.mark.parametrize(
+    ("pdgid", "baryon_number", "lepton_number"),
+    [
+        (1000001, Fraction(1, 3), 0),  # ~d(L)
+        (-2000006, Fraction(-1, 3), 0),  # ~t(R)~
+        (1000011, 0, 1),  # ~e(L)-
+        (-2000013, 0, -1),  # ~mu(R)+
+        (1000012, 0, 1),  # ~nu(e)(L)
+        (1000021, 0, 0),  # ~g
+        (1000022, 0, 0),  # ~chi(1)0
+        (1000024, 0, 0),  # ~chi(1)+
+    ],
+)
+def test_r_parity_susy_particles(
+    pdgid: int, baryon_number: int | Fraction, lepton_number: int
+) -> None:
+    p = Particle(PDGID(pdgid), "susy")
+    assert p.baryon_number == baryon_number
+    assert p.lepton_number == lepton_number
+    assert p.r_parity == -1
+
+
 def test_r_parity_all_sm_particles() -> None:
     for p in Particle.findall():
         if p.pdgid.J is not None and not p.pdgid.is_SUSY:
