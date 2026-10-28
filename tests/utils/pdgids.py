@@ -95,6 +95,15 @@ class PDGIDsEnum(IntEnum):
     # Top hadrons
     T0 = 621
     LtPlus = 6122
+    # Tetraquarks
+    Tcc1_3900_plus = 100420413
+    AntiTcc1_3900_minus = -100420413
+    Tcc1_3900_0 = 100410413
+    Tcc1_4430_plus = 101420413
+    Tbb1_10610_0 = 100510513
+    # Pentaquarks
+    Pcc_4312_plus = 100422142  # c cbar u u d  with J = 1/2, yet no official ID
+    AntiPcc_4312_minus = -100422142  # c cbar u u d  with J = 1/2, yet no official ID
     # Special particles
     Graviton = 39
     Reggeon = 110
@@ -126,10 +135,6 @@ class PDGIDsEnum(IntEnum):
     # Nuclei
     HydrogenNucleus = 1000010010
     Carbon12 = 1000060120
-    # Pentaquarks
-    AntiUCbarCUDPentaquark = -9422144
-    # example of spin 3/2 u-cbar-c-u-d pentaquark decaying to J/psi proton
-    UCbarCUDPentaquark = 9422144
     # Technicolor
     Pi0TC = 3000111
     PiMinusTC = -3000211
