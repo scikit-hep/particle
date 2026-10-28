@@ -52,7 +52,7 @@ dynamic = ["version"]
 dev = [
     "pandas",
     "pytest-benchmark",
-    "pytest>=7",
+    "pytest>=7,<9.2",  # pytest-benchmark#321
     "tabulate",
     "pre-commit",
 ]
@@ -60,7 +60,7 @@ test = [
     "pandas",
     "pytest-benchmark",
     "pytest-cov",
-    "pytest>=7",
+    "pytest>=7,<9.2",  # pytest-benchmark#321
     "tabulate",
 ]
 all = [
