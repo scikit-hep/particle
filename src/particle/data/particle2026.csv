@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - particle2026.csv - version 17 - 2026-10-28
+# (c) Scikit-HEP project - Particle package data file - particle2026.csv - version 17 - 2026-10-26
 ID,Mass,MassUpper,MassLower,Width,WidthUpper,WidthLower,I,G,P,C,Anti,Charge,Rank,Status,Name,Quarks,Latex
 1,4.7,0.07,0.07,-1,-1,-1,1/2,5,1,5,1,-1,0,0,d,d,d
 -1,4.7,0.07,0.07,-1,-1,-1,1/2,5,1,5,1,1,0,0,d,D,\overline{d}
