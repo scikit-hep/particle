@@ -109,6 +109,9 @@ class PDGID(int):
     is_technicolor = property(
         _functions.is_technicolor, doc=_functions.is_technicolor.__doc__
     )
+    is_tetraquark = property(
+        _functions.is_tetraquark, doc=_functions.is_tetraquark.__doc__
+    )
     is_valid = property(_functions.is_valid, doc=_functions.is_valid.__doc__)
     j_spin = property(_functions.j_spin, doc=_functions.j_spin.__doc__)
     l_spin = property(_functions.l_spin, doc=_functions.l_spin.__doc__)
