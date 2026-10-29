@@ -932,7 +932,14 @@ class Particle:
             return False
 
         if pid.is_tetraquark:
-            return self.is_self_conjugate
+            if self.is_self_conjugate:
+                return True
+            if (nq1 := _digit(pid, Location.Nr)) > 2:  # it's a strange quark or heavier
+                nq2 = _digit(pid, Location.Nl)
+                nq3 = _digit(pid, Location.Nq2)
+                nq4 = _digit(pid, Location.Nq3)
+                return nq1 == nq3 if nq2 < 3 else nq1 == nq3 and nq2 == nq4
+            return False
 
         # Heavy flavour - quarkonia
         if pid.has_charm or pid.has_bottom or pid.has_top:
