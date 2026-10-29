@@ -106,6 +106,7 @@ def test_api_pdgid() -> None:
             "is_sm_quark",
             "is_special_particle",
             "is_technicolor",
+            "is_tetraquark",
             "has_down",
             "has_up",
             "has_strange",
