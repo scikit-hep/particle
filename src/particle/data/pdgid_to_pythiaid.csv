@@ -1,4 +1,4 @@
-# (c) Scikit-HEP project - Particle package data file - pdgid_to_pythiaid.csv - version 16 - 2026-06-03
+# (c) Scikit-HEP project - Particle package data file - pdgid_to_pythiaid.csv - version 17 - 2026-10-26
 PDGID,PYTHIAID
 1,1
 -1,-1
@@ -75,6 +75,8 @@ PDGID,PYTHIAID
 96,96
 97,97
 98,98
+99,99
+110,110
 111,111
 113,113
 115,115
@@ -153,6 +155,7 @@ PDGID,PYTHIAID
 553,553
 555,555
 557,557
+990,990
 1103,1103
 -1103,-1103
 1114,1114
@@ -355,6 +358,7 @@ PDGID,PYTHIAID
 -5544,-5544
 5554,5554
 -5554,-5554
+9990,9990
 10113,10113
 10213,10213
 -10213,-10213

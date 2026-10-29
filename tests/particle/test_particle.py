@@ -330,13 +330,18 @@ def test_C_consistency() -> None:
     For neutral unflavoured mesons it can be calculated as C = (-1)^(L+S),
     and this relation can be checked against the CSV data.
 
-    Note: mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally
-    well-known particles and C is undefined.
+    Note
+    ----
+    - Mesons with PDGIDs of the kind 9XXXXXX (N=9) are not experimentally
+      well-known particles and C is undefined.
+    - Tetraquarks are mesons but this C formula does not apply to them.
     """
     for p in Particle.all():
         if not (p.is_unflavoured_meson and p.three_charge == 0):
             continue
         if _digit(p.pdgid, Location.N) == 9:
+            continue
+        if p.pdgid.is_tetraquark:
             continue
         if p.pdgid == 22:  # Special case of the photon
             assert p.C == -1
@@ -395,7 +400,7 @@ def test_explicit_table_loading() -> None:
 
 def test_all_particles_are_loaded() -> None:
     Particle.load_table(data.basepath / "particle2026.csv")
-    assert len(Particle.all()) == 626
+    assert len(Particle.all()) == 669
     Particle.load_table(data.basepath / "particle2025.csv")
     assert len(Particle.all()) == 626
 
@@ -588,6 +593,11 @@ def test_is_unflavoured_meson() -> None:
         PDGIDs.Upsilon_4S,
         PDGIDs.Upsilon_3_2D,
         PDGIDs.h_b_3P,
+        PDGIDs.Tcc1_3900_plus,
+        PDGIDs.AntiTcc1_3900_minus,
+        PDGIDs.Tcc1_3900_0,
+        PDGIDs.Tcc1_4430_plus,
+        PDGIDs.Tbb1_10610_0,
     )
     _non_unflavoured_mesons = [pid for pid in PDGIDs if pid not in _unflavoured_mesons]
     for pid in _unflavoured_mesons:

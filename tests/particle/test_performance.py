@@ -22,7 +22,7 @@ def test_load_nuclei_append(benchmark: BenchmarkFixture) -> None:
 
 def test_from_pdgid(benchmark: BenchmarkFixture) -> None:
     Particle.load_table(data.basepath / "particle2026.csv")
-    table = [int(s.pdgid) for s in Particle.all()]
+    table = [int(p.pdgid) for p in Particle.all()]
 
     def get_all(listing: list[int]) -> None:
         for pdgid in listing:

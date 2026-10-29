@@ -921,16 +921,27 @@ class Particle:
         Is the particle a light non-strange meson or a quarkonium?
 
         Indeed, unflavoured mesons are either:
-        all light mesons with no net flavour quantum number (S = C = B = T = 0),
-        or quarkonia, which are self-conjugate heavy flavour mesons,
-        with all their flavour quantum numbers and charge equal to zero.
+        (1) all light mesons with no net flavour quantum number (S = C = B = T = 0), or
+        (2) quarkonia, which are self-conjugate heavy flavour mesons,
+        with all their flavour quantum numbers and charge equal to zero, or
+        (3) tetraquarks with no net flavour quantum number.
         """
         pid = self.pdgid
 
         if not pid.is_meson:
             return False
 
-        # Heavy flavour
+        if pid.is_tetraquark:
+            if self.is_self_conjugate:
+                return True
+            if (nq1 := _digit(pid, Location.Nr)) > 2:  # it's a strange quark or heavier
+                nq2 = _digit(pid, Location.Nl)
+                nq3 = _digit(pid, Location.Nq2)
+                nq4 = _digit(pid, Location.Nq3)
+                return nq1 == nq3 if nq2 < 3 else nq1 == nq3 and nq2 == nq4
+            return False
+
+        # Heavy flavour - quarkonia
         if pid.has_charm or pid.has_bottom or pid.has_top:
             return self.is_self_conjugate
 
@@ -945,7 +956,7 @@ class Particle:
             return True
 
         # I = 0 light mesons have a s-sbar component, has_strange == True,
-        # thought their net S = 0
+        # though their net S = 0
         if _digit(pid, Location.Nq3) in {2, 3} and self.three_charge == 0:
             return True
 

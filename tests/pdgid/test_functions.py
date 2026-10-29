@@ -44,6 +44,7 @@ from particle.pdgid import (
     is_special_particle,
     is_SUSY,
     is_technicolor,
+    is_tetraquark,
     is_valid,
     j_spin,
     l_spin,
@@ -70,6 +71,13 @@ def test_charge() -> None:
     assert charge(PDGIDs.Proton) == +1
     assert charge(PDGIDs.LcPlus) == +1
     assert charge(PDGIDs.Lb) == 0
+    assert charge(PDGIDs.Tcc1_3900_plus) == +1
+    assert charge(PDGIDs.AntiTcc1_3900_minus) == -1
+    assert charge(PDGIDs.Tcc1_3900_0) == 0
+    assert charge(PDGIDs.Tcc1_4430_plus) == +1
+    assert charge(PDGIDs.Tbb1_10610_0) == 0
+    assert charge(PDGIDs.Pcc_4312_plus) == +1
+    assert charge(PDGIDs.AntiPcc_4312_minus) == -1
     assert charge(PDGIDs.DD1) == Fraction(-2, 3)
     assert charge(PDGIDs.SD0) == Fraction(-2, 3)
     assert charge(PDGIDs.Invalid1) is None
@@ -219,6 +227,11 @@ def _get_mesons() -> tuple[PDGIDs, ...]:
         PDGIDs.BPlus,
         PDGIDs.Bs,
         PDGIDs.BcPlus,
+        PDGIDs.Tcc1_3900_plus,
+        PDGIDs.AntiTcc1_3900_minus,
+        PDGIDs.Tcc1_3900_0,
+        PDGIDs.Tcc1_4430_plus,
+        PDGIDs.Tbb1_10610_0,
         PDGIDs.Pi0TC,
         PDGIDs.PiMinusTC,
         PDGIDs.T0,
@@ -266,9 +279,9 @@ def test_is_baryon() -> None:
         PDGIDs.LcPlus,
         PDGIDs.Lb,
         PDGIDs.LtPlus,
+        PDGIDs.Pcc_4312_plus,
+        PDGIDs.AntiPcc_4312_minus,
         PDGIDs.RPlusPlus_GTildeUUU,
-        PDGIDs.UCbarCUDPentaquark,
-        PDGIDs.AntiUCbarCUDPentaquark,
     )
     _non_baryons = [pid for pid in PDGIDs if pid not in _baryons]
     for pid in _baryons:
@@ -288,18 +301,48 @@ def test_is_hadron() -> None:
         assert is_hadron(pid) == (is_meson(pid) or is_baryon(pid))
 
 
+def test_is_tetraquark() -> None:
+    _tetraquarks = (
+        PDGIDs.Tcc1_3900_plus,
+        PDGIDs.AntiTcc1_3900_minus,
+        PDGIDs.Tcc1_3900_0,
+        PDGIDs.Tcc1_4430_plus,
+        PDGIDs.Tbb1_10610_0,
+    )
+    _non_tetraquarks = [pid for pid in PDGIDs if pid not in _tetraquarks]
+    for pid in _non_tetraquarks:
+        assert not is_tetraquark(pid)
+
+
+def test_tetraquarks_are_mesons() -> None:
+    """Obviously all tetraquarks are mesons!"""
+    _tetraquarks = (
+        PDGIDs.Tcc1_3900_plus,
+        PDGIDs.AntiTcc1_3900_minus,
+        PDGIDs.Tcc1_3900_0,
+        PDGIDs.Tcc1_4430_plus,
+        PDGIDs.Tbb1_10610_0,
+    )
+    for pid in _tetraquarks:
+        assert is_meson(pid)
+
+
 def test_is_pentaquark() -> None:
-    _pentaquarks = (PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
+    _pentaquarks = (
+        PDGIDs.Pcc_4312_plus,
+        PDGIDs.AntiPcc_4312_minus,
+    )
     _non_pentaquarks = [pid for pid in PDGIDs if pid not in _pentaquarks]
-    assert is_pentaquark(PDGIDs.UCbarCUDPentaquark)
-    assert is_pentaquark(PDGIDs.AntiUCbarCUDPentaquark)
     for pid in _non_pentaquarks:
         assert not is_pentaquark(pid)
 
 
 def test_pentaquarks_are_baryons() -> None:
     """Obviously all pentaquarks are baryons!"""
-    _pentaquarks = (PDGIDs.UCbarCUDPentaquark, PDGIDs.AntiUCbarCUDPentaquark)
+    _pentaquarks = (
+        PDGIDs.Pcc_4312_plus,
+        PDGIDs.AntiPcc_4312_minus,
+    )
     for pid in _pentaquarks:
         assert is_baryon(pid)
 
@@ -554,8 +597,12 @@ def test_has_charm() -> None:
         PDGIDs.DsPlus,
         PDGIDs.BcPlus,
         PDGIDs.LcPlus,
-        PDGIDs.UCbarCUDPentaquark,
-        PDGIDs.AntiUCbarCUDPentaquark,
+        PDGIDs.Tcc1_3900_plus,
+        PDGIDs.AntiTcc1_3900_minus,
+        PDGIDs.Tcc1_3900_0,
+        PDGIDs.Tcc1_4430_plus,
+        PDGIDs.Pcc_4312_plus,
+        PDGIDs.AntiPcc_4312_minus,
     )
     _without_charm_content = [pid for pid in PDGIDs if pid not in _with_charm_content]
     for pid in _with_charm_content:
@@ -575,6 +622,7 @@ def test_has_bottom() -> None:
         PDGIDs.Bs,
         PDGIDs.BcPlus,
         PDGIDs.Lb,
+        PDGIDs.Tbb1_10610_0,
     )
     _without_bottom_content = [pid for pid in PDGIDs if pid not in _with_bottom_content]
     for pid in _with_bottom_content:

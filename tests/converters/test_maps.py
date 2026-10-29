@@ -17,7 +17,7 @@ from particle.pythia import PythiaID
 def test_BiMap() -> None:
     bimap = BiMap(PDGID, PythiaID)
 
-    assert len(bimap) == 540
+    assert len(bimap) == 544
     assert "BiMap(PDGID-PythiaID)" in str(bimap)
 
     with pytest.raises(MatchingIDNotFound):
@@ -30,8 +30,8 @@ def test_DirectionalMaps() -> None:
         "PDGID", "PythiaID", filename=filename, converters=(int, int)
     )
 
-    assert len(PDG2PyIDMap) == 540
-    assert len(Py2PDGIDMap) == 540
+    assert len(PDG2PyIDMap) == 544
+    assert len(Py2PDGIDMap) == 544
 
     assert "DirectionalMap(PDGID->PYTHIAID)" in str(PDG2PyIDMap)
     assert "DirectionalMap(PYTHIAID->PDGID)" in str(Py2PDGIDMap)
