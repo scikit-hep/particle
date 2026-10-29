@@ -1,10 +1,30 @@
 # Changelog
 
-## WIP - UNRELEASED
+## Version 1.1.0
 
+October 29th, 2026
+
+- Data files:
+  - Important new release updating and adapting to the new PDG document "Monte Carlo Particle Numbering Scheme",
+    see [https://pdg.lbl.gov/2026/reviews/rpp2026-rev-monte-carlo-numbering.pdf](https://pdg.lbl.gov/2026/reviews/rpp2026-rev-monte-carlo-numbering.pdf).
+  - Updated the extended particles data file `mass_width_2008_ext.fwf`
+    for new or changed particles in the 2026 PDG MC numbering scheme.
+  - Removed old and superseded 2024 PDG and derived data files.
+- `Particle` class and submodules:
+  - Adapted to the new PDG numbering scheme for tetra- and penta-quarks.
+- `PDGID` class method and related standalone functions:
+  - Added a function to test for tetraquarks and adapted the similar one for pentaquarks for the new PDG scheme.
 - Documentation:
   - Updates and improvements to the documentation of the `pdgid` submodule
-    based on the 2026 update of the PDG document "Monte Carlo Particle Numbering Scheme".
+    based on the 2026 PDG updates (mentioned above).
+- Dependencies and miscellaneous:
+  - Added support for Python 3.15.
+  - Avoid deprecated inplace drop in Pandas 3.1.
+- Tests and CI:
+  - Suite of tests adapted, improved and/or enhanced for all above developments
+    in the `Particle` and `PDGID` classes.
+  - Cap pytest below 9.2 for pytest-benchmark.
+  - Updates to pre-commit hooks and CI YAML files.
 
 ## Version 1.0.1
 
