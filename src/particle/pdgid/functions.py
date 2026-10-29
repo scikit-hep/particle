@@ -745,7 +745,9 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
     sid = _fundamental_id(pdgid)
 
     if _extra_bits(pdgid) > 0:
-        if is_pentaquark(pdgid):  # 9-digit pentaquark (RPP 2026, section 15)
+        if is_pentaquark(pdgid):
+            # In the 9-digit number the quark digits nq1 to nq5
+            # # sit at positions 6 to 2, hence locations Nr to Nq3.
             charge = (
                 sum(
                     _CH100[_digit(pdgid, loc) - 1]
@@ -753,8 +755,9 @@ def three_charge(pdgid: PDGID_TYPE) -> int | None:
                 )
                 - _CH100[_digit(pdgid, Location.Nq3) - 1]
             )
-        elif is_tetraquark(pdgid):  # 9-digit tetraquark (RPP 2026, section 14)
-            # diquark digits Nr, Nl minus antidiquark digits Nq2, Nq3
+        elif is_tetraquark(pdgid):
+            # In the 9-digit number the quark digits nq1 to nq4
+            # # sit at positions 6 to 5 and 3 to 2, hence locations Nr-Nl and Nq2-Nq3.
             charge = (
                 _CH100[_digit(pdgid, Location.Nr) - 1]
                 + _CH100[_digit(pdgid, Location.Nl) - 1]

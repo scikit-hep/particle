@@ -71,6 +71,13 @@ def test_charge() -> None:
     assert charge(PDGIDs.Proton) == +1
     assert charge(PDGIDs.LcPlus) == +1
     assert charge(PDGIDs.Lb) == 0
+    assert charge(PDGIDs.Tcc1_3900_plus) == +1
+    assert charge(PDGIDs.AntiTcc1_3900_minus) == -1
+    assert charge(PDGIDs.Tcc1_3900_0) == 0
+    assert charge(PDGIDs.Tcc1_4430_plus) == +1
+    assert charge(PDGIDs.Tbb1_10610_0) == 0
+    assert charge(PDGIDs.Pcc_4312_plus) == +1
+    assert charge(PDGIDs.AntiPcc_4312_minus) == -1
     assert charge(PDGIDs.DD1) == Fraction(-2, 3)
     assert charge(PDGIDs.SD0) == Fraction(-2, 3)
     assert charge(PDGIDs.Invalid1) is None
