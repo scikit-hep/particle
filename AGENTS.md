@@ -68,6 +68,6 @@ uv run nox -s generate_aliases    # runs cog over the two literals.py files
 ## Conventions
 
 - Every source file begins with the BSD-3 copyright header and `from __future__ import annotations`.
-- Supported Python is 3.10+; strict dependencies are `attrs` and `hepunits` only (`pandas`/`tabulate` are dev/test extras, imported lazily where used).
+- Supported Python is 3.11+; strict dependencies are `attrs` and `hepunits` only (`pandas`/`tabulate` are dev/test extras, imported lazily where used).
 - Follow the [Scikit-HEP developer guide](https://scikit-hep.org/developer/intro).
 - Releases are cut by tagging `v#.#.#` on GitHub after updating `docs/CHANGELOG.md`; the version is derived from git via `hatch-vcs`.

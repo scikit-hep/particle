@@ -6,9 +6,8 @@
 
 from __future__ import annotations
 
-from typing import IO, Any, Protocol, runtime_checkable
-
-from ._compat.typing import Self, Traversable
+from importlib.resources.abc import Traversable
+from typing import IO, Any, Protocol, Self, runtime_checkable
 
 __all__ = (
     "HasOpen",
