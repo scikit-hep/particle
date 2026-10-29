@@ -931,7 +931,7 @@ class Particle:
         if not pid.is_meson:
             return False
 
-        if is_tetraquark(pid):
+        if pid.is_tetraquark:
             return self.is_self_conjugate
 
         # Heavy flavour - quarkonia
