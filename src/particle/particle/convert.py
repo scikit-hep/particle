@@ -52,7 +52,7 @@ When you are done, you can save one or more of the tables:
 
 from __future__ import annotations
 
-import datetime
+import datetime as dt
 import os
 import warnings
 from collections.abc import Callable, Iterable
@@ -462,7 +462,7 @@ def produce_files(
 def version_header(filename: str, version_number: str) -> str:
     filename = os.path.basename(filename)
     version = version_number  # version of CSV files
-    today_date = datetime.date.isoformat(datetime.datetime.now(tz=datetime.UTC))
+    today_date = dt.date.isoformat(dt.datetime.now(tz=dt.UTC))
     return f"# (c) Scikit-HEP project - Particle package data file - {filename} - version {version} - {today_date}\n"
 
 
