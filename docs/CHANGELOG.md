@@ -1,5 +1,10 @@
 # Changelog
 
+## WIP - UNRELEASED
+
+- Classes for MC particle identification codes and converters:
+  - Fix `Corsika7ID.from_particle_description` raising on special case of MULTITHIN weight identification words (8888jjj).
+
 ## Version 1.1.0
 
 October 29th, 2026
