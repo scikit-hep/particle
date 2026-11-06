@@ -38,10 +38,12 @@ from particle.pdgid import (
     is_Qball,
     is_quark,
     is_Rhadron,
+    is_slepton,
     is_sm_gauge_boson_or_higgs,
     is_sm_lepton,
     is_sm_quark,
     is_special_particle,
+    is_squark,
     is_SUSY,
     is_technicolor,
     is_tetraquark,
@@ -487,6 +489,38 @@ def test_is_SUSY() -> None:
         assert is_SUSY(pid)
     for pid in _non_susy:
         assert not is_SUSY(pid)
+
+
+def test_is_squark() -> None:
+    _squarks = (PDGIDs.STildeL, PDGIDs.CTildeR)
+    _non_squarks = [pid for pid in PDGIDs if pid not in _squarks]
+    for pid in _squarks:
+        assert is_squark(pid)
+        assert is_squark(-pid)
+    for pid in _non_squarks:
+        assert not is_squark(pid)
+    # all left- and right-handed squarks of the six SM quarks
+    for q in range(1, 7):
+        for n in (1, 2):
+            assert is_squark(n * 1_000_000 + q)
+            assert is_squark(-(n * 1_000_000 + q))
+    # 4th-generation partners are not included
+    assert not is_squark(1000007)
+    assert not is_squark(1000008)
+
+
+def test_is_slepton() -> None:
+    _non_sleptons = list(PDGIDs)
+    for pid in _non_sleptons:
+        assert not is_slepton(pid)
+    # charged sleptons and sneutrinos of the three SM generations
+    for lep in range(11, 17):
+        for n in (1, 2):
+            assert is_slepton(n * 1_000_000 + lep)
+            assert is_slepton(-(n * 1_000_000 + lep))
+    # 4th-generation partners are not included
+    assert not is_slepton(1000017)
+    assert not is_slepton(1000018)
 
 
 def test_is_technicolor() -> None:
