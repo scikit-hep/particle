@@ -205,7 +205,6 @@ def test_from_nucleus_info_ParticleNotFound() -> None:
         _ = Particle.from_nucleus_info(1, 3, l_strange=1)
     assert str(e.value) == "Could not find PDGID 1010010030"
 
-    # The number of strange quarks must not end up in Z: this is not S30
     with pytest.raises(ParticleNotFound) as e:
         _ = Particle.from_nucleus_info(6, 30, l_strange=1)
     assert str(e.value) == "Could not find PDGID 1010060300"
