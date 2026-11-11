@@ -222,6 +222,7 @@ def test_from_nucleus_info_InvalidParticle() -> None:
 
     with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(z=1, a=1, i=999)
+    assert str(e.value) == "Isomer level I=999 is invalid. Must be 0 <= I <= 9."
 
 
 def test_sorting() -> None:
