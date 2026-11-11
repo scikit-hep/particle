@@ -114,6 +114,8 @@ class PDGIDsEnum(IntEnum):
     Gravitino = 1000039
     STildeL = 1000003
     CTildeR = 2000004
+    MuTildeR = 2000013
+    NuETildeL = 1000012
     Neutralino_1 = 1000022
     Chargino_1 = 1000024
     # R-hadrons

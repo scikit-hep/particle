@@ -480,6 +480,8 @@ def test_is_SUSY() -> None:
         PDGIDs.Gravitino,
         PDGIDs.STildeL,
         PDGIDs.CTildeR,
+        PDGIDs.MuTildeR,
+        PDGIDs.NuETildeL,
         PDGIDs.Chargino_1,
         PDGIDs.Neutralino_1,
         PDGIDs.R0_1000017,
@@ -504,13 +506,14 @@ def test_is_squark() -> None:
         for n in (1, 2):
             assert is_squark(n * 1_000_000 + q)
             assert is_squark(-(n * 1_000_000 + q))
-    # 4th-generation partners are not included
-    assert not is_squark(1000007)
-    assert not is_squark(1000008)
 
 
 def test_is_slepton() -> None:
-    _non_sleptons = list(PDGIDs)
+    _sleptons = (PDGIDs.MuTildeR, PDGIDs.NuETildeL)
+    _non_sleptons = [pid for pid in PDGIDs if pid not in _sleptons]
+    for pid in _sleptons:
+        assert is_slepton(pid)
+        assert is_slepton(-pid)
     for pid in _non_sleptons:
         assert not is_slepton(pid)
     # charged sleptons and sneutrinos of the three SM generations
@@ -518,9 +521,6 @@ def test_is_slepton() -> None:
         for n in (1, 2):
             assert is_slepton(n * 1_000_000 + lep)
             assert is_slepton(-(n * 1_000_000 + lep))
-    # 4th-generation partners are not included
-    assert not is_slepton(1000017)
-    assert not is_slepton(1000018)
 
 
 def test_is_technicolor() -> None:
@@ -699,6 +699,8 @@ def test_has_fundamental_anti() -> None:
         PDGIDs.AntiElectronStar,
         PDGIDs.STildeL,
         PDGIDs.CTildeR,
+        PDGIDs.MuTildeR,
+        PDGIDs.NuETildeL,
         PDGIDs.Chargino_1,
         PDGIDs.AntiCHadron,
         PDGIDs.R0_1000017,

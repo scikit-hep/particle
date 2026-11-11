@@ -23,6 +23,25 @@ from particle.pdgid import PDGID
 from particle.pdgid.functions import Location, _digit
 
 
+def _particle(name_or_pdgid: str | int) -> Particle:
+    """
+    Get a particle from the table by name, or build one from its PDG ID.
+
+    SUSY particles are not in the particle table. A squark gets the quark
+    content of its quark partner, from which the flavour quantum numbers
+    are derived.
+    """
+    if isinstance(name_or_pdgid, str):
+        return Particle.from_name(name_or_pdgid)
+    pdgid = PDGID(name_or_pdgid)
+    quarks = ""
+    if pdgid.is_squark:
+        quarks = "duscbt"[abs(int(pdgid)) % 10 - 1]
+        if pdgid < 0:
+            quarks = quarks.upper()
+    return Particle(pdgid, str(int(pdgid)), quarks=quarks)
+
+
 def test_sorted_find() -> None:
     assert Particle.findall() == sorted(Particle.finditer())
 
@@ -887,10 +906,18 @@ def test_particle_hash(sign: int) -> None:
         ("pi+", 0),
         ("p", 0),
         ("n", 0),
+        # SUSY particles (not in the particle table)
+        (1000011, 1),  # ~e(L)-
+        (-2000013, -1),  # ~mu(R)+
+        (1000012, 1),  # ~nu(e)(L)
+        (-1000016, -1),  # ~nu(tau)(L)~
+        (1000001, 0),  # ~d(L)
+        (1000021, 0),  # ~g
+        (1000022, 0),  # ~chi(1)0
     ],
 )
-def test_lepton_number(name: str, lepton_number: int) -> None:
-    assert Particle.from_name(name).lepton_number == lepton_number
+def test_lepton_number(name: str | int, lepton_number: int) -> None:
+    assert _particle(name).lepton_number == lepton_number
 
 
 def test_lepton_number_all_sm_leptons() -> None:
@@ -942,10 +969,16 @@ def test_lepton_number_all_sm_leptons() -> None:
         ("gamma", 0),
         ("Z0", 0),
         ("H0", 0),
+        # SUSY particles (not in the particle table)
+        (1000001, Fraction(1, 3)),  # ~d(L)
+        (-2000006, Fraction(-1, 3)),  # ~t(R)~
+        (1000011, 0),  # ~e(L)-
+        (1000021, 0),  # ~g
+        (1000024, 0),  # ~chi(1)+
     ],
 )
-def test_baryon_number(name: str, baryon_number: int | Fraction) -> None:
-    assert Particle.from_name(name).baryon_number == baryon_number
+def test_baryon_number(name: str | int, baryon_number: int | Fraction) -> None:
+    assert _particle(name).baryon_number == baryon_number
 
 
 def test_baryon_number_all_baryons() -> None:
@@ -981,32 +1014,20 @@ def test_baryon_number_all_baryons() -> None:
         ("p", 1),
         ("n", 1),
         ("Lambda", 1),
+        # SUSY particles (not in the particle table)
+        (1000001, -1),  # ~d(L)
+        (-2000006, -1),  # ~t(R)~
+        (1000011, -1),  # ~e(L)-
+        (-2000013, -1),  # ~mu(R)+
+        (1000012, -1),  # ~nu(e)(L)
+        (1000021, -1),  # ~g
+        (1000022, -1),  # ~chi(1)0
+        (1000024, -1),  # ~chi(1)+
+        (1000039, -1),  # ~G
     ],
 )
-def test_r_parity(name: str, r_parity: int) -> None:
-    assert Particle.from_name(name).r_parity == r_parity
-
-
-@pytest.mark.parametrize(
-    ("pdgid", "baryon_number", "lepton_number"),
-    [
-        (1000001, Fraction(1, 3), 0),  # ~d(L)
-        (-2000006, Fraction(-1, 3), 0),  # ~t(R)~
-        (1000011, 0, 1),  # ~e(L)-
-        (-2000013, 0, -1),  # ~mu(R)+
-        (1000012, 0, 1),  # ~nu(e)(L)
-        (1000021, 0, 0),  # ~g
-        (1000022, 0, 0),  # ~chi(1)0
-        (1000024, 0, 0),  # ~chi(1)+
-    ],
-)
-def test_r_parity_susy_particles(
-    pdgid: int, baryon_number: int | Fraction, lepton_number: int
-) -> None:
-    p = Particle(PDGID(pdgid), "susy")
-    assert p.baryon_number == baryon_number
-    assert p.lepton_number == lepton_number
-    assert p.r_parity == -1
+def test_r_parity(name: str | int, r_parity: int) -> None:
+    assert _particle(name).r_parity == r_parity
 
 
 def test_r_parity_all_sm_particles() -> None:
@@ -1037,10 +1058,16 @@ def test_r_parity_all_sm_particles() -> None:
         ("pi0", 0),
         ("D+", 0),
         ("D0", 0),
+        # SUSY particles (not in the particle table)
+        (1000003, -1),  # ~s(L)
+        (-2000003, 1),  # ~s(R)~
+        (1000001, 0),  # ~d(L)
+        (1000011, 0),  # ~e(L)-
+        (1000021, 0),  # ~g
     ],
 )
-def test_strangeness(name: str, strangeness: int) -> None:
-    assert Particle.from_name(name).strangeness == strangeness
+def test_strangeness(name: str | int, strangeness: int) -> None:
+    assert _particle(name).strangeness == strangeness
 
 
 @pytest.mark.parametrize(
@@ -1063,10 +1090,15 @@ def test_strangeness(name: str, strangeness: int) -> None:
         ("Lambda(c)+", 1),
         ("p", 0),
         ("B0", 0),
+        # SUSY particles (not in the particle table)
+        (2000004, 1),  # ~c(R)
+        (-1000004, -1),  # ~c(L)~
+        (1000003, 0),  # ~s(L)
+        (1000022, 0),  # ~chi(1)0
     ],
 )
-def test_charm(name: str, charmness: int) -> None:
-    assert Particle.from_name(name).charmness == charmness
+def test_charm(name: str | int, charmness: int) -> None:
+    assert _particle(name).charmness == charmness
 
 
 @pytest.mark.parametrize(
@@ -1088,10 +1120,14 @@ def test_charm(name: str, charmness: int) -> None:
         ("Lambda", 0),
         ("p", 0),
         ("pi+", 0),
+        # SUSY particles (not in the particle table)
+        (1000005, -1),  # ~b(1)
+        (-2000005, 1),  # ~b(2)~
+        (1000021, 0),  # ~g
     ],
 )
-def test_bottomness(name: str, bottomness: int) -> None:
-    assert Particle.from_name(name).bottomness == bottomness
+def test_bottomness(name: str | int, bottomness: int) -> None:
+    assert _particle(name).bottomness == bottomness
 
 
 @pytest.mark.parametrize(
@@ -1109,10 +1145,14 @@ def test_bottomness(name: str, bottomness: int) -> None:
         ("D+", 0),
         ("B0", 0),
         ("p", 0),
+        # SUSY particles (not in the particle table)
+        (2000006, 1),  # ~t(2)
+        (-1000006, -1),  # ~t(1)~
+        (1000024, 0),  # ~chi(1)+
     ],
 )
-def test_topness(name: str, topness: int) -> None:
-    assert Particle.from_name(name).topness == topness
+def test_topness(name: str | int, topness: int) -> None:
+    assert _particle(name).topness == topness
 
 
 @pytest.mark.parametrize(
