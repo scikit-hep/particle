@@ -777,7 +777,7 @@ class Particle:
         Baryons have :math:`B = +1` (antibaryons :math:`B = -1`) and nuclei have
         :math:`B = A`, the mass number (:math:`B = -A` for anti-nuclei).
         Quarks, and their SUSY partners the squarks, carry a fractional baryon number
-        of :math:`+1/3` (antiquarks :math:`-1/3`),
+        of :math:`+1/3` (anti(s)quarks :math:`-1/3`),
         which is returned as a `~fractions.Fraction` so that the value stays exact;
         all other cases return a plain `int`. Everything else
         (mesons, leptons, gauge bosons, ...) has :math:`B = 0`.
@@ -801,7 +801,7 @@ class Particle:
         The lepton quantum number :math:`L` of the particle.
 
         Leptons, and their SUSY partners the sleptons, have :math:`L = +1`
-        and antileptons :math:`L = -1`.
+        and anti(s)leptons :math:`L = -1`.
         All other particles have :math:`L = 0`.
         Note that this is the total lepton number and not a per-generation lepton number.
         """
