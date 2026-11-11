@@ -4,6 +4,8 @@
 
 - `PDGID` class and submodules:
   - New `is_squark` and `is_slepton` functions and properties.
+  - Fix `is_tetraquark` and `is_pentaquark` accepting IDs that are not 9-digit numbers starting with 1.
+    Some nuclear isomers, e.g. 1000420911, were taken for tetraquarks and given a wrong charge.
 - `Particle` class and submodules:
   - Fix `baryon_number`, `lepton_number` and `r_parity` for squarks and sleptons,
     which now carry the B and L of their Standard Model partners and have R = -1.

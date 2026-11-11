@@ -435,6 +435,8 @@ def is_tetraquark(pdgid: PDGID_TYPE) -> bool:
     and incrementing with new additions.
     As for the standard scheme, nJ = 2J + 1 gives the spin.
     """
+    if abspid(pdgid) // 100000000 != 1:  # 9-digit number starting with 1
+        return False
     if _digit(pdgid, Location.Nj) == 0:
         return False
     if _digit(pdgid, Location.Nq1) != 0:  # location 4
@@ -472,7 +474,7 @@ def is_pentaquark(pdgid: PDGID_TYPE) -> bool:
     and incrementing with new additions.
     As for the standard scheme, nJ = 2J + 1 gives the spin.
     """
-    if _digit(pdgid, Location.N9) != 1:
+    if abspid(pdgid) // 100000000 != 1:  # 9-digit number starting with 1
         return False
     if _digit(pdgid, Location.Nj) == 0:
         return False
