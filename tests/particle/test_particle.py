@@ -192,9 +192,22 @@ def test_from_nucleus_info_ParticleNotFound() -> None:
     with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(z=999, a=999)
 
-    # No exited nuclei in database
+    # No excited nuclei in the database
     with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(1, 2, i=1)
+
+    # No strange nuclei in the database
+    with pytest.raises(ParticleNotFound) as e:
+        _ = Particle.from_nucleus_info(1, 2, l_strange=1)
+    assert str(e.value) == "Could not find PDGID 1010010020"
+
+    with pytest.raises(ParticleNotFound) as e:
+        _ = Particle.from_nucleus_info(1, 3, l_strange=1)
+    assert str(e.value) == "Could not find PDGID 1010010030"
+
+    with pytest.raises(ParticleNotFound) as e:
+        _ = Particle.from_nucleus_info(6, 30, l_strange=1)
+    assert str(e.value) == "Could not find PDGID 1010060300"
 
 
 def test_from_nucleus_info_InvalidParticle() -> None:
@@ -212,11 +225,7 @@ def test_from_nucleus_info_InvalidParticle() -> None:
 
     with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(z=1, a=1, i=999)
-
-        # No strange nuclei in database and strange PDGID not implemented
-    with pytest.raises(InvalidParticle) as e:
-        _ = Particle.from_nucleus_info(1, 2, l_strange=1)
-    assert str(e.value) == "Input PDGID 1000110020 is invalid!"
+    assert str(e.value) == "Isomer level I=999 is invalid. Must be 0 <= I <= 9."
 
 
 def test_sorting() -> None:
