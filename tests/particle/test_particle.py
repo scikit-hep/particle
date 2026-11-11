@@ -196,6 +196,16 @@ def test_from_nucleus_info_ParticleNotFound() -> None:
     with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(1, 2, i=1)
 
+    # No strange nuclei in database
+    with pytest.raises(ParticleNotFound) as e:
+        _ = Particle.from_nucleus_info(1, 3, l_strange=1)
+    assert str(e.value) == "Could not find PDGID 1010010030"
+
+    # The number of strange quarks must not end up in Z: this is not S30
+    with pytest.raises(ParticleNotFound) as e:
+        _ = Particle.from_nucleus_info(6, 30, l_strange=1)
+    assert str(e.value) == "Could not find PDGID 1010060300"
+
 
 def test_from_nucleus_info_InvalidParticle() -> None:
     with pytest.raises(InvalidParticle) as e:
@@ -212,11 +222,6 @@ def test_from_nucleus_info_InvalidParticle() -> None:
 
     with pytest.raises(InvalidParticle) as e:
         _ = Particle.from_nucleus_info(z=1, a=1, i=999)
-
-        # No strange nuclei in database and strange PDGID not implemented
-    with pytest.raises(InvalidParticle) as e:
-        _ = Particle.from_nucleus_info(1, 2, l_strange=1)
-    assert str(e.value) == "Input PDGID 1000110020 is invalid!"
 
 
 def test_sorting() -> None:

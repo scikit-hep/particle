@@ -2,6 +2,8 @@
 
 ## WIP - UNRELEASED
 
+- `Particle` class and submodules:
+  - Fix `Particle.from_nucleus_info` adding the number of strange quarks `l_strange` to Z instead of setting the L digit of the PDG ID.
 - Classes for MC particle identification codes and converters:
   - Fix `Corsika7ID.from_particle_description` raising on special case of MULTITHIN weight identification words (8888jjj).
 

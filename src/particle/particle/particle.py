@@ -1280,7 +1280,7 @@ C (charge parity) = {C:<6}  I (isospin)       = {self.I!s:<7}  G (G-parity)     
                 f"Nucleus A={a}, Z={z} is invalid. Z must be smaller or equal to A."
             )
 
-        pdgid = int(1e9 + l_strange * 1e5 + z * 1e4 + a * 10 + i)
+        pdgid = int(1e9 + l_strange * 1e7 + z * 1e4 + a * 10 + i)
 
         if anti:
             pdgid = -pdgid
