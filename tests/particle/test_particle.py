@@ -192,11 +192,15 @@ def test_from_nucleus_info_ParticleNotFound() -> None:
     with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(z=999, a=999)
 
-    # No exited nuclei in database
+    # No excited nuclei in the database
     with pytest.raises(ParticleNotFound):
         _ = Particle.from_nucleus_info(1, 2, i=1)
 
-    # No strange nuclei in database
+    # No strange nuclei in the database
+    with pytest.raises(ParticleNotFound) as e:
+        _ = Particle.from_nucleus_info(1, 2, l_strange=1)
+    assert str(e.value) == "Could not find PDGID 1010010020"
+
     with pytest.raises(ParticleNotFound) as e:
         _ = Particle.from_nucleus_info(1, 3, l_strange=1)
     assert str(e.value) == "Could not find PDGID 1010010030"
