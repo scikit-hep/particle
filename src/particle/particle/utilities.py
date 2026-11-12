@@ -76,7 +76,7 @@ def str_with_unc(value: float, upper: float | None, lower: float | None = None) 
             return f"{value:{fse}} + {upper:{fse}} - {lower:{fse}}"
         return f"{value:{fse}} ± {upper:{fse}}"
 
-    value_digits = math.floor(math.log10(value))
+    value_digits = math.floor(math.log10(abs(value)))
     error_digits = math.floor(math.log10(error) - math.log10(2.5))
     # This is split based on the value being larger than 1000000 or smaller than 0.001 - scientific notation split
 
