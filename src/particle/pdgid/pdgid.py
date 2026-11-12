@@ -95,6 +95,7 @@ class PDGID(int):
         _functions.is_pentaquark, doc=_functions.is_pentaquark.__doc__
     )
     is_quark = property(_functions.is_quark, doc=_functions.is_quark.__doc__)
+    is_slepton = property(_functions.is_slepton, doc=_functions.is_slepton.__doc__)
     is_sm_gauge_boson_or_higgs = property(
         _functions.is_sm_gauge_boson_or_higgs,
         doc=_functions.is_sm_gauge_boson_or_higgs.__doc__,
@@ -106,6 +107,7 @@ class PDGID(int):
     is_special_particle = property(
         _functions.is_special_particle, doc=_functions.is_special_particle.__doc__
     )
+    is_squark = property(_functions.is_squark, doc=_functions.is_squark.__doc__)
     is_technicolor = property(
         _functions.is_technicolor, doc=_functions.is_technicolor.__doc__
     )

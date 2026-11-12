@@ -2,7 +2,11 @@
 
 ## WIP - UNRELEASED
 
+- `PDGID` class and submodules:
+  - New `is_squark` and `is_slepton` functions and properties.
 - `Particle` class and submodules:
+  - Fix `baryon_number`, `lepton_number` and `r_parity` for squarks and sleptons,
+    which now carry the B and L of their Standard Model partners and have R = -1.
   - Fix `Particle.from_nucleus_info` when the number of strange quarks `l_strange` is non-zero.
 - Classes for MC particle identification codes and converters:
   - Fix `Corsika7ID.from_particle_description` raising on special case of MULTITHIN weight identification words (8888jjj).

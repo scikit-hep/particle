@@ -77,10 +77,12 @@ is_meson       False
 is_nucleus     False
 is_pentaquark  False
 is_quark       False
+is_slepton     False
 is_sm_gauge_boson_or_higgs True
 is_sm_lepton   False
 is_sm_quark    False
 is_special_particle False
+is_squark      False
 is_technicolor False
 is_tetraquark  False
 is_valid       True

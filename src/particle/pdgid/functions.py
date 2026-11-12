@@ -638,6 +638,26 @@ def is_SUSY(pdgid: PDGID_TYPE) -> bool:
     return _fundamental_id(pdgid) != 0
 
 
+def is_squark(pdgid: PDGID_TYPE) -> bool:
+    """
+    Does this PDG ID correspond to a squark?
+
+    Squarks are the SUSY partners of the Standard Model quarks,
+    i.e. fundamental SUSY particles with fundamental ID 1-6.
+    """
+    return is_SUSY(pdgid) and 1 <= _fundamental_id(pdgid) <= 6
+
+
+def is_slepton(pdgid: PDGID_TYPE) -> bool:
+    """
+    Does this PDG ID correspond to a slepton?
+
+    Sleptons (including sneutrinos) are the SUSY partners of the Standard Model
+    leptons, i.e. fundamental SUSY particles with fundamental ID 11-16.
+    """
+    return is_SUSY(pdgid) and 11 <= _fundamental_id(pdgid) <= 16
+
+
 def is_technicolor(pdgid: PDGID_TYPE) -> bool:
     """
     Does this PDG ID correspond to a Technicolor state?
