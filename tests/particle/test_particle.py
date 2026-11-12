@@ -34,7 +34,12 @@ def _particle(name_or_pdgid: str | int) -> Particle:
     if isinstance(name_or_pdgid, str):
         return Particle.from_name(name_or_pdgid)
     pdgid = PDGID(name_or_pdgid)
-    return Particle(pdgid, str(int(pdgid)))
+    quarks = ""
+    if pdgid.is_squark:
+        quarks = "duscbt"[abs(int(pdgid)) % 10 - 1]
+        if pdgid < 0:
+            quarks = quarks.upper()
+    return Particle(pdgid, str(int(pdgid)), quarks=quarks)
 
 
 def test_sorted_find() -> None:
