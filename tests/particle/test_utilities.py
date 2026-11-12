@@ -63,7 +63,6 @@ possibilities_2 = (
     (1234.5, None, 2, "1234.5"),
     # value == 0 with nonzero uncertainty must not raise ValueError
     (0.0, 1e-9, 1e-9, "0.0000000000 ± 0.0000000010"),
-    # negative values must format like positive ones, with the sign kept
     (-1.234567, 0.01, None, "-1.235 ± 0.010"),
     (-1.234567e-9, 0.01e-9, None, "-1.235e-09 ± 1.0e-11"),
     (-0.00001231, 0.000002, 0.000004, "-1.23e-05 + 2.0e-06 - 4.0e-06"),
