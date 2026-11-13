@@ -139,6 +139,7 @@ class PDGIDsEnum(IntEnum):
     HydrogenNucleus = 1000010010
     Carbon12 = 1000060120
     Molybdenum91m = 1000420911  # nuclear isomer
+    Technetium99m = 1000430991  # nuclear isomer
     # Technicolor
     Pi0TC = 3000111
     PiMinusTC = -3000211
