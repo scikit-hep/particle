@@ -4,6 +4,7 @@
 
 - `PDGID` class and submodules:
   - New `is_squark` and `is_slepton` functions and properties.
+  - Fix `is_tetraquark` and `is_pentaquark` accepting IDs that are not 9-digit numbers starting with 1.
 - `Particle` class and submodules:
   - Fix `baryon_number`, `lepton_number` and `r_parity` for squarks and sleptons,
     which now carry the B and L of their Standard Model partners and have R = -1.
