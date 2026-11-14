@@ -848,7 +848,7 @@ def j_spin(pdgid: PDGID_TYPE) -> int | None:
                 return 3
             if fund == 25:
                 return 1
-            return None
+        return None
     if abs(int(pdgid)) in {1000000010, 1000010010}:  # neutron, proton
         return 2
     if _extra_bits(pdgid) > 0:

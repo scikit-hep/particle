@@ -904,7 +904,12 @@ def test_J_non_mesons() -> None:
     _J_eq_3over2 = (PDGIDs.OmegaMinus, PDGIDs.Gravitino)
     _invalid_pdgids = (PDGIDs.Invalid1, PDGIDs.Invalid2)
     # cases not dealt with in the code, where None is returned
-    _J_eq_None = (PDGIDs.TauPrime, PDGIDs.BPrimeQuark, PDGIDs.TPrimeQuark)
+    _J_eq_None = (
+        PDGIDs.TauPrime,
+        PDGIDs.BPrimeQuark,
+        PDGIDs.TPrimeQuark,
+        PDGIDs.R0_1000017,
+    )
 
     for pid in _J_eq_0:
         assert j_spin(pid) == 1
