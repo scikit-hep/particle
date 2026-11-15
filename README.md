@@ -437,7 +437,9 @@ LHCb name: B_s~0
 ```
 
 Conversions PDG ID <-> LHCb name are available via a predefined bidirectional map
-similarly to what is available in the standard (i.e. non-experiment-specific) converters:
+similarly to what is available in the standard (i.e. non-experiment-specific) converters.
+The map is generated with the script `admin/dump_pdgid_to_lhcb.py`
+from the default particle table of the LHCb software:
 
 ```python
 
