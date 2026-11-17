@@ -2,6 +2,11 @@
 
 ## WIP - UNRELEASED
 
+- Data files:
+  - LHCb name map `pdgid_to_lhcbname.csv` regenerated from the default particle table of the LHCb software
+    (file `Kernel/PartProp/python/PartProp/default.ParticleTable.txt` of the LHCb project),
+    replacing the table of the LHCb DDDB package, tag `dt-2018`:
+    30 exotic states added, and 66 nuclei now named as in LHCb, e.g. `Al27` instead of `Al27[0.0]`.
 - `PDGID` class and submodules:
   - New `is_squark` and `is_slepton` functions and properties.
 - `Particle` class and submodules:
@@ -10,6 +15,10 @@
   - Fix `Particle.from_nucleus_info` when the number of strange quarks `l_strange` is non-zero.
 - Classes for MC particle identification codes and converters:
   - Fix `Corsika7ID.from_particle_description` raising on special case of MULTITHIN weight identification words (8888jjj).
+- Miscellaneous:
+  - Script `admin/dump_pdgid_to_lhcb.py` now reads the LHCb software's default particle table, pinned to an LHCb commit.
+- Tests and CI:
+  - Tests of the LHCb name map extended, including name <-> PDG ID round-trips of all entries.
 
 ## Version 1.1.0
 
