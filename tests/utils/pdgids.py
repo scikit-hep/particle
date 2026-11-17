@@ -69,6 +69,7 @@ class PDGIDsEnum(IntEnum):
     f_2_30225 = 30225  # unknown particle added for testing purposes
     f_4_2050 = 229
     f_4_2300 = 9010229  # example of a not-well-known meson
+    pi_2_1880_0 = 110115
     Proton = 2212
     AntiNeutron = -2112
     Lambda = 3122
@@ -137,6 +138,8 @@ class PDGIDsEnum(IntEnum):
     # Nuclei
     HydrogenNucleus = 1000010010
     Carbon12 = 1000060120
+    Molybdenum91m = 1000420911  # nuclear isomer
+    Technetium99m = 1000430991  # nuclear isomer
     # Technicolor
     Pi0TC = 3000111
     PiMinusTC = -3000211

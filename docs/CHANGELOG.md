@@ -9,6 +9,7 @@
     30 exotic states added, and 66 nuclei now named as in LHCb, e.g. `Al27` instead of `Al27[0.0]`.
 - `PDGID` class and submodules:
   - New `is_squark` and `is_slepton` functions and properties.
+  - Fix `is_tetraquark` and `is_pentaquark` accepting IDs that are not 9-digit numbers starting with 1.
 - `Particle` class and submodules:
   - Fix `baryon_number`, `lepton_number` and `r_parity` for squarks and sleptons,
     which now carry the B and L of their Standard Model partners and have R = -1.

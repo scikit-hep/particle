@@ -80,6 +80,9 @@ def test_charge() -> None:
     assert charge(PDGIDs.Tbb1_10610_0) == 0
     assert charge(PDGIDs.Pcc_4312_plus) == +1
     assert charge(PDGIDs.AntiPcc_4312_minus) == -1
+    assert charge(PDGIDs.Carbon12) == +6
+    assert charge(PDGIDs.Molybdenum91m) == +42
+    assert charge(PDGIDs.Technetium99m) == +43
     assert charge(PDGIDs.DD1) == Fraction(-2, 3)
     assert charge(PDGIDs.SD0) == Fraction(-2, 3)
     assert charge(PDGIDs.Invalid1) is None
@@ -222,6 +225,7 @@ def _get_mesons() -> tuple[PDGIDs, ...]:
         PDGIDs.f_2_30225,
         PDGIDs.f_4_2050,
         PDGIDs.f_4_2300,
+        PDGIDs.pi_2_1880_0,
         PDGIDs.D0,
         PDGIDs.DPlus,
         PDGIDs.DsPlus,
@@ -427,6 +431,8 @@ def test_is_nucleus() -> None:
         PDGIDs.AntiNeutron,
         PDGIDs.HydrogenNucleus,
         PDGIDs.Carbon12,
+        PDGIDs.Molybdenum91m,
+        PDGIDs.Technetium99m,
     )
     _non_nuclei = [pid for pid in PDGIDs if pid not in _nuclei]
     for pid in _nuclei:
@@ -938,6 +944,8 @@ def test_A() -> None:
         PDGIDs.AntiNeutron: 1,
         PDGIDs.HydrogenNucleus: 1,
         PDGIDs.Carbon12: 12,
+        PDGIDs.Molybdenum91m: 91,
+        PDGIDs.Technetium99m: 99,
     }
     _non_nuclei = [pid for pid in PDGIDs if pid not in _nuclei]
     for pid, a in _nuclei.items():
@@ -952,6 +960,8 @@ def test_Z() -> None:
         PDGIDs.AntiNeutron: 0,
         PDGIDs.HydrogenNucleus: 1,
         PDGIDs.Carbon12: 6,
+        PDGIDs.Molybdenum91m: 42,
+        PDGIDs.Technetium99m: 43,
     }
     _non_nuclei = [pid for pid in PDGIDs if pid not in _nuclei]
     for pid, z in _nuclei.items():
