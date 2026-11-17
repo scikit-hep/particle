@@ -1,6 +1,8 @@
 # Changelog
 
-## WIP - UNRELEASED
+## Version 1.1.1
+
+November 17th, 2026
 
 - Data files:
   - LHCb name map `pdgid_to_lhcbname.csv` regenerated from the default particle table of the LHCb software
@@ -16,10 +18,13 @@
   - Fix `Particle.from_nucleus_info` when the number of strange quarks `l_strange` is non-zero.
 - Classes for MC particle identification codes and converters:
   - Fix `Corsika7ID.from_particle_description` raising on special case of MULTITHIN weight identification words (8888jjj).
+- Dependencies:
+  - Dropped support for Python 3.10.
 - Miscellaneous:
   - Script `admin/dump_pdgid_to_lhcb.py` now reads the LHCb software's default particle table, pinned to an LHCb commit.
 - Tests and CI:
   - Tests of the LHCb name map extended, including name <-> PDG ID round-trips of all entries.
+  - Updates to pre-commit hooks and CI YAML files.
 
 ## Version 1.1.0
 
